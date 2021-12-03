@@ -5257,7 +5257,7 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		return;
 	}
 
-	if (price == 0 || price > 9999999999999999) {
+	if (price == 0 || price > 999999999999) {
 		return;
 	}
 
