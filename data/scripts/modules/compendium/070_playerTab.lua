@@ -142,6 +142,12 @@ function sendCompendiumPlayerInfo(player, creatureId, infoType, entriesPerPage, 
 			response:addU16(0)
 		end
 
+		-- fatal, dodge, momentum
+		for i = 1, 3 do
+			response:addU16(0)
+			response:addU16(0)		
+		end
+		
 		response:addU16(0) -- cleave (bonus percent damage to nearby enemies)
 		response:addU16(0) -- bonus magic shield capacity (flat)
 		response:addU16(0) -- bonus magic shield capacity (percent)
@@ -317,10 +323,14 @@ function sendCompendiumPlayerInfo(player, creatureId, infoType, entriesPerPage, 
 		
 		-- send each category
 		for categoryType = COMPENDIUM_PLAYERITEMS_FIRST, COMPENDIUM_PLAYERITEMS_LAST do
-			local categoryItems, categoryCount = creature:getClientInventory(categoryType)
+			local categoryItems, categoryCount = creature:getInventoryItemCount(categoryType)
 			response:addU16(categoryCount) -- items to send
-			for clientId, count in pairs(categoryItems) do
-				response:addU16(clientId) -- item clientId
+			for itemId, count in pairs(categoryItems) do
+				local itemType = ItemType(itemId)
+				response:addU16(itemType:getClientId()) -- item clientId
+				if itemType:getClassLevel() > 0 then
+					response:addByte(0x00) -- item tier
+				end
 				response:addU32(count) -- item amount
 			end
 		end

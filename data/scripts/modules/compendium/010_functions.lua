@@ -75,11 +75,11 @@ function getFragStatus(player)
 end
 
 function parseItem(item, response)
-	local clientId = item:getType():getClientId()
-	if not response[clientId] then
-		response[clientId] = 0
+	local itemId = item:getType():getId()
+	if not response[itemId] then
+		response[itemId] = 0
 	end
-	response[clientId] = response[clientId] + item:getCount()
+	response[itemId] = response[itemId] + item:getCount()
 	
 	if item:isContainer() then
 		for containerIndex, containerItem in pairs(item:getItems()) do
@@ -88,7 +88,7 @@ function parseItem(item, response)
 	end
 end
 
-function Player:getClientInventory(category)
+function Player:getInventoryItemCount(category)
 	local response = {}
 	local responseCount = 0
 	
@@ -100,9 +100,11 @@ function Player:getClientInventory(category)
 			end
 		end
 	elseif category == COMPENDIUM_PLAYERITEMS_PURSE then
-		local slotItem = self:getSlotItem(CONST_SLOT_STORE_INBOX)
-		if slotItem then
-			parseItem(slotItem, response)
+		local purse = self:getSlotItem(CONST_SLOT_STORE_INBOX)
+		if purse then
+			for _, containerItem in pairs(purse:getItems()) do
+				parseItem(containerItem, response)
+			end
 		end
 	elseif category == COMPENDIUM_PLAYERITEMS_STASH then
 		-- not implemented yet

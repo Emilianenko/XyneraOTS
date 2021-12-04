@@ -15,12 +15,14 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 		response:addString(
 			string.format("%s", table.concat({itemType:getArticle(), itemType:getName()}, " "))
 		)
+		
 		response:addItemType(itemType)
 	else
 		response:addString(
 			string.format("%s", item:getNameDescription(item:getSubType(), true))
 		)
-		response:addItem(item)	
+
+		response:addItem(item)
 	end
 
 	-- imbuements count (5 max, 6th gets cut in view window)
@@ -31,6 +33,7 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 	-- structure:
 	-- string key
 	-- string value
+
 	if descriptions and #descriptions > 0 then
 		response:addByte(#descriptions)
 		
@@ -43,6 +46,7 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 	else
 		response:addByte(0)
 	end
+	
 	response:sendToPlayer(self)
 end
 

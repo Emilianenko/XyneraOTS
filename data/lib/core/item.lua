@@ -2,6 +2,10 @@ function Item.getType(self)
 	return ItemType(self:getId())
 end
 
+function Item.getClassLevel(self)
+	return self:getType():getClassLevel()
+end
+
 function Item.isContainer(self)
 	return false
 end
