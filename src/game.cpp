@@ -2638,9 +2638,6 @@ void Game::playerInspectTradeItem(uint32_t playerId, bool isInspectingPartnerOff
 		return;
 	}
 
-	const Position& playerPosition = player->getPosition();
-	const Position& tradeItemPosition = tradeItem->getPosition();
-
 	if (index == 0) {
 		g_events->eventPlayerOnInspectTradeItem(player, tradePartner, tradeItem);
 		return;
