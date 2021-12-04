@@ -3365,25 +3365,24 @@ void ProtocolGame::sendItemClasses()
 	NetworkMessage msg;
 	msg.addByte(0x86);
 
-	// begin item classes block
 	uint8_t classSize = 4;
 	uint8_t tiersSize = 10;
-	msg.addByte(4); // number of item classes
+
+	// item classes
+	msg.addByte(classSize);
 	for (uint8_t i = 0; i < classSize; i++) {
 		msg.addByte(i + 1); // class id
 
-		// begin tier block
+		// item tiers
 		msg.addByte(tiersSize); // tiers size
 		for (uint8_t j = 0; j < tiersSize; j++) {
 			msg.addByte(j); // tier id
 			msg.add<uint64_t>(10000); // upgrade cost
 		}
-		// end tier block
 	}
-	// end item classes block
 
 	// unknown
-	for (uint8_t i = 0; i < 11; i++) {
+	for (uint8_t i = 0; i < tiersSize + 1; i++) {
 		msg.addByte(0);
 	}
 	writeToOutputBuffer(msg);

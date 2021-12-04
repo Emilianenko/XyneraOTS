@@ -623,8 +623,6 @@ MagicEffectNames magicEffectNames = {
 	{"createblock",	CONST_ME_CREATEBLOCK},
 	{"stoneblock",			CONST_ME_STONEBLOCK},
 	{"roots",			CONST_ME_ROOTS},
-	{"sunpriest",		CONST_ME_SUNPRIEST},
-	{"werelion",		CONST_ME_WERELION},
 	{"ghostlyscratch",	CONST_ME_GHOSTLYSCRATCH},
 	{"ghostlybite",		CONST_ME_GHOSTLYBITE},
 	{"bigscratching",	CONST_ME_BIGSCRATCHING},
@@ -638,6 +636,9 @@ MagicEffectNames magicEffectNames = {
 	{"orangeteleport",	CONST_ME_TELEPORT_ORANGE},
 	{"greyteleport",	CONST_ME_TELEPORT_GREY},
 	{"lightblueteleport",	CONST_ME_TELEPORT_LIGHTBLUE},
+	{"fatal", CONST_ME_FATAL},
+	{"dodge", CONST_ME_DODGE},
+	{"momentum", CONST_ME_HOURGLASS}
 };
 
 ShootTypeNames shootTypeNames = {
