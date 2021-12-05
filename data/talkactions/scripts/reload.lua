@@ -79,6 +79,14 @@ function onSay(player, words, param)
 	end
 
 	Game.reload(reloadType)
+	
+	-- prevent unhooking eventCallbacks registered in data/scripts folder
+	-- in "/reload events" situation
+	if reloadType == RELOAD_TYPE_EVENTS then
+		EventCallback:clear()
+		Game.reload(RELOAD_TYPE_SCRIPTS)
+	end
+	
 	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("Reloaded %s.", param:lower()))
 	return false
 end

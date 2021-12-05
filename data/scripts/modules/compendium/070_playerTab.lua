@@ -1,10 +1,11 @@
-function sendCompendiumPlayerInfo(player, creatureId, infoType, entriesPerPage, page)
+function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage, page)
 	-- to do: implement permission logic for inspecting other creatures
-	-- to do: implement per-category cooldowns
-	-- to do: allow updating static pages only on relog/data update/60 seconds
-	-- to do: reduce sql queries by using cache? change frags/deathlist limit?
-	-- to do: addEvent for responses
-	if player:getId() ~= creatureId then
+	local player = Player(playerId)
+	if not player then
+		return
+	end
+	
+	if playerId ~= creatureId then
 		sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_ACCESSDENIED)
 		return
 	end
@@ -251,7 +252,7 @@ function sendCompendiumPlayerInfo(player, creatureId, infoType, entriesPerPage, 
 		
 		-- unjustified kills
 		response:addU32(ost)
-		response:addString(string.format("You have %d unjustified kill%s.", fragStatus.unjustified, (fragStatus.unjustified == 1 and "" or "s")))
+		response:addString(string.format("You have %d active unjustified kill%s.", fragStatus.unjustified, (fragStatus.unjustified == 1 and "" or "s")))
 		response:addByte(COMPENDIUM_KILLTYPE_ARENA)
 		
 		-- single frag duration
@@ -451,9 +452,9 @@ function sendCompendiumPlayerInfo(player, creatureId, infoType, entriesPerPage, 
 end
 
 function onRequestPlayerData(player, recvbyte, networkMessage)
-	local playerId = networkMessage:getU32()
-	if playerId == 0 then
-		playerId = player:getId()
+	local targetPlayerId = networkMessage:getU32()
+	if targetPlayerId == 0 then
+		targetPlayerId = player:getId()
 	end
 	
 	local infoType = networkMessage:getByte()
@@ -464,7 +465,7 @@ function onRequestPlayerData(player, recvbyte, networkMessage)
 		currentPage = math.max(1, networkMessage:getU16());
 	end
 	
-	sendCompendiumPlayerInfo(player, playerId, infoType, entriesPerPage, currentPage)
+	player:addDispatcherTask(sendCompendiumPlayerInfo, infoType + 1, player:getId(), targetPlayerId, infoType, entriesPerPage, currentPage)
 	return true
 end
 
