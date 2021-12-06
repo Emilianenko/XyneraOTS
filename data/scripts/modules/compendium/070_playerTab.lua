@@ -324,7 +324,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		-- send each category
 		for categoryType = COMPENDIUM_PLAYERITEMS_FIRST, COMPENDIUM_PLAYERITEMS_LAST do
-			local categoryItems, categoryCount = creature:getInventoryItemCount(categoryType)
+			local categoryItems, categoryCount = creature:getInventoryItemData(categoryType)
 			response:addU16(categoryCount) -- items to send
 			for itemId, count in pairs(categoryItems) do
 				local itemType = ItemType(itemId)
@@ -441,6 +441,66 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 	elseif infoType == COMPENDIUM_PLAYER_STORE then
 		return
 	elseif infoType == COMPENDIUM_PLAYER_INSPECTION then
+		-- this tab shows player eq, outfit and short character summary
+		local playerEQ = {}
+		local eqCount = 0
+		for slot = CONST_SLOT_FIRST, CONST_SLOT_LAST do
+			local slotItem = creature:getSlotItem(slot)
+			if slotItem then
+				playerEQ[slot] = slotItem
+				eqCount = eqCount + 1
+			end
+		end
+		
+		response:addByte(eqCount)		
+		for slot, slotItem in pairs(playerEQ) do
+			response:addByte(slot)
+			response:addString(slotItem:getName())
+			response:addItem(slotItem)
+			
+			-- imbuing slots
+			response:addByte(0)
+			
+			-- use inspection module if loaded
+			if getItemDetails then
+				local descriptions = getItemDetails(slotItem)
+				if descriptions and #descriptions > 0 then
+					response:addByte(#descriptions)
+					for i = 1, #descriptions do
+						response:addString(descriptions[i][1])
+						response:addString(descriptions[i][2])
+					end
+				else
+					response:addByte(0)
+				end
+			else
+				response:addByte(0)
+			end
+
+		end
+		
+		response:addString(creature:getName())
+		
+		local playerOutfit = creature:getOutfit()
+		response:addOutfit(playerOutfit, false)
+		
+		local outfitType = Outfit(playerOutfit.lookType)
+		local outfitName = outfitType and outfitType.name or "other"
+		local playerInfo = {
+			{"Level", creature:getLevel()},
+			{"Vocation", creature:getVocation():getName()}
+			{"Outfit", outfitName},
+			-- title
+			-- active preys
+		}
+		
+		response:addByte(#playerInfo)
+		for infoId = 1, #playerInfo do
+			response:addString(playerInfo[infoId][1])
+			response:addString(playerInfo[infoId][2])
+		end
+		
+		response:sendToPlayer(player)
 		return
 	elseif infoType == COMPENDIUM_PLAYER_BADGES then
 		return

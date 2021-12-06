@@ -88,12 +88,12 @@ function parseItem(item, response)
 	end
 end
 
-function Player:getInventoryItemCount(category)
+function Player:getInventoryItemData(category)
 	local response = {}
 	local responseCount = 0
 	
 	if category == COMPENDIUM_PLAYERITEMS_EQUIPPED then
-		for slot = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
+		for slot = CONST_SLOT_FIRST, CONST_SLOT_LAST do
 			local slotItem = self:getSlotItem(slot)
 			if slotItem then
 				parseItem(slotItem, response)
