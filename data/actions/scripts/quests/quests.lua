@@ -1,23 +1,41 @@
 -- hybrid quest system
 -- created by Zbizu
 
--- config
-local triggerScreenshot = true
+--[[
+	configurations presets:
+		retro quest messages:
+			local messageType = MESSAGE_INFO_DESCR
 
--- to do:
--- colored messages (true/false)
--- basecolor (for "you have found")
+		modern quest messages:
+			local messageType = MESSAGE_EVENT_ADVANCE
+
+		single color quest messages:
+			local messageType = MESSAGE_LOOT
+			local baseColor = MESSAGE_COLOR_BLUE
+			local colorLoot = false
+			
+		fancy quest messages:
+			local messageType = MESSAGE_LOOT
+			local baseColor = MESSAGE_COLOR_GREEN
+			local colorLoot = true
+]]
+
+local messageType = MESSAGE_LOOT
+local baseColor = MESSAGE_COLOR_GREEN
+local colorLoot = true
 
 local questSystemMessages = {
 	pluralReward = "%d items",
-	treasureFound = {"You have found %s", MESSAGE_EVENT_ADVANCE},
-	treasureFoundMulti = {"You have found: %s", MESSAGE_EVENT_ADVANCE},
-	notEnoughCap = {"You have found %s weighing %0.2f oz. %s too heavy.", MESSAGE_EVENT_ADVANCE, "It is", "They are"},
-	notEnoughRoom = {"You have found %s, but you have no room to take %s.", MESSAGE_EVENT_ADVANCE, "it", "them"},
-	questCompleted = {"The %s is empty.", MESSAGE_EVENT_ADVANCE},
-	storageConflict = {"Unable to open this %s. Configuration conflicting with another server system. Please contact administrator.", MESSAGE_EVENT_ADVANCE},
-	badConfiguration = {"Unable to open this %s. Invalid reward configuration. Please contact administrator.", MESSAGE_EVENT_ADVANCE},
+	treasureFound = {"You have found %s."},
+	treasureFoundMulti = {"You have found: %s"},
+	notEnoughCap = {"You have found %s weighing %s. %s too heavy.", "It is", "They are"},
+	notEnoughRoom = {"You have found %s, but you have no room to take %s.", "it", "them"},
+	questCompleted = {"The %s is empty."},
+	storageConflict = {"Unable to open this %s. Configuration conflicting with another server system. Please contact administrator."},
+	badConfiguration = {"Unable to open this %s. Invalid reward configuration. Please contact administrator."},
 }
+
+local colorTemplate = "{%d|%s}"
 
 -- load conflicting storages
 local reservedStorageKeys = {}
@@ -37,6 +55,41 @@ local achievements = {
 	[PlayerStorageKeys.annihilatorReward] = "Annihilator",
 }
 
+local function sendQuestSystemMessage(player, message)
+	if messageType == MESSAGE_LOOT then
+		player:sendColorMessage(message, baseColor)
+	else
+		player:sendTextMessage(messageType, message)
+	end
+end
+
+local function formatWithColor(message, ...)
+	if messageType ~= MESSAGE_LOOT then
+		return string.format(message, ...)
+	end
+	
+	message = string.format(colorTemplate, baseColor, message)
+	local args = table.pack(...)
+	
+	for argId, arg in pairs(args) do
+		args[argId] = string.format("}%s{%d|", arg, baseColor)
+	end
+	
+	return string.format(message, unpack(args))
+end
+
+local function getRewardDescription(item)
+	if messageType == MESSAGE_LOOT then
+		if colorLoot then
+			return item:getColorContentDescription(baseColor)
+		else
+			return string.format(colorTemplate, baseColor, item:getContentDescription())
+		end
+	end
+
+	return item:getContentDescription()
+end
+
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	-- ignore unscripted chests
 	if item.uid > 65536 then
@@ -47,7 +100,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	-- NOTE: does not check for specialQuests
 	if item.uid < 65536 and table.contains(reservedStorageKeys, item.uid) then
 		-- storage conflict error
-		player:sendTextMessage(questSystemMessages.storageConflict[2], string.format(questSystemMessages.storageConflict[1], item:getName()))
+		sendQuestSystemMessage(player, string.format(questSystemMessages.storageConflict[1], item:getName()))
 		return true
 	end
 
@@ -63,7 +116,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	-- check if the reward was already taken
 	if player:getStorageValue(storage) ~= -1 then
 		-- the chest is empty
-		player:sendTextMessage(questSystemMessages.questCompleted[2], string.format(questSystemMessages.questCompleted[1], item:getName()))
+		sendQuestSystemMessage(player, string.format(questSystemMessages.questCompleted[1], item:getName()))
 		return true
 	end
 	
@@ -85,7 +138,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 			rewards = {Game.createItem(item.uid)}
 		else
 			-- invalid reward
-			player:sendTextMessage(questSystemMessages.badConfiguration[2], string.format(questSystemMessages.badConfiguration[1], item:getName()))
+			sendQuestSystemMessage(player, string.format(questSystemMessages.badConfiguration[1], item:getName()))
 			return true
 		end
 	end
@@ -97,13 +150,28 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 
 	-- determine reward name
-	-- to do: color it?
 	local rewardName = #rewards == 1 and rewards[1]:getNameDescription(rewards[1]:getSubType(), true) or string.format(questSystemMessages.pluralReward, #rewards)
-
+	if messageType == MESSAGE_LOOT then
+		if #rewards == 1 then
+			rewardName = string.format(colorTemplate, colorLoot and rewards[1]:getType():getClientId() or baseColor, rewardName)
+		elseif not colorLoot then
+			rewardName = string.format(colorTemplate, baseColor, rewardName)
+		end
+	end
+		
 	-- check capacity
 	if player:getFreeCapacity() < totalWeight then
-		local grammarForm = #rewards == 1 and questSystemMessages.notEnoughCap[3] or questSystemMessages.notEnoughCap[4]
-		player:sendTextMessage(questSystemMessages.notEnoughCap[2], string.format(questSystemMessages.notEnoughCap[1], rewardName, totalWeight/100, grammarForm))
+		local grammarForm = #rewards == 1 and questSystemMessages.notEnoughCap[2] or questSystemMessages.notEnoughCap[3]
+		local weightString = string.format("%0.2f oz", totalWeight/100)
+		if messageType == MESSAGE_LOOT then
+			grammarForm = string.format(colorTemplate, baseColor, grammarForm)
+			
+			if not colorLoot then
+				weightString = string.format(colorTemplate, baseColor, weightString)
+			end
+		end
+		
+		player:sendTextMessage(messageType, formatWithColor(questSystemMessages.notEnoughCap[1], rewardName, weightString, grammarForm))
 		return true
 	end
 	
@@ -115,21 +183,26 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 	
 	if #rewards > slotsAvailable then
-		local grammarForm = #rewards == 1 and questSystemMessages.notEnoughRoom[3] or questSystemMessages.notEnoughRoom[4]
-		player:sendTextMessage(questSystemMessages.notEnoughRoom[2], string.format(questSystemMessages.notEnoughRoom[1], rewardName, grammarForm))
+		local grammarForm = #rewards == 1 and questSystemMessages.notEnoughRoom[2] or questSystemMessages.notEnoughRoom[3]
+		if messageType == MESSAGE_LOOT then
+			grammarForm = string.format(colorTemplate, baseColor, grammarForm)
+		end
+		
+		player:sendTextMessage(messageType, formatWithColor(questSystemMessages.notEnoughRoom[1], rewardName, grammarForm))
 		return true
 	end
 	
 	-- all checks passed, add reward
-	-- to do: send color? (content desc true)
-	rewardName = #rewards == 1 and rewardName or item:getContentDescription()
+	-- determine color based on cfg
+	rewardName = #rewards == 1 and rewardName or getRewardDescription(item)
 	
 	-- "you have found" message
 	if #rewards == 1 then
-		player:sendTextMessage(questSystemMessages.treasureFound[2], string.format(questSystemMessages.treasureFound[1], rewardName))
+		player:sendTextMessage(messageType, formatWithColor(questSystemMessages.treasureFound[1], rewardName))
 	else
-		player:sendTextMessage(questSystemMessages.treasureFoundMulti[2], string.format(questSystemMessages.treasureFoundMulti[1], rewardName))
+		player:sendTextMessage(messageType, formatWithColor(questSystemMessages.treasureFoundMulti[1], rewardName))
 	end
+	
 	-- storage
 	player:setStorageValue(storage, 1)
 	
@@ -139,20 +212,11 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	end
 	
 	-- add achievement
-	local achieved = false
 	if achievements[storage] then
 		player:addAchievement(achievements[storage])
-		achieved = true
 	end
 	
 	-- trigger screenshot
-	if triggerScreenshot then
-		player:takeScreenshot(SCREENSHOT_TYPE_TREASUREFOUND)
-		
-		if achieved then
-			player:takeScreenshot(SCREENSHOT_TYPE_ACHIEVEMENT)
-		end
-	end
-	
+	player:takeScreenshot(SCREENSHOT_TYPE_TREASUREFOUND)
 	return true
 end

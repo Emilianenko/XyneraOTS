@@ -31,5 +31,8 @@ function onLogin(player)
 	-- Events
 	player:registerEvent("PlayerDeath")
 	player:registerEvent("DropLoot")
+	
+	-- enable custom color messages
+	player:sendMessageColorTypes()
 	return true
 end

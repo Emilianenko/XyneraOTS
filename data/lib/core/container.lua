@@ -2,28 +2,36 @@ function Container.isContainer(self)
 	return true
 end
 
-function Container:getContentDescription(sendColor)
+function Container:getContentDescription()
 	local items = self:getItems()
 	if items and #items > 0 then
 		local loot = {}
-		
-		if sendColor then
-			for i = 1, #items do
-				loot[#loot+1] = string.format("{%d|%s}", items[i]:getType():getClientId(), items[i]:getNameDescription(items[i]:getSubType(), true))
-			end
-		else
-			for i = 1, #items do
-				loot[#loot+1] = items[i]:getNameDescription(items[i]:getSubType(), true)
-			end
+		for i = 1, #items do
+			loot[#loot+1] = items[i]:getNameDescription(items[i]:getSubType(), true)
 		end
-		
+
 		return table.concat(loot, ", ")
 	end
 
 	return "nothing"
 end
 
-function Container.createLootItem(self, item)
+local style = "{%d|%s}"
+function Container:getColorContentDescription(baseColor)
+	local items = self:getItems()
+	if items and #items > 0 then
+		local loot = {}
+		for i = 1, #items do
+			loot[#loot+1] = string.format(style, items[i]:getType():getClientId(), items[i]:getNameDescription(items[i]:getSubType(), true))
+		end
+
+		return baseColor and table.concat(loot, string.format(style, baseColor, ", ")) or table.concat(loot, ", ")
+	end
+
+	return baseColor and string.format(style, baseColor, "nothing") or "nothing"
+end
+
+function Container:createLootItem(item)
 	if self:getEmptySlots() == 0 then
 		return true
 	end

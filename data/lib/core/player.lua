@@ -314,7 +314,27 @@ end
 -- player's client take screenshot
 -- can be disabled in client settings
 -- screenshot types are defined in constants.lua
-function Player:takeScreenshot(screenshotType)
+local screenshotConfig = {
+	[SCREENSHOT_TYPE_ACHIEVEMENT] = true,
+	[SCREENSHOT_TYPE_BESTIARYENTRYCOMPLETED] = true,
+	[SCREENSHOT_TYPE_BESTIARYENTRYUNLOCKED] = true,
+	[SCREENSHOT_TYPE_BOSSDEFEATED] = true,
+	[SCREENSHOT_TYPE_DEATHPVE] = true,
+	[SCREENSHOT_TYPE_DEATHPVP] = true,
+	[SCREENSHOT_TYPE_LEVELUP] = true,
+	[SCREENSHOT_TYPE_PLAYERKILLASSIST] = true,
+	[SCREENSHOT_TYPE_PLAYERKILL] = true,
+	[SCREENSHOT_TYPE_PLAYERATTACKING] = true,
+	[SCREENSHOT_TYPE_TREASUREFOUND] = true,
+	[SCREENSHOT_TYPE_SKILLUP] = true,
+}
+
+
+function Player:takeScreenshot(screenshotType, ignoreConfig)
+	if not screenshotConfig[screenshotType] and not ignoreConfig then
+		return false
+	end
+	
 	if screenshotType and screenshotType >= SCREENSHOT_TYPE_FIRST and screenshotType < SCREENSHOT_TYPE_LAST then
 		local m = NetworkMessage()
 		m:addByte(0x75)
@@ -324,4 +344,21 @@ function Player:takeScreenshot(screenshotType)
 	end
 	
 	return false
+end
+
+-- Send message colors to the player
+function Player:sendMessageColorTypes()
+    local msg = NetworkMessage()
+    msg:addByte(0xCD)
+    msg:addU16(MESSAGE_COLOR_LAST + 1)
+    for color = MESSAGE_COLOR_FIRST, MESSAGE_COLOR_LAST do
+        msg:addU16(color) -- item client id (also: u8 tier if applicable)
+        msg:addU64(messageColorToValueMap[color]) -- price
+    end
+    
+    msg:sendToPlayer(self)
+end
+
+function Player:sendColorMessage(message, color)
+	self:sendTextMessage(MESSAGE_LOOT, string.format("{%d|%s}", color, message))
 end

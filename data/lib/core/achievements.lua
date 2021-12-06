@@ -22,8 +22,7 @@ Storages:
 	(Ex: this storage + the id of achievement 'Allowance Collector' to save how many piggy banks has been broken
 ]]
 
-achievements =
-{
+achievements = {
 	-- 8.6
 	[1] = {name = "Allow Cookies?", grade = 1, points = 2, description = "With a perfectly harmless smile you fooled all of those wisecrackers into eating your exploding cookies. Consider a boy or girl scout outfit next time to make the trick even better."},
 	[2] = {name = "Allowance Collector", grade = 1, points = 2, secret = true, description = "You certainly have your ways when it comes to acquiring money. Many of them are pink and paved with broken fragments of porcelain."},
@@ -575,6 +574,8 @@ function Player.addAchievement(self, ach, hideMsg)
 		if not hideMsg then
 			self:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Congratulations! You earned the achievement \"" .. achievement.name .. "\".")
 		end
+
+		self:takeScreenshot(SCREENSHOT_TYPE_ACHIEVEMENT)
 	end
 	return true
 end
