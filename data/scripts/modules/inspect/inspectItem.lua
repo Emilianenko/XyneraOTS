@@ -106,12 +106,12 @@ function getItemDetails(item)
 		if itemType:isBow() then
 			local atkAttrs = {}
 			if atk ~= 0 then
-				atkAttrs[#atkAttrs + 1] = string.format("attack %s%d", (atk >= 0 and "+" or ""), atk)
+				atkAttrs[#atkAttrs + 1] = string.format("attack %+d", atk)
 			end
 			
 			local hitChance = item:getHitChance()
 			if hitChance ~= 0 then
-				atkAttrs[#atkAttrs + 1] = string.format("chance to hit %s%d%%", (hitChance >= 0 and "+" or ""), hitChance)
+				atkAttrs[#atkAttrs + 1] = string.format("chance to hit %+d%%", hitChance)
 			end
 			
 			atkAttrs[#atkAttrs + 1] = string.format("%d fields", item:getShootRange())
@@ -123,8 +123,8 @@ function getItemDetails(item)
 	
 	-- bonus element
 	local elementDmg = itemType:getElementDamage()
-	if elementDmg > 0 then
-		descriptions[#descriptions][2] = string.format("%d +%d %s", descriptions[#descriptions][2], elementDmg, elementToStringMap[itemType:getElementType()])
+	if elementDmg ~= 0 then
+		descriptions[#descriptions][2] = string.format("%d %+d %s", descriptions[#descriptions][2], elementDmg, elementToStringMap[itemType:getElementType()])
 	end
 	
 	-- def
@@ -145,12 +145,12 @@ function getItemDetails(item)
 	-- extra def
 	local xD = item:getExtraDefense()
 	if xD ~= 0 then
-		descriptions[#descriptions][2] = string.format("%d +%d", descriptions[#descriptions][2], xD)
+		descriptions[#descriptions][2] = string.format("%d %+d", descriptions[#descriptions][2], xD)
 	end
 	
 	-- armor
 	local arm = item:getArmor()
-	if itemType:isHelmet() or itemType:isArmor() or itemType:isLegs() or itemType:isBoots() then
+	if arm > 0 then
 		descriptions[#descriptions + 1] = {"Armor", arm}
 	end
 	
@@ -166,7 +166,7 @@ function getItemDetails(item)
 	local protections = {}
 	for element, value in pairs(abilities.absorbPercent) do
 		if value ~= 0 then
-			protections[#protections + 1] = string.format("%s %s%d%%", elementToStringMap[2^(element-1)], (value >= 0 and "+" or ""), value)
+			protections[#protections + 1] = string.format("%s %+d%%", elementToStringMap[2^(element-1)], value)
 		end
 	end
 	
@@ -192,30 +192,30 @@ function getItemDetails(item)
 	-- stats (hp/mp/soul/ml)
 	for stat, value in pairs(abilities.stats) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %s%d", statToStringMap[stat-1], (value >= 0 and "+" or ""), value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", statToStringMap[stat-1], value)
 		end
 	end
 	
 	-- stats but in %
 	for stat, value in pairs(abilities.statsPercent) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %s%d%%", statToStringMap[stat-1], (value >= 0 and "+" or ""), value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", statToStringMap[stat-1], value)
 		end
 	end
 		
 	if abilities.speed ~= 0 then
-		skillBoosts[#skillBoosts + 1] = string.format("speed %s%d", (abilities.speed >= 0 and "+" or ""), abilities.speed)
+		skillBoosts[#skillBoosts + 1] = string.format("speed %+d", abilities.speed)
 	end
 	
 	for skill, value in pairs(abilities.skills) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %s%d", skillToStringMap[skill-1], (value >= 0 and "+" or ""), value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", skillToStringMap[skill-1], value)
 		end
 	end
 	
 	for skill, value in pairs(abilities.specialSkills) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %s%d", specialSkillToStringMap[skill-1], (value >= 0 and "+" or ""), value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", specialSkillToStringMap[skill-1], value)
 		end
 	end
 	
@@ -284,7 +284,6 @@ function getItemDetails(item)
 	
 	-- weapon type
 	local isTwoHanded = itemType:isTwoHanded()
-	local weaponType = itemType:getWeaponType()
 	local isWeapon = itemType:isWeapon()
 	if isWeapon then
 		local weaponString = "unknown"

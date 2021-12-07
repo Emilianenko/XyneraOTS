@@ -488,7 +488,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		local outfitName = outfitType and outfitType.name or "other"
 		local playerInfo = {
 			{"Level", creature:getLevel()},
-			{"Vocation", creature:getVocation():getName()}
+			{"Vocation", creature:getVocation():getName()},
 			{"Outfit", outfitName},
 			-- title
 			-- active preys

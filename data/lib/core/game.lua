@@ -67,32 +67,40 @@ function Game.setStorageValue(key, value)
 	globalStorageTable[key] = value
 end
 
-function Game.getCountdownString(duration)
-	if duration < 0 then
-		return "expired"
-	end
-	
-	local days = math.floor(duration/86400)
-	local hours = math.floor((duration % 86400)/3600)
-	local minutes = math.floor((duration % 3600)/60)
-	local seconds = math.floor(duration % 60)
-	
-	local response = {}
-	if days > 0 then
-		response[#response+1] = days .. "d"
-		response[#response+1] = hours .. "h"
-		response[#response+1] = minutes .. "m"
-		response[#response+1] = seconds .. "s"
-	elseif hours > 0 then
-		response[#response+1] = hours .. "h"
-		response[#response+1] = minutes .. "m"
-		response[#response+1] = seconds .. "s"
-	elseif minutes > 0 then
-		response[#response+1] = minutes .. "m"
-		response[#response+1] = seconds .. "s"
-	elseif seconds >= 0 then
-		response[#response+1] = seconds .. "s"
+do
+	local cdShort = {"d", "h", "m", "s"}
+	local cdLong = {"day", "hour", "minute", "second"}
+	local function getTimeUnitGrammar(amount, unitID, isLong)
+		return isLong and string.format("%s%s", cdLong[unitID], amount ~= 1 and "s" or "") or cdShort[unitID]
 	end
 
-	return table.concat(response, " ")
+	function Game.getCountdownString(duration, longVersion)
+		if duration < 0 then
+			return "expired"
+		end
+		
+		local days = math.floor(duration/86400)
+		local hours = math.floor((duration % 86400)/3600)
+		local minutes = math.floor((duration % 3600)/60)
+		local seconds = math.floor(duration % 60)
+		
+		local response = {}
+		if days > 0 then
+			response[#response+1] = days .. getTimeUnitGrammar(days, 1, longVersion)
+			response[#response+1] = hours .. getTimeUnitGrammar(hours, 2, longVersion)
+			response[#response+1] = minutes .. getTimeUnitGrammar(minutes, 3, longVersion)
+			response[#response+1] = seconds .. getTimeUnitGrammar(seconds, 4, longVersion)
+		elseif hours > 0 then
+			response[#response+1] = hours .. getTimeUnitGrammar(hours, 2, longVersion)
+			response[#response+1] = minutes .. getTimeUnitGrammar(minutes, 3, longVersion)
+			response[#response+1] = seconds .. getTimeUnitGrammar(seconds, 4, longVersion)
+		elseif minutes > 0 then
+			response[#response+1] = minutes .. getTimeUnitGrammar(minutes, 3, longVersion)
+			response[#response+1] = seconds .. getTimeUnitGrammar(seconds, 4, longVersion)
+		elseif seconds >= 0 then
+			response[#response+1] = seconds .. getTimeUnitGrammar(seconds, 4, longVersion)
+		end
+
+		return table.concat(response, " ")
+	end
 end
