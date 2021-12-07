@@ -1,4 +1,4 @@
-function Vocation.getBase(self)
+function Vocation:getBase()
 	local base = self
 	while base:getDemotion() do
 		base = base:getDemotion()

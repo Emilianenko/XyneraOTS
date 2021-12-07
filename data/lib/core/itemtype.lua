@@ -11,7 +11,7 @@ local slotBits = {
 	[CONST_SLOT_AMMO] = SLOTP_AMMO
 }
 
-function ItemType.usesSlot(self, slot)
+function ItemType:usesSlot(slot)
 	return bit.band(self:getSlotPosition(), slotBits[slot] or 0) ~= 0
 end
 
@@ -88,4 +88,27 @@ end
 
 function ItemType:isPodium()
 	return self:getGroup() == ITEM_GROUP_PODIUM
+end
+
+function ItemType:getWeaponString()
+	local weaponType = self:getWeaponType()
+	local weaponString = "unknown"
+
+	if weaponType == WEAPON_CLUB then
+		weaponString = "blunt instrument"
+	elseif weaponType == WEAPON_SWORD then
+		weaponString = "stabbing weapon"
+	elseif weaponType == WEAPON_AXE then
+		weaponString = "cutting weapon"
+	elseif weaponType == WEAPON_DISTANCE then
+		weaponString = self:isBow() and "firearm" or "missile"
+	elseif weaponType == WEAPON_WAND then
+		weaponString = "wand/rod"
+	end
+	
+	if self:isTwoHanded() then
+		weaponString = string.format("%s, two-handed", weaponString)
+	end
+	
+	return weaponString
 end

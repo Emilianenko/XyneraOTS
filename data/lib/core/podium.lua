@@ -1,3 +1,3 @@
-function Podium.isPodium(self)
+function Podium:isPodium()
 	return true
 end

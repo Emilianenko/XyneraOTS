@@ -49,7 +49,7 @@ ec.onLookInMarket = function(self, itemType)
 				atkAttrs[#atkAttrs + 1] = atk
 				local elementDmg = itemType:getElementDamage()
 				if elementDmg ~= 0 then
-					atkAttrs[#atkAttrs] = string.format("%d physical %+d %s", atkAttrs[#atkAttrs], elementDmg, elementToStringMap[itemType:getElementType()])
+					atkAttrs[#atkAttrs] = string.format("%d physical %+d %s", atkAttrs[#atkAttrs], elementDmg, getCombatName(itemType:getElementType()))
 				end
 			end
 			
@@ -122,7 +122,7 @@ ec.onLookInMarket = function(self, itemType)
 		local protections = {}
 		for element, value in pairs(abilities.absorbPercent) do
 			if value ~= 0 then
-				protections[#protections + 1] = string.format("%s %+d%%", elementToStringMap[2^(element-1)], value)
+				protections[#protections + 1] = string.format("%s %+d%%", getCombatName(2^(element-1)), value)
 			end
 		end
 		
@@ -213,18 +213,18 @@ ec.onLookInMarket = function(self, itemType)
 		-- skills
 		for skill, value in pairs(abilities.skills) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", skillToStringMap[skill-1], value)
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSkillName(skill-1), value)
 			end
 		end
 		
 		-- skills but in %
 		for skill, value in pairs(abilities.specialSkills) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", specialSkillToStringMap[skill-1], value)
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSpecialSkillName(skill-1), value)
 			end
 		end
 		
-		-- response
+		-- add to response
 		if #skillBoosts > 0 then
 			response:addString(table.concat(skillBoosts, ", "))
 		else
@@ -244,24 +244,7 @@ ec.onLookInMarket = function(self, itemType)
 	-- weapon type
 	do
 		if itemType:isWeapon() then
-			local weaponString = "unknown"
-			if weaponType == WEAPON_CLUB then
-				weaponString = "blunt instrument"
-			elseif weaponType == WEAPON_SWORD then
-				weaponString = "stabbing weapon"
-			elseif weaponType == WEAPON_AXE then
-				weaponString = "cutting weapon"
-			elseif weaponType == WEAPON_DISTANCE then
-				weaponString = itemType:isBow() and "firearm" or "missile"
-			elseif weaponType == WEAPON_WAND then
-				weaponString = "wand/rod"
-			end
-			
-			if itemType:isTwoHanded() then
-				weaponString = string.format("%s, two-handed", weaponString)
-			end
-			
-			response:addString(weaponString)
+			response:addString(itemType:getWeaponString())
 		else
 			response:addU16(0)
 		end
@@ -269,6 +252,8 @@ ec.onLookInMarket = function(self, itemType)
 	
 	-- weight
 	response:addString(string.format("%0.2f", itemType:getWeight()/100))
+	
+	-- to do
 	response:addU16(0) -- Imbuement Slots
 	response:addU16(0) -- Magic Shield Capacity
 	response:addU16(0) -- Cleave

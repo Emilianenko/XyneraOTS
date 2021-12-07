@@ -124,7 +124,7 @@ function getItemDetails(item)
 	-- bonus element
 	local elementDmg = itemType:getElementDamage()
 	if elementDmg ~= 0 then
-		descriptions[#descriptions][2] = string.format("%d %+d %s", descriptions[#descriptions][2], elementDmg, elementToStringMap[itemType:getElementType()])
+		descriptions[#descriptions][2] = string.format("%d %+d %s", descriptions[#descriptions][2], elementDmg, getCombatName(itemType:getElementType()))
 	end
 	
 	-- def
@@ -166,7 +166,7 @@ function getItemDetails(item)
 	local protections = {}
 	for element, value in pairs(abilities.absorbPercent) do
 		if value ~= 0 then
-			protections[#protections + 1] = string.format("%s %+d%%", elementToStringMap[2^(element-1)], value)
+			protections[#protections + 1] = string.format("%s %+d%%", getCombatName(2^(element-1)), value)
 		end
 	end
 	
@@ -209,13 +209,13 @@ function getItemDetails(item)
 	
 	for skill, value in pairs(abilities.skills) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", skillToStringMap[skill-1], value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSkillName(skill-1), value)
 		end
 	end
 	
 	for skill, value in pairs(abilities.specialSkills) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", specialSkillToStringMap[skill-1], value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSpecialSkillName(skill-1), value)
 		end
 	end
 	
@@ -285,25 +285,8 @@ function getItemDetails(item)
 	-- weapon type
 	local isTwoHanded = itemType:isTwoHanded()
 	local isWeapon = itemType:isWeapon()
-	if isWeapon then
-		local weaponString = "unknown"
-		if weaponType == WEAPON_CLUB then
-			weaponString = "blunt instrument"
-		elseif weaponType == WEAPON_SWORD then
-			weaponString = "stabbing weapon"
-		elseif weaponType == WEAPON_AXE then
-			weaponString = "cutting weapon"
-		elseif weaponType == WEAPON_DISTANCE then
-			weaponString = itemType:isBow() and "firearm" or "missile"
-		elseif weaponType == WEAPON_WAND then
-			weaponString = "wand/rod"
-		end
-		
-		if isTwoHanded then
-			weaponString = string.format("%s, two-handed", weaponString)
-		end
-		
-		descriptions[#descriptions + 1] = {"Weapon Type", weaponString}
+	if isWeapon then	
+		descriptions[#descriptions + 1] = {"Weapon Type", itemType:getWeaponString()}
 	end
 	
 	-- tradeable

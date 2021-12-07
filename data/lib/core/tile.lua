@@ -1,20 +1,20 @@
-function Tile.isCreature(self)
+function Tile:isCreature()
 	return false
 end
 
-function Tile.isItem(self)
+function Tile:isItem()
 	return false
 end
 
-function Tile.isTile(self)
+function Tile:isTile()
 	return true
 end
 
-function Tile.isContainer(self)
+function Tile:isContainer()
 	return false
 end
 
-function Tile.relocateTo(self, toPosition)
+function Tile:relocateTo(toPosition)
 	if self:getPosition() == toPosition or not Tile(toPosition) then
 		return false
 	end
@@ -37,7 +37,7 @@ function Tile.relocateTo(self, toPosition)
 	return true
 end
 
-function Tile.isWalkable(self)
+function Tile:isWalkable()
 	local ground = self:getGround()
 	if not ground or ground:hasProperty(CONST_PROP_BLOCKSOLID) then
 		return false

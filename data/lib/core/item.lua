@@ -1,40 +1,40 @@
-function Item.getType(self)
+function Item:getType()
 	return ItemType(self:getId())
 end
 
-function Item.getClassLevel(self)
+function Item:getClassLevel()
 	return self:getType():getClassLevel()
 end
 
-function Item.isContainer(self)
+function Item:isContainer()
 	return false
 end
 
-function Item.isCreature(self)
+function Item:isCreature()
 	return false
 end
 
-function Item.isMonster(self)
+function Item:isMonster()
 	return false
 end
 
-function Item.isNpc(self)
+function Item:isNpc()
 	return false
 end
 
-function Item.isPlayer(self)
+function Item:isPlayer()
 	return false
 end
 
-function Item.isTeleport(self)
+function Item:isTeleport()
 	return false
 end
 
-function Item.isPodium(self)
+function Item:isPodium()
 	return false
 end
 
-function Item.isTile(self)
+function Item:isTile()
 	return false
 end
 

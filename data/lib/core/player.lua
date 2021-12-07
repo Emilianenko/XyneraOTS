@@ -1,42 +1,43 @@
-local foodCondition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
+do
+	local foodCondition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
+	function Player:feed(food)
+		local condition = self:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
+		if condition then
+			condition:setTicks(condition:getTicks() + (food * 1000))
+		else
+			local vocation = self:getVocation()
+			if not vocation then
+				return nil
+			end
 
-function Player.feed(self, food)
-	local condition = self:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
-	if condition then
-		condition:setTicks(condition:getTicks() + (food * 1000))
-	else
-		local vocation = self:getVocation()
-		if not vocation then
-			return nil
+			foodCondition:setTicks(food * 1000)
+			foodCondition:setParameter(CONDITION_PARAM_HEALTHGAIN, vocation:getHealthGainAmount())
+			foodCondition:setParameter(CONDITION_PARAM_HEALTHTICKS, vocation:getHealthGainTicks() * 1000)
+			foodCondition:setParameter(CONDITION_PARAM_MANAGAIN, vocation:getManaGainAmount())
+			foodCondition:setParameter(CONDITION_PARAM_MANATICKS, vocation:getManaGainTicks() * 1000)
+
+			self:addCondition(foodCondition)
 		end
-
-		foodCondition:setTicks(food * 1000)
-		foodCondition:setParameter(CONDITION_PARAM_HEALTHGAIN, vocation:getHealthGainAmount())
-		foodCondition:setParameter(CONDITION_PARAM_HEALTHTICKS, vocation:getHealthGainTicks() * 1000)
-		foodCondition:setParameter(CONDITION_PARAM_MANAGAIN, vocation:getManaGainAmount())
-		foodCondition:setParameter(CONDITION_PARAM_MANATICKS, vocation:getManaGainTicks() * 1000)
-
-		self:addCondition(foodCondition)
+		return true
 	end
-	return true
 end
 
-function Player.getClosestFreePosition(self, position, extended)
+function Player:getClosestFreePosition(position, extended)
 	if self:getGroup():getAccess() and self:getAccountType() >= ACCOUNT_TYPE_GOD then
 		return position
 	end
 	return Creature.getClosestFreePosition(self, position, extended)
 end
 
-function Player.getDepotItems(self, depotId)
+function Player:getDepotItems(depotId)
 	return self:getDepotChest(depotId, true):getItemHoldingCount()
 end
 
-function Player.hasFlag(self, flag)
+function Player:hasFlag(flag)
 	return self:getGroup():hasFlag(flag)
 end
 
-function Player.getLossPercent(self)
+function Player:getLossPercent()
 	local blessings = 0
 	local lossPercent = {
 		[0] = 100,
@@ -55,21 +56,21 @@ function Player.getLossPercent(self)
 	return lossPercent[blessings]
 end
 
-function Player.getPremiumTime(self)
+function Player:getPremiumTime()
 	return math.max(0, self:getPremiumEndsAt() - os.time())
 end
 
-function Player.setPremiumTime(self, seconds)
+function Player:setPremiumTime(seconds)
 	self:setPremiumEndsAt(os.time() + seconds)
 	return true
 end
 
-function Player.addPremiumTime(self, seconds)
+function Player:addPremiumTime(seconds)
 	self:setPremiumTime(self:getPremiumTime() + seconds)
 	return true
 end
 
-function Player.removePremiumTime(self, seconds)
+function Player:removePremiumTime(seconds)
 	local currentTime = self:getPremiumTime()
 	if currentTime < seconds then
 		return false
@@ -79,34 +80,34 @@ function Player.removePremiumTime(self, seconds)
 	return true
 end
 
-function Player.getPremiumDays(self)
+function Player:getPremiumDays()
 	return math.floor(self:getPremiumTime() / 86400)
 end
 
-function Player.addPremiumDays(self, days)
+function Player:addPremiumDays(days)
 	return self:addPremiumTime(days * 86400)
 end
 
-function Player.removePremiumDays(self, days)
+function Player:removePremiumDays(days)
 	return self:removePremiumTime(days * 86400)
 end
 
-function Player.isPremium(self)
+function Player:isPremium()
 	return self:getPremiumTime() > 0 or configManager.getBoolean(configKeys.FREE_PREMIUM) or self:hasFlag(PlayerFlag_IsAlwaysPremium)
 end
 
-function Player.sendCancelMessage(self, message)
+function Player:sendCancelMessage(message)
 	if type(message) == "number" then
 		message = Game.getReturnMessage(message)
 	end
 	return self:sendTextMessage(MESSAGE_STATUS_SMALL, message)
 end
 
-function Player.isUsingOtClient(self)
+function Player:isUsingOtClient()
 	return self:getClient().os >= CLIENTOS_OTCLIENT_LINUX
 end
 
-function Player.sendExtendedOpcode(self, opcode, buffer)
+function Player:sendExtendedOpcode(opcode, buffer)
 	if not self:isUsingOtClient() then
 		return false
 	end
@@ -120,25 +121,29 @@ function Player.sendExtendedOpcode(self, opcode, buffer)
 	return true
 end
 
-APPLY_SKILL_MULTIPLIER = true
-local addSkillTriesFunc = Player.addSkillTries
-function Player.addSkillTries(...)
-	APPLY_SKILL_MULTIPLIER = false
-	local ret = addSkillTriesFunc(...)
+do
 	APPLY_SKILL_MULTIPLIER = true
-	return ret
+	local addSkillTriesFunc = Player.addSkillTries
+	function Player:addSkillTries(...)
+		APPLY_SKILL_MULTIPLIER = false
+		local ret = addSkillTriesFunc(...)
+		APPLY_SKILL_MULTIPLIER = true
+		return ret
+	end
 end
 
-local addManaSpentFunc = Player.addManaSpent
-function Player.addManaSpent(...)
-	APPLY_SKILL_MULTIPLIER = false
-	local ret = addManaSpentFunc(...)
-	APPLY_SKILL_MULTIPLIER = true
-	return ret
+do
+	local addManaSpentFunc = Player.addManaSpent
+	function Player:addManaSpent(...)
+		APPLY_SKILL_MULTIPLIER = false
+		local ret = addManaSpentFunc(...)
+		APPLY_SKILL_MULTIPLIER = true
+		return ret
+	end
 end
 
 -- Always pass the number through the isValidMoney function first before using the transferMoneyTo
-function Player.transferMoneyTo(self, target, amount)
+function Player:transferMoneyTo(target, amount)
 	if not target then
 		return false
 	end
@@ -161,7 +166,7 @@ function Player.transferMoneyTo(self, target, amount)
 	return true
 end
 
-function Player.canCarryMoney(self, amount)
+function Player:canCarryMoney(amount)
 	-- Anyone can carry as much imaginary money as they desire
 	if amount == 0 then
 		return true
@@ -199,7 +204,7 @@ function Player.canCarryMoney(self, amount)
 	return true
 end
 
-function Player.withdrawMoney(self, amount)
+function Player:withdrawMoney(amount)
 	local balance = self:getBankBalance()
 	if amount > balance or not self:addMoney(amount) then
 		return false
@@ -209,7 +214,7 @@ function Player.withdrawMoney(self, amount)
 	return true
 end
 
-function Player.depositMoney(self, amount)
+function Player:depositMoney(amount)
 	if not self:removeMoney(amount) then
 		return false
 	end
@@ -218,7 +223,7 @@ function Player.depositMoney(self, amount)
 	return true
 end
 
-function Player.removeTotalMoney(self, amount)
+function Player:removeTotalMoney(amount)
 	local moneyCount = self:getMoney()
 	local bankCount = self:getBankBalance()
 	if amount <= moneyCount then
@@ -240,7 +245,7 @@ function Player.removeTotalMoney(self, amount)
 	return false
 end
 
-function Player.addLevel(self, amount, round)
+function Player:addLevel(amount, round)
 	round = round or false
 	local level, amount = self:getLevel(), amount or 1
 	if amount > 0 then
@@ -250,7 +255,7 @@ function Player.addLevel(self, amount, round)
 	end
 end
 
-function Player.addMagicLevel(self, value)
+function Player:addMagicLevel(value)
 	local currentMagLevel = self:getBaseMagicLevel()
 	local sum = 0
 
@@ -272,7 +277,7 @@ function Player.addMagicLevel(self, value)
 	end
 end
 
-function Player.addSkillLevel(self, skillId, value)
+function Player:addSkillLevel(skillId, value)
 	local currentSkillLevel = self:getSkillLevel(skillId)
 	local sum = 0
 
@@ -294,7 +299,7 @@ function Player.addSkillLevel(self, skillId, value)
 	end
 end
 
-function Player.addSkill(self, skillId, value, round)
+function Player:addSkill(skillId, value, round)
 	if skillId == SKILL_LEVEL then
 		return self:addLevel(value, round or false)
 	elseif skillId == SKILL_MAGLEVEL then
@@ -303,7 +308,7 @@ function Player.addSkill(self, skillId, value, round)
 	return self:addSkillLevel(skillId, value)
 end
 
-function Player.getWeaponType(self)
+function Player:getWeaponType()
 	local weapon = self:getSlotItem(CONST_SLOT_LEFT)
 	if weapon then
 		return weapon:getType():getWeaponType()
@@ -312,38 +317,39 @@ function Player.getWeaponType(self)
 end
 
 -- player's client take screenshot
--- can be disabled in client settings
+-- can also be disabled in client settings
 -- screenshot types are defined in constants.lua
-local screenshotConfig = {
-	[SCREENSHOT_TYPE_ACHIEVEMENT] = true,
-	[SCREENSHOT_TYPE_BESTIARYENTRYCOMPLETED] = true,
-	[SCREENSHOT_TYPE_BESTIARYENTRYUNLOCKED] = true,
-	[SCREENSHOT_TYPE_BOSSDEFEATED] = true,
-	[SCREENSHOT_TYPE_DEATHPVE] = true,
-	[SCREENSHOT_TYPE_DEATHPVP] = true,
-	[SCREENSHOT_TYPE_LEVELUP] = true,
-	[SCREENSHOT_TYPE_PLAYERKILLASSIST] = true,
-	[SCREENSHOT_TYPE_PLAYERKILL] = true,
-	[SCREENSHOT_TYPE_PLAYERATTACKING] = true,
-	[SCREENSHOT_TYPE_TREASUREFOUND] = true,
-	[SCREENSHOT_TYPE_SKILLUP] = true,
-}
+do
+	local screenshotConfig = {
+		[SCREENSHOT_TYPE_ACHIEVEMENT] = true,
+		[SCREENSHOT_TYPE_BESTIARYENTRYCOMPLETED] = true,
+		[SCREENSHOT_TYPE_BESTIARYENTRYUNLOCKED] = true,
+		[SCREENSHOT_TYPE_BOSSDEFEATED] = true,
+		[SCREENSHOT_TYPE_DEATHPVE] = true,
+		[SCREENSHOT_TYPE_DEATHPVP] = true,
+		[SCREENSHOT_TYPE_LEVELUP] = true,
+		[SCREENSHOT_TYPE_PLAYERKILLASSIST] = true,
+		[SCREENSHOT_TYPE_PLAYERKILL] = true,
+		[SCREENSHOT_TYPE_PLAYERATTACKING] = true,
+		[SCREENSHOT_TYPE_TREASUREFOUND] = true,
+		[SCREENSHOT_TYPE_SKILLUP] = true,
+	}
 
-
-function Player:takeScreenshot(screenshotType, ignoreConfig)
-	if not screenshotConfig[screenshotType] and not ignoreConfig then
+	function Player:takeScreenshot(screenshotType, ignoreConfig)
+		if not screenshotConfig[screenshotType] and not ignoreConfig then
+			return false
+		end
+		
+		if screenshotType and screenshotType >= SCREENSHOT_TYPE_FIRST and screenshotType < SCREENSHOT_TYPE_LAST then
+			local m = NetworkMessage()
+			m:addByte(0x75)
+			m:addByte(screenshotType)
+			m:sendToPlayer(self)
+			return true
+		end
+		
 		return false
 	end
-	
-	if screenshotType and screenshotType >= SCREENSHOT_TYPE_FIRST and screenshotType < SCREENSHOT_TYPE_LAST then
-		local m = NetworkMessage()
-		m:addByte(0x75)
-		m:addByte(screenshotType)
-		m:sendToPlayer(self)
-		return true
-	end
-	
-	return false
 end
 
 -- Send message colors to the player
@@ -352,7 +358,7 @@ function Player:sendMessageColorTypes()
     msg:addByte(0xCD)
     msg:addU16(MESSAGE_COLOR_LAST + 1)
     for color = MESSAGE_COLOR_FIRST, MESSAGE_COLOR_LAST do
-        msg:addU16(color) -- item client id (also: u8 tier if applicable)
+        msg:addU16(color) -- made up client id for color
         msg:addU64(messageColorToValueMap[color]) -- price
     end
     

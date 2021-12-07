@@ -532,7 +532,7 @@ function isAchievementSecret(ach)
 	return achievement.secret
 end
 
-function Player.hasAchievement(self, ach)
+function Player:hasAchievement(ach)
 	local achievement
 	if tonumber(ach) ~= nil then
 		achievement = getAchievementInfoById(ach)
@@ -547,7 +547,7 @@ function Player.hasAchievement(self, ach)
 	return self:getStorageValue(PlayerStorageKeys.achievementsBase + achievement.id) > 0
 end
 
-function Player.getAchievements(self)
+function Player:getAchievements()
 	local targetAchievement = {}
 	for k = 1, #achievements do
 		if self:hasAchievement(k) then
@@ -557,7 +557,7 @@ function Player.getAchievements(self)
 	return targetAchievement
 end
 
-function Player.addAchievement(self, ach, hideMsg)
+function Player:addAchievement(ach, hideMsg)
 	local achievement
 	if tonumber(ach) ~= nil then
 		achievement = getAchievementInfoById(ach)
@@ -580,7 +580,7 @@ function Player.addAchievement(self, ach, hideMsg)
 	return true
 end
 
-function Player.removeAchievement(self, ach)
+function Player:removeAchievement(ach)
 	local achievement
 	if tonumber(ach) ~= nil then
 		achievement = getAchievementInfoById(ach)
@@ -598,14 +598,14 @@ function Player.removeAchievement(self, ach)
 	return true
 end
 
-function Player.addAllAchievements(self, hideMsg)
+function Player:addAllAchievements(hideMsg)
 	for i = ACHIEVEMENT_FIRST, ACHIEVEMENT_LAST do
 		self:addAchievement(i, hideMsg)
 	end
 	return true
 end
 
-function Player.removeAllAchievements(self)
+function Player:removeAllAchievements()
 	for k = 1, #achievements do
 		if self:hasAchievement(k) then
 			self:removeAchievement(k)
@@ -614,7 +614,7 @@ function Player.removeAllAchievements(self)
 	return true
 end
 
-function Player.getSecretAchievements(self)
+function Player:getSecretAchievements()
 	local targetAchievement = {}
 	for k, v in pairs(achievements) do
 		if self:hasAchievement(k) and v.secret then
@@ -624,7 +624,7 @@ function Player.getSecretAchievements(self)
 	return targetAchievement
 end
 
-function Player.getPublicAchievements(self)
+function Player:getPublicAchievements()
 	local targetAchievement = {}
 	for k, v in pairs(achievements) do
 		if self:hasAchievement(k) and not v.secret then
@@ -634,7 +634,7 @@ function Player.getPublicAchievements(self)
 	return targetAchievement
 end
 
-function Player.getAchievementPoints(self)
+function Player:getAchievementPoints()
 	local points = 0
 	local list = self:getAchievements()
 	if #list > 0 then -- has achievements
@@ -648,7 +648,7 @@ function Player.getAchievementPoints(self)
 	return points
 end
 
-function Player.addAchievementProgress(self, ach, value)
+function Player:addAchievementProgress(ach, value)
 	local achievement = tonumber(ach) ~= nil and getAchievementInfoById(ach) or getAchievementInfoByName(ach)
 	if not achievement then
 		print('[!] -> Invalid achievement "' .. ach .. '".')

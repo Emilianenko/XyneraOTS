@@ -1,4 +1,4 @@
-function Creature.getClosestFreePosition(self, position, maxRadius, mustBeReachable)
+function Creature:getClosestFreePosition(position, maxRadius, mustBeReachable)
 	maxRadius = maxRadius or 1
 
 	-- backward compatability (extended)
@@ -28,35 +28,35 @@ function Creature.getClosestFreePosition(self, position, maxRadius, mustBeReacha
 	return Position()
 end
 
-function Creature.getPlayer(self)
+function Creature:getPlayer()
 	return self:isPlayer() and self or nil
 end
 
-function Creature.isContainer(self)
+function Creature:isContainer()
 	return false
 end
 
-function Creature.isItem(self)
+function Creature:isItem()
 	return false
 end
 
-function Creature.isMonster(self)
+function Creature:isMonster()
 	return false
 end
 
-function Creature.isNpc(self)
+function Creature:isNpc()
 	return false
 end
 
-function Creature.isPlayer(self)
+function Creature:isPlayer()
 	return false
 end
 
-function Creature.isTeleport(self)
+function Creature:isTeleport()
 	return false
 end
 
-function Creature.isTile(self)
+function Creature:isTile()
 	return false
 end
 

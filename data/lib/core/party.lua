@@ -1,4 +1,4 @@
-function Party.broadcastPartyLoot(self, text)
+function Party:broadcastPartyLoot(text)
 	self:getLeader():sendTextMessage(MESSAGE_INFO_DESCR, text)
 	local membersList = self:getMembers()
 	for i = 1, #membersList do

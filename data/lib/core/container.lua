@@ -1,4 +1,4 @@
-function Container.isContainer(self)
+function Container:isContainer()
 	return true
 end
 

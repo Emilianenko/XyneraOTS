@@ -1491,4 +1491,8 @@ function showpos(v)
 end
 
 -- this is a fix for lua52 or higher which has the function renamed to table.unpack, while luajit still uses unpack
-if unpack == nil then unpack = table.unpack end
+if unpack == nil then
+	unpack = table.unpack
+elseif table.unpack == nil then
+	table.unpack = unpack
+end
