@@ -13,7 +13,7 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 		end
 		
 		response:addString(
-			string.format("%s", table.concat({itemType:getArticle(), itemType:getName()}, " "))
+			string.format("%s", itemType:getNameDescription(nil, true))
 		)
 		
 		response:addItemType(itemType)
@@ -53,6 +53,7 @@ end
 local showAtkWeaponTypes = {WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE}
 local showDefWeaponTypes = {WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE, WEAPON_SHIELD}
 
+-- Item, itemType or item id
 function getItemDetails(item)
 	local isVirtual = false
 	local itemType
@@ -63,11 +64,14 @@ function getItemDetails(item)
 		isVirtual = true
 		itemType = ItemType(item)
 		if not itemType then
-			return {}
+			return
 		end
 		
 		-- polymorphism for item attributes (atk, def, etc)
 		item = itemType
+	elseif item:isItemType() then
+		isVirtual = true
+		itemType = item
 	else
 		itemType = item:getType()
 	end
@@ -127,6 +131,12 @@ function getItemDetails(item)
 		descriptions[#descriptions][2] = string.format("%d %+d %s", descriptions[#descriptions][2], elementDmg, getCombatName(itemType:getElementType()))
 	end
 	
+	-- atk speed
+	local atkSpeed = item:getAttackSpeed()
+	if atkSpeed ~= 0 then
+		descriptions[#descriptions + 1] = {"Attack Speed", string.format("%0.2f/turn", 2000 / atkSpeed)}
+	end
+	
 	-- def
 	-- note: "defence" is actual spelling, it is a correct form in British English
 	local showDef = table.contains(showDefWeaponTypes, weaponType)
@@ -153,12 +163,6 @@ function getItemDetails(item)
 	if arm > 0 then
 		descriptions[#descriptions + 1] = {"Armor", arm}
 	end
-	
-	-- attack speed
-	local attackSpeed = item:getAttackSpeed()
-	if attackSpeed ~= 0 then
-		descriptions[#descriptions + 1] = {"Attack Speed", attackSpeed}
-	end
 
 	local abilities = itemType:getAbilities()
 	
@@ -177,45 +181,57 @@ function getItemDetails(item)
 	
 	-- skill boost
 	local skillBoosts = {}
+	
+	-- regeneration
 	if abilities.manaGain > 0 or abilities.healthGain > 0 or abilities.regeneration then
 		skillBoosts[#skillBoosts + 1] = "faster regeneration"
 	end
 	
+	-- invisibility
 	if abilities.invisible then
 		skillBoosts[#skillBoosts + 1] = "invisibility"
 	end
-	
+
+	-- magic shield (classic)
 	if abilities.manaShield then
-		skillBoosts[#skillBoosts + 1] = "mana shield"
+		skillBoosts[#skillBoosts + 1] = "magic shield"
 	end
 	
 	-- stats (hp/mp/soul/ml)
 	for stat, value in pairs(abilities.stats) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", statToStringMap[stat-1], value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
 		end
 	end
 	
 	-- stats but in %
 	for stat, value in pairs(abilities.statsPercent) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", statToStringMap[stat-1], value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value)
 		end
 	end
-		
-	if abilities.speed ~= 0 then
-		skillBoosts[#skillBoosts + 1] = string.format("speed %+d", abilities.speed)
-	end
 	
+	-- speed
+	if abilities.speed ~= 0 then
+		skillBoosts[#skillBoosts + 1] = string.format("speed %+d", math.floor(abilities.speed / 2))
+	end
+
+	-- skills
 	for skill, value in pairs(abilities.skills) do
 		if value ~= 0 then
 			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSkillName(skill-1), value)
 		end
 	end
 	
+	-- special skills
 	for skill, value in pairs(abilities.specialSkills) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSpecialSkillName(skill-1), value)
+			-- add + symbol to special skill "amount" fields
+			if skill-1 < 6 and skill % 2 == 1 then
+				value = string.format("%+d", value)
+			end
+			
+			skillBoosts[#skillBoosts + 1] = string.format("%s %s%%", getSpecialSkillName(skill-1), value)
 		end
 	end
 	
@@ -244,11 +260,28 @@ function getItemDetails(item)
 	
 	-- expires
 	if itemType:hasShowDuration() then
+		local duration = item:getDuration()
 		if isVirtual then
-			descriptions[#descriptions + 1] = {"Total Expire Time", (math.floor(itemType:getDuration()/1000) or "unknown")}
+			if duration == 0 then
+				local transferType = itemType:getTransformEquipId()
+				if transferType ~= 0 then
+					transferType = ItemType(transferType)
+					duration = transferType and transferType:getDuration() or duration
+				end
+			end
+		
+			descriptions[#descriptions + 1] = {"Total Expire Time", (duration ~= 0 and Game.getCountdownString(duration, false, true) or "unknown")}
 		else
-			descriptions[#descriptions + 1] = {"Expires", Game.getCountdownString(math.floor(item:getDuration()/1000))}
-		end
+			if duration == 0 then
+				local transferType = itemType:getTransformEquipId()
+				if transferType ~= 0 then
+					transferType = ItemType(transferType)
+					duration = transferType and transferType:getDuration() * 1000 or duration
+				end
+			end
+			
+			descriptions[#descriptions + 1] = {"Expires", duration ~= 0 and Game.getCountdownString(math.floor(duration/1000), false, true)}
+		end		
 	end
 	
 	-- weight

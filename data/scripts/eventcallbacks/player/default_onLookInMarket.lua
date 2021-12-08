@@ -107,8 +107,16 @@ ec.onLookInMarket = function(self, itemType)
 	-- duration
 	do
 		local duration = itemType:getDuration()
+		if duration == 0 then
+			local transferType = itemType:getTransformEquipId()
+			if transferType ~= 0 then
+				transferType = ItemType(transferType)
+				duration = transferType and transferType:getDuration() or duration
+			end
+		end
+		
 		if duration > 0 then
-			Game.getCountdownString(duration/1000, true)
+			response:addString(Game.getCountdownString(duration, true, true))
 		else
 			response:addU16(0)	
 		end
@@ -175,6 +183,12 @@ ec.onLookInMarket = function(self, itemType)
 	
 	-- other stats
 	do
+		-- atk speed
+		local atkSpeed = itemType:getAttackSpeed()
+		if atkSpeed ~= 0 then
+			skillBoosts[#skillBoosts + 1] = string.format("attack speed %0.2f/turn", 2000 / atkSpeed)
+		end
+	
 		-- skill boost
 		local skillBoosts = {}
 		if abilities.manaGain > 0 or abilities.healthGain > 0 or abilities.regeneration then
@@ -186,28 +200,28 @@ ec.onLookInMarket = function(self, itemType)
 			skillBoosts[#skillBoosts + 1] = "invisibility"
 		end
 		
-		-- mana shield (classic)
+		-- magic shield (classic)
 		if abilities.manaShield then
-			skillBoosts[#skillBoosts + 1] = "mana shield"
+			skillBoosts[#skillBoosts + 1] = "magic shield"
 		end
 		
 		-- stats (hp/mp/soul/ml)
 		for stat, value in pairs(abilities.stats) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", statToStringMap[stat-1], value)
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
 			end
 		end
 		
 		-- stats but in %
 		for stat, value in pairs(abilities.statsPercent) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", statToStringMap[stat-1], value)
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value)
 			end
 		end
 			
 		-- speed
 		if abilities.speed ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("speed %+d", abilities.speed)
+			skillBoosts[#skillBoosts + 1] = string.format("speed %+d", math.floor(abilities.speed / 2))
 		end
 		
 		-- skills
@@ -217,10 +231,15 @@ ec.onLookInMarket = function(self, itemType)
 			end
 		end
 		
-		-- skills but in %
+		-- special skills
 		for skill, value in pairs(abilities.specialSkills) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getSpecialSkillName(skill-1), value)
+				-- add + symbol to special skill "amount" fields
+				if skill-1 < 6 and skill % 2 == 1 then
+					value = string.format("%+d", value)
+				end
+				
+				skillBoosts[#skillBoosts + 1] = string.format("%s %s%%", getSpecialSkillName(skill-1), value)
 			end
 		end
 		

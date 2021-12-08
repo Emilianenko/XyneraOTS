@@ -2111,7 +2111,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_CLOSE)
 	registerEnumIn("configKeys", ConfigManager::SERVER_SAVE_SHUTDOWN)
 	registerEnumIn("configKeys", ConfigManager::ONLINE_OFFLINE_CHARLIST)
-	registerEnumIn("configKeys", ConfigManager::LUA_ITEM_DESC)
 
 	// string keys
 	registerEnumIn("configKeys", ConfigManager::MAP_NAME)
@@ -2825,6 +2824,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("House", "getExitPosition", LuaScriptInterface::luaHouseGetExitPosition);
 	registerMethod("House", "getRent", LuaScriptInterface::luaHouseGetRent);
 
+	registerMethod("House", "getOwnerName", LuaScriptInterface::luaHouseGetOwnerName);
 	registerMethod("House", "getOwnerGuid", LuaScriptInterface::luaHouseGetOwnerGuid);
 	registerMethod("House", "setOwnerGuid", LuaScriptInterface::luaHouseSetOwnerGuid);
 	registerMethod("House", "startTrade", LuaScriptInterface::luaHouseStartTrade);
@@ -11827,6 +11827,19 @@ int LuaScriptInterface::luaHouseGetRent(lua_State* L)
 	if (house) {
 		lua_pushnumber(L, house->getRent());
 	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaHouseGetOwnerName(lua_State* L)
+{
+	// house:getOwnerName()
+	House* house = getUserdata<House>(L, 1);
+	if (house) {
+		pushString(L, house->getOwnerName());
+	}
+	else {
 		lua_pushnil(L);
 	}
 	return 1;

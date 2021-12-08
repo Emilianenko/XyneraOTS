@@ -1172,6 +1172,7 @@ class LuaScriptInterface
 		static int luaHouseGetExitPosition(lua_State* L);
 		static int luaHouseGetRent(lua_State* L);
 
+		static int luaHouseGetOwnerName(lua_State* L);
 		static int luaHouseGetOwnerGuid(lua_State* L);
 		static int luaHouseSetOwnerGuid(lua_State* L);
 		static int luaHouseStartTrade(lua_State* L);

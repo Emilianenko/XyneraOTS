@@ -1,10 +1,3 @@
-statToStringMap = {
-	[STAT_MAXHITPOINTS] = "max health",
-	[STAT_MAXMANAPOINTS] = "max mana",
-	[STAT_SOULPOINTS] = "soul points",
-	[STAT_MAGICPOINTS] = "magic level"
-}
-
 -- container
 CONTAINER_POSITION = 0xFFFF
 

@@ -1,13 +1,17 @@
-forgottenserver - Version 12 update project
+The Forgotten Server Plus
 ===============
-This repository is a fork of [The Forgotten Server](https://github.com/otland/forgottenserver). It aims to bring protocol 12 features and expand engine possibilities while maintaining code style as consistent with the original as possible.
+The Forgotten Server Plus is a free and open-source MMORPG server emulator written in C++. It is a fork of the [The Forgotten Server](https://github.com/otland/forgottenserver) project.
 
-The Forgotten Server is a free and open-source MMORPG server emulator written in C++. It is a fork of the [OpenTibia Server](https://github.com/opentibia/server) project.
+Version Plus goals are:
+- Speeding up the development process
+- Maintaining the original repository code style
+- Bringing new game features faster
+- Expanding the engine possiblities
+
 
 ### Resources
 
 * [Map Editor](https://github.com/Zbizu/rme) updated with new features and version 12 support
-* [OTClient](https://github.com/Zbizu/otclient-version12) updated to version 12 (playable but no new features)
 
 ### Getting Started
 
@@ -17,6 +21,7 @@ The Forgotten Server is a free and open-source MMORPG server emulator written in
 ### Discussion
 
 * [Discord](https://discord.gg/TYHqCuddcW)(:uk: :brazil: :poland: :es:) - If you ran into issues, want to suggest a new feature or just discuss the development of the server, you're welcome to post on "Dev Chat" of this multi-language community.
+
 
 Don't want to use discord? You can also post in one of these sections:
 
