@@ -563,9 +563,9 @@ void Events::eventPlayerOnLookInTrade(Player* player, Player* partner, Item* ite
 	scriptInterface.callVoidFunction(4);
 }
 
-bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, uint8_t count, const std::string& description, Npc* npc)
+bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, uint8_t count, Npc* npc)
 {
-	// Player:onLookInShop(itemType, count, description) or Player.onLookInShop(self, itemType, count, description, npc)
+	// Player:onLookInShop(itemType, count, npc) or Player.onLookInShop(self, itemType, count, npc)
 	if (info.playerOnLookInShop == -1) {
 		return true;
 	}
@@ -588,12 +588,11 @@ bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, u
 	LuaScriptInterface::setMetatable(L, -1, "ItemType");
 
 	lua_pushnumber(L, count);
-	lua_pushstring(L, description.c_str());
 
 	LuaScriptInterface::pushUserdata<Npc>(L, npc);
 	LuaScriptInterface::setMetatable(L, -1, "Npc");
 
-	return scriptInterface.callFunction(5);
+	return scriptInterface.callFunction(4);
 }
 
 bool Events::eventPlayerOnLookInMarket(Player* player, const ItemType* itemType)

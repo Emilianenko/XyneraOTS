@@ -274,25 +274,28 @@ do
 		-- defense attributes
 		do
 			local showDef = table.contains(showDefWeaponTypes, weaponType)
+			local ammoType = itemType:getAmmoType()
 			if showDef then
 				local defense = item:getDefense()
-				local defString = ""
+				local defAttrs = {}
 				if weaponType == WEAPON_DISTANCE then
 					-- throwables
 					if ammoType ~= AMMO_ARROW and ammoType ~= AMMO_BOLT then
-						defString = string.format("Def:%d", defense)
+						defAttrs[#defAttrs + 1] = defense
 					end
 				else
-					defString = string.format("Def:%d", defense)
+					defAttrs[#defAttrs + 1] = defense
 				end
 				
 				-- extra def
 				local xD = item:getExtraDefense()
 				if xD ~= 0 then
-					defString = string.format("%s %+d", defString, xD)
+					defAttrs[#defAttrs + 1] = string.format("%+d", xD)
 				end
 				
-				descriptions[#descriptions + 1] = defString
+				if #defAttrs > 0 then
+					descriptions[#descriptions + 1] = string.format("Def:%s", table.concat(defAttrs, " "))
+				end
 			end
 		end
 
@@ -681,18 +684,16 @@ do
 					local writer = item:getAttribute(ITEM_ATTRIBUTE_WRITER)
 					local writeDate = item:getAttribute(ITEM_ATTRIBUTE_DATE)
 					local writeInfo = {}
-					if writer then
+					if writer and writer:len() > 0 then
 						writeInfo[#writeInfo + 1] = string.format("\n%s wrote", writer)
 						
-						if writeDate then
+						if writeDate and writeDate > 0 then
 							writeInfo[#writeInfo + 1] = string.format(" on %s", os.date("%d %b %Y", writeDate))
 						end
-						
-						writeInfo[#writeInfo + 1] = ":"
 					end
 
 					if #writeInfo > 0 then
-						response[#response + 1] = table.concat(writeInfo, "")
+						response[#response + 1] = string.format("%s:\n%s", table.concat(writeInfo, ""), text)
 					else
 						response[#response + 1] = string.format("\nYou read: %s", text)
 					end
@@ -704,9 +705,12 @@ do
 			end
 		end
 		
-		-- desc/text
+		-- item description
 		if lookDistance <= 1 or (isDoor and not isVirtual) then
+			-- custom item description
 			local desc = not isVirtual and item:getSpecialDescription()
+			
+			-- native item description
 			if not desc or desc == "" then
 				desc = itemType:getDescription()
 			end
@@ -721,7 +725,8 @@ do
 			end
 		end
 		
-		if not isVirtual and item:isStoreItem() then
+		-- pickupable items with store flag
+		if not isVirtual and isPickupable and item:isStoreItem() then
 			response[#response + 1] = "\nThis item cannot be traded."
 		end
 		

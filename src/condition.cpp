@@ -1544,8 +1544,6 @@ void ConditionDamage::generateDamageList(int32_t amount, int32_t start, std::lis
 		}
 	}
 
-	// initial tick moved
-	// list.push_back(start);
 	list.reverse();
 }
 

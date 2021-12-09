@@ -1629,7 +1629,7 @@ Item* Tile::getUseItem(int32_t index) const
 	// try getting door
 	for (auto it = items->rbegin(), end = items->rend(); it != end; ++it) {
 		if ((*it)->getDoor()) {
-			return (*it)->getDoor();
+			return (*it)->getItem();
 		}
 	}
 
