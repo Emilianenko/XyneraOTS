@@ -553,8 +553,8 @@
 	<item fromid="1423" toid="1425" article="a" name="campfire">
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="20" />
-			<attribute key="ticks" value="4000" />
-			<attribute key="count" value="2" />
+			<attribute key="ticks" value="8000" />
+			<attribute key="count" value="5" />
 			<attribute key="damage" value="10" />
 		</attribute>
 	</item>
