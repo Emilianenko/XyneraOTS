@@ -1295,8 +1295,14 @@ bool ConditionDamage::startCondition(Creature* creature)
 		return false;
 	}
 
+	// delayed condition does no initial damage
 	if (!delayed) {
-		// delayed condition does no initial damage
+		// do not display blockhit when initial damage is zero
+		if (initDamage == 0) {
+			return false;
+		}
+
+		// deal initial damage
 		if (!doDamage(creature, initDamage)) {
 			return false;
 		}
@@ -1415,6 +1421,7 @@ void ConditionDamage::addCondition(Creature* creature, const Condition* conditio
 	owner = conditionDamage.owner;
 	maxDamage = conditionDamage.maxDamage;
 	minDamage = conditionDamage.minDamage;
+	initDamage = conditionDamage.initDamage;
 	startDamage = conditionDamage.startDamage;
 	tickInterval = conditionDamage.tickInterval;
 	periodDamage = conditionDamage.periodDamage;
@@ -1437,9 +1444,8 @@ void ConditionDamage::addCondition(Creature* creature, const Condition* conditio
 		}
 
 		if (!delayed) {
-			int32_t damage;
-			if (getNextDamage(damage)) {
-				doDamage(creature, damage);
+			if (initDamage != 0) {
+				doDamage(creature, initDamage);
 			}
 		}
 	}
@@ -1501,24 +1507,46 @@ uint32_t ConditionDamage::getIcons() const
 	return icons;
 }
 
+// formula for condition poison damage
+int32_t getDamageStepValue(int32_t x) {
+	bool flipped = false;
+	if (x % 10 > 5) {
+		flipped = true;
+	}
+
+	int32_t checkValue = x;
+	if (flipped) {
+		++checkValue;
+	}
+
+	double outputValue = (20 / static_cast<double>(x)) * (1 + sin(M_PI * static_cast<double>(x)));
+	if (checkValue % 2 == 1) {
+		return static_cast<int32_t>(std::floor(outputValue));
+	}
+
+	return static_cast<int32_t>(std::ceil(outputValue));
+}
+
 void ConditionDamage::generateDamageList(int32_t amount, int32_t start, std::list<int32_t>& list)
 {
 	amount = std::abs(amount);
-	int32_t sum = 0;
-	double x1, x2;
+	start = std::abs(start);
+	amount -= start;
 
-	for (int32_t i = start; i > 0; --i) {
-		int32_t n = start + 1 - i;
-		int32_t med = (n * amount) / start;
+	int32_t totalDamage = 0;
+	int32_t currentStep = 0;
 
-		do {
-			sum += i;
-			list.push_back(i);
-
-			x1 = std::fabs(1.0 - ((static_cast<float>(sum)) + i) / med);
-			x2 = std::fabs(1.0 - (static_cast<float>(sum) / med));
-		} while (x1 < x2);
+	while (totalDamage < amount) {
+		int32_t turnsCount = getDamageStepValue(++currentStep);
+		for (int32_t i = 0; i < turnsCount; i++) {
+			totalDamage += currentStep;
+			list.push_back(currentStep);
+		}
 	}
+
+	// initial tick moved
+	// list.push_back(start);
+	list.reverse();
 }
 
 void ConditionSpeed::setFormulaVars(float mina, float minb, float maxa, float maxb)
