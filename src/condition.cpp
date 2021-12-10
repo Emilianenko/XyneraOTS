@@ -490,16 +490,25 @@ void ConditionAttributes::updatePercentStats(Player* player)
 void ConditionAttributes::updateStats(Player* player)
 {
 	bool needUpdateStats = false;
+	bool needUpdateSkills = false;
 
 	for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 		if (stats[i]) {
-			needUpdateStats = true;
+			if (i != STAT_MAGICPOINTS) {
+				needUpdateStats = true;
+			} else {
+				needUpdateSkills = true;
+			}
 			player->setVarStats(static_cast<stats_t>(i), stats[i]);
 		}
 	}
 
 	if (needUpdateStats) {
 		player->sendStats();
+	}
+
+	if (needUpdateSkills) {
+		player->sendSkills();
 	}
 }
 
@@ -563,21 +572,25 @@ void ConditionAttributes::endCondition(Creature* creature)
 			}
 		}
 
-		if (needUpdateSkills) {
-			player->sendSkills();
-		}
-
 		bool needUpdateStats = false;
 
 		for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 			if (stats[i]) {
-				needUpdateStats = true;
+				if (i != STAT_MAGICPOINTS) {
+					needUpdateStats = true;
+				} else {
+					needUpdateSkills = true;
+				}
 				player->setVarStats(static_cast<stats_t>(i), -stats[i]);
 			}
 		}
 
 		if (needUpdateStats) {
 			player->sendStats();
+		}
+
+		if (needUpdateSkills) {
+			player->sendSkills();
 		}
 	}
 
