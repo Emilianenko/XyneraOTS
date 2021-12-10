@@ -4808,11 +4808,15 @@ void Game::checkDecay()
 void Game::checkLight()
 {
 	g_scheduler.addEvent(createSchedulerTask(EVENT_LIGHTINTERVAL, std::bind(&Game::checkLight, this)));
+	uint8_t previousLightLevel = lightLevel;
 	updateWorldLightLevel();
-	LightInfo lightInfo = getWorldLightInfo();
 
-	for (const auto& it : players) {
-		it.second->sendWorldLight(lightInfo);
+	if (previousLightLevel != lightLevel) {
+		LightInfo lightInfo = getWorldLightInfo();
+
+		for (const auto& it : players) {
+			it.second->sendWorldLight(lightInfo);
+		}
 	}
 }
 
@@ -4835,6 +4839,13 @@ void Game::updateWorldTime()
 	time_t osTime = time(nullptr);
 	tm* timeInfo = localtime(&osTime);
 	worldTime = (timeInfo->tm_sec + (timeInfo->tm_min * 60)) / 2.5f;
+
+	// quarter-hourly update to client clock near the minimap
+	if (worldTime % 15 == 0) {
+		for (const auto& it : players) {
+			it.second->sendWorldTime();
+		}
+	}
 }
 
 void Game::shutdown()
