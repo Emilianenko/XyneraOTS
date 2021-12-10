@@ -420,9 +420,14 @@ static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t coun
 
 bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey)
 {
+	// apply use item cooldown
 	int32_t cooldown = g_config.getNumber(ConfigManager::ACTIONS_DELAY_INTERVAL);
 	player->setNextAction(OTSYS_TIME() + cooldown);
-	player->sendUseItemCooldown(cooldown);
+
+	// clicking on containers does not send cooldown icon
+	if (!item->getContainer()) {
+		player->sendUseItemCooldown(cooldown);
+	}
 
 	if (isHotkey) {
 		uint16_t subType = item->getSubType();
