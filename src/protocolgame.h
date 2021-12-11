@@ -222,7 +222,7 @@ class ProtocolGame final : public Protocol
 		void sendStoreBalance();
 		void sendMarketEnter(uint32_t depotId);
 		void sendMarketLeave();
-		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
+		void sendMarketBrowseItem(uint16_t itemId, const MarketOfferList& buyOffers, const MarketOfferList& sellOffers, uint8_t tier);
 		void sendMarketAcceptOffer(const MarketOfferEx& offer);
 		void sendMarketBrowseOwnOffers(const MarketOfferList& buyOffers, const MarketOfferList& sellOffers);
 		void sendMarketCancelOffer(const MarketOfferEx& offer);

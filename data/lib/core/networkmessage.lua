@@ -46,7 +46,7 @@ function NetworkMessage:addItemType(itemType)
 		self:addByte(0x01) -- isVisible
 	end
 	
-	if itemType:getClassLevel() > 0 then
+	if itemType:getClassification() > 0 then
 		self:addByte(0x00) -- item tier
 	end
 	

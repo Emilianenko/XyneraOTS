@@ -2,8 +2,8 @@ function Item:getType()
 	return ItemType(self:getId())
 end
 
-function Item:getClassLevel()
-	return self:getType():getClassLevel()
+function Item:getClassification()
+	return self:getType():getClassification()
 end
 
 function Item:isContainer()
@@ -54,7 +54,8 @@ do
 		['Duration'] = {key = ITEM_ATTRIBUTE_DURATION, cmp = function(v) return v > 0 end},
 		['Text'] = {key = ITEM_ATTRIBUTE_TEXT, cmp = function(v) return v ~= '' end},
 		['Date'] = {key = ITEM_ATTRIBUTE_DATE},
-		['Writer'] = {key = ITEM_ATTRIBUTE_WRITER, cmp = function(v) return v ~= '' end}
+		['Writer'] = {key = ITEM_ATTRIBUTE_WRITER, cmp = function(v) return v ~= '' end},
+		['Tier'] = {key = ITEM_ATTRIBUTE_TIER}
 	}
 
 	function setAuxFunctions()
@@ -574,10 +575,32 @@ do
 			end
 		end
 		
-		-- to do:
+		-- imbuements (to do)
 		-- \nImbuements: (Basic Strike 2:30h, Basic Void 2:30h, Empty Slot).
-		-- \nClassification: x Tier: y (0.50% Onslaught).
-		
+
+		-- item class
+		-- Classification: x Tier: y (0.50% Onslaught).
+		do
+			local classification = itemType:getClassification()
+			local tier = isVirtual and 0 or item:getTier() or 0
+
+			if classification > 0 or tier > 0 then
+				if classification == 0 then
+					classification = "other"
+				end
+				response[#response + 1] = string.format("\nClassification: %s Tier: %d", classification, tier)
+
+			--[[
+				if tier > 0 then
+					(get tier bonuses)
+					response[#response + 1] = string.format(" (%s)", table.concat(tierBonuses, ", "))
+				end
+			]]
+
+				response[#response + 1] = "."
+			end
+		end
+
 		-- item count (will be reused later)
 		local count = isVirtual and 1 or item:getCount()
 		

@@ -326,11 +326,12 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		for categoryType = COMPENDIUM_PLAYERITEMS_FIRST, COMPENDIUM_PLAYERITEMS_LAST do
 			local categoryItems, categoryCount = creature:getInventoryItemData(categoryType)
 			response:addU16(categoryCount) -- items to send
-			for itemId, count in pairs(categoryItems) do
+			for itemInfo, count in pairs(categoryItems) do
+				local itemId, tier = unhashItemInfo(itemInfo)
 				local itemType = ItemType(itemId)
 				response:addU16(itemType:getClientId()) -- item clientId
-				if itemType:getClassLevel() > 0 then
-					response:addByte(0x00) -- item tier
+				if itemType:getClassification() > 0 then
+					response:addByte(tier) -- item tier
 				end
 				response:addU32(count) -- item amount
 			end

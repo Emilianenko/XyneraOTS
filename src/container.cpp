@@ -606,21 +606,35 @@ size_t Container::getLastIndex() const
 	return size();
 }
 
-uint32_t Container::getItemTypeCount(uint16_t itemId, int32_t subType/* = -1*/) const
+uint32_t Container::getItemTypeCount(uint16_t itemId, int32_t subType /* = -1*/, bool hasTier /* = false*/, uint8_t tier /* = 0*/) const
 {
 	uint32_t count = 0;
 	for (Item* item : itemlist) {
 		if (item->getID() == itemId) {
-			count += countByType(item, subType);
+			if (!hasTier || item->getTier() == tier) {
+				count += countByType(item, subType);
+			}
 		}
 	}
 	return count;
 }
 
-std::map<uint32_t, uint32_t>& Container::getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const
+TieredItemsCountMap& Container::getAllItemTypeCount(TieredItemsCountMap& countMap, bool skipTiered /* = false*/) const
 {
 	for (Item* item : itemlist) {
-		countMap[item->getID()] += item->getItemCount();
+		uint8_t tier = item->getTier();
+		if (!skipTiered || tier == 0) {
+			countMap[{item->getID(), tier}] += Item::countByType(item, -1);
+		}
+
+		if (Container* container = item->getContainer()) {
+			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
+				uint8_t containerItemTier = (*it)->getTier();
+				if (!skipTiered || containerItemTier == 0) {
+					countMap[{(*it)->getID(), containerItemTier}] += Item::countByType(*it, -1);
+				}
+			}
+		}
 	}
 	return countMap;
 }

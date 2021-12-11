@@ -72,7 +72,7 @@ end
 
 function doPlayerSellItem(cid, itemid, count, cost)
 	local player = Player(cid)
-	if player:removeItem(itemid, count) then
+	if player:removeItem(itemid, count, -1, false, true) then
 		if not player:addMoney(cost) then
 			error('Could not add money to ' .. player:getName() .. '(' .. cost .. 'gp)')
 		end

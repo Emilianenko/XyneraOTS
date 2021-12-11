@@ -22,7 +22,7 @@
 
 static constexpr auto STATUS_SERVER_NAME = "The Forgotten Server";
 static constexpr auto STATUS_SERVER_VERSION = "1.5 Plus";
-static constexpr auto STATUS_SERVER_DEVELOPERS = "Mark Samman";
+static constexpr auto STATUS_SERVER_DEVELOPERS = "Zbizu";
 
 static constexpr auto CLIENT_VERSION_MIN = 1280;
 static constexpr auto CLIENT_VERSION_MAX = 1281;

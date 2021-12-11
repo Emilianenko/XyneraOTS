@@ -188,7 +188,7 @@ bool Events::eventMonsterOnSpawn(Monster* monster, const Position& position, boo
 // Creature
 bool Events::eventCreatureOnChangeOutfit(Creature* creature, const Outfit_t& outfit)
 {
-	// Creature:onChangeOutfit(outfit) or Creature.onChangeOutfit(self, outfit)
+	// Creature:onChangeOutfit(outfit)
 	if (info.creatureOnChangeOutfit == -1) {
 		return true;
 	}
@@ -214,7 +214,7 @@ bool Events::eventCreatureOnChangeOutfit(Creature* creature, const Outfit_t& out
 
 ReturnValue Events::eventCreatureOnAreaCombat(Creature* creature, Tile* tile, bool aggressive)
 {
-	// Creature:onAreaCombat(tile, aggressive) or Creature.onAreaCombat(self, tile, aggressive)
+	// Creature:onAreaCombat(tile, aggressive)
 	if (info.creatureOnAreaCombat == -1) {
 		return RETURNVALUE_NOERROR;
 	}
@@ -257,7 +257,7 @@ ReturnValue Events::eventCreatureOnAreaCombat(Creature* creature, Tile* tile, bo
 
 ReturnValue Events::eventCreatureOnTargetCombat(Creature* creature, Creature* target)
 {
-	// Creature:onTargetCombat(target) or Creature.onTargetCombat(self, target)
+	// Creature:onTargetCombat(target)
 	if (info.creatureOnTargetCombat == -1) {
 		return RETURNVALUE_NOERROR;
 	}
@@ -329,7 +329,7 @@ void Events::eventCreatureOnHear(Creature* creature, Creature* speaker, const st
 // Party
 bool Events::eventPartyOnJoin(Party* party, Player* player)
 {
-	// Party:onJoin(player) or Party.onJoin(self, player)
+	// Party:onJoin(player)
 	if (info.partyOnJoin == -1) {
 		return true;
 	}
@@ -356,7 +356,7 @@ bool Events::eventPartyOnJoin(Party* party, Player* player)
 
 bool Events::eventPartyOnLeave(Party* party, Player* player)
 {
-	// Party:onLeave(player) or Party.onLeave(self, player)
+	// Party:onLeave(player)
 	if (info.partyOnLeave == -1) {
 		return true;
 	}
@@ -383,7 +383,7 @@ bool Events::eventPartyOnLeave(Party* party, Player* player)
 
 bool Events::eventPartyOnDisband(Party* party)
 {
-	// Party:onDisband() or Party.onDisband(self)
+	// Party:onDisband()
 	if (info.partyOnDisband == -1) {
 		return true;
 	}
@@ -407,7 +407,7 @@ bool Events::eventPartyOnDisband(Party* party)
 
 void Events::eventPartyOnShareExperience(Party* party, uint64_t& exp)
 {
-	// Party:onShareExperience(exp) or Party.onShareExperience(self, exp)
+	// Party:onShareExperience(exp)
 	if (info.partyOnShareExperience == -1) {
 		return;
 	}
@@ -441,7 +441,7 @@ void Events::eventPartyOnShareExperience(Party* party, uint64_t& exp)
 // Player
 bool Events::eventPlayerOnBrowseField(Player* player, const Position& position)
 {
-	// Player:onBrowseField(position) or Player.onBrowseField(self, position)
+	// Player:onBrowseField(position)
 	if (info.playerOnBrowseField == -1) {
 		return true;
 	}
@@ -467,7 +467,7 @@ bool Events::eventPlayerOnBrowseField(Player* player, const Position& position)
 
 void Events::eventPlayerOnLook(Player* player, const Position& position, Thing* thing, uint8_t stackpos, int32_t lookDistance)
 {
-	// Player:onLook(thing, position, distance) or Player.onLook(self, thing, position, distance)
+	// Player:onLook(thing, position, distance)
 	if (info.playerOnLook == -1) {
 		return;
 	}
@@ -504,7 +504,7 @@ void Events::eventPlayerOnLook(Player* player, const Position& position, Thing* 
 
 void Events::eventPlayerOnLookInBattleList(Player* player, Creature* creature, int32_t lookDistance)
 {
-	// Player:onLookInBattleList(creature, position, distance) or Player.onLookInBattleList(self, creature, position, distance)
+	// Player:onLookInBattleList(creature, position, distance)
 	if (info.playerOnLookInBattleList == -1) {
 		return;
 	}
@@ -533,7 +533,7 @@ void Events::eventPlayerOnLookInBattleList(Player* player, Creature* creature, i
 
 void Events::eventPlayerOnLookInTrade(Player* player, Player* partner, Item* item, int32_t lookDistance)
 {
-	// Player:onLookInTrade(partner, item, distance) or Player.onLookInTrade(self, partner, item, distance)
+	// Player:onLookInTrade(partner, item, distance)
 	if (info.playerOnLookInTrade == -1) {
 		return;
 	}
@@ -565,7 +565,7 @@ void Events::eventPlayerOnLookInTrade(Player* player, Player* partner, Item* ite
 
 bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, uint8_t count, Npc* npc)
 {
-	// Player:onLookInShop(itemType, count, npc) or Player.onLookInShop(self, itemType, count, npc)
+	// Player:onLookInShop(itemType, count, npc)
 	if (info.playerOnLookInShop == -1) {
 		return true;
 	}
@@ -595,9 +595,9 @@ bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, u
 	return scriptInterface.callFunction(4);
 }
 
-bool Events::eventPlayerOnLookInMarket(Player* player, const ItemType* itemType)
+bool Events::eventPlayerOnLookInMarket(Player* player, const ItemType* itemType, uint8_t tier)
 {
-	// Player:onLookInMarket(itemType) or Player.onLookInMarket(self, itemType)
+	// Player:onLookInMarket(itemType, tier)
 	if (info.playerOnLookInMarket == -1) {
 		return true;
 	}
@@ -619,12 +619,14 @@ bool Events::eventPlayerOnLookInMarket(Player* player, const ItemType* itemType)
 	LuaScriptInterface::pushUserdata<const ItemType>(L, itemType);
 	LuaScriptInterface::setMetatable(L, -1, "ItemType");
 
-	return scriptInterface.callFunction(2);
+	lua_pushnumber(L, tier);
+
+	return scriptInterface.callFunction(3);
 }
 
 bool Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder)
 {
-	// Player:onMoveItem(item, count, fromPosition, toPosition) or Player.onMoveItem(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	// Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	if (info.playerOnMoveItem == -1) {
 		return true;
 	}
@@ -658,7 +660,7 @@ bool Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t count, c
 
 void Events::eventPlayerOnItemMoved(Player* player, Item* item, uint16_t count, const Position& fromPosition, const Position& toPosition, Cylinder* fromCylinder, Cylinder* toCylinder)
 {
-	// Player:onItemMoved(item, count, fromPosition, toPosition) or Player.onItemMoved(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	// Player:onItemMoved(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	if (info.playerOnItemMoved == -1) {
 		return;
 	}
@@ -692,7 +694,7 @@ void Events::eventPlayerOnItemMoved(Player* player, Item* item, uint16_t count, 
 
 bool Events::eventPlayerOnMoveCreature(Player* player, Creature* creature, const Position& fromPosition, const Position& toPosition)
 {
-	// Player:onMoveCreature(creature, fromPosition, toPosition) or Player.onMoveCreature(self, creature, fromPosition, toPosition)
+	// Player:onMoveCreature(creature, fromPosition, toPosition)
 	if (info.playerOnMoveCreature == -1) {
 		return true;
 	}
@@ -782,7 +784,7 @@ bool Events::eventPlayerOnReportBug(Player* player, const std::string& message, 
 
 bool Events::eventPlayerOnTurn(Player* player, Direction direction)
 {
-	// Player:onTurn(direction) or Player.onTurn(self, direction)
+	// Player:onTurn(direction)
 	if (info.playerOnTurn == -1) {
 		return true;
 	}
@@ -906,7 +908,7 @@ void Events::eventPlayerOnTradeCompleted(Player* player, Player* target, Item* i
 
 void Events::eventPlayerOnPodiumRequest(Player* player, Item* item)
 {
-	// Player:onPodiumRequest(item) or Player.onPodiumRequest(self, item)
+	// Player:onPodiumRequest(item)
 	if (info.playerOnPodiumRequest == -1) {
 		return;
 	}
@@ -933,7 +935,7 @@ void Events::eventPlayerOnPodiumRequest(Player* player, Item* item)
 
 void Events::eventPlayerOnPodiumEdit(Player* player, Item* item, const Outfit_t& outfit, bool podiumVisible, Direction direction)
 {
-	// Player:onPodiumEdit(item, outfit, direction, isVisible) or Player.onPodiumEdit(self, item, outfit, direction, isVisible)
+	// Player:onPodiumEdit(item, outfit, direction, isVisible)
 	if (info.playerOnPodiumEdit == -1) {
 		return;
 	}
@@ -1213,7 +1215,7 @@ void Events::eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId)
 
 void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message)
 {
-	// Player:onExtendedProtocol(recvbyte, msg) or Player.onExtendedProtocol(self, recvbyte, msg)
+	// Player:onExtendedProtocol(recvbyte, msg)
 	if (info.playerOnExtendedProtocol == -1) {
 		return;
 	}

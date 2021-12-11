@@ -94,6 +94,7 @@ enum itemAttrTypes : uint32_t {
 	ITEM_ATTRIBUTE_STOREITEM = 1 << 25,
 	ITEM_ATTRIBUTE_ATTACK_SPEED = 1 << 26,
 	ITEM_ATTRIBUTE_OPENCONTAINER = 1 << 27,
+	ITEM_ATTRIBUTE_TIER = 1 << 28,
 
 	ITEM_ATTRIBUTE_CUSTOM = 1U << 31
 };
@@ -549,12 +550,23 @@ struct ShopInfo {
 		: itemId(itemId), subType(subType), buyPrice(buyPrice), sellPrice(sellPrice), realName(std::move(realName)) {}
 };
 
+// hash for grouping itemType count by tier
+struct ItemTypeTierHash {
+	std::size_t operator()(const std::pair<uint16_t, uint8_t>& s) const noexcept
+	{
+		uint32_t i = static_cast<uint32_t>(s.first) << 8 | s.second;
+		return std::hash<uint32_t>{}(i);
+	}
+};
+typedef std::unordered_map<std::pair<uint16_t, uint8_t>, uint32_t, ItemTypeTierHash> TieredItemsCountMap;
+
 struct MarketOffer {
 	uint64_t price;
 	uint32_t timestamp;
 	uint16_t amount;
 	uint16_t counter;
 	uint16_t itemId;
+	uint8_t tier;
 	std::string playerName;
 };
 
@@ -562,7 +574,7 @@ struct MarketOfferEx {
 	MarketOfferEx() = default;
 	MarketOfferEx(MarketOfferEx&& other) :
 		id(other.id), playerId(other.playerId), timestamp(other.timestamp), price(other.price),
-		amount(other.amount), counter(other.counter), itemId(other.itemId), type(other.type),
+		amount(other.amount), counter(other.counter), itemId(other.itemId), tier(other.tier), type(other.type),
 		playerName(std::move(other.playerName)) {}
 
 	uint32_t id;
@@ -572,6 +584,7 @@ struct MarketOfferEx {
 	uint16_t amount;
 	uint16_t counter;
 	uint16_t itemId;
+	uint8_t tier;
 	MarketAction_t type;
 	std::string playerName;
 };
@@ -581,6 +594,7 @@ struct HistoryMarketOffer {
 	uint64_t price;
 	uint16_t itemId;
 	uint16_t amount;
+	uint8_t tier;
 	MarketOfferState_t state;
 };
 

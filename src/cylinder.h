@@ -180,14 +180,14 @@ class Cylinder : virtual public Thing
 		  * \param subType is the extra type an item can have such as charges/fluidtype, -1 means not used
 		  * \returns the amount of items of the asked item type
 		  */
-		virtual uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const;
+		virtual uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1, bool hasTier = false, uint8_t tier = 0) const;
 
 		/**
-		  * Get the amount of items of a all types
-		  * \param countMap a map to put the itemID:count mapping in
-		  * \returns a map mapping item id to count (same as first argument)
+		  * Get the amount of items and group by tier
+		  * \param countMap is an unordered map to put {itemID, tier}:count mapping in
+		  * \returns an unordered map same as first argument
 		  */
-		virtual std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const;
+		virtual TieredItemsCountMap& getAllItemTypeCount(TieredItemsCountMap& countMap, bool skipTiered = false) const;
 
 		/**
 		  * Adds an object to the cylinder without sending to the client(s)

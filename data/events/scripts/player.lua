@@ -38,9 +38,9 @@ function Player:onLookInShop(itemType, count, npc)
 	self:sendTextMessage(MESSAGE_INFO_DESCR, description)
 end
 
-function Player:onLookInMarket(itemType)
+function Player:onLookInMarket(itemType, tier)
 	if hasEventCallback(EVENT_CALLBACK_ONLOOKINMARKET) then
-		EventCallback(EVENT_CALLBACK_ONLOOKINMARKET, self, itemType)
+		EventCallback(EVENT_CALLBACK_ONLOOKINMARKET, self, itemType, tier)
 	end
 end
 
@@ -367,6 +367,7 @@ function Player:onExtendedProtocol(recvbyte, networkMessage)
 	-- 0xCE -- allow everyone to inspect me(?)
 	-- 0x91 -- quick loot settings
 	-- 0xD0 -- quest tracker
+	-- print(recvbyte)
 	callPacketEvent(self, recvbyte, networkMessage)
 end
 -- end extended protocol

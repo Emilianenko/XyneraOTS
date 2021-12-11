@@ -597,6 +597,16 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_TIER: {
+			uint8_t tier;
+			if (!propStream.read<uint8_t>(tier)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
+			break;
+		}
+
 		case ATTR_DECAYTO: {
 			int32_t decayTo;
 			if (!propStream.read<int32_t>(decayTo)) {
@@ -627,6 +637,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		// meta attribute to remember containers opened by the player
 		case ATTR_OPENCONTAINER: {
 			uint8_t openContainer;
 			if (!propStream.read<uint8_t>(openContainer)) {
@@ -637,11 +648,11 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//these should be handled through derived classes
-		//If these are called then something has changed in the items.xml since the map was saved
-		//just read the values
+		// these should be handled through derived classes
+		// If these are called then something has changed in the items.xml since the map was saved
+		// just read the values
 
-		//Depot class
+		// Depot class
 		case ATTR_DEPOT_ID: {
 			if (!propStream.skip(2)) {
 				return ATTR_READ_ERROR;
@@ -649,7 +660,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//Door class
+		// Door class
 		case ATTR_HOUSEDOORID: {
 			if (!propStream.skip(1)) {
 				return ATTR_READ_ERROR;
@@ -657,7 +668,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//Bed class
+		// Bed class
 		case ATTR_SLEEPERGUID: {
 			if (!propStream.skip(4)) {
 				return ATTR_READ_ERROR;
@@ -672,7 +683,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//Podium class
+		// Podium class
 		case ATTR_PODIUMOUTFIT: {
 			if (!propStream.skip(15)) {
 				return ATTR_READ_ERROR;
@@ -680,7 +691,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//Teleport class
+		// Teleport class
 		case ATTR_TELE_DEST: {
 			if (!propStream.skip(5)) {
 				return ATTR_READ_ERROR;
@@ -688,7 +699,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
-		//Container class
+		// Container class
 		case ATTR_CONTAINER_ITEMS: {
 			return ATTR_READ_ERROR;
 		}
@@ -853,6 +864,11 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 	if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {
 		propWriteStream.write<uint8_t>(ATTR_SHOOTRANGE);
 		propWriteStream.write<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_SHOOTRANGE));
+	}
+
+	if (hasAttribute(ITEM_ATTRIBUTE_TIER)) {
+		propWriteStream.write<uint8_t>(ATTR_TIER);
+		propWriteStream.write<uint8_t>(getIntAttr(ITEM_ATTRIBUTE_TIER));
 	}
 
 	if (hasAttribute(ITEM_ATTRIBUTE_DECAYTO)) {
@@ -1167,18 +1183,28 @@ bool Item::hasMarketAttributes() const
 		return true;
 	}
 
+	const ItemType& itemType = Item::items[id];
+
 	for (const auto& attr : attributes->getList()) {
-		if (attr.type == ITEM_ATTRIBUTE_CHARGES) {
+		if (attr.type == ITEM_ATTRIBUTE_TIER) {
+			// unclassified items with tier > 0
+			if (itemType.classification == 0 && attr.value.integer > 0) {
+				return false;
+			}
+		} else if (attr.type == ITEM_ATTRIBUTE_CHARGES) {
+			// items with charges different than default
 			uint16_t charges = static_cast<uint16_t>(attr.value.integer);
 			if (charges != items[id].charges) {
 				return false;
 			}
 		} else if (attr.type == ITEM_ATTRIBUTE_DURATION) {
+			// items with duration different than default
 			uint32_t duration = static_cast<uint32_t>(attr.value.integer);
 			if (duration != getDefaultDuration()) {
 				return false;
 			}
 		} else {
+			// custom attributes (if there are more than 0 of them assigned)
 			if (!(attr.type == ITEM_ATTRIBUTE_CUSTOM && attr.value.custom && attr.value.custom->size() == 0)) {
 				return false;
 			}

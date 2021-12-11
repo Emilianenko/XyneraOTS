@@ -2976,7 +2976,7 @@ size_t Player::getLastIndex() const
 	return CONST_SLOT_LAST + 1;
 }
 
-uint32_t Player::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Player::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool hasTier /* = false*/, uint8_t tier /* = 0*/) const
 {
 	uint32_t count = 0;
 	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
@@ -2986,13 +2986,17 @@ uint32_t Player::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) con
 		}
 
 		if (item->getID() == itemId) {
-			count += Item::countByType(item, subType);
+			if (!hasTier || item->getTier() == tier) {
+				count += Item::countByType(item, subType);
+			}
 		}
 
 		if (Container* container = item->getContainer()) {
 			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
 				if ((*it)->getID() == itemId) {
-					count += Item::countByType(*it, subType);
+					if (!hasTier || (*it)->getTier() == tier) {
+						count += Item::countByType(*it, subType);
+					}
 				}
 			}
 		}
@@ -3000,7 +3004,7 @@ uint32_t Player::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) con
 	return count;
 }
 
-bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType, bool ignoreEquipped/* = false*/) const
+bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType, bool ignoreEquipped /* = false*/, bool skipTiered /* = false*/) const
 {
 	if (amount == 0) {
 		return true;
@@ -3021,9 +3025,11 @@ bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType,
 				continue;
 			}
 
-			itemList.push_back(item);
+			if (!skipTiered || item->getTier() == 0) {
+				itemList.push_back(item);
+				count += itemCount;
+			}
 
-			count += itemCount;
 			if (count >= amount) {
 				g_game.internalRemoveItems(std::move(itemList), amount, Item::items[itemId].stackable);
 				return true;
@@ -3037,9 +3043,11 @@ bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType,
 						continue;
 					}
 
-					itemList.push_back(containerItem);
+					if (!skipTiered || containerItem->getTier() == 0) {
+						itemList.push_back(containerItem);
+						count += itemCount;
+					}
 
-					count += itemCount;
 					if (count >= amount) {
 						g_game.internalRemoveItems(std::move(itemList), amount, Item::items[itemId].stackable);
 						return true;
@@ -3051,7 +3059,7 @@ bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType,
 	return false;
 }
 
-std::map<uint32_t, uint32_t>& Player::getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const
+TieredItemsCountMap& Player::getAllItemTypeCount(TieredItemsCountMap& countMap, bool skipTiered /* = false*/) const
 {
 	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
 		Item* item = inventory[i];
@@ -3059,11 +3067,17 @@ std::map<uint32_t, uint32_t>& Player::getAllItemTypeCount(std::map<uint32_t, uin
 			continue;
 		}
 
-		countMap[item->getID()] += Item::countByType(item, -1);
+		uint8_t tier = item->getTier();
+		if (!skipTiered || tier == 0) {
+			countMap[{item->getID(), tier}] += Item::countByType(item, -1);
+		}
 
 		if (Container* container = item->getContainer()) {
 			for (ContainerIterator it = container->iterator(); it.hasNext(); it.advance()) {
-				countMap[(*it)->getID()] += Item::countByType(*it, -1);
+				uint8_t containerItemTier = (*it)->getTier();
+				if (!skipTiered || containerItemTier == 0) {
+					countMap[{(*it)->getID(), containerItemTier}] += Item::countByType(*it, -1);
+				}
 			}
 		}
 	}

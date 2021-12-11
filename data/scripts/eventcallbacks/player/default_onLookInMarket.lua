@@ -3,15 +3,15 @@ local showDefWeaponTypes = {WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTAN
 
 local ec = EventCallback
 
-ec.onLookInMarket = function(self, itemType)
+ec.onLookInMarket = function(self, itemType, tier)
 	local response = NetworkMessage()
 	response:addByte(0xF8)
 	response:addU16(itemType:getClientId())
 	
 	-- tier
 	do
-		if itemType:getClassLevel() > 0 then
-			response:addByte(0)
+		if itemType:getClassification() > 0 then
+			response:addByte(tier)
 		end
 	end
 	
@@ -278,12 +278,27 @@ ec.onLookInMarket = function(self, itemType)
 	response:addU16(0) -- Cleave
 	response:addU16(0) -- Damage Reflection
 	response:addU16(0) -- Perfect Shot
-	response:addU16(0) -- Classification
-	response:addU16(0) -- Tier
+
+	-- classification
+	do
+		local classification = itemType:getClassification()
+		if classification > 0 then
+			response:addString(classification)
+		else
+			response:addU16(0) -- Classification
+		end
+	end
+
+	-- tier
+	if tier > 0 then
+		response:addString(tier) -- to do: "tier (0.05% Stat)"
+	else
+		response:addU16(0)
+	end
 
 	-- buy stats
 	do
-		local stats = itemType:getMarketBuyStatistics()
+		local stats = itemType:getMarketBuyStatistics(tier)
 		if stats then
 			response:addByte(0x01)
 			response:addU32(stats.numTransactions)
@@ -297,7 +312,7 @@ ec.onLookInMarket = function(self, itemType)
 
 	-- sell stats
 	do
-		local stats = itemType:getMarketSellStatistics()
+		local stats = itemType:getMarketSellStatistics(tier)
 		if stats then
 			response:addByte(0x01)
 			response:addU32(stats.numTransactions)

@@ -74,12 +74,19 @@ function getFragStatus(player)
 	return response
 end
 
+local tierHash = 0xFFFF
+function unhashItemInfo(itemInfo)
+	local tier = bit.rshift(itemInfo, 16)
+	return itemInfo - tier * tierHash, tier
+end
+
 function parseItem(item, response)
-	local itemId = item:getType():getId()
-	if not response[itemId] then
-		response[itemId] = 0
+	local responseIndex = item:getType():getId() + item:getTier() * tierHash
+	if not response[responseIndex] then
+		response[responseIndex] = 0
 	end
-	response[itemId] = response[itemId] + item:getCount()
+	
+	response[responseIndex] = response[responseIndex] + item:getCount()
 	
 	if item:isContainer() then
 		for containerIndex, containerItem in pairs(item:getItems()) do

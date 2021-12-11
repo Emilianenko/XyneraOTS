@@ -409,12 +409,20 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 static void showUseHotkeyMessage(Player* player, const Item* item, uint32_t count)
 {
 	const ItemType& it = Item::items[item->getID()];
+
+	// show tier on hotkey
+	bool hasTier = false;
+	if (it.classification > 0 && item->getTier() > 0) {
+		hasTier = true;
+	}
+	const std::string& tierSuffix = hasTier ? fmt::format(" (tier {:d})", item->getTier()) : "";
+
 	if (!it.showCount) {
-		player->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Using one of {:s}...", item->getName()));
+		player->sendTextMessage(MESSAGE_HOTKEY_PRESSED, fmt::format("Using one of {:s}{:s}...", item->getName(), tierSuffix));
 	} else if (count == 1) {
-		player->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Using the last {:s}...", item->getName()));
+		player->sendTextMessage(MESSAGE_HOTKEY_PRESSED, fmt::format("Using the last {:s}{:s}...", item->getName(), tierSuffix));
 	} else {
-		player->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("Using one of {:d} {:s}...", count, item->getPluralName()));
+		player->sendTextMessage(MESSAGE_HOTKEY_PRESSED, fmt::format("Using one of {:d} {:s}{:s}...", count, item->getPluralName(), tierSuffix));
 	}
 }
 
@@ -431,7 +439,7 @@ bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* 
 
 	if (isHotkey) {
 		uint16_t subType = item->getSubType();
-		showUseHotkeyMessage(player, item, player->getItemTypeCount(item->getID(), subType != item->getItemCount() ? subType : -1));
+		showUseHotkeyMessage(player, item, player->getItemTypeCount(item->getID(), subType != item->getItemCount() ? subType : -1, Item::items[item->getID()].classification > 0, item->getTier()));
 	}
 
 	if (g_config.getBoolean(ConfigManager::ONLY_INVITED_CAN_MOVE_HOUSE_ITEMS)) {
@@ -479,9 +487,9 @@ bool Actions::useItemEx(Player* player, const Position& fromPos, const Position&
 
 	if (isHotkey) {
 		uint16_t subType = item->getSubType();
-		showUseHotkeyMessage(player, item, player->getItemTypeCount(item->getID(), subType != item->getItemCount() ? subType : -1));
+		showUseHotkeyMessage(player, item, player->getItemTypeCount(item->getID(), subType != item->getItemCount() ? subType : -1, Item::items[item->getID()].classification > 0, item->getTier()));
 	}
-
+	
 	if (action->executeUse(player, item, fromPos, action->getTarget(player, creature, toPos, toStackPos), toPos, isHotkey)) {
 		return true;
 	}

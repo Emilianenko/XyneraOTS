@@ -1288,18 +1288,25 @@ size_t Tile::getLastIndex() const
 	return getThingCount();
 }
 
-uint32_t Tile::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/) const
+uint32_t Tile::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool hasTier /* = false*/, uint8_t tier /* = 0*/) const
 {
 	uint32_t count = 0;
 	if (ground && ground->getID() == itemId) {
-		count += Item::countByType(ground, subType);
+		// ground with tier is a bold assumption
+		// but since the system allows setting attr to items with no classification
+		// we can not exclude that possibility
+		if (!hasTier || ground->getTier() == tier) {
+			count += Item::countByType(ground, subType);
+		}
 	}
 
 	const TileItemVector* items = getItemList();
 	if (items) {
 		for (const Item* item : *items) {
 			if (item->getID() == itemId) {
-				count += Item::countByType(item, subType);
+				if (!hasTier || item->getTier() == tier) {
+					count += Item::countByType(item, subType);
+				}
 			}
 		}
 	}

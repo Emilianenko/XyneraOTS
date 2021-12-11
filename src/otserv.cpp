@@ -108,8 +108,15 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
+namespace {
+const std::string& horizontalLine = "--------------------------------------------------------------------";
+}
+
 void printServerVersion()
 {
+
+	std::cout << horizontalLine << std::endl;
+
 #if defined(GIT_RETRIEVED_STATE) && GIT_RETRIEVED_STATE
 	std::cout << STATUS_SERVER_NAME << " - Version " << GIT_DESCRIBE << std::endl;
 	std::cout << "Git SHA1 " << GIT_SHORT_SHA1 << " dated " << GIT_COMMIT_DATE_ISO8601 << std::endl;
@@ -137,11 +144,13 @@ void printServerVersion()
 #else
 	std::cout << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
 #endif
-	std::cout << std::endl;
 
-	std::cout << "A server developed by " << STATUS_SERVER_DEVELOPERS << std::endl;
-	std::cout << "Visit our forum for updates, support, and resources: https://otland.net/." << std::endl;
-	std::cout << std::endl;
+	std::cout << horizontalLine << std::endl;
+	std::cout << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
+	std::cout << horizontalLine << std::endl;
+	std::cout << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
+	std::cout << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
+	std::cout << horizontalLine << std::endl;
 }
 
 void mainLoader(int, char*[], ServiceManager* services)

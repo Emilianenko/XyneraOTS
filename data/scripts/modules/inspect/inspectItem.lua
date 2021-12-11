@@ -240,6 +240,18 @@ function getItemDetails(item)
 	end
 	skillBoosts = nil
 	
+	-- item classification (will be reused later)
+	local classification = itemType:getClassification()
+	
+	-- tier
+	local tier = 0
+	if not isVirtual then
+		tier = item:getTier() or 0
+		if classification > 0 or tier > 0 then
+			descriptions[#descriptions + 1] = {"Tier", tier}
+		end
+	end
+
 	-- imbuement slot n: empty (new line for each n)
 	-- to do: implement together with imbuements system
 	
@@ -367,7 +379,15 @@ function getItemDetails(item)
 	end
 	
 	if bodyPosition then
-		descriptions[#descriptions + 1] = {"Body Position", bodyPosition}		
+		descriptions[#descriptions + 1] = {"Body Position", bodyPosition}
+	end
+
+	if classification > 0 or tier > 0 then
+		if classification == 0 then
+			classification = "other"
+		end
+
+		descriptions[#descriptions + 1] = {"Classification", classification}
 	end
 
 	return descriptions

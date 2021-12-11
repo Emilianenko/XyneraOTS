@@ -147,8 +147,8 @@ class Container : public Item, public Cylinder
 		int32_t getThingIndex(const Thing* thing) const override final;
 		size_t getFirstIndex() const override final;
 		size_t getLastIndex() const override final;
-		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1) const override final;
-		std::map<uint32_t, uint32_t>& getAllItemTypeCount(std::map<uint32_t, uint32_t>& countMap) const override final;
+		uint32_t getItemTypeCount(uint16_t itemId, int32_t subType = -1, bool hasTier = false, uint8_t tier = 0) const override final;
+		TieredItemsCountMap& getAllItemTypeCount(TieredItemsCountMap& countMap, bool skipTiered = false) const override final;
 		Thing* getThing(size_t index) const override final;
 
 		ItemVector getItems(bool recursive = false);

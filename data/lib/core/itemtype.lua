@@ -118,3 +118,7 @@ function ItemType:getWeaponString()
 	
 	return weaponString
 end
+
+function ItemType:getTier()
+	return 0
+end

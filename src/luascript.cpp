@@ -1615,6 +1615,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_ATTRIBUTE_STOREITEM)
 	registerEnum(ITEM_ATTRIBUTE_ATTACK_SPEED)
 	registerEnum(ITEM_ATTRIBUTE_OPENCONTAINER)
+	registerEnum(ITEM_ATTRIBUTE_TIER)
 
 	registerEnum(ITEM_TYPE_DEPOT)
 	registerEnum(ITEM_TYPE_MAILBOX)
@@ -2903,7 +2904,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getRequiredLevel", LuaScriptInterface::luaItemTypeGetRequiredLevel);
 	registerMethod("ItemType", "getAmmoType", LuaScriptInterface::luaItemTypeGetAmmoType);
 	registerMethod("ItemType", "getCorpseType", LuaScriptInterface::luaItemTypeGetCorpseType);
-	registerMethod("ItemType", "getClassLevel", LuaScriptInterface::luaItemTypeGetClassLevel);
+	registerMethod("ItemType", "getClassification", LuaScriptInterface::luaItemTypeGetClassification);
 
 	registerMethod("ItemType", "getAbilities", LuaScriptInterface::luaItemTypeGetAbilities);
 
@@ -5454,7 +5455,7 @@ int LuaScriptInterface::luaTileGetItemByTopOrder(lua_State* L)
 
 int LuaScriptInterface::luaTileGetItemCountById(lua_State* L)
 {
-	// tile:getItemCountById(itemId[, subType = -1])
+	// tile:getItemCountById(itemId[, subType = -1[, hasTier = false[, tier = 0])
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if (!tile) {
 		lua_pushnil(L);
@@ -5474,7 +5475,10 @@ int LuaScriptInterface::luaTileGetItemCountById(lua_State* L)
 		}
 	}
 
-	lua_pushnumber(L, tile->getItemTypeCount(itemId, subType));
+	bool hasTier = getBoolean(L, 4);
+	uint8_t tier = getNumber<uint8_t>(L, 5, 0);
+
+	lua_pushnumber(L, tile->getItemTypeCount(itemId, subType, hasTier, tier));
 	return 1;
 }
 
@@ -7330,7 +7334,7 @@ int LuaScriptInterface::luaContainerGetCorpseOwner(lua_State* L)
 
 int LuaScriptInterface::luaContainerGetItemCountById(lua_State* L)
 {
-	// container:getItemCountById(itemId[, subType = -1])
+	// container:getItemCountById(itemId[, subType = -1[, hasTier = false[, tier = 0]]])
 	Container* container = getUserdata<Container>(L, 1);
 	if (!container) {
 		lua_pushnil(L);
@@ -7349,7 +7353,10 @@ int LuaScriptInterface::luaContainerGetItemCountById(lua_State* L)
 	}
 
 	int32_t subType = getNumber<int32_t>(L, 3, -1);
-	lua_pushnumber(L, container->getItemTypeCount(itemId, subType));
+	bool hasTier = getBoolean(L, 4);
+	uint8_t tier = getNumber<uint8_t>(L, 5, 0);
+
+	lua_pushnumber(L, container->getItemTypeCount(itemId, subType, hasTier, tier));
 	return 1;
 }
 
@@ -9157,7 +9164,7 @@ int LuaScriptInterface::luaPlayerSetOfflineTrainingSkill(lua_State* L)
 
 int LuaScriptInterface::luaPlayerGetItemCount(lua_State* L)
 {
-	// player:getItemCount(itemId[, subType = -1])
+	// player:getItemCount(itemId[, subType = -1[, hasTier = false[, tier = 0]]])
 	Player* player = getUserdata<Player>(L, 1);
 	if (!player) {
 		lua_pushnil(L);
@@ -9176,7 +9183,10 @@ int LuaScriptInterface::luaPlayerGetItemCount(lua_State* L)
 	}
 
 	int32_t subType = getNumber<int32_t>(L, 3, -1);
-	lua_pushnumber(L, player->getItemTypeCount(itemId, subType));
+	bool hasTier = getBoolean(L, 4);
+	uint8_t tier = getNumber<uint8_t>(L, 5, 0);
+
+	lua_pushnumber(L, player->getItemTypeCount(itemId, subType, hasTier, tier));
 	return 1;
 }
 
@@ -9727,7 +9737,7 @@ int LuaScriptInterface::luaPlayerAddItemEx(lua_State* L)
 
 int LuaScriptInterface::luaPlayerRemoveItem(lua_State* L)
 {
-	// player:removeItem(itemId, count[, subType = -1[, ignoreEquipped = false]])
+	// player:removeItem(itemId, count[, subType = -1[, ignoreEquipped = false[, skipTiered = false]]])
 	Player* player = getUserdata<Player>(L, 1);
 	if (!player) {
 		lua_pushnil(L);
@@ -9748,7 +9758,8 @@ int LuaScriptInterface::luaPlayerRemoveItem(lua_State* L)
 	uint32_t count = getNumber<uint32_t>(L, 3);
 	int32_t subType = getNumber<int32_t>(L, 4, -1);
 	bool ignoreEquipped = getBoolean(L, 5, false);
-	pushBoolean(L, player->removeItemOfType(itemId, count, subType, ignoreEquipped));
+	bool skipTiered = getBoolean(L, 6, false);
+	pushBoolean(L, player->removeItemOfType(itemId, count, subType, ignoreEquipped, skipTiered));
 	return 1;
 }
 
@@ -12618,12 +12629,12 @@ int LuaScriptInterface::luaItemTypeGetCorpseType(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaItemTypeGetClassLevel(lua_State* L)
+int LuaScriptInterface::luaItemTypeGetClassification(lua_State* L)
 {
-	// itemType:getClassLevel()
+	// itemType:getClassification()
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
 	if (itemType) {
-		lua_pushnumber(L, itemType->classLevel);
+		lua_pushnumber(L, itemType->classification);
 	} else {
 		lua_pushnil(L);
 	}
@@ -12851,10 +12862,12 @@ int LuaScriptInterface::luaItemTypeGetMinReqMagicLevel(lua_State* L)
 
 int LuaScriptInterface::luaItemTypeGetMarketBuyStatistics(lua_State* L)
 {
-	// itemType:getMarketBuyStatistics()
+	// itemType:getMarketBuyStatistics(tier)
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	uint8_t tier = getNumber<uint8_t>(L, 2);
+
 	if (itemType) {
-		MarketStatistics* statistics = IOMarket::getInstance().getPurchaseStatistics(itemType->id);
+		MarketStatistics* statistics = IOMarket::getInstance().getPurchaseStatistics(itemType->id, tier);
 		if (statistics) {
 			lua_createtable(L, 4, 0);
 			setField(L, "numTransactions", statistics->numTransactions);
@@ -12872,10 +12885,12 @@ int LuaScriptInterface::luaItemTypeGetMarketBuyStatistics(lua_State* L)
 
 int LuaScriptInterface::luaItemTypeGetMarketSellStatistics(lua_State* L)
 {
-	// itemType:getMarketSellStatistics()
+	// itemType:getMarketSellStatistics(tier)
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	uint8_t tier = getNumber<uint8_t>(L, 2);
+
 	if (itemType) {
-		MarketStatistics* statistics = IOMarket::getInstance().getSaleStatistics(itemType->id);
+		MarketStatistics* statistics = IOMarket::getInstance().getSaleStatistics(itemType->id, tier);
 		if (statistics) {
 			lua_createtable(L, 4, 0);
 			setField(L, "numTransactions", statistics->numTransactions);
