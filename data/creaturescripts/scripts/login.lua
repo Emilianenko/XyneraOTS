@@ -1,3 +1,17 @@
+local function sendForgeTypesAsync(cid)
+	local p = Player(cid)
+	if p and not p:isRemoved() then
+		p:sendItemClasses()
+	end
+end
+
+local function sendColorTypesAsync(cid)
+	local p = Player(cid)
+	if p and not p:isRemoved() then
+		p:sendMessageColorTypes()
+	end
+end
+
 function onLogin(player)
 	local serverName = configManager.getString(configKeys.SERVER_NAME)
 	local loginStr = "Welcome to " .. serverName .. "!"
@@ -29,7 +43,9 @@ function onLogin(player)
 	player:registerEvent("PlayerDeath")
 	player:registerEvent("DropLoot")
 	
-	-- enable custom color messages
-	player:sendMessageColorTypes()
+	-- schedule sending less important data
+	local cid = player:getId()
+	addEvent(sendForgeTypesAsync, 100, cid) -- classification info for market and forge
+	addEvent(sendColorTypesAsync, 200, cid) -- message colors meta
 	return true
 end

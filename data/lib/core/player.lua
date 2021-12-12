@@ -368,3 +368,42 @@ end
 function Player:sendColorMessage(message, color)
 	self:sendTextMessage(MESSAGE_LOOT, string.format("{%d|%s}", color, message))
 end
+
+-- Unlock tiers at the market + send forge info to the player
+do
+	-- these are the defaults
+	-- if you want to build your own system
+	-- override the function from a module instead of editing it here
+	-- the function is overridden from a module by default
+	-- see forge module in data/scripts/modules
+	
+	-- defaults in case forge system is not initialized
+	local maxClass = 4
+	local maxTier = 10
+	
+	function Player:sendItemClasses()
+		local msg = NetworkMessage()
+		msg:addByte(0x86)
+		msg:addByte(maxClass)
+		if maxClass > 0 then
+			for classId = 1, maxClass do
+				msg:addByte(classId)
+				
+				msg:addByte(maxTier)
+				if maxTier > 0 then
+					for tierId = 0, maxTier-1 do
+						msg:addByte(tierId)
+						msg:addU64(0) -- fusion cost
+					end
+				end
+			end
+		end
+		
+		-- cost for each tier (?)
+		for tierId = 0, maxTier do
+			msg:addByte(100 * (tierId+1))
+		end
+		
+		msg:sendToPlayer(self)
+	end
+end

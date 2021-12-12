@@ -2706,9 +2706,6 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 
 	// player vip list
 	sendVIPEntries();
-
-	// tiers for forge and market
-	sendItemClasses();
 	
 	// opened containers
 	player->openSavedContainers();
@@ -3175,34 +3172,6 @@ void ProtocolGame::sendVIPEntries()
 
 		sendVIP(entry.guid, entry.name, entry.description, entry.icon, entry.notify, vipStatus);
 	}
-}
-
-void ProtocolGame::sendItemClasses()
-{
-	NetworkMessage msg;
-	msg.addByte(0x86);
-
-	uint8_t classSize = 4;
-	uint8_t tiersSize = 10;
-
-	// item classes
-	msg.addByte(classSize);
-	for (uint8_t i = 0; i < classSize; i++) {
-		msg.addByte(i + 1); // class id
-
-		// item tiers
-		msg.addByte(tiersSize); // tiers size
-		for (uint8_t j = 0; j < tiersSize; j++) {
-			msg.addByte(j); // tier id
-			msg.add<uint64_t>(10000); // upgrade cost
-		}
-	}
-
-	// unknown
-	for (uint8_t i = 0; i < tiersSize + 1; i++) {
-		msg.addByte(0);
-	}
-	writeToOutputBuffer(msg);
 }
 
 void ProtocolGame::sendSpellCooldown(uint8_t spellId, uint32_t time)
