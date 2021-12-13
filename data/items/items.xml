@@ -645,7 +645,7 @@
 	<item id="1487" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1488" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="200" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="20" />
 			<attribute key="ticks" value="8000" />
@@ -656,7 +656,7 @@
 	<item id="1488" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1489" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="150" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="10" />
 			<attribute key="ticks" value="8000" />
@@ -667,7 +667,7 @@
 	<item id="1489" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="fire" />
 	</item>
 	<item id="1490" name="poison gas">
