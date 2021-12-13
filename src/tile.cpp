@@ -1628,9 +1628,8 @@ Item* Tile::getUseItem(int32_t index) const
 	}
 
 	// try getting top usable item
-	Item* topDownItem = getTopDownItem();
-	if (topDownItem) {
-		return topDownItem;
+	if (items && items->size() > 0) {
+		return *items->begin();
 	}
 
 	// try getting door
