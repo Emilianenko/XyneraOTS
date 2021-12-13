@@ -1627,17 +1627,6 @@ Item* Tile::getUseItem(int32_t index) const
 		}
 	}
 
-	// try getting top usable item
-	if (items && items->size() > 0) {
-		return *items->begin();
-	}
-
-	// try getting door
-	for (auto it = items->rbegin(), end = items->rend(); it != end; ++it) {
-		if ((*it)->getDoor()) {
-			return (*it)->getItem();
-		}
-	}
-
-	return nullptr;
+	// return top usable item
+	return *items->begin();
 }
