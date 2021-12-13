@@ -673,7 +673,7 @@
 	<item id="1490" name="poison gas">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="250" />
 		<attribute key="field" value="poison">
 			<attribute key="initdamage" value="5" />
 			<attribute key="ticks" value="3000" />
@@ -684,11 +684,11 @@
 	<item id="1491" article="an" name="energy field">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="3" />
+			<attribute key="count" value="1" />
 			<attribute key="damage" value="25" />
 		</attribute>
 	</item>
@@ -719,7 +719,7 @@
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="3" />
+			<attribute key="count" value="1" />
 			<attribute key="damage" value="25" />
 		</attribute>
 	</item>
@@ -746,10 +746,10 @@
 		<attribute key="duration" value="45" />
 		<attribute key="blocking" value="1" />
 	</item>
-	<item id="1500" article="a" name="yellow flame">
+	<item id="1500" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1501" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="200" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="20" />
 			<attribute key="ticks" value="8000" />
@@ -760,7 +760,7 @@
 	<item id="1501" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1502" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="150" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="10" />
 			<attribute key="ticks" value="8000" />
@@ -771,13 +771,13 @@
 	<item id="1502" article="a" name="fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="fire" />
 	</item>
 	<item id="1503" name="poison gas">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="250" />
 		<attribute key="field" value="poison">
 			<attribute key="initdamage" value="5" />
 			<attribute key="ticks" value="3000" />
@@ -788,11 +788,11 @@
 	<item id="1504" article="an" name="energy field">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="3" />
+			<attribute key="count" value="1" />
 			<attribute key="damage" value="25" />
 		</attribute>
 	</item>
@@ -803,7 +803,7 @@
 	<item id="1506" article="a" name="searing fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1507" />
-		<attribute key="duration" value="10" />
+		<attribute key="duration" value="8" />
 		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="300" />
@@ -812,10 +812,10 @@
 			<attribute key="damage" value="10" />
 		</attribute>
 	</item>
-	<item id="1507" article="a" name="fire">
+	<item id="1507" article="a" name="searing fire">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1508" />
-		<attribute key="duration" value="10" />
+		<attribute key="duration" value="5" />
 		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="300" />
@@ -827,7 +827,7 @@
 	<item id="1508" name="ashes">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="1506" />
-		<attribute key="duration" value="5" />
+		<attribute key="duration" value="12" />
 		<attribute key="replaceable" value="0" />
 	</item>
 	<item id="1509" name="lava">
@@ -19237,11 +19237,11 @@
 	<item id="10547" article="an" name="energy field">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="3" />
+			<attribute key="count" value="1" />
 			<attribute key="damage" value="25" />
 		</attribute>
 	</item>
@@ -30978,16 +30978,32 @@
 		<attribute key="description" value="A dragon statue holding a huge bronze gong. Its eyes shimmer bloodred in the firelight." />
 	</item>
 	<item id="21430" article="a" name="strange fire">
+		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="21431" />
 		<attribute key="duration" value="8" />
+		<attribute key="replaceable" value="0" />
+		<attribute key="field" value="fire">
+			<attribute key="initdamage" value="300" />
+			<attribute key="ticks" value="8000" />
+			<attribute key="count" value="7" />
+			<attribute key="damage" value="10" />
+		</attribute>
 	</item>
 	<item id="21431" article="a" name="strange fire">
+		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="21433" />
-		<attribute key="duration" value="4" />
+		<attribute key="duration" value="5" />
+		<attribute key="replaceable" value="0" />
+		<attribute key="field" value="fire">
+			<attribute key="initdamage" value="300" />
+			<attribute key="ticks" value="8000" />
+			<attribute key="count" value="7" />
+			<attribute key="damage" value="10" />
+		</attribute>
 	</item>
 	<item id="21433" name="ashes">
 		<attribute key="decayTo" value="21430" />
-		<attribute key="duration" value="13" />
+		<attribute key="duration" value="12" />
 	</item>
 	<item id="21434" article="a" name="dead wilting leaf golem">
 		<attribute key="containerSize" value="20" />
@@ -39660,11 +39676,11 @@
 	<item id="34036" article="an" name="energy field" >
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="120" />
+		<attribute key="duration" value="100" />
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
-			<attribute key="count" value="3" />
+			<attribute key="count" value="1" />
 			<attribute key="damage" value="25" />
 		</attribute>
 	</item>
