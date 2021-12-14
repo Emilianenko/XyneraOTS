@@ -141,7 +141,7 @@ do
 		[CONDITION_HASTE] = "heavy",
 		[CONDITION_PARALYZE] = "slow immunity",
 		[CONDITION_DRUNK] = "hard drinking",
-		[CONDITION_DROWN] = "aqua affinity",
+		[CONDITION_DROWN] = "water breathing",
 		[CONDITION_FREEZING] = "warm",
 		[CONDITION_DAZZLED] = "dazzle immunity",
 		[CONDITION_CURSED] = "curse immunity"

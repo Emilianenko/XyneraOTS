@@ -323,8 +323,8 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		end
 		
 		-- send each category
-		for categoryType = COMPENDIUM_PLAYERITEMS_FIRST, COMPENDIUM_PLAYERITEMS_LAST do
-			local categoryItems, categoryCount = creature:getInventoryItemData(categoryType)
+		for location = LOCATION_FIRST, LOCATION_LAST do
+			local categoryItems, categoryCount = creature:getItemsByLocation(location)
 			response:addU16(categoryCount) -- items to send
 			for itemInfo, count in pairs(categoryItems) do
 				local itemId, tier = unhashItemInfo(itemInfo)

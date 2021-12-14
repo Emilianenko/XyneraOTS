@@ -371,9 +371,12 @@ end
 
 -- Unlock tiers at the market + send forge info to the player
 do
-	-- these are the defaults
+	-- these are the defaults that will replace the forge system
+	-- if nothing overrides it
+
 	-- if you want to build your own system
 	-- override the function from a module instead of editing it here
+
 	-- the function is overridden from a module by default
 	-- see forge module in data/scripts/modules
 	
@@ -401,9 +404,87 @@ do
 		
 		-- cost for each tier (?)
 		for tierId = 0, maxTier do
-			msg:addByte(100 * (tierId+1))
+			msg:addByte(0)
 		end
 		
 		msg:sendToPlayer(self)
+	end
+end
+
+-- aggregator for player tiered items info
+do
+	function unhashItemInfo(itemInfo)
+		local tier = bit.rshift(itemInfo, 16)
+		return itemInfo - tier * ITEMTIER_HASH, tier
+	end
+
+	local function parseItem(item, response, onlyMarketable)
+		local responseIndex = item:getType():getId() + item:getTier() * ITEMTIER_HASH
+		if not response[responseIndex] then
+			response[responseIndex] = 0
+		end
+		
+		if not onlyMarketable or item:isMarketable() then
+			response[responseIndex] = response[responseIndex] + item:getCount()
+		end
+		
+		if item:isContainer() then
+			for containerIndex, containerItem in pairs(item:getItems()) do
+				parseItem(containerItem, response, onlyMarketable)
+			end
+		end
+	end
+
+	function Player:getItemsByLocation(location, onlyMarketable)
+		local response = {}
+		local responseCount = 0
+		
+		if location == LOCATION_BACKPACK then
+			local bp = self:getSlotItem(CONST_SLOT_BACKPACK)
+			if bp then
+				for _, containerItem in pairs(bp:getItems()) do
+					parseItem(containerItem, response, onlyMarketable)
+				end
+			end
+		elseif location == LOCATION_EQUIPPED then
+			for slot = CONST_SLOT_FIRST, CONST_SLOT_LAST do
+				local slotItem = self:getSlotItem(slot)
+				if slotItem then
+					parseItem(slotItem, response, onlyMarketable)
+				end
+			end
+		elseif location == LOCATION_PURSE then
+			local purse = self:getSlotItem(CONST_SLOT_STORE_INBOX)
+			if purse then
+				for _, containerItem in pairs(purse:getItems()) do
+					parseItem(containerItem, response, onlyMarketable)
+				end
+			end
+		elseif location == LOCATION_STASH then
+			-- not implemented yet
+		elseif location == LOCATION_DEPOT then
+			local towns = Game.getTowns()
+			for _, town in pairs(towns) do
+				local depotBox = self:getDepotChest(town:getId())
+				if depotBox then
+					for containerIndex, containerItem in pairs(depotBox:getItems()) do
+						parseItem(containerItem, response, onlyMarketable)
+					end
+				end
+			end
+		elseif location == LOCATION_MAILBOX then
+			local inbox = self:getInbox()
+			if inbox then
+				for containerIndex, containerItem in pairs(inbox:getItems()) do
+					parseItem(containerItem, response, onlyMarketable)
+				end
+			end
+		end
+		
+		for _ in pairs(response) do
+			responseCount = responseCount + 1
+		end
+		
+		return response, responseCount
 	end
 end

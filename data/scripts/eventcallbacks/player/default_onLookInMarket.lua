@@ -8,7 +8,7 @@ ec.onLookInMarket = function(self, itemType, tier)
 	response:addByte(0xF8)
 	response:addU16(itemType:getClientId())
 	
-	-- tier
+	-- tier label (byte)
 	do
 		if itemType:getClassification() > 0 then
 			response:addByte(tier)
@@ -181,7 +181,7 @@ ec.onLookInMarket = function(self, itemType, tier)
 		end
 	end
 	
-	-- other stats
+	-- "skill boost" category
 	do
 		-- atk speed
 		local atkSpeed = itemType:getAttackSpeed()
@@ -289,7 +289,7 @@ ec.onLookInMarket = function(self, itemType, tier)
 		end
 	end
 
-	-- tier
+	-- tier info (string)
 	if tier > 0 then
 		response:addString(tier) -- to do: "tier (0.05% Stat)"
 	else
