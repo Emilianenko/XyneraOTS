@@ -1641,5 +1641,5 @@ Item* Tile::getUseItem(int32_t index) const
 	}
 
 	// return top item
-	return *items->begin();
+	return *items->rbegin();
 }
