@@ -1945,6 +1945,19 @@ void ProtocolGame::sendResourceBalance(const ResourceTypes_t resourceType, uint6
 	if (resourceType == RESOURCE_CHARM_POINTS) {
 		msg.add<uint32_t>(amount);
 	} else {
+		// fix overflow in forge UI
+		switch(resourceType) {
+			case RESOURCE_FORGE_DUST:
+				amount = std::min<uint64_t>(std::numeric_limits<uint8_t>::max(), amount);
+				break;
+			case RESOURCE_FORGE_SLIVERS:
+			case RESOURCE_FORGE_CORES:
+				amount = std::min<uint64_t>(std::numeric_limits<uint16_t>::max(), amount);
+				break;
+			default:
+				break;
+		}
+
 		msg.add<uint64_t>(amount);
 	}
 

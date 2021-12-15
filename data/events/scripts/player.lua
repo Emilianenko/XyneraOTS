@@ -367,7 +367,6 @@ function Player:onExtendedProtocol(recvbyte, networkMessage)
 	-- 0xCE -- allow everyone to inspect me(?)
 	-- 0x91 -- quick loot settings
 	-- 0xD0 -- quest tracker
-	-- print(recvbyte)
 	callPacketEvent(self, recvbyte, networkMessage)
 end
 -- end extended protocol
