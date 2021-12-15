@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 }
 
 namespace {
-const std::string& horizontalLine = "--------------------------------------------------------------------";
+const std::string& horizontalLine = "----------------------------------------------------------------------";
 }
 
 void printServerVersion()
@@ -124,12 +124,12 @@ void printServerVersion()
 	std::cout << "*** DIRTY - NOT OFFICIAL RELEASE ***" << std::endl;
 	#endif
 #else
-	std::cout << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
+	std::cout << "- " << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
 #endif
 	std::cout << std::endl;
 
-	std::cout << "Compiled with " << BOOST_COMPILER << std::endl;
-	std::cout << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
+	std::cout << "- " << "Compiled with " << BOOST_COMPILER << std::endl;
+	std::cout << "- " << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
 #if defined(__amd64__) || defined(_M_X64)
 	std::cout << "x64" << std::endl;
 #elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
@@ -140,16 +140,16 @@ void printServerVersion()
 	std::cout << "unknown" << std::endl;
 #endif
 #if defined(LUAJIT_VERSION)
-	std::cout << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
+	std::cout << "- " << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
 #else
-	std::cout << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
+	std::cout << "- " << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
 #endif
 
 	std::cout << horizontalLine << std::endl;
-	std::cout << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
+	std::cout << "- " << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
 	std::cout << horizontalLine << std::endl;
-	std::cout << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
-	std::cout << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
+	std::cout << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
+	std::cout << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
 	std::cout << horizontalLine << std::endl;
 }
 
