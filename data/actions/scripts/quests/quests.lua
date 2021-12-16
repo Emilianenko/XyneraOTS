@@ -92,13 +92,13 @@ end
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	-- ignore unscripted chests
-	if item.uid > 65536 then
+	if item.uid > 65535 then
 		return false
 	end
 	
 	-- prevent storage conflict
 	-- NOTE: does not check for specialQuests
-	if item.uid < 65536 and table.contains(reservedStorageKeys, item.uid) then
+	if item.uid < 65535 and table.contains(reservedStorageKeys, item.uid) then
 		-- storage conflict error
 		sendQuestSystemMessage(player, string.format(questSystemMessages.storageConflict[1], item:getName()))
 		return true
