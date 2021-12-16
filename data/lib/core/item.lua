@@ -42,6 +42,10 @@ function Item:isItemType()
 	return false
 end
 
+function Item:setTier(newTier)
+	return newTier >= 0 and newTier < 256 and self:setAttribute(ITEM_ATTRIBUTE_TIER, newTier)
+end
+
 do
 	local aux = {
 		['Defense'] = {key = ITEM_ATTRIBUTE_DEFENSE},

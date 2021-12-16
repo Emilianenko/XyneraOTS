@@ -557,6 +557,7 @@ class LuaScriptInterface
 		static int luaGameGetMonsterTypes(lua_State* L);
 		static int luaGameGetCurrencyItems(lua_State* L);
 		static int luaGameGetMountIdByLookType(lua_State* L);
+		static int luaGameGetItemTypeByClientId(lua_State* L);
 
 		static int luaGameGetTowns(lua_State* L);
 		static int luaGameGetHouses(lua_State* L);
