@@ -3397,19 +3397,9 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 	}
 
 	for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; ++i) {
-		msg.add<uint16_t>(std::min<int32_t>(100, player->varSpecialSkills[i])); // base + bonus special skill
+		msg.add<uint16_t>(std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i])); // base + bonus special skill
 		msg.add<uint16_t>(0); // base special skill
 	}
-
-	// fatal, dodge, momentum
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(0);
-
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(0);
-
-	msg.add<uint16_t>(0);
-	msg.add<uint16_t>(0);
 
 	// to do: bonus cap
 	msg.add<uint32_t>(player->getCapacity()); // base + bonus capacity
