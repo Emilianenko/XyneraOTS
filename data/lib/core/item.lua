@@ -371,17 +371,18 @@ do
 			for skill, value in pairs(abilities.specialSkills) do
 				if value ~= 0 then
 					-- add + symbol to special skill "amount" fields
-					if skill-1 < 6 and skill % 2 == 1 then
+					if skill-1 < 5 and skill % 2 == 1 then
 						value = string.format("%+d", value)
+					elseif skill-1 >= 6 then
+						-- fatal, dodge, momentum coming from the item natively
+						-- (stats coming from tier are near tier info)
+						value = string.format("%0.2f", value/100)
 					end
 					
 					descriptions[#descriptions + 1] = string.format("%s %s%%", getSpecialSkillName(skill-1), value)
 				end
 			end
 		end
-		
-		-- fatal, dodge, momentum coming from the item natively
-		-- (stats coming from tier are near tier info)
 		
 		-- cleave
 		-- perfect shot
@@ -592,16 +593,20 @@ do
 				if classification == 0 then
 					classification = "other"
 				end
-				response[#response + 1] = string.format("\nClassification: %s Tier: %d", classification, tier)
-
-			--[[
+				
+				local tierString = tier
 				if tier > 0 then
-					(get tier bonuses)
-					response[#response + 1] = string.format(" (%s)", table.concat(tierBonuses, ", "))
+					local bonusType, bonusValue = itemType:getTierBonus(tier)
+					if bonusType ~= -1 then
+						if bonusType > 5 then
+							tierString = string.format("%d (%0.2f%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+						else
+							tierString = string.format("%d (%d%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+						end
+					end
 				end
-			]]
-
-				response[#response + 1] = "."
+			
+				response[#response + 1] = string.format("\nClassification: %s Tier: %s.", classification, tierString)
 			end
 		end
 

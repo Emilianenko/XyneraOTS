@@ -229,6 +229,10 @@ function getItemDetails(item)
 			-- add + symbol to special skill "amount" fields
 			if skill-1 < 6 and skill % 2 == 1 then
 				value = string.format("%+d", value)
+			elseif skill-1 >= 6 then
+				-- fatal, dodge, momentum coming from the item natively
+				-- (stats coming from tier are near tier info)
+				value = string.format("%0.2f", value/100)
 			end
 			
 			skillBoosts[#skillBoosts + 1] = string.format("%s %s%%", getSpecialSkillName(skill-1), value)
@@ -248,7 +252,19 @@ function getItemDetails(item)
 	if not isVirtual then
 		tier = item:getTier() or 0
 		if classification > 0 or tier > 0 then
-			descriptions[#descriptions + 1] = {"Tier", tier}
+			local tierString = tier
+			if tier > 0 then
+				local bonusType, bonusValue = itemType:getTierBonus(tier)
+				if bonusType ~= -1 then
+					if bonusType > 5 then
+						tierString = string.format("%d (%0.2f%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+					else
+						tierString = string.format("%d (%d%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+					end
+				end
+			end
+			
+			descriptions[#descriptions + 1] = {"Tier", tierString}
 		end
 	end
 

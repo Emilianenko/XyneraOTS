@@ -237,6 +237,10 @@ ec.onLookInMarket = function(self, itemType, tier)
 				-- add + symbol to special skill "amount" fields
 				if skill-1 < 6 and skill % 2 == 1 then
 					value = string.format("%+d", value)
+				elseif skill-1 >= 6 then
+					-- fatal, dodge, momentum coming from the item natively
+					-- (stats coming from tier are near tier info)
+					value = string.format("%0.2f", value/100)
 				end
 				
 				skillBoosts[#skillBoosts + 1] = string.format("%s %s%%", getSpecialSkillName(skill-1), value)
@@ -289,9 +293,19 @@ ec.onLookInMarket = function(self, itemType, tier)
 		end
 	end
 
-	-- tier info (string)
+	-- tier info: "tier (0.01% bonusName)"
 	if tier > 0 then
-		response:addString(tier) -- to do: "tier (0.05% Stat)"
+		local tierString = tier
+		local bonusType, bonusValue = itemType:getTierBonus(tier)
+		if bonusType ~= -1 then
+			if bonusType > 5 then
+				tierString = string.format("%d (%0.2f%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+			else
+				tierString = string.format("%d (%d%% %s)", tier, bonusValue, getSpecialSkillName(bonusType))
+			end
+		end
+		
+		response:addString(tierString)
 	else
 		response:addU16(0)
 	end

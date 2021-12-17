@@ -37,9 +37,11 @@ function ItemType:isBoots()
 	return self:usesSlot(CONST_SLOT_FEET)
 end
 
-local notWeapons = {WEAPON_NONE, WEAPON_SHIELD, WEAPON_AMMO}
-function ItemType:isWeapon()
-	return not table.contains(notWeapons, self:getWeaponType())
+do
+	local notWeapons = {WEAPON_NONE, WEAPON_SHIELD, WEAPON_AMMO}
+	function ItemType:isWeapon()
+		return not table.contains(notWeapons, self:getWeaponType())
+	end
 end
 
 function ItemType:isTwoHanded()
@@ -121,4 +123,29 @@ end
 
 function ItemType:getTier()
 	return 0
+end
+
+do
+	local function calculateTierBonus(tier, x, y)
+		return x * tier + y * (tier-1)^2
+	end
+
+	function ItemType:getTierBonus(tier)
+		if tier == 0 then
+			return -1, 0
+		end
+		
+		if self:isWeapon() then
+			-- onslaught (fatal)
+			return SPECIALSKILL_ONSLAUGHT, calculateTierBonus(tier, 0.5, 0.05)
+		elseif self:isArmor() then
+			-- ruse (dodge)
+			return SPECIALSKILL_RUSE, calculateTierBonus(tier, 0.5, 0.03)
+		elseif self:isHelmet() then
+			-- momentum (cooldown reset)
+			return SPECIALSKILL_MOMENTUM, calculateTierBonus(tier, 2, 0.05)
+		end
+		
+		return -1, 0
+	end
 end

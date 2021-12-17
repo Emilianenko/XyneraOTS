@@ -1474,7 +1474,10 @@ do
 		[SPECIALSKILL_LIFELEECHCHANCE] = 'life leech chance',
 		[SPECIALSKILL_LIFELEECHAMOUNT] = 'life leech amount',
 		[SPECIALSKILL_MANALEECHCHANCE] = 'mana leech chance',
-		[SPECIALSKILL_MANALEECHAMOUNT] = 'mana leech amount'
+		[SPECIALSKILL_MANALEECHAMOUNT] = 'mana leech amount',
+		[SPECIALSKILL_ONSLAUGHT] = 'onslaught',
+		[SPECIALSKILL_RUSE] = 'ruse',
+		[SPECIALSKILL_MOMENTUM] = 'momentum'
 	}
 
 	function getSpecialSkillName(specialSkill)
