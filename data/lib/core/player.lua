@@ -427,12 +427,6 @@ do
 		if not onlyMarketable or item:isMarketable() then
 			response[responseIndex] = response[responseIndex] + item:getCount()
 		end
-		
-		if item:isContainer() then
-			for containerIndex, containerItem in pairs(item:getItems()) do
-				parseItem(containerItem, response, onlyMarketable)
-			end
-		end
 	end
 
 	function Player:getItemsByLocation(location, onlyMarketable)
@@ -442,7 +436,7 @@ do
 		if location == LOCATION_BACKPACK then
 			local bp = self:getSlotItem(CONST_SLOT_BACKPACK)
 			if bp then
-				for _, containerItem in pairs(bp:getItems()) do
+				for _, containerItem in pairs(bp:getItems(true)) do
 					parseItem(containerItem, response, onlyMarketable)
 				end
 			end
@@ -451,12 +445,18 @@ do
 				local slotItem = self:getSlotItem(slot)
 				if slotItem then
 					parseItem(slotItem, response, onlyMarketable)
+					
+					if slotItem:isContainer() then
+						for _, containerItem in pairs(slotItem:getItems(true)) do
+							parseItem(containerItem, response, onlyMarketable)
+						end
+					end
 				end
 			end
 		elseif location == LOCATION_PURSE then
 			local purse = self:getSlotItem(CONST_SLOT_STORE_INBOX)
 			if purse then
-				for _, containerItem in pairs(purse:getItems()) do
+				for _, containerItem in pairs(purse:getItems(true)) do
 					parseItem(containerItem, response, onlyMarketable)
 				end
 			end
@@ -467,7 +467,7 @@ do
 			for _, town in pairs(towns) do
 				local depotBox = self:getDepotChest(town:getId())
 				if depotBox then
-					for containerIndex, containerItem in pairs(depotBox:getItems()) do
+					for containerIndex, containerItem in pairs(depotBox:getItems(true)) do
 						parseItem(containerItem, response, onlyMarketable)
 					end
 				end
@@ -475,7 +475,7 @@ do
 		elseif location == LOCATION_MAILBOX then
 			local inbox = self:getInbox()
 			if inbox then
-				for containerIndex, containerItem in pairs(inbox:getItems()) do
+				for containerIndex, containerItem in pairs(inbox:getItems(true)) do
 					parseItem(containerItem, response, onlyMarketable)
 				end
 			end
