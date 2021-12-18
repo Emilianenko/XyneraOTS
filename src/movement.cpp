@@ -803,27 +803,35 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 		}
 	}
 
-	if (needUpdateSkills) {
-		player->sendSkills();
-	}
-
 	//stat modifiers
 	bool needUpdateStats = false;
 
 	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
 		if (it.abilities->stats[s]) {
-			needUpdateStats = true;
+			if (s != STAT_MAGICPOINTS) {
+				needUpdateStats = true;
+			} else {
+				needUpdateSkills = true;
+			}
 			player->setVarStats(static_cast<stats_t>(s), it.abilities->stats[s]);
 		}
 
 		if (it.abilities->statsPercent[s]) {
-			needUpdateStats = true;
+			if (s != STAT_MAGICPOINTS) {
+				needUpdateStats = true;
+			} else {
+				needUpdateSkills = true;
+			}
 			player->setVarStats(static_cast<stats_t>(s), static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
 		}
 	}
 
 	if (needUpdateStats) {
 		player->sendStats();
+	}
+
+	if (needUpdateSkills) {
+		player->sendSkills();
 	}
 
 	return RETURNVALUE_NOERROR;
@@ -885,27 +893,35 @@ ReturnValue MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots
 		}
 	}
 
-	if (needUpdateSkills) {
-		player->sendSkills();
-	}
-
 	//stat modifiers
 	bool needUpdateStats = false;
 
 	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
 		if (it.abilities->stats[s]) {
-			needUpdateStats = true;
+			if (s != STAT_MAGICPOINTS) {
+				needUpdateStats = true;
+			} else {
+				needUpdateSkills = true;
+			}
 			player->setVarStats(static_cast<stats_t>(s), -it.abilities->stats[s]);
 		}
 
 		if (it.abilities->statsPercent[s]) {
-			needUpdateStats = true;
+			if (s != STAT_MAGICPOINTS) {
+				needUpdateStats = true;
+			} else {
+				needUpdateSkills = true;
+			}
 			player->setVarStats(static_cast<stats_t>(s), -static_cast<int32_t>(player->getDefaultStats(static_cast<stats_t>(s)) * ((it.abilities->statsPercent[s] - 100) / 100.f)));
 		}
 	}
 
 	if (needUpdateStats) {
 		player->sendStats();
+	}
+
+	if (needUpdateSkills) {
+		player->sendSkills();
 	}
 
 	return RETURNVALUE_NOERROR;
