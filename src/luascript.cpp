@@ -950,6 +950,19 @@ void LuaScriptInterface::pushInstantSpell(lua_State* L, const InstantSpell& spel
 	setMetatable(L, -1, "Spell");
 }
 
+void LuaScriptInterface::pushRuneSpell(lua_State* L, const RuneSpell& spell)
+{
+	lua_createtable(L, 0, 6);
+	setField(L, "id", spell.getId());
+	setField(L, "name", spell.getName());
+	setField(L, "level", spell.getLevel());
+	setField(L, "mlevel", spell.getMagicLevel());
+	setField(L, "mana", spell.getMana());
+	setField(L, "manapercent", spell.getManaPercent());
+
+	setMetatable(L, -1, "Spell");
+}
+
 void LuaScriptInterface::pushPosition(lua_State* L, const Position& position, int32_t stackpos/* = 0*/)
 {
 	lua_createtable(L, 0, 4);
@@ -2208,6 +2221,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getHouses", LuaScriptInterface::luaGameGetHouses);
 	registerMethod("Game", "getOutfits", LuaScriptInterface::luaGameGetOutfits);
 	registerMethod("Game", "getMounts", LuaScriptInterface::luaGameGetMounts);
+	registerMethod("Game", "getInstantSpells", LuaScriptInterface::luaGameGetInstantSpells);
+	registerMethod("Game", "getRuneSpells", LuaScriptInterface::luaGameGetRuneSpells);
 
 	registerMethod("Game", "getGameState", LuaScriptInterface::luaGameGetGameState);
 	registerMethod("Game", "setGameState", LuaScriptInterface::luaGameSetGameState);
@@ -4636,6 +4651,44 @@ int LuaScriptInterface::luaGameGetMounts(lua_State* L)
 	int index = 0;
 	for (auto mount : mounts) {
 		pushMount(L, &mount);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetInstantSpells(lua_State* L)
+{
+	// Game.getInstantSpells()
+	std::vector<const InstantSpell*> spells;
+	for (auto& spell : g_spells->getInstantSpells()) {
+		spells.push_back(&spell.second);
+	}
+
+	lua_createtable(L, spells.size(), 0);
+
+	int index = 0;
+	for (auto spell : spells) {
+		pushInstantSpell(L, *spell);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetRuneSpells(lua_State* L)
+{
+	// Game.getRuneSpells()
+	std::vector<const RuneSpell*> spells;
+	for (auto& spell : g_spells->getRuneSpells()) {
+		spells.push_back(&spell.second);
+	}
+
+	lua_createtable(L, spells.size(), 0);
+
+	int index = 0;
+	for (auto spell : spells) {
+		pushRuneSpell(L, *spell);
 		lua_rawseti(L, -2, ++index);
 	}
 

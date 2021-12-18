@@ -1571,6 +1571,42 @@ void Player::onThink(uint32_t interval)
 		addMessageBuffer();
 	}
 
+	// momentum (cooldown resets)
+	int64_t timeNow = OTSYS_TIME();
+	uint16_t momentumChance = getSpecialSkill(SPECIALSKILL_MOMENTUM);
+
+	// check momentum eligibility (chance to trigger every 2 seconds)
+	if (((timeNow/1000) % 2) == 0 && momentumChance > 0 && getZone() != ZONE_PROTECTION && hasCondition(CONDITION_INFIGHT)) {
+
+		// roll for momentum
+		if (uniform_random(1, 10000) <= momentumChance) {
+			bool isTriggered = false;
+
+			// spell cooldowns
+			for (Condition* condition : conditions) {
+
+				// check if cooldown is active
+				if (condition->getEndTime() >= timeNow) {
+					ConditionType_t type = condition->getType();
+
+					// cooldown refund
+					// (0 doesn't update the cooldown bar near the end, using 1 instead)
+					if (type == CONDITION_SPELLCOOLDOWN || (type == CONDITION_SPELLGROUPCOOLDOWN && condition->getSubId() > SPELLGROUP_SUPPORT)) {
+						Condition* conditionCopy = condition->clone();
+						conditionCopy->setTicks(std::max(1, condition->getTicks() - 2000));
+						removeCondition(condition);
+						addCondition(conditionCopy);
+						isTriggered = true;
+					}
+				}
+			}
+
+			if (isTriggered) {
+				g_game.addMagicEffect(getPosition(), CONST_ME_HOURGLASS);
+			}
+		}
+	}
+
 	if (!getTile()->hasFlag(TILESTATE_NOLOGOUT) && !isAccessPlayer()) {
 		idleTime += interval;
 		const int32_t kickAfterMinutes = g_config.getNumber(ConfigManager::KICK_AFTER_MINUTES);

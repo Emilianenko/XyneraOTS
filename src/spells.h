@@ -59,6 +59,9 @@ class Spells final : public BaseEvents
 		const std::map<std::string, InstantSpell>& getInstantSpells() const {
 			return instants;
 		};
+		const std::map<uint16_t, RuneSpell>& getRuneSpells() const {
+			return runes;
+		};
 
 		void clearMaps(bool fromLua);
 		void clear(bool fromLua) override final;

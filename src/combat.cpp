@@ -862,7 +862,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				if (!damage.critical) {
 					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
 					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT);
-					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
+					if (chance > 0 && skill > 0 && uniform_random(1, 100) <= chance) {
 						damage.primary.value += std::round(damage.primary.value * (skill / 100.));
 						damage.secondary.value += std::round(damage.secondary.value * (skill / 100.));
 						damage.critical = true;
@@ -872,7 +872,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				// roll fatal hit (onslaught)
 				if (!damage.fatal) {
 					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_ONSLAUGHT);
-					if (chance > 0 && normal_random(1, 10000) <= chance) {
+					if (chance > 0 && uniform_random(1, 10000) <= chance) {
 						damage.primary.value += std::round(damage.primary.value * 0.6);
 						damage.secondary.value += std::round(damage.secondary.value * 0.6);
 						damage.fatal = true;
@@ -973,7 +973,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		// roll fatal hit (onslaught)
 		if (!damage.fatal) {
 			uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_ONSLAUGHT);
-			if (chance > 0 && normal_random(1, 10000) <= chance) {
+			if (chance > 0 && uniform_random(1, 10000) <= chance) {
 				fatalPrimary += std::round(damage.primary.value * 0.6);
 				fatalSecondary += std::round(damage.secondary.value * 0.6);
 				damage.fatal = true;
