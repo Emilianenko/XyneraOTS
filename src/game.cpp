@@ -4041,6 +4041,8 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 			addMagicEffect(targetPos, CONST_ME_POFF);
 		} else if (blockType == BLOCK_ARMOR) {
 			addMagicEffect(targetPos, CONST_ME_BLOCKHIT);
+		} else if (blockType == BLOCK_DODGE) {
+			addMagicEffect(targetPos, CONST_ME_DODGE);
 		} else if (blockType == BLOCK_IMMUNITY) {
 			uint8_t hitEffect = 0;
 			switch (combatType) {
@@ -4071,6 +4073,15 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 			addMagicEffect(targetPos, hitEffect);
 		}
 	};
+
+	// roll dodge (ruse)
+	if (Player* targetPlayer = target->getPlayer()) {
+		uint16_t chance = targetPlayer->getSpecialSkill(SPECIALSKILL_RUSE);
+		if (chance > 0 && normal_random(1, 10000) <= chance) {
+			sendBlockEffect(BLOCK_DODGE, damage.primary.type, target->getPosition());
+			return true;
+		}
+	}
 
 	BlockType_t primaryBlockType, secondaryBlockType;
 	if (damage.primary.type != COMBAT_NONE) {

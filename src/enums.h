@@ -297,7 +297,8 @@ enum BlockType_t : uint8_t {
 	BLOCK_NONE,
 	BLOCK_DEFENSE,
 	BLOCK_ARMOR,
-	BLOCK_IMMUNITY
+	BLOCK_IMMUNITY,
+	BLOCK_DODGE
 };
 
 enum skills_t : uint8_t {
