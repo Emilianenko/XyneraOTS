@@ -2349,7 +2349,7 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 
 	//Add level only for players
 	if (const Player* speaker = creature->getPlayer()) {
-		msg.add<uint16_t>(speaker->getLevel());
+		msg.add<uint16_t>(std::min<uint32_t>(speaker->getLevel(), std::numeric_limits<uint16_t>::max()));
 	} else {
 		msg.add<uint16_t>(0x00);
 	}
@@ -2381,7 +2381,7 @@ void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, co
 
 		//Add level only for players
 		if (const Player* speaker = creature->getPlayer()) {
-			msg.add<uint16_t>(speaker->getLevel());
+			msg.add<uint16_t>(std::min<uint32_t>(speaker->getLevel(), std::numeric_limits<uint16_t>::max()));
 		} else {
 			msg.add<uint16_t>(0x00);
 		}
@@ -2402,7 +2402,7 @@ void ProtocolGame::sendPrivateMessage(const Player* speaker, SpeakClasses type, 
 	if (speaker) {
 		msg.addString(speaker->getName());
 		msg.addByte(0x00); // "(Traded)" suffix after player name
-		msg.add<uint16_t>(speaker->getLevel());
+		msg.add<uint16_t>(std::min<uint32_t>(speaker->getLevel(), std::numeric_limits<uint16_t>::max()));
 	} else {
 		msg.add<uint32_t>(0x00);
 		msg.addByte(0x00); // "(Traded)" suffix after player name
@@ -3348,13 +3348,18 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	msg.add<uint16_t>(std::min<int32_t>(player->getHealth(), std::numeric_limits<uint16_t>::max()));
-	msg.add<uint16_t>(std::min<int32_t>(player->getMaxHealth(), std::numeric_limits<uint16_t>::max()));
+	if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
+	} else {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
+		msg.add<uint16_t>(10000);
+	}
 
 	msg.add<uint32_t>(player->getFreeCapacity());
 	msg.add<uint64_t>(player->getExperience());
 
-	msg.add<uint16_t>(player->getLevel());
+	msg.add<uint16_t>(std::min<uint32_t>(player->getLevel(), std::numeric_limits<uint16_t>::max()));
 	msg.addByte(player->getLevelPercent());
 
 	msg.add<uint16_t>(100); // base xp gain rate
@@ -3362,8 +3367,13 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(0); // xp boost
 	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
 
-	msg.add<uint16_t>(std::min<int32_t>(player->getMana(), std::numeric_limits<uint16_t>::max()));
-	msg.add<uint16_t>(std::min<int32_t>(player->getMaxMana(), std::numeric_limits<uint16_t>::max()));
+	if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
+	} else {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
+		msg.add<uint16_t>(10000);
+	}
 
 	msg.addByte(player->getSoul());
 	msg.add<uint16_t>(player->getStaminaMinutes());
