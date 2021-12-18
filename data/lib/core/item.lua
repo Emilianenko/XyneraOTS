@@ -371,7 +371,7 @@ do
 			for skill, value in pairs(abilities.specialSkills) do
 				if value ~= 0 then
 					-- add + symbol to special skill "amount" fields
-					if skill-1 < 5 and skill % 2 == 1 then
+					if skill-1 < 6 and skill % 2 == 1 then
 						value = string.format("%+d", value)
 					elseif skill-1 >= 6 then
 						-- fatal, dodge, momentum coming from the item natively

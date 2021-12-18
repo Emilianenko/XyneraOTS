@@ -643,6 +643,8 @@ struct CombatDamage
 	BlockType_t blockType = BLOCK_NONE;
 	bool critical = false;
 	bool leeched = false;
+	bool fatal = false;
+	bool dodged = false;
 };
 
 using MarketOfferList = std::list<MarketOffer>;

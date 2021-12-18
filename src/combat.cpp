@@ -857,13 +857,26 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				damage.secondary.value /= 2;
 			}
 
-			if (!damage.critical && damage.primary.type != COMBAT_HEALING && damage.origin != ORIGIN_CONDITION) {
-				uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
-				uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT);
-				if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
-					damage.primary.value += std::round(damage.primary.value * (skill / 100.));
-					damage.secondary.value += std::round(damage.secondary.value * (skill / 100.));
-					damage.critical = true;
+			if (damage.primary.type != COMBAT_HEALING && damage.origin != ORIGIN_CONDITION) {
+				// roll critical hit
+				if (!damage.critical) {
+					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
+					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT);
+					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
+						damage.primary.value += std::round(damage.primary.value * (skill / 100.));
+						damage.secondary.value += std::round(damage.secondary.value * (skill / 100.));
+						damage.critical = true;
+					}
+				}
+
+				// roll fatal hit (onslaught)
+				if (!damage.fatal) {
+					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_ONSLAUGHT);
+					if (chance > 0 && normal_random(1, 10000) <= chance) {
+						damage.primary.value += std::round(damage.primary.value * 0.6);
+						damage.secondary.value += std::round(damage.secondary.value * 0.6);
+						damage.fatal = true;
+					}
 				}
 			}
 		}
@@ -888,7 +901,9 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			}
 		}
 
-		if (damage.critical) {
+		if (damage.fatal) { // no need to send both - only fatal is displayed anyway
+			g_game.addMagicEffect(target->getPosition(), CONST_ME_FATAL);
+		} else if (damage.critical) {
 			g_game.addMagicEffect(target->getPosition(), CONST_ME_CRITICAL_DAMAGE);
 		}
 
@@ -939,13 +954,30 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 	Player* casterPlayer = caster ? caster->getPlayer() : nullptr;
 	int32_t criticalPrimary = 0;
 	int32_t criticalSecondary = 0;
-	if (!damage.critical && damage.primary.type != COMBAT_HEALING && casterPlayer && damage.origin != ORIGIN_CONDITION) {
-		uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
-		uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT);
-		if (chance > 0 && skill > 0 && uniform_random(1, 100) <= chance) {
-			criticalPrimary = std::round(damage.primary.value * (skill / 100.));
-			criticalSecondary = std::round(damage.secondary.value * (skill / 100.));
-			damage.critical = true;
+	int32_t fatalPrimary = 0;
+	int32_t fatalSecondary = 0;
+
+	if (damage.primary.type != COMBAT_HEALING && casterPlayer && damage.origin != ORIGIN_CONDITION) {
+
+		// roll critical hit
+		if (!damage.critical) {
+			uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
+			uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT);
+			if (chance > 0 && skill > 0 && uniform_random(1, 100) <= chance) {
+				criticalPrimary = std::round(damage.primary.value * (skill / 100.));
+				criticalSecondary = std::round(damage.secondary.value * (skill / 100.));
+				damage.critical = true;
+			}
+		}
+
+		// roll fatal hit (onslaught)
+		if (!damage.fatal) {
+			uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_ONSLAUGHT);
+			if (chance > 0 && normal_random(1, 10000) <= chance) {
+				fatalPrimary += std::round(damage.primary.value * 0.6);
+				fatalSecondary += std::round(damage.secondary.value * 0.6);
+				damage.fatal = true;
+			}
 		}
 	}
 
@@ -1028,7 +1060,16 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		if (damageCopy.critical) {
 			damageCopy.primary.value += playerCombatReduced ? criticalPrimary / 2 : criticalPrimary;
 			damageCopy.secondary.value += playerCombatReduced ? criticalSecondary / 2 : criticalSecondary;
-			g_game.addMagicEffect(creature->getPosition(), CONST_ME_CRITICAL_DAMAGE);
+
+			if (!damageCopy.fatal) { // no need to send both - only fatal is displayed anyway
+				g_game.addMagicEffect(creature->getPosition(), CONST_ME_CRITICAL_DAMAGE);
+			}
+		}
+
+		if (damageCopy.fatal) {
+			damageCopy.primary.value += playerCombatReduced ? fatalPrimary / 2 : fatalPrimary;
+			damageCopy.secondary.value += playerCombatReduced ? fatalSecondary / 2 : fatalSecondary;
+			g_game.addMagicEffect(creature->getPosition(), CONST_ME_FATAL);
 		}
 
 		bool success = false;
