@@ -645,7 +645,6 @@ struct CombatDamage
 	bool critical = false;
 	bool leeched = false;
 	bool fatal = false;
-	bool dodged = false;
 };
 
 using MarketOfferList = std::list<MarketOffer>;
