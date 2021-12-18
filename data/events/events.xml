@@ -20,14 +20,14 @@
 	<event class="Player" method="onLookInShop" enabled="1" />
 	<event class="Player" method="onLookInMarket" enabled="1" />
 	<event class="Player" method="onMoveItem" enabled="1" />
-	<event class="Player" method="onItemMoved" enabled="0" />
+	<event class="Player" method="onItemMoved" enabled="1" />
 	<event class="Player" method="onMoveCreature" enabled="0" />
 	<event class="Player" method="onReportBug" enabled="1" />
 	<event class="Player" method="onReportRuleViolation" enabled="1" />
 	<event class="Player" method="onTurn" enabled="0" />
 	<event class="Player" method="onTradeRequest" enabled="0" />
-	<event class="Player" method="onTradeAccept" enabled="0" />
-	<event class="Player" method="onTradeCompleted" enabled="0" />
+	<event class="Player" method="onTradeAccept" enabled="1" />
+	<event class="Player" method="onTradeCompleted" enabled="1" />
 	<event class="Player" method="onPodiumRequest" enabled="1" />
 	<event class="Player" method="onPodiumEdit" enabled="1" />
 	<event class="Player" method="onGainExperience" enabled="1" />
