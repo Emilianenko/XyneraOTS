@@ -119,6 +119,18 @@ enum ItemParseAttributes_t {
 	ITEM_PARSE_MAXMANAPOINTSPERCENT,
 	ITEM_PARSE_MAGICPOINTS,
 	ITEM_PARSE_MAGICPOINTSPERCENT,
+	ITEM_PARSE_MAGICLEVELENERGY,
+	ITEM_PARSE_MAGICLEVELFIRE,
+	ITEM_PARSE_MAGICLEVELPOISON,
+	ITEM_PARSE_MAGICLEVELICE,
+	ITEM_PARSE_MAGICLEVELHOLY,
+	ITEM_PARSE_MAGICLEVELDEATH,
+	ITEM_PARSE_MAGICLEVELLIFEDRAIN,
+	ITEM_PARSE_MAGICLEVELMANADRAIN,
+	ITEM_PARSE_MAGICLEVELDROWN,
+	ITEM_PARSE_MAGICLEVELPHYSICAL,
+	ITEM_PARSE_MAGICLEVELHEALING,
+	ITEM_PARSE_MAGICLEVELUNDEFINED,
 	ITEM_PARSE_CRITICALHITCHANCE,
 	ITEM_PARSE_CRITICALHITAMOUNT,
 	ITEM_PARSE_LIFELEECHCHANCE,
@@ -185,23 +197,26 @@ struct Abilities {
 	uint32_t conditionImmunities = 0;
 	uint32_t conditionSuppressions = 0;
 
-	//stats modifiers
+	// stats modifiers
 	std::array<int32_t, STAT_LAST + 1> stats = {0};
 	std::array<int32_t, STAT_LAST + 1> statsPercent = {0};
 
-	//extra skill modifiers
+	// extra skill modifiers
 	std::array<int32_t, SKILL_LAST + 1> skills = {0};
 	std::array<int32_t, SPECIALSKILL_LAST + 1> specialSkills = {0};
+
+	// element magic level modifiers
+	std::array<int16_t, COMBAT_COUNT> specialMagicLevelSkill = {0};
 
 	int32_t speed = 0;
 
 	// field damage abilities modifiers
 	std::array<int16_t, COMBAT_COUNT> fieldAbsorbPercent = {0};
 
-	//damage abilities modifiers
+	// damage abilities modifiers
 	std::array<int16_t, COMBAT_COUNT> absorbPercent = {0};
 
-	//elemental damage
+	// elemental damage
 	uint16_t elementDamage = 0;
 	CombatType_t elementType = COMBAT_NONE;
 

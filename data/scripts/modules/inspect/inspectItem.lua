@@ -223,6 +223,13 @@ function getItemDetails(item)
 		end
 	end
 	
+	-- element magic level
+	for element, value in pairs(abilities.specialMagicLevel) do
+		if value ~= 0 then
+			skillBoosts[#skillBoosts + 1] = string.format("%s magic level %+d", getCombatName(2^(element-1)), value)
+		end
+	end
+	
 	-- special skills
 	for skill, value in pairs(abilities.specialSkills) do
 		if value ~= 0 then

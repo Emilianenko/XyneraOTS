@@ -395,6 +395,9 @@ class Player final : public Creature, public Cylinder
 		uint32_t getMagicLevel() const {
 			return std::max<int32_t>(0, magLevel + varStats[STAT_MAGICPOINTS]);
 		}
+		uint32_t getSpecialMagicLevel(CombatType_t type) const {
+			return std::max<int32_t>(0, specialMagicLevelSkill[combatTypeToIndex(type)]);
+		}
 		uint32_t getBaseMagicLevel() const {
 			return magLevel;
 		}
@@ -492,6 +495,10 @@ class Player final : public Creature, public Cylinder
 		}
 		void setItemAbility(slots_t slot, bool enabled) {
 			inventoryAbilities[slot] = enabled;
+		}
+
+		void setSpecialMagicLevelSkill(CombatType_t type, int32_t modifier) {
+			specialMagicLevelSkill[combatTypeToIndex(type)] += modifier;
 		}
 
 		void setVarSkill(skills_t skill, int32_t modifier) {
@@ -621,6 +628,9 @@ class Player final : public Creature, public Cylinder
 		}
 		uint8_t getSkillPercent(uint8_t skill) const {
 			return skills[skill].percent;
+		}
+		uint16_t getSpecialMagicLevelSkill(CombatType_t type) const {
+			return std::max<int32_t>(0, specialMagicLevelSkill[combatTypeToIndex(type)]);
 		}
 
 		bool getAddAttackSkill() const {
@@ -1298,6 +1308,7 @@ class Player final : public Creature, public Cylinder
 		int32_t varSkills[SKILL_LAST + 1] = {};
 		int32_t varSpecialSkills[SPECIALSKILL_LAST + 1] = {};
 		int32_t varStats[STAT_LAST + 1] = {};
+		std::array<int16_t, COMBAT_COUNT> specialMagicLevelSkill = {0};
 		int32_t purchaseCallback = -1;
 		int32_t saleCallback = -1;
 		int32_t MessageBufferCount = 0;

@@ -353,15 +353,21 @@ do
 				end
 			end
 		end
-		
-		-- element magic level
-		-- to do
-		
+				
 		-- skill boosts
 		do
 			for skill, value in pairs(abilities.skills) do
 				if value ~= 0 then
 					descriptions[#descriptions + 1] = string.format("%s %+d", getSkillName(skill-1), value)
+				end
+			end
+		end
+		
+		-- element magic level
+		do
+			for element, value in pairs(abilities.specialMagicLevel) do
+				if value ~= 0 then
+					descriptions[#descriptions + 1] = string.format("%s magic level %+d", getCombatName(2^(element-1)), value)
 				end
 			end
 		end
