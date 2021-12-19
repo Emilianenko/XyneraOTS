@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monsters>
+	<!-- player familiars -->
+	<monster name="Sorcerer Familiar" file="monsters/sorcerer_familiar.xml" />
+	<monster name="Druid Familiar" file="monsters/druid_familiar.xml" />
+	<monster name="Paladin Familiar" file="monsters/paladin_familiar.xml" />
+	<monster name="Knight Familiar" file="monsters/knight_familiar.xml" />
+	
+	<!-- monsters -->
 	<monster name="a carved stone tile" file="monsters/a_carved_stone_tile.xml" />
 	<monster name="Abyssador" file="monsters/abyssador.xml" />
 	<monster name="Achad" file="monsters/achad.xml" />
