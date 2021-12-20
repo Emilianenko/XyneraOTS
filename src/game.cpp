@@ -5702,7 +5702,7 @@ std::forward_list<Item*> Game::getMarketItemList(uint16_t wareId, uint8_t tier, 
 				continue;
 			}
 
-			if (!item->getTier() == tier) {
+			if (item->getTier() != tier) {
 				continue;
 			}
 
