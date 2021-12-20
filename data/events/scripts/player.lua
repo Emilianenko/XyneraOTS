@@ -107,7 +107,7 @@ end
 function Player:onPodiumRequest(item)
 	local podium = Podium(item.uid)
 	if not podium then
-		self:sendCancelMessage("Sorry, not possible.")
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return
 	end
 	
@@ -117,14 +117,14 @@ end
 function Player:onPodiumEdit(item, outfit, direction, isVisible)
 	local podium = Podium(item.uid)
 	if not podium then
-		self:sendCancelMessage("Sorry, not possible.")
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return
 	end
 	
 	if not self:getGroup():getAccess() then
 		-- check if the player is in melee range
 		if getDistanceBetween(self:getPosition(), item:getPosition()) > 1 then
-			self:sendCancelMessage("Sorry, not possible.")
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 			return
 		end
 		
@@ -190,7 +190,7 @@ function Player:onPodiumEdit(item, outfit, direction, isVisible)
 	podium:setFlag(PODIUM_SHOW_PLATFORM, isVisible)
 	podium:setFlag(PODIUM_SHOW_OUTFIT, outfit.lookType ~= 0)
 	podium:setFlag(PODIUM_SHOW_MOUNT, outfit.lookMount ~= 0)
-	podium:setDirection(direction < 7 and direction or 2)
+	podium:setDirection(direction < DIRECTION_NORTHEAST and direction or DIRECTION_SOUTH)
 	podium:setOutfit(podiumOutfit)
 end
 
