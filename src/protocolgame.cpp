@@ -3358,7 +3358,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 		msg.add<uint16_t>(10000);
 	}
 
-	msg.add<uint32_t>(player->getFreeCapacity());
+	msg.add<uint32_t>(player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getFreeCapacity());
 	msg.add<uint64_t>(player->getExperience());
 
 	msg.add<uint16_t>(std::min<uint32_t>(player->getLevel(), std::numeric_limits<uint16_t>::max()));
@@ -3414,8 +3414,9 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 	}
 
 	// to do: bonus cap
-	msg.add<uint32_t>(player->getCapacity()); // base + bonus capacity
-	msg.add<uint32_t>(player->getCapacity()); // base capacity
+	uint32_t displayCap = player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getCapacity();
+	msg.add<uint32_t>(displayCap); // base + bonus capacity
+	msg.add<uint32_t>(displayCap); // base capacity
 }
 
 void ProtocolGame::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)
