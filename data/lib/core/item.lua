@@ -744,7 +744,8 @@ do
 		end
 		
 		-- item description
-		if lookDistance <= 1 or (isDoor and not isVirtual) then
+		local isBed = itemType:isBed()
+		if lookDistance <= 1 or (not isVirtual and (isDoor or isBed)) then
 			-- custom item description
 			local desc = not isVirtual and item:getSpecialDescription()
 			
@@ -759,7 +760,9 @@ do
 			end
 			
 			if desc and desc:len() > 0 then
-				response[#response + 1] = string.format("\n%s", desc)
+				if not (isBed and desc == "Nobody is sleeping there.") then
+					response[#response + 1] = string.format("\n%s", desc)
+				end
 			end
 		end
 		
