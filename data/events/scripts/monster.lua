@@ -1,4 +1,9 @@
 function Monster:onDropLoot(corpse)
+	local player = Player(corpse:getCorpseOwner())
+	if player then
+		player:updateKillTracker(self, corpse)
+	end
+	
 	if hasEventCallback(EVENT_CALLBACK_ONDROPLOOT) then
 		EventCallback(EVENT_CALLBACK_ONDROPLOOT, self, corpse)
 	end
