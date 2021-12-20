@@ -8365,7 +8365,7 @@ int LuaScriptInterface::luaCreatureIsImmune(lua_State* L)
 
 int LuaScriptInterface::luaCreatureRemove(lua_State* L)
 {
-	// creature:remove()
+	// creature:remove(text)
 	Creature** creaturePtr = getRawUserdata<Creature>(L, 1);
 	if (!creaturePtr) {
 		lua_pushnil(L);
@@ -8380,7 +8380,7 @@ int LuaScriptInterface::luaCreatureRemove(lua_State* L)
 
 	Player* player = creature->getPlayer();
 	if (player) {
-		player->kickPlayer(true);
+		player->kickPlayer(true, getString(L, 2));
 	} else {
 		g_game.removeCreature(creature);
 	}

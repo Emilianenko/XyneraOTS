@@ -2325,11 +2325,11 @@ void Player::addList()
 	g_game.addPlayer(this);
 }
 
-void Player::kickPlayer(bool displayEffect)
+void Player::kickPlayer(bool displayEffect, const std::string& message)
 {
 	g_creatureEvents->playerLogout(this);
 	if (client) {
-		client->logout(displayEffect, true);
+		client->logout(displayEffect, true, message);
 	} else {
 		g_game.removeCreature(this);
 	}

@@ -30,6 +30,7 @@ enum SessionEndTypes_t : uint8_t {
 	SESSION_END_UNKNOWN = 1, // unknown, no difference from logout
 	SESSION_END_FORCECLOSE = 2,
 	SESSION_END_UNKNOWN2 = 3, // unknown, no difference from logout
+	SESSION_END_UNKNOWN3 = 4 // unknown
 };
 
 class NetworkMessage;
@@ -74,7 +75,7 @@ class ProtocolGame final : public Protocol
 		explicit ProtocolGame(Connection_ptr connection) : Protocol(connection) {}
 
 		void login(const std::string& name, uint32_t accountId, OperatingSystem_t operatingSystem);
-		void logout(bool displayEffect, bool forced);
+		void logout(bool displayEffect, bool forced, const std::string& message = std::string());
 
 		uint16_t getVersion() const {
 			return version;

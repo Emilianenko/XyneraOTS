@@ -14,10 +14,13 @@ function onSay(player, words, param)
 	local targetIp = result.getNumber(resultId, "lastip")
 	result.free(resultId)
 
+	local timeNow = os.time()
+	local banEndsAt = timeNow + (ipBanDays * 86400)
+	
 	local targetPlayer = Player(param)
 	if targetPlayer then
 		targetIp = targetPlayer:getIp()
-		targetPlayer:remove()
+		targetPlayer:remove(string.format("Your IP has been banned until %s.", os.date("%d %b %Y %X", banEndsAt)))
 	end
 
 	if targetIp == 0 then
@@ -31,9 +34,9 @@ function onSay(player, words, param)
 		return false
 	end
 
-	local timeNow = os.time()
+	
 	db.query("INSERT INTO `ip_bans` (`ip`, `reason`, `banned_at`, `expires_at`, `banned_by`) VALUES (" ..
-			targetIp .. ", '', " .. timeNow .. ", " .. timeNow + (ipBanDays * 86400) .. ", " .. player:getGuid() .. ")")
+			targetIp .. ", '', " .. timeNow .. ", " .. banEndsAt .. ", " .. player:getGuid() .. ")")
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, targetName .. "  has been IP banned.")
 	return false
 end

@@ -14,6 +14,6 @@ function onSay(player, words, param)
 		return false
 	end
 
-	target:remove()
+	target:remove("You have been kicked out.")
 	return false
 end

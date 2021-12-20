@@ -288,7 +288,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 	acceptPackets = true;
 }
 
-void ProtocolGame::logout(bool displayEffect, bool forced)
+void ProtocolGame::logout(bool displayEffect, bool forced, const std::string& message)
 {
 	//dispatcher thread
 	if (!player) {
@@ -321,8 +321,12 @@ void ProtocolGame::logout(bool displayEffect, bool forced)
 		}
 	}
 
-	sendSessionEnd(forced ? SESSION_END_FORCECLOSE : SESSION_END_LOGOUT);
-	disconnect();
+	sendSessionEnd(SESSION_END_LOGOUT);
+	if (!message.empty()) {
+		disconnectClient(message);
+	} else {
+		disconnect();
+	}
 
 	g_game.removeCreature(player);
 }
@@ -542,7 +546,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	switch (recvbyte) {
 		case 0x0F: break; // login
-		case 0x14: g_dispatcher.addTask(createTask(std::bind(&ProtocolGame::logout, getThis(), true, false))); break;
+		case 0x14: g_dispatcher.addTask(createTask(std::bind(&ProtocolGame::logout, getThis(), true, false, std::string()))); break;
 		case 0x1C: break; // ping check
 		case 0x1D: addGameTask(&Game::playerReceivePingBack, player->getID()); break;
 		case 0x1E: addGameTask(&Game::playerReceivePing, player->getID()); break;

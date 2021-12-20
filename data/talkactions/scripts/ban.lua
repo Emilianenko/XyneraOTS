@@ -26,13 +26,16 @@ function onSay(player, words, param)
 	end
 
 	local timeNow = os.time()
+	local banEndsAt = timeNow + (banDays * 86400)
 	db.query("INSERT INTO `account_bans` (`account_id`, `reason`, `banned_at`, `expires_at`, `banned_by`) VALUES (" ..
-			accountId .. ", " .. db.escapeString(reason) .. ", " .. timeNow .. ", " .. timeNow + (banDays * 86400) .. ", " .. player:getGuid() .. ")")
+			accountId .. ", " .. db.escapeString(reason) .. ", " .. timeNow .. ", " .. banEndsAt .. ", " .. player:getGuid() .. ")")
 
 	local target = Player(name)
 	if target then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, target:getName() .. " has been banned.")
-		target:remove()
+		
+		local outputReason = reason:len() > 0 and string.format("\n\nReason: %s", reason) or ""
+		target:remove(string.format("You account has been banned until %s.%s", os.date("%d %b %Y %X", banEndsAt), outputReason))
 	else
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, name .. " has been banned.")
 	end
