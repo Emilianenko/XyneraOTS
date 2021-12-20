@@ -35,7 +35,7 @@ function onSay(player, words, param)
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, target:getName() .. " has been banned.")
 		
 		local outputReason = reason:len() > 0 and string.format("\n\nReason: %s", reason) or ""
-		target:remove(string.format("You account has been banned until %s.%s", os.date("%d %b %Y %X", banEndsAt), outputReason))
+		target:remove(string.format("Your account has been banned until %s.%s", os.date("%d %b %Y %X", banEndsAt), outputReason))
 	else
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, name .. " has been banned.")
 	end
