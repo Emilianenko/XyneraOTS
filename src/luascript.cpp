@@ -11987,8 +11987,7 @@ int LuaScriptInterface::luaHouseGetOwnerName(lua_State* L)
 	House* house = getUserdata<House>(L, 1);
 	if (house) {
 		pushString(L, house->getOwnerName());
-	}
-	else {
+	} else {
 		lua_pushnil(L);
 	}
 	return 1;
