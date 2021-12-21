@@ -181,17 +181,8 @@ bool Party::joinParty(Player& player)
 		return false;
 	}
 
-	auto it = std::find(inviteList.begin(), inviteList.end(), &player);
-	if (it == inviteList.end()) {
-		return false;
-	}
-
-	inviteList.erase(it);
-
 	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has joined the party.", player.getName()));
-
 	player.setParty(this);
-
 	g_game.updatePlayerShield(&player);
 
 	for (Player* member : memberList) {
@@ -202,11 +193,18 @@ bool Party::joinParty(Player& player)
 	player.sendCreatureSkull(&player);
 	leader->sendCreatureSkull(&player);
 	player.sendPlayerPartyIcons(leader);
-
 	memberList.push_back(&player);
 
-	player.removePartyInvitation(this);
+	// first player accepts the invitation
+	// the party officialy gets formed
+	// the leader can no longer take invitations from others
+	if (memberList.empty()) {
+		leader->clearPartyInvitations();
+	}
+
+	player.clearPartyInvitations();
 	updateSharedExperience();
+
 
 	const std::string& leaderName = leader->getName();
 	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("You have joined {:s}'{:s} party. Open the party channel to communicate with your companions.", leaderName, leaderName.back() == 's' ? "" : "s"));
