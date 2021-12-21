@@ -4643,7 +4643,6 @@ int LuaScriptInterface::luaGameGetOutfits(lua_State* L)
 	int index = 0;
 	for (auto& outfit : outfits) {
 		pushOutfit(L, &outfit);
-		setMetatable(L, -1, "Outfit");
 		lua_rawseti(L, -2, ++index);
 	}
 
