@@ -4641,7 +4641,7 @@ int LuaScriptInterface::luaGameGetOutfits(lua_State* L)
 	lua_createtable(L, outfits.size(), 0);
 
 	int index = 0;
-	for (auto outfit : outfits) {
+	for (auto& outfit : outfits) {
 		pushOutfit(L, &outfit);
 		setMetatable(L, -1, "Outfit");
 		lua_rawseti(L, -2, ++index);
@@ -4657,7 +4657,7 @@ int LuaScriptInterface::luaGameGetMounts(lua_State* L)
 	lua_createtable(L, mounts.size(), 0);
 
 	int index = 0;
-	for (auto mount : mounts) {
+	for (auto& mount : mounts) {
 		pushMount(L, &mount);
 		lua_rawseti(L, -2, ++index);
 	}
