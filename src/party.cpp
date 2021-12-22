@@ -122,6 +122,11 @@ bool Party::leaveParty(Player* player)
 	player->sendCreatureSkull(player);
 	player->sendPlayerPartyIcons(leader);
 
+	// remove pending invitation icons from the screen
+	for (Player* invitee : inviteList) {
+		player->sendCreatureShield(invitee);
+	}
+
 	player->sendTextMessage(MESSAGE_INFO_DESCR, "You have left the party.");
 
 	updateSharedExperience();
