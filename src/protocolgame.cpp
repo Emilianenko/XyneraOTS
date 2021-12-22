@@ -950,7 +950,7 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 		}
 
 		msg.get<uint16_t>(); // familiar looktype
-		addGameTask(&Game::playerChangeOutfit, player->getID(), newOutfit);
+		addGameTask(&Game::playerChangeOutfit, player->getID(), newOutfit, msg.getByte() == 0x01);
 
 	// Store "try outfit" window
 	} else if (outfitType == 1) {
@@ -3014,7 +3014,7 @@ void ProtocolGame::sendOutfitWindow()
 
 	msg.addByte(0x00); // Try outfit mode (?)
 	msg.addByte(mounted ? 0x01 : 0x00);
-	msg.addByte(0x00); // randomize mount (bool)
+	msg.addByte(player->hasRandomizedMount() ? 0x01 : 0x00); // randomize mount (bool)
 	writeToOutputBuffer(msg);
 }
 

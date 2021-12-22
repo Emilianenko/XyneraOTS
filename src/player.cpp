@@ -4351,7 +4351,20 @@ bool Player::toggleMount(bool mount)
 			return false;
 		}
 
-		Mount* currentMount = g_game.mounts.getMountByID(currentMountId);
+		const Mount* currentMount;
+		if (randomizeMount) {
+			std::vector<const Mount*> mounts;
+			for (const Mount& tmpMount : g_game.mounts.getMounts()) {
+				if (hasMount(&tmpMount)) {
+					mounts.push_back(&tmpMount);
+				}
+			}
+
+			currentMount = mounts[uniform_random(0, mounts.size()-1)];
+		} else {
+			currentMount = g_game.mounts.getMountByID(currentMountId);
+		}
+
 		if (!currentMount) {
 			return false;
 		}
@@ -4373,6 +4386,21 @@ bool Player::toggleMount(bool mount)
 		}
 
 		defaultOutfit.lookMount = currentMount->clientId;
+		if (randomizeMount) {
+			// update for in-game look
+			defaultOutfit.lookMountHead = uniform_random(0, 132);
+			defaultOutfit.lookMountBody = uniform_random(0, 132);
+			defaultOutfit.lookMountLegs = uniform_random(0, 132);
+			defaultOutfit.lookMountFeet = uniform_random(0, 132);
+
+			// update for set outfit dialog
+			setCurrentMount(currentMount->id);
+			currentOutfit.lookMount = defaultOutfit.lookMount;
+			currentOutfit.lookMountHead = defaultOutfit.lookMountHead;
+			currentOutfit.lookMountBody = defaultOutfit.lookMountBody;
+			currentOutfit.lookMountLegs = defaultOutfit.lookMountLegs;
+			currentOutfit.lookMountFeet = defaultOutfit.lookMountFeet;
+		}
 
 		if (currentMount->speed != 0) {
 			g_game.changeSpeed(this, currentMount->speed);

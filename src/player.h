@@ -532,7 +532,7 @@ class Player final : public Creature, public Cylinder
 
 		uint64_t getMoney() const;
 
-		//safe-trade functions
+		// safe-trade functions
 		void setTradeState(tradestate_t state) {
 			tradeState = state;
 		}
@@ -543,7 +543,7 @@ class Player final : public Creature, public Cylinder
 			return tradeItem;
 		}
 
-		//shop functions
+		// shop functions
 		void setShopOwner(Npc* owner, int32_t onBuy, int32_t onSell) {
 			shopOwner = owner;
 			purchaseCallback = onBuy;
@@ -562,21 +562,21 @@ class Player final : public Creature, public Cylinder
 			return shopOwner;
 		}
 
-		//V.I.P. functions
+		// V.I.P. functions
 		void notifyStatusChange(Player* loginPlayer, VipStatus_t status);
 		bool removeVIP(uint32_t vipGuid);
 		bool addVIP(uint32_t vipGuid, const std::string& vipName, VipStatus_t status);
 		bool addVIPInternal(uint32_t vipGuid);
 		bool editVIP(uint32_t vipGuid, const std::string& description, uint32_t icon, bool notify);
 
-		//follow functions
+		// follow functions
 		bool setFollowCreature(Creature* creature) override;
 		void goToFollowCreature() override;
 
-		//follow events
+		// follow events
 		void onFollowCreature(const Creature* creature) override;
 
-		//walk events
+		// walk events
 		void onWalk(Direction& dir) override;
 		void onWalkAborted() override;
 		void onWalkComplete() override;
@@ -595,7 +595,7 @@ class Player final : public Creature, public Cylinder
 			secureMode = mode;
 		}
 
-		//combat functions
+		// combat functions
 		bool setAttackedCreature(Creature* creature) override;
 		bool isImmune(CombatType_t type) const override;
 		bool isImmune(ConditionType_t type) const override;
@@ -662,7 +662,7 @@ class Player final : public Creature, public Cylinder
 
 		uint64_t getGainedExperience(Creature* attacker) const override;
 
-		//combat event functions
+		// combat event functions
 		void onAddCondition(ConditionType_t type) override;
 		void onAddCombatCondition(ConditionType_t type) override;
 		void onEndCondition(ConditionType_t type) override;
@@ -700,6 +700,7 @@ class Player final : public Creature, public Cylinder
 		}
 		void checkSkullTicks(int64_t ticks);
 
+		// outfit functions
 		bool canWear(uint32_t lookType, uint8_t addons) const;
 		bool hasOutfit(uint32_t lookType, uint8_t addons);
 		void addOutfit(uint16_t lookType, uint8_t addons);
@@ -707,11 +708,16 @@ class Player final : public Creature, public Cylinder
 		bool removeOutfitAddon(uint16_t lookType, uint8_t addons);
 		bool getOutfitAddons(const Outfit& outfit, uint8_t& addons) const;
 
+		// mount functions
+		bool hasRandomizedMount() const { return randomizeMount; }
+		void setRandomizedMount(bool newValue) { randomizeMount = newValue; }
+
+		// list limits
 		size_t getMaxVIPEntries() const;
 		size_t getMaxDepotItems() const;
 
-		//tile
-		//send methods
+		// tile
+		// send methods
 		void sendAddTileItem(const Tile* tile, const Position& pos, const Item* item) {
 			if (client) {
 				int32_t stackpos = tile->getStackposOfItem(this, item);
@@ -861,7 +867,7 @@ class Player final : public Creature, public Cylinder
 		}
 		void sendModalWindow(const ModalWindow& modalWindow);
 
-		//container
+		// container
 		void sendAddContainerItem(const Container* container, const Item* item);
 		void sendUpdateContainerItem(const Container* container, uint16_t slot, const Item* newItem);
 		void sendRemoveContainerItem(const Container* container, uint16_t slot);
@@ -871,7 +877,7 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		//inventory
+		// inventory
 		void sendInventoryItem(slots_t slot, const Item* item) {
 			if (client) {
 				client->sendInventoryItem(slot, item);
@@ -884,7 +890,7 @@ class Player final : public Creature, public Cylinder
 		}
 		void openSavedContainers();
 
-		//event methods
+		// event methods
 		void onUpdateTileItem(const Tile* tile, const Position& pos, const Item* oldItem,
 		                              const ItemType& oldType, const Item* newItem, const ItemType& newType) override;
 		void onRemoveTileItem(const Tile* tile, const Position& pos, const ItemType& iType,
@@ -898,7 +904,7 @@ class Player final : public Creature, public Cylinder
 		void onAttackedCreatureDisappear(bool isLogout) override;
 		void onFollowCreatureDisappear(bool isLogout) override;
 
-		//container
+		// container
 		void onAddContainerItem(const Item* item);
 		void onUpdateContainerItem(const Container* container, const Item* oldItem, const Item* newItem);
 		void onRemoveContainerItem(const Container* container, const Item* item);
@@ -907,7 +913,7 @@ class Player final : public Creature, public Cylinder
 		void onSendContainer(const Container* container);
 		void autoCloseContainers(const Container* container);
 
-		//inventory
+		// inventory
 		void onUpdateInventoryItem(Item* oldItem, Item* newItem);
 		void onRemoveInventoryItem(Item* item);
 
@@ -1343,6 +1349,7 @@ class Player final : public Creature, public Cylinder
 		bool pzLocked = false;
 		bool isConnecting = false;
 		bool addAttackSkillPoint = false;
+		bool randomizeMount = false;
 		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 
 		static uint32_t playerAutoID;

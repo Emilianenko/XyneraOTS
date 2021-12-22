@@ -3539,7 +3539,7 @@ void Game::playerToggleMount(uint32_t playerId, bool mount)
 	player->toggleMount(mount);
 }
 
-void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
+void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRandomized)
 {
 	if (!g_config.getBoolean(ConfigManager::ALLOW_CHANGEOUTFIT)) {
 		return;
@@ -3583,6 +3583,8 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit)
 
 		player->wasMounted = false;
 	}
+
+	player->setRandomizedMount(mountRandomized);
 
 	if (player->canWear(outfit.lookType, outfit.lookAddons)) {
 		player->defaultOutfit = outfit;

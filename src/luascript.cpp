@@ -2682,6 +2682,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "addMount", LuaScriptInterface::luaPlayerAddMount);
 	registerMethod("Player", "removeMount", LuaScriptInterface::luaPlayerRemoveMount);
 	registerMethod("Player", "hasMount", LuaScriptInterface::luaPlayerHasMount);
+	registerMethod("Player", "hasRandomizedMount", LuaScriptInterface::luaPlayerHasRandomizedMount);
+	registerMethod("Player", "setRandomizedMount", LuaScriptInterface::luaPlayerSetRandomizedMount);
 
 	registerMethod("Player", "getPremiumEndsAt", LuaScriptInterface::luaPlayerGetPremiumEndsAt);
 	registerMethod("Player", "setPremiumEndsAt", LuaScriptInterface::luaPlayerSetPremiumEndsAt);
@@ -10274,6 +10276,33 @@ int LuaScriptInterface::luaPlayerHasMount(lua_State* L) {
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerHasRandomizedMount(lua_State* L)
+{
+	// player:hasRandomizedMount()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	pushBoolean(L, player->hasRandomizedMount());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetRandomizedMount(lua_State* L)
+{
+	// player:setRandomizedMount(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	player->setRandomizedMount(getBoolean(L, 2));
+	pushBoolean(L, true);
 	return 1;
 }
 
