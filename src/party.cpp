@@ -177,34 +177,49 @@ bool Party::passPartyLeadership(Player* player)
 
 bool Party::joinParty(Player& player)
 {
+	// check if lua scripts allow the player to join
 	if (!g_events->eventPartyOnJoin(this, &player)) {
 		return false;
 	}
 
-	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has joined the party.", player.getName()));
-	player.setParty(this);
-	g_game.updatePlayerShield(&player);
-
-	for (Player* member : memberList) {
-		member->sendCreatureSkull(&player);
-		player.sendPlayerPartyIcons(member);
-	}
-
-	player.sendCreatureSkull(&player);
-	leader->sendCreatureSkull(&player);
-	player.sendPlayerPartyIcons(leader);
-	memberList.push_back(&player);
-
-	// first player accepts the invitation
-	// the party officialy gets formed
+	// first player accepted the invitation
+	// the party gets officially formed
 	// the leader can no longer take invitations from others
 	if (memberList.empty()) {
 		leader->clearPartyInvitations();
 	}
 
-	player.clearPartyInvitations();
-	updateSharedExperience();
+	// add player to the party
+	memberList.push_back(&player);
+	player.setParty(this);
+	broadcastPartyMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has joined the party.", player.getName()));
 
+	// remove player pending invitations to this and other parties
+	player.clearPartyInvitations();
+
+	// update player icon on the screen
+	g_game.updatePlayerShield(&player);
+
+	// update player-member party icons
+	for (Player* member : memberList) {
+		member->sendCreatureSkull(&player);
+		player.sendPlayerPartyIcons(member);
+	}
+
+	// update player-leader party icons
+	leader->sendCreatureSkull(&player);
+	player.sendPlayerPartyIcons(leader);
+
+	// update player own skull
+	player.sendCreatureSkull(&player);
+
+	// show the new member who else is invited
+	for (Player* invitee : inviteList) {
+		player.sendCreatureShield(invitee);
+	}
+
+	// check the party eligibility for shared experience
+	updateSharedExperience();
 
 	const std::string& leaderName = leader->getName();
 	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("You have joined {:s}'{:s} party. Open the party channel to communicate with your companions.", leaderName, leaderName.back() == 's' ? "" : "s"));
@@ -255,12 +270,18 @@ bool Party::invitePlayer(Player& player)
 		leader->sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has been invited.", player.getName()));
 	}
 
+	// add player to invite lists
 	inviteList.push_back(&player);
+	player.addPartyInvitation(this);
 
+	// update leader-invitee party status
 	leader->sendCreatureShield(&player);
 	player.sendCreatureShield(leader);
 
-	player.addPartyInvitation(this);
+	// update the invitation status for other members
+	for (Player* member : memberList) {
+		member->sendCreatureShield(&player);
+	}
 
 	player.sendTextMessage(MESSAGE_INFO_DESCR, fmt::format("{:s} has invited you to {:s} party.", leader->getName(), leader->getSex() == PLAYERSEX_FEMALE ? "her" : "his"));
 	return true;
