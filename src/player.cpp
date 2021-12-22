@@ -1583,22 +1583,30 @@ void Player::onThink(uint32_t interval)
 			bool isTriggered = false;
 
 			// spell cooldowns
-			for (Condition* condition : conditions) {
+			auto it = conditions.begin(), end = conditions.end();
+			while (it != end) {
+				int64_t endTime = (*it)->getEndTime();
 
 				// check if cooldown is active
-				if (condition->getEndTime() >= timeNow) {
-					ConditionType_t type = condition->getType();
+				if (endTime >= timeNow) {
+					ConditionType_t type = (*it)->getType();
 
 					// cooldown refund
-					// (0 doesn't update the cooldown bar near the end, using 1 instead)
-					if (type == CONDITION_SPELLCOOLDOWN || (type == CONDITION_SPELLGROUPCOOLDOWN && condition->getSubId() > SPELLGROUP_SUPPORT)) {
-						Condition* conditionCopy = condition->clone();
-						conditionCopy->setTicks(std::max(1, condition->getTicks() - 2000));
-						removeCondition(condition);
-						addCondition(conditionCopy);
+					uint32_t spellId = (*it)->getSubId();
+					if (type == CONDITION_SPELLCOOLDOWN || (type == CONDITION_SPELLGROUPCOOLDOWN && spellId > SPELLGROUP_SUPPORT)) {
+						int32_t newTicks = std::max(0, (*it)->getTicks() - 2000);
+						(*it)->setTicks(newTicks);
+
+						// update spell timer in client
+						if (type == CONDITION_SPELLGROUPCOOLDOWN) {
+							sendSpellGroupCooldown(static_cast<SpellGroup_t>(spellId), newTicks);
+						} else {
+							sendSpellCooldown(spellId, newTicks);
+						}					
 						isTriggered = true;
 					}
 				}
+				++it;
 			}
 
 			if (isTriggered) {
