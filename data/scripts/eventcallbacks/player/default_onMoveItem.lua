@@ -13,7 +13,6 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			local toTile = Tile(toCylinder:getPosition())
 			local toHouse = toTile and toTile:getHouse()
 			if toHouse and toHouse:getOwnerAccountId() ~= self:getAccountId() then
-			print("2")
 				-- trying to put store item on the floor as house guest
 				self:sendCancelMessage(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
 				return false
@@ -53,13 +52,8 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 					self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 					return false
 				end
-				
-				-- house
-				-- fromPosition.x ~= CONTAINER_POSITION and toPosition.x == CONTAINER_POSITION
-				-- house:getOwnerAccountId() == self:getAccountId()
 			end
 		end
-		
 	end
 
 	if toPosition.x ~= CONTAINER_POSITION then

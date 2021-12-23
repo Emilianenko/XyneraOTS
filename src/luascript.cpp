@@ -12032,8 +12032,7 @@ int LuaScriptInterface::luaHouseGetOwnerAccountId(lua_State* L)
 	House* house = getUserdata<House>(L, 1);
 	if (house) {
 		lua_pushnumber(L, house->getOwnerAccountId());
-	}
-	else {
+	} else {
 		lua_pushnil(L);
 	}
 	return 1;
