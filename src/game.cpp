@@ -1055,7 +1055,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
-	if (!canThrowObjectTo(mapFromPos, mapToPos, true, false, throwRange, throwRange)) {
+	if (!canThrowObjectTo(mapFromPos, mapToPos, true, false, throwRange + 1, throwRange + 1)) {
 		player->sendCancelMessage(RETURNVALUE_CANNOTTHROW);
 		return;
 	}
