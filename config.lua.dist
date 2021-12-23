@@ -48,7 +48,7 @@ deathLosePercent = -1
 -- use any other value to disable the rent system
 housePriceEachSQM = 1000
 houseRentPeriod = "never"
-houseOwnedByAccount = false
+houseOwnedByAccount = true
 houseDoorShowPrice = true
 onlyInvitedCanMoveHouseItems = true
 
