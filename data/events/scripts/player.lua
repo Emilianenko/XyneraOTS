@@ -298,17 +298,19 @@ function Player:onWrapItem(item)
 		return
 	end
 
-	local wrapId = item:getAttribute("wrapid")
+	local wrapId = item:getAttribute(ITEM_ATTRIBUTE_WRAPID)
 	if wrapId == 0 then
 		return
 	end
 
 	if not hasEventCallback(EVENT_CALLBACK_ONWRAPITEM) or EventCallback(EVENT_CALLBACK_ONWRAPITEM, self, item) then
 		local oldId = item:getId()
+		local isStoreItem = item:isStoreItem()
 		item:remove(1)
-		local item = tile:addItem(wrapId)
-		if item then
-			item:setAttribute("wrapid", oldId)
+		local newItem = tile:addItem(wrapId)
+		if newItem then
+			newItem:setAttribute(ITEM_ATTRIBUTE_WRAPID, oldId)
+			newItem:setStoreItem(isStoreItem)
 		end
 	end
 end

@@ -168,6 +168,9 @@ class House
 		uint32_t getOwner() const {
 			return owner;
 		}
+		uint32_t getOwnerAccountId() const {
+			return ownerAccountId;
+		}
 
 		void setPaidUntil(time_t paid) {
 			paidUntil = paid;

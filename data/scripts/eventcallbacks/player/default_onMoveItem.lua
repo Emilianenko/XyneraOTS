@@ -1,14 +1,65 @@
 local ec = EventCallback
 
 ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-	if item:getAttribute("wrapid") ~= 0 then
-		local tile = Tile(toPosition)
-		if (fromPosition.x ~= CONTAINER_POSITION and toPosition.x ~= CONTAINER_POSITION) or tile and not tile:getHouse() then
-			if tile and not tile:getHouse() then
-				self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+	-- logic for moving store items
+	if item:isStoreItem() then
+		if fromPosition.x == CONTAINER_POSITION then
+			if toPosition.x == CONTAINER_POSITION and not toCylinder:getTopParent():isPlayer() then
+				-- trying to put store item in house chests (from other container)
+				self:sendCancelMessage(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
 				return false
 			end
+			
+			local toTile = Tile(toCylinder:getPosition())
+			local toHouse = toTile and toTile:getHouse()
+			if toHouse and toHouse:getOwnerAccountId() ~= self:getAccountId() then
+			print("2")
+				-- trying to put store item on the floor as house guest
+				self:sendCancelMessage(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
+				return false
+			end
+		elseif toPosition.x == CONTAINER_POSITION then
+			if not toCylinder:getTopParent():isPlayer() then
+				-- trying to put store item in house chests (from the floor)
+				self:sendCancelMessage(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
+				return false
+			end
+			
+			local fromTile = Tile(fromPosition)
+			local fromHouse = fromTile and fromTile:getHouse()
+			if fromHouse and fromHouse:getOwnerAccountId() ~= self:getAccountId() then
+				-- trying to take the store item as house guest
+				self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+				return false
+			end			
+		else
+			local fromTile = Tile(fromPosition)
+			local toTile = Tile(toPosition)
+			if fromTile and toTile then
+				local fromHouse = fromTile:getHouse()
+				local toHouse = toTile:getHouse()
+				if not (fromHouse and toHouse and fromHouse:getOwnerAccountId() == toHouse:getOwnerAccountId()) then
+					-- trying to throw the store item out of the house
+					self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+					return false
+				end
+			end
 		end
+		
+		if (fromPosition.x ~= CONTAINER_POSITION and toPosition.x ~= CONTAINER_POSITION) or tile and not tile:getHouse() then
+			if tile then 
+				local house = tile:getHouse()
+				if not house then
+					self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+					return false
+				end
+				
+				-- house
+				-- fromPosition.x ~= CONTAINER_POSITION and toPosition.x == CONTAINER_POSITION
+				-- house:getOwnerAccountId() == self:getAccountId()
+			end
+		end
+		
 	end
 
 	if toPosition.x ~= CONTAINER_POSITION then

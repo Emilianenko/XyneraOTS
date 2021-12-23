@@ -647,7 +647,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			return RETURNVALUE_NOERROR;
 		}
 
-		if (item->isStoreItem()) {
+		if (item->isStoreItem() && !hasBitSet(FLAG_IGNORESTOREATTR, flags)) {
 			return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 		}
 

@@ -2040,12 +2040,16 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RETURNVALUE_CANONLYUSEONESHIELD)
 	registerEnum(RETURNVALUE_NOPARTYMEMBERSINRANGE)
 	registerEnum(RETURNVALUE_YOUARENOTTHEOWNER)
+	registerEnum(RETURNVALUE_NOSUCHRAIDEXISTS)
+	registerEnum(RETURNVALUE_ANOTHERRAIDISALREADYEXECUTING)
 	registerEnum(RETURNVALUE_TRADEPLAYERFARAWAY)
 	registerEnum(RETURNVALUE_YOUDONTOWNTHISHOUSE)
 	registerEnum(RETURNVALUE_TRADEPLAYERALREADYOWNSAHOUSE)
 	registerEnum(RETURNVALUE_TRADEPLAYERHIGHESTBIDDER)
 	registerEnum(RETURNVALUE_YOUCANNOTTRADETHISHOUSE)
 	registerEnum(RETURNVALUE_YOUDONTHAVEREQUIREDPROFESSION)
+	registerEnum(RETURNVALUE_CANNOTMOVEITEMISNOTSTOREITEM)
+	registerEnum(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
 	registerEnum(RETURNVALUE_YOUCANNOTUSETHISBED)
 	registerEnum(RETURNVALUE_SCRIPT)
 
@@ -2860,6 +2864,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("House", "setPayRentWarnings", LuaScriptInterface::luaHouseSetPayRentWarnings);
 
 	registerMethod("House", "getOwnerName", LuaScriptInterface::luaHouseGetOwnerName);
+	registerMethod("House", "getOwnerAccountId", LuaScriptInterface::luaHouseGetOwnerAccountId);
 	registerMethod("House", "getOwnerGuid", LuaScriptInterface::luaHouseGetOwnerGuid);
 	registerMethod("House", "setOwnerGuid", LuaScriptInterface::luaHouseSetOwnerGuid);
 	registerMethod("House", "startTrade", LuaScriptInterface::luaHouseStartTrade);
@@ -12016,6 +12021,19 @@ int LuaScriptInterface::luaHouseGetOwnerName(lua_State* L)
 	if (house) {
 		pushString(L, house->getOwnerName());
 	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaHouseGetOwnerAccountId(lua_State* L)
+{
+	// house:getOwnerAccountId()
+	House* house = getUserdata<House>(L, 1);
+	if (house) {
+		lua_pushnumber(L, house->getOwnerAccountId());
+	}
+	else {
 		lua_pushnil(L);
 	}
 	return 1;

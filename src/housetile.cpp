@@ -87,17 +87,19 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		}
 	} else if (const Item* item = thing.getItem()) {
 		if (item->isStoreItem() && !item->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
+			// store item, but not furniture
 			return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 		}
 
 		if (actor) {
 			Player* actorPlayer = actor->getPlayer();
 			if (!house->isInvited(actorPlayer)) {
+				// anti-trashing system
 				return RETURNVALUE_CANNOTTHROW;
 			}
 		}
 	}
-	return Tile::queryAdd(index, thing, count, flags, actor);
+	return Tile::queryAdd(index, thing, count, flags | FLAG_IGNORESTOREATTR, actor);
 }
 
 Tile* HouseTile::queryDestination(int32_t& index, const Thing& thing, Item** destItem, uint32_t& flags)
