@@ -34,7 +34,7 @@ ReturnValue StoreInbox::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t
 		return RETURNVALUE_THISISIMPOSSIBLE;
 	}
 
-	if (!item->isPickupable()) {
+	if (!(item->isPickupable() || hasBitSet(FLAG_IGNORENOTPICKUPABLE, flags))) {
 		return RETURNVALUE_CANNOTPICKUP;
 	}
 

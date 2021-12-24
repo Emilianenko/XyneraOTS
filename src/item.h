@@ -956,6 +956,9 @@ class Item : virtual public Thing
 		bool hasWalkStack() const {
 			return items[id].walkStack;
 		}
+		bool hasForceSerialize() const {
+			return items[id].forceSerialize;
+		}
 
 		void setStoreItem(bool storeItem) {
 			setIntAttr(ITEM_ATTRIBUTE_STOREITEM, static_cast<int64_t>(storeItem));

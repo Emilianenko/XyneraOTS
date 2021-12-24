@@ -531,3 +531,22 @@ function Player.updateKillTracker(self, monster, corpse)
     networkMessage:delete()
     return true
 end
+
+-- force add store item
+-- safely adds item to player store inbox
+-- ignores cap and other limitations
+
+-- player:addStoreItemEx(item)
+function Player:addStoreItemEx(storeItem)
+	storeItem:setStoreItem(true)
+	return self:getStoreInbox():addItemEx(storeItem, -1, FLAG_NOLIMIT)
+end
+
+-- player:addStoreItem(id or name, subType)
+function Player:addStoreItem(itemId, subType)
+	local storeItem = Game.createItem(itemId, subType)
+	if storeItem then
+		self:addStoreItemEx(storeItem)
+	end
+	return storeItem
+end

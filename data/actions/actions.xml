@@ -108,27 +108,6 @@
 	<action itemid="13759" script="other/music.lua" />
 	<action itemid="23923" script="other/music.lua" />
 
-	<!-- Construction Kits -->
-	<action fromid="3901" toid="3938" script="other/construction_kits.lua" />
-	<action fromid="5086" toid="5088" script="other/construction_kits.lua" />
-	<action itemid="6114" script="other/construction_kits.lua" />
-	<action itemid="6115" script="other/construction_kits.lua" />
-	<action itemid="6372" script="other/construction_kits.lua" />
-	<action itemid="6373" script="other/construction_kits.lua" />
-	<action itemid="8692" script="other/construction_kits.lua" />
-	<action itemid="9974" script="other/construction_kits.lua" />
-	<action itemid="11124" script="other/construction_kits.lua" />
-	<action itemid="11126" script="other/construction_kits.lua" />
-	<action itemid="11133" script="other/construction_kits.lua" />
-	<action itemid="11205" script="other/construction_kits.lua" />
-	<action itemid="14328" script="other/construction_kits.lua" />
-	<action itemid="14329" script="other/construction_kits.lua" />
-	<action itemid="16075" script="other/construction_kits.lua" />
-	<action itemid="16099" script="other/construction_kits.lua" />
-	<action itemid="20254" script="other/construction_kits.lua" />
-	<action itemid="20255" script="other/construction_kits.lua" />
-	<action itemid="20257" script="other/construction_kits.lua" />
-
 	<!-- Fluids -->
 	<action itemid="1775" script="other/fluids.lua" />
 	<action fromid="2005" toid="2009" script="other/fluids.lua" />

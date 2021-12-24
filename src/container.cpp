@@ -253,7 +253,7 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
-	if (!item->isPickupable()) {
+	if (!(item->isPickupable() || hasBitSet(FLAG_IGNORENOTPICKUPABLE, flags))) {
 		return RETURNVALUE_CANNOTPICKUP;
 	}
 

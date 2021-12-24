@@ -2471,7 +2471,7 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 		return RETURNVALUE_NOTENOUGHCAPACITY;
 	}
 
-	if (!item->isPickupable()) {
+	if (!(item->isPickupable() || hasBitSet(FLAG_IGNORENOTPICKUPABLE, flags))) {
 		return RETURNVALUE_CANNOTPICKUP;
 	}
 

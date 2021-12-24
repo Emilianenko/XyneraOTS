@@ -1109,7 +1109,7 @@ void Events::eventPlayerOnInspectItem(Player* player, Item* item)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
+		std::cout << "[Error - Events::eventPlayerOnInspectItem] Call stack overflow" << std::endl;
 		return;
 	}
 
@@ -1136,7 +1136,7 @@ void Events::eventPlayerOnInspectTradeItem(Player* player, Player* tradePartner,
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
+		std::cout << "[Error - Events::onInspectTradeItem] Call stack overflow" << std::endl;
 		return;
 	}
 
@@ -1166,7 +1166,7 @@ void Events::eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
+		std::cout << "[Error - Events::onInspectNpcTradeItem] Call stack overflow" << std::endl;
 		return;
 	}
 
@@ -1195,7 +1195,7 @@ void Events::eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
+		std::cout << "[Error - Events::onInspectCompendiumItem] Call stack overflow" << std::endl;
 		return;
 	}
 

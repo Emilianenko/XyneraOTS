@@ -79,6 +79,7 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 		//clean access lists
 		owner = 0;
 		ownerAccountId = 0;
+		ownerName = std::string();
 		setAccessList(SUBOWNER_LIST, "");
 		setAccessList(GUEST_LIST, "");
 
@@ -237,6 +238,14 @@ bool House::transferToDepot(Player* player) const
 						for (Item* containerItem : container->getItemList()) {
 							moveItemList.push_back(containerItem);
 						}
+					}
+
+					// wrap the furniture into default kits
+					if (item->isMoveable() || item->hasForceSerialize()) {
+						uint16_t unwrapId = item->getID();
+						Item* newItem = g_game.transformItem(item, ITEM_DECORATION_KIT, item->getSubType());
+						newItem->setIntAttr(ITEM_ATTRIBUTE_WRAPID, unwrapId);
+						moveItemList.push_back(newItem);
 					}
 				}
 			}

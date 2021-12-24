@@ -1234,6 +1234,7 @@ class LuaScriptInterface
 		static int luaItemTypeGetGroup(lua_State* L);
 		static int luaItemTypeGetId(lua_State* L);
 		static int luaItemTypeGetClientId(lua_State* L);
+		static int luaItemTypeGetRotateId(lua_State* L);
 		static int luaItemTypeGetWareId(lua_State* L);
 		static int luaItemTypeGetName(lua_State* L);
 		static int luaItemTypeGetPluralName(lua_State* L);

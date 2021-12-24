@@ -1662,18 +1662,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_GROUP_PODIUM)
 
 	registerEnum(ITEM_BROWSEFIELD)
-	registerEnum(ITEM_BAG)
-	registerEnum(ITEM_SHOPPING_BAG)
-	registerEnum(ITEM_GOLD_COIN)
-	registerEnum(ITEM_PLATINUM_COIN)
-	registerEnum(ITEM_CRYSTAL_COIN)
-	registerEnum(ITEM_GOLD_POUCH)
-	registerEnum(ITEM_STORE_COIN)
-	registerEnum(ITEM_STORE_INBOX)
 
-	registerEnum(ITEM_AMULETOFLOSS)
-	registerEnum(ITEM_PARCEL)
-	registerEnum(ITEM_LABEL)
 	registerEnum(ITEM_FIREFIELD_PVP_FULL)
 	registerEnum(ITEM_FIREFIELD_PVP_MEDIUM)
 	registerEnum(ITEM_FIREFIELD_PVP_SMALL)
@@ -1693,6 +1682,54 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_WILDGROWTH)
 	registerEnum(ITEM_WILDGROWTH_PERSISTENT)
 	registerEnum(ITEM_WILDGROWTH_SAFE)
+
+	registerEnum(ITEM_BAG)
+	registerEnum(ITEM_SHOPPING_BAG)
+
+	registerEnum(ITEM_GOLD_COIN)
+	registerEnum(ITEM_PLATINUM_COIN)
+	registerEnum(ITEM_CRYSTAL_COIN)
+	registerEnum(ITEM_GOLD_POUCH)
+	registerEnum(ITEM_STORE_COIN)
+
+	registerEnum(ITEM_DEPOT)
+	registerEnum(ITEM_LOCKER1)
+	registerEnum(ITEM_INBOX)
+	registerEnum(ITEM_MARKET)
+	registerEnum(ITEM_STORE_INBOX)
+	registerEnum(ITEM_DEPOT_BOX_I)
+	registerEnum(ITEM_DEPOT_BOX_II)
+	registerEnum(ITEM_DEPOT_BOX_III)
+	registerEnum(ITEM_DEPOT_BOX_IV)
+	registerEnum(ITEM_DEPOT_BOX_V)
+	registerEnum(ITEM_DEPOT_BOX_VI)
+	registerEnum(ITEM_DEPOT_BOX_VII)
+	registerEnum(ITEM_DEPOT_BOX_VIII)
+	registerEnum(ITEM_DEPOT_BOX_IX)
+	registerEnum(ITEM_DEPOT_BOX_X)
+	registerEnum(ITEM_DEPOT_BOX_XI)
+	registerEnum(ITEM_DEPOT_BOX_XII)
+	registerEnum(ITEM_DEPOT_BOX_XIII)
+	registerEnum(ITEM_DEPOT_BOX_XIV)
+	registerEnum(ITEM_DEPOT_BOX_XV)
+	registerEnum(ITEM_DEPOT_BOX_XVI)
+	registerEnum(ITEM_DEPOT_BOX_XVII)
+
+	registerEnum(ITEM_MALE_CORPSE)
+	registerEnum(ITEM_FEMALE_CORPSE)
+
+	registerEnum(ITEM_FULLSPLASH)
+	registerEnum(ITEM_SMALLSPLASH)
+
+	registerEnum(ITEM_PARCEL)
+	registerEnum(ITEM_LETTER)
+	registerEnum(ITEM_LETTER_STAMPED)
+	registerEnum(ITEM_LABEL)
+
+	registerEnum(ITEM_AMULETOFLOSS)
+	registerEnum(ITEM_DECORATION_KIT)
+	
+	registerEnum(ITEM_DOCUMENT_RO)
 
 	registerEnum(WIELDINFO_NONE)
 	registerEnum(WIELDINFO_LEVEL)
@@ -1914,7 +1951,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(FLAG_PATHFINDING)
 	registerEnum(FLAG_IGNOREFIELDDAMAGE)
 	registerEnum(FLAG_IGNORENOTMOVEABLE)
+	registerEnum(FLAG_IGNORENOTPICKUPABLE)
 	registerEnum(FLAG_IGNOREAUTOSTACK)
+	registerEnum(FLAG_IGNORESTOREATTR)
 
 	// Use with itemType:getSlotPosition
 	registerEnum(SLOTP_WHEREEVER)
@@ -2051,6 +2090,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RETURNVALUE_CANNOTMOVEITEMISNOTSTOREITEM)
 	registerEnum(RETURNVALUE_ITEMCANNOTBEMOVEDTHERE)
 	registerEnum(RETURNVALUE_YOUCANNOTUSETHISBED)
+	registerEnum(RETURNVALUE_YOUCANONLYUNWRAPINOWNHOUSE)
 	registerEnum(RETURNVALUE_SCRIPT)
 
 	registerEnum(RELOAD_TYPE_ALL)
@@ -2911,6 +2951,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getGroup", LuaScriptInterface::luaItemTypeGetGroup);
 	registerMethod("ItemType", "getId", LuaScriptInterface::luaItemTypeGetId);
 	registerMethod("ItemType", "getClientId", LuaScriptInterface::luaItemTypeGetClientId);
+	registerMethod("ItemType", "getRotateId", LuaScriptInterface::luaItemTypeGetRotateId);
 	registerMethod("ItemType", "getWareId", LuaScriptInterface::luaItemTypeGetWareId);
 	registerMethod("ItemType", "getName", LuaScriptInterface::luaItemTypeGetName);
 	registerMethod("ItemType", "getPluralName", LuaScriptInterface::luaItemTypeGetPluralName);
@@ -12562,6 +12603,18 @@ int LuaScriptInterface::luaItemTypeGetClientId(lua_State* L)
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
 	if (itemType) {
 		lua_pushnumber(L, itemType->clientId);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetRotateId(lua_State* L)
+{
+	// itemType:getRotateId()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType && itemType->rotatable) {
+		lua_pushnumber(L, itemType->rotateTo);
 	} else {
 		lua_pushnil(L);
 	}

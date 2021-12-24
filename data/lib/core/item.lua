@@ -622,7 +622,7 @@ do
 		-- wield info
 		do
 			if itemType:isRune() then
-				local rune = Spell(it:getId())
+				local rune = Spell(itemType:getId())
 				if rune then
 					local runeLevel = rune:runeLevel()
 					local runeMagLevel = rune:runeMagicLevel()
@@ -757,6 +757,20 @@ do
 			-- level door description
 			if isDoor and lookDistance <= 1 and (not desc or desc == "") and itemType:getLevelDoor() ~= 0 then
 				desc = "Only the worthy may pass."
+			end
+			
+			if not isVirtual and itemType:getId() == ITEM_DECORATION_KIT then
+				local wrapTo = item:hasAttribute(ITEM_ATTRIBUTE_WRAPID) and ItemType(item:getAttribute(ITEM_ATTRIBUTE_WRAPID)) or false
+				local kitDesc = "Unable to open. Missing attribute wrapId."
+				if wrapTo then
+					kitDesc = string.format("Unwrap it in your own house to create %s.", wrapTo:getNameDescription(subType, addArticle))
+				end
+
+				if desc and desc ~= "" then
+					desc = string.format("%s %s", desc, kitDesc)
+				else
+					desc = kitDesc
+				end
 			end
 			
 			if desc and desc:len() > 0 then

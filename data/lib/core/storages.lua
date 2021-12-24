@@ -7,15 +7,21 @@ Reserved storage ranges:
 ]]--
 PlayerStorageKeys = {
 	annihilatorReward = 70015,
+	goldenOutfit = 70016,
+	-- empty 70017
 	promotion = 70018,
 	delayLargeSeaShell = 70019,
 	firstRod = 70020,
 	delayWallMirror = 70021,
+	-- empty 70022
 	madSheepSummon = 70023,
 	crateUsable = 70024,
+	-- empty 70025
 	afflictedOutfit = 70026,
 	afflictedPlagueMask = 70027,
 	afflictedPlagueBell = 70028,
+	-- empty 70029
+	-- empty 70030
 	nailCaseUseCount = 70031,
 	swampDigging = 70032,
 	insectoidCell = 70033,

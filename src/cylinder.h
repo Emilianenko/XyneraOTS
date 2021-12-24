@@ -36,8 +36,9 @@ enum cylinderflags_t {
 	FLAG_PATHFINDING = 1 << 4, // An additional check is done for floor changing/teleport items
 	FLAG_IGNOREFIELDDAMAGE = 1 << 5, // Bypass field damage checks
 	FLAG_IGNORENOTMOVEABLE = 1 << 6, // Bypass check for mobility
-	FLAG_IGNOREAUTOSTACK = 1 << 7, // QueryDestination will not try to stack items together
-	FLAG_IGNORESTOREATTR = 1 << 8, // Bypass store item attribute check
+	FLAG_IGNORENOTPICKUPABLE = 1 << 7, // Bypass pickupable check
+	FLAG_IGNOREAUTOSTACK = 1 << 8, // QueryDestination will not try to stack items together
+	FLAG_IGNORESTOREATTR = 1 << 9, // Bypass store item attribute check
 };
 
 enum cylinderlink_t {
