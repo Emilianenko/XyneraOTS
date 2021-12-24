@@ -69,7 +69,6 @@ function goldenOutfitDisplay.onUse(player, item, fromPosition, target, toPositio
 		return true
 	end
 	
-	--outfitMode = (outfitMode + 1) % #outfitCycles
 	-- get next mode
 	local nextCycle = -1
 	for tryMode = 1, #outfitCycles do
