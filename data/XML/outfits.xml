@@ -80,10 +80,10 @@
 	<outfit type="0" looktype="1162" name="Percht Raider" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1174" name="Owl Keeper" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1187" name="Guidon Bearer" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="0" looktype="1203" name="Void Master" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="1203" name="Void Master" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1205" name="Veteran Paladin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1207" name="Lion of War" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="0" looktype="1211" name="Golden Outfit" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="1211" name="Golden Outfit" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1246" name="Breezy Garb" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1244" name="Hand of the Inquisition" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1252" name="Traditionalist" premium="yes" unlocked="no" enabled="yes" />
@@ -203,7 +203,6 @@
 	<outfit type="1" looktype="1371" name="Rascoohan" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1382" name="Merry Garb" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1384" name="Rune Master" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="1" looktype="1415" name="Forest Warden" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1386" name="Citizen of Issavi" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1415" name="Forest Warden" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1436" name="Royal Bounacean Advisor" premium="yes" unlocked="no" enabled="yes" />

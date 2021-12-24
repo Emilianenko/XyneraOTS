@@ -13,12 +13,6 @@ local function showBigNumber(n)
 end
 
 -- config
-local promotion_price = 20000
-local promotion_level = 20
-local stack_100cc = 1000000
-local price_armor = 500 * stack_100cc
-local price_helmet = 250 * stack_100cc
-local price_boots = 250 * stack_100cc
 local lookTypeM = 1210
 local lookTypeF = 1211
 local goldenOutfitDisplayId = 34166
@@ -38,10 +32,10 @@ local topic = {
 -- dialogues
 local dialogue = {
 	-- promotion
-	questionPromotion = string.format("Do you want to be promoted in your vocation for %d gold?", promotion_price),
+	questionPromotion = string.format("Do you want to be promoted in your vocation for %d gold?", PROMOTION_PRICE),
 	alreadyPromoted = "You already have been promoted.",
 	unpromotable = "You have to choose your vocation before I can promote you.",
-	levelTooLow = string.format("You need to be at least level %d in order to be promoted.", promotion_level),
+	levelTooLow = string.format("You need to be at least level %d in order to be promoted.", PROMOTION_LEVEL),
 	needPremium = "You need a premium account in order to promote.",
 	promotionDeclined = "Ok, then not.",
 	promoted = "Congratulations! You are now promoted.",
@@ -53,13 +47,13 @@ local dialogue = {
 	outfitDetails = {
 		string.format(
 			"Excellent! Now, let me explain. If you donate %s gold pieces, you will be entitled to wear a unique outfit. ...",
-			showBigNumber(price_armor + price_helmet + price_boots)
+			showBigNumber(GOLDEN_OUTFIT_PRICE_ARMOR + GOLDEN_OUTFIT_PRICE_BOOTS + GOLDEN_OUTFIT_PRICE_HELMET)
 		),
 		string.format(
 			"You will be entitled to wear the {armor} for %s gold pieces, {boots} for an additional %s and the {helmet} for another %s gold pieces. ...",
-			showBigNumber(price_armor),
-			showBigNumber(price_boots),
-			showBigNumber(price_helmet)
+			showBigNumber(GOLDEN_OUTFIT_PRICE_ARMOR),
+			showBigNumber(GOLDEN_OUTFIT_PRICE_BOOTS),
+			showBigNumber(GOLDEN_OUTFIT_PRICE_HELMET)
 		),
 		"What will it be?"
 	},
@@ -67,15 +61,15 @@ local dialogue = {
 	questions = {
 		[topic.wantsArmor] = string.format(
 			"So you wold like to donate %s gold pieces which in return will entitle you to wear a unique armor?",
-			showBigNumber(price_armor)
+			showBigNumber(GOLDEN_OUTFIT_PRICE_ARMOR)
 		),
 		[topic.wantsBoots] = string.format(
 			"So you would like to donate %s gold pieces which in return will entitle you to wear unique boots?",
-			showBigNumber(price_boots)
+			showBigNumber(GOLDEN_OUTFIT_PRICE_BOOTS)
 		),
 		[topic.wantsHelmet] = string.format(
 			"So you would like to donate %s gold pieces which in return will entitle you to wear a unique helmet?",
-			showBigNumber(price_helmet)
+			showBigNumber(GOLDEN_OUTFIT_PRICE_HELMET)
 		)
 	},
 	
@@ -108,9 +102,9 @@ local minStorage = {
 }
 
 local prices = {
-	[topic.wantsArmor] = price_armor,
-	[topic.wantsBoots] = price_boots,	
-	[topic.wantsHelmet] = price_helmet
+	[topic.wantsArmor] = GOLDEN_OUTFIT_PRICE_ARMOR,
+	[topic.wantsBoots] = GOLDEN_OUTFIT_PRICE_BOOTS,	
+	[topic.wantsHelmet] = GOLDEN_OUTFIT_PRICE_HELMET
 }
 
 local function creatureSayCallback(cid, type, msg)
@@ -140,7 +134,7 @@ local function creatureSayCallback(cid, type, msg)
 			end
 			
 			-- level check
-			if player:getLevel() < promotion_level then
+			if player:getLevel() < PROMOTION_LEVEL then
 				npcHandler:say(dialogue.levelTooLow, cid)
 				npcHandler.topic[cid] = topic.welcome
 				return
@@ -170,7 +164,7 @@ local function creatureSayCallback(cid, type, msg)
 			end
 			
 			-- gold check
-			if player:getTotalMoney() < promotion_price then
+			if player:getTotalMoney() < PROMOTION_PRICE then
 				npcHandler:say(dialogue.notEnoughMoney, cid)
 				npcHandler.topic[cid] = topic.welcome
 				return
@@ -179,7 +173,7 @@ local function creatureSayCallback(cid, type, msg)
 			-- success
 			player:setVocation(playerVoc:getPromotion())
 			player:setStorageValue(PlayerStorageKeys.promotion, 1)
-			player:removeTotalMoney(promotion_price)
+			player:removeTotalMoney(PROMOTION_PRICE)
 			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 			npcHandler:say(dialogue.promoted, cid)
 			npcHandler.topic[cid] = topic.welcome
