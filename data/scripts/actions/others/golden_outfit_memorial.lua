@@ -3,7 +3,7 @@ local updateInterval = 10 * 60 -- 10 minutes
 
 -- load/update cached info
 -- NOT CONFIGURABLE
-local goldenOutfitCache = {[1] = {}, [2] = {}, [3] = {}}
+local goldenOutfitCache
 local lastUpdated = 0
 local function updateGoldenOutfitCache()
 	if os.time() < lastUpdated + updateInterval then
@@ -16,6 +16,7 @@ local function updateGoldenOutfitCache()
 		return
 	end
 
+	goldenOutfitCache = {[1] = {}, [2] = {}, [3] = {}}
 	repeat
 		local addons = result.getNumber(resultId, "value")
 		local name = result.getString(resultId, "name")
@@ -64,7 +65,6 @@ end
 local goldenOutfitMemorial = Action()
 function goldenOutfitMemorial.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	updateGoldenOutfitCache()
-
 	displayMemorialUI(player)
 	return true
 end
