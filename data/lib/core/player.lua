@@ -56,6 +56,10 @@ function Player:getLossPercent()
 	return lossPercent[blessings]
 end
 
+function Player:getTotalMoney()
+	return self:getMoney() + self:getBankBalance()
+end
+
 function Player:getPremiumTime()
 	return math.max(0, self:getPremiumEndsAt() - os.time())
 end
