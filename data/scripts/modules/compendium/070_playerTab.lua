@@ -1,3 +1,5 @@
+local secretAchievementsCount = #getSecretAchievements()
+
 function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage, page)
 	-- to do: implement permission logic for inspecting other creatures
 	local player = Player(playerId)
@@ -116,7 +118,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:addByte(COMPENDIUM_SKILL_MAGIC)
 		response:addU16(creature:getMagicLevel())
 		response:addU16(baseML)
-		response:addU16(baseML)
+		response:addU16(baseML) -- loyalty bonus
 		response:addU16(progress)
 		
 		for skillId = SKILL_FIST, SKILL_FISHING do
@@ -290,26 +292,27 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:sendToPlayer(player)
 		return
 	elseif infoType == COMPENDIUM_PLAYER_ACHIEVEMENTS then
-		local achievements = {
-			--{id = 2, extended = false, unlockedAt = os.time()},
-			--{id = 3, extended = true, grade = 9, title = "Crashed!", description = "After sleepless night and countless client crashes you got what you wanted. No client tab is safe from you!"}
-		}
-
-		response:addU16(0) -- achievement points
-		response:addU16(0) -- secret achievements amount
+		if not isPlayer then
+			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			return
+		end
 		
-		response:addU16(#achievements) -- achievements count
-		for i = 1, #achievements do
-			local extended = achievements[i].extended
+		local achievementIds = creature:getAchievements()
+		response:addU16(creature:getAchievementPoints()) -- achievement points
+		response:addU16(secretAchievementsCount) -- secret achievements amount
+		
+		response:addU16(#achievementIds) -- achievements count
+		for i = 1, #achievementIds do
+			local achievement = achievements[achievementIds[i]]
+			local secret = achievement.secret
 			
-			response:addU16(achievements[i].id) -- achievement id (will show hardcoded values if byte after timestamp is disabled)
-			response:addU32(achievements[i].unlockedAt or 0) -- unlock timestamp
-			response:addByte(extended and 1 or 0)
-
-			if extended then
-				response:addString(achievements[i].title)
-				response:addString(achievements[i].description) -- achievement description
-				response:addByte(achievements[i].grade) -- achievement grade (1-?)
+			response:addU16(achievement.clientId) -- achievement id (will show hardcoded values if byte after timestamp is disabled)
+			response:addU32(0) -- unlocked at timestamp
+			response:addByte(secret and 0x01 or 0x00)
+			if secret then
+				response:addString(achievement.name)
+				response:addString(achievement.description)
+				response:addByte(achievement.grade)
 			end
 		end
 		response:sendToPlayer(player)

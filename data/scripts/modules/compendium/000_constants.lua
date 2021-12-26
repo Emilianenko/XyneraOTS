@@ -1,7 +1,3 @@
--- 800000-809999 - compendium tabs cooldown
-COMPENDIUM_COOLDOWNS_BASE = 800000
-COMPENDIUM_COOLDOWN_DURATION = 5 -- in seconds
-
 -- compendium tabs
 -- Note: items tab is handled by inspection module and eventCallback lib
 -- COMPENDIUM_REQUEST_ITEMDATA = 0xCD
