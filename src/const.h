@@ -657,6 +657,18 @@ enum ResourceTypes_t: uint8_t {
 	RESOURCE_FORGE_CORES = 0x48
 };
 
+enum AccountResourceTypes_t {
+	ACCOUNTRESOURCE_VERSION, // serves a purpose similar to database migrations. -1 - not initialized, 1 - version 1.
+
+	ACCOUNTRESOURCE_STORE_COINS,
+	ACCOUNTRESOURCE_STORE_COINS_NONTRANSFERABLE,
+	ACCOUNTRESOURCE_STORE_COINS_RESERVED,
+	ACCOUNTRESOURCE_TOURNAMENT_COINS,
+
+	ACCOUNTRESOURCE_FIRST = ACCOUNTRESOURCE_STORE_COINS,
+	ACCOUNTRESOURCE_LAST = ACCOUNTRESOURCE_TOURNAMENT_COINS
+};
+
 enum InspectionTypes_t : uint8_t {
 	INSPECTION_ITEM_NORMAL = 0,
 	INSPECTION_ITEM_NPCTRADE = 1,
@@ -739,14 +751,18 @@ static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
 
-//Reserved player storage key ranges;
-//[10000000 - 20000000];
+// Reserved account storage key ranges;
+static constexpr int32_t ASTRG_RESERVED_RANGE_START = 1000000;
+static constexpr int32_t ASTRG_RESERVED_RANGE_SIZE = ACCOUNTRESOURCE_LAST + 1;
+
+// Reserved player storage key ranges;
+// [10000000 - 20000000];
 static constexpr int32_t PSTRG_RESERVED_RANGE_START = 10000000;
 static constexpr int32_t PSTRG_RESERVED_RANGE_SIZE = 10000000;
-//[1000 - 1500];
+// [1000 - 1500];
 static constexpr int32_t PSTRG_OUTFITS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 1000);
 static constexpr int32_t PSTRG_OUTFITS_RANGE_SIZE = 500;
-//[2001 - 2011];
+// [2001 - 2011];
 static constexpr int32_t PSTRG_MOUNTS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 2001);
 static constexpr int32_t PSTRG_MOUNTS_RANGE_SIZE = 10;
 static constexpr int32_t PSTRG_MOUNTS_CURRENTMOUNT = (PSTRG_MOUNTS_RANGE_START + 10);

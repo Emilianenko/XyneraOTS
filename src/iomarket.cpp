@@ -142,39 +142,54 @@ void IOMarket::processExpiredOffers(DBResult_ptr result, bool)
 				}
 			}
 
-			if (itemType.stackable) {
-				uint16_t tmpAmount = amount;
-				while (tmpAmount > 0) {
-					uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
-					Item* item = Item::CreateItem(itemType.id, stackCount);
-					if (tier != 0) {
-						item->setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
+			if (itemType.id != ITEM_STORE_COIN) {
+				// normal offer
+				if (itemType.stackable) {
+					uint16_t tmpAmount = amount;
+					while (tmpAmount > 0) {
+						uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
+						Item* item = Item::CreateItem(itemType.id, stackCount);
+						if (tier != 0) {
+							item->setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
+						}
+
+						if (g_game.internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+							delete item;
+							break;
+						}
+
+						tmpAmount -= stackCount;
+					}
+				} else {
+					int32_t subType;
+					if (itemType.charges != 0) {
+						subType = itemType.charges;
+					} else {
+						subType = -1;
 					}
 
-					if (g_game.internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-						delete item;
-						break;
-					}
+					for (uint16_t i = 0; i < amount; ++i) {
+						Item* item = Item::CreateItem(itemType.id, subType);
+						if (tier != 0) {
+							item->setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
+						}
 
-					tmpAmount -= stackCount;
+						if (g_game.internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+							delete item;
+							break;
+						}
+					}
 				}
 			} else {
-				int32_t subType;
-				if (itemType.charges != 0) {
-					subType = itemType.charges;
-				} else {
-					subType = -1;
-				}
+				// store coin offer
+				if (IOLoginData::getAccountIdByPlayerId(playerId) != 0) {
+					// re-add coins
+					player->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, amount);
+					player->saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
 
-				for (uint16_t i = 0; i < amount; ++i) {
-					Item* item = Item::CreateItem(itemType.id, subType);
-					if (tier != 0) {
-						item->setIntAttr(ITEM_ATTRIBUTE_TIER, tier);
-					}
-
-					if (g_game.internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-						delete item;
-						break;
+					// save
+					if (!player->isOffline()) {
+						IOLoginData::savePlayer(player);
 					}
 				}
 			}

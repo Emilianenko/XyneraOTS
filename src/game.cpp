@@ -4715,6 +4715,31 @@ void Game::loadAccountStorageValues()
 	}
 }
 
+bool Game::saveAccountStorageKey(uint32_t accountId, uint32_t key) const
+{
+	DBTransaction transaction;
+	Database& db = Database::getInstance();
+
+	if (!transaction.begin()) {
+		return false;
+	}
+
+	if (!db.executeQuery(fmt::format("DELETE FROM `account_storage` WHERE `account_id` = {:d} AND `key` = {:d}", accountId, key))) {
+		return false;
+	}
+
+	DBInsert accountStorageQuery("INSERT INTO `account_storage` (`account_id`, `key`, `value`) VALUES");
+	if (!accountStorageQuery.addRow(fmt::format("{:d}, {:d}, {:d}", accountId, key, getAccountStorageValue(accountId, key)))) {
+		return false;
+	}
+
+	if (!accountStorageQuery.execute()) {
+		return false;
+	}
+
+	return transaction.commit();
+}
+
 bool Game::saveAccountStorageValues() const
 {
 	DBTransaction transaction;
@@ -5338,31 +5363,45 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 			return;
 		}
 
-		DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
-		if (!depotChest) {
-			return;
-		}
+		if (it.id != ITEM_STORE_COIN) {
+			// creating normal offer (sell)
+			DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
+			if (!depotChest) {
+				return;
+			}
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, tier, amount, depotChest, player->getInbox());
-		if (itemList.empty()) {
-			return;
-		}
+			// check if player has enough items
+			std::forward_list<Item*> itemList = getMarketItemList(it.wareId, tier, amount, depotChest, player->getInbox());
+			if (itemList.empty()) {
+				return;
+			}
 
-		if (it.stackable) {
-			uint16_t tmpAmount = amount;
-			for (Item* item : itemList) {
-				uint16_t removeCount = std::min<uint16_t>(tmpAmount, item->getItemCount());
-				tmpAmount -= removeCount;
-				internalRemoveItem(item, removeCount);
+			if (it.stackable) {
+				uint16_t tmpAmount = amount;
+				for (Item* item : itemList) {
+					uint16_t removeCount = std::min<uint16_t>(tmpAmount, item->getItemCount());
+					tmpAmount -= removeCount;
+					internalRemoveItem(item, removeCount);
 
-				if (tmpAmount == 0) {
-					break;
+					if (tmpAmount == 0) {
+						break;
+					}
+				}
+			} else {
+				for (Item* item : itemList) {
+					internalRemoveItem(item);
 				}
 			}
 		} else {
-			for (Item* item : itemList) {
-				internalRemoveItem(item);
+			// creating store coin offer (sell)
+			// check if player has enough coins
+			int32_t playerCoins = player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+			if (playerCoins < amount) {
+				return;
 			}
+
+			// remove player coins
+			player->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, -amount);
 		}
 
 		const auto debitCash = std::min(player->getMoney(), fee);
@@ -5415,41 +5454,49 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			return;
 		}
 
-		if (it.stackable) {
-			uint16_t tmpAmount = offer.amount;
-			while (tmpAmount > 0) {
-				int32_t stackCount = std::min<int32_t>(100, tmpAmount);
-				Item* item = Item::CreateItem(it.id, stackCount);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+		if (it.id != ITEM_STORE_COIN) {
+			// cancelling a normal sell offer
+			if (it.stackable) {
+				uint16_t tmpAmount = offer.amount;
+				while (tmpAmount > 0) {
+					int32_t stackCount = std::min<int32_t>(100, tmpAmount);
+					Item* item = Item::CreateItem(it.id, stackCount);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
+
+					if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+
+					tmpAmount -= stackCount;
+				}
+			} else {
+				int32_t subType;
+				if (it.charges != 0) {
+					subType = it.charges;
+				} else {
+					subType = -1;
 				}
 
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
+				for (uint16_t i = 0; i < offer.amount; ++i) {
+					Item* item = Item::CreateItem(it.id, subType);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
 
-				tmpAmount -= stackCount;
+					if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+				}
 			}
 		} else {
-			int32_t subType;
-			if (it.charges != 0) {
-				subType = it.charges;
-			} else {
-				subType = -1;
-			}
-
-			for (uint16_t i = 0; i < offer.amount; ++i) {
-				Item* item = Item::CreateItem(it.id, subType);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
-				}
-
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
-			}
+			// cancelling store coins sell offer
+			// re-add player store coins
+			player->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, offer.amount);
+			player->saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
 		}
 	}
 
@@ -5498,86 +5545,134 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	uint64_t totalPrice = offer.price * amount;
 
 	if (offer.type == MARKETACTION_BUY) {
-		DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
-		if (!depotChest) {
-			return;
-		}
+		Player* buyerPlayer;
 
-		std::forward_list<Item*> itemList = getMarketItemList(it.wareId, offer.tier, amount, depotChest, player->getInbox());
-		if (itemList.empty()) {
-			return;
-		}
-
-		Player* buyerPlayer = getPlayerByGUID(offer.playerId);
-		if (!buyerPlayer) {
-			buyerPlayer = new Player(nullptr);
-			if (!IOLoginData::loadPlayerById(buyerPlayer, offer.playerId)) {
-				delete buyerPlayer;
+		if (it.id != ITEM_STORE_COIN) {
+			// accept normal buy offer
+			DepotChest* depotChest = player->getDepotChest(player->getLastDepotId(), false);
+			if (!depotChest) {
 				return;
 			}
-		}
 
-		if (it.stackable) {
-			uint16_t tmpAmount = amount;
-			for (Item* item : itemList) {
-				uint16_t removeCount = std::min<uint16_t>(tmpAmount, item->getItemCount());
-				tmpAmount -= removeCount;
-				internalRemoveItem(item, removeCount);
+			std::forward_list<Item*> itemList = getMarketItemList(it.wareId, offer.tier, amount, depotChest, player->getInbox());
+			if (itemList.empty()) {
+				return;
+			}
 
-				if (tmpAmount == 0) {
-					break;
+			buyerPlayer = getPlayerByGUID(offer.playerId);
+			if (!buyerPlayer) {
+				buyerPlayer = new Player(nullptr);
+				if (!IOLoginData::loadPlayerById(buyerPlayer, offer.playerId)) {
+					delete buyerPlayer;
+					return;
 				}
 			}
-		} else {
-			for (Item* item : itemList) {
-				internalRemoveItem(item);
-			}
-		}
 
-		player->bankBalance += totalPrice;
+			if (it.stackable) {
+				uint16_t tmpAmount = amount;
+				for (Item* item : itemList) {
+					uint16_t removeCount = std::min<uint16_t>(tmpAmount, item->getItemCount());
+					tmpAmount -= removeCount;
+					internalRemoveItem(item, removeCount);
 
-		if (it.stackable) {
-			uint16_t tmpAmount = amount;
-			while (tmpAmount > 0) {
-				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
-				Item* item = Item::CreateItem(it.id, stackCount);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					if (tmpAmount == 0) {
+						break;
+					}
 				}
-
-				if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
-
-				tmpAmount -= stackCount;
-			}
-		} else {
-			int32_t subType;
-			if (it.charges != 0) {
-				subType = it.charges;
 			} else {
-				subType = -1;
-			}
-
-			for (uint16_t i = 0; i < amount; ++i) {
-				Item* item = Item::CreateItem(it.id, subType);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
-				}
-
-				if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
+				for (Item* item : itemList) {
+					internalRemoveItem(item);
 				}
 			}
+
+			player->bankBalance += totalPrice;
+
+			if (it.stackable) {
+				uint16_t tmpAmount = amount;
+				while (tmpAmount > 0) {
+					uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
+					Item* item = Item::CreateItem(it.id, stackCount);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
+
+					if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+
+					tmpAmount -= stackCount;
+				}
+			} else {
+				int32_t subType;
+				if (it.charges != 0) {
+					subType = it.charges;
+				} else {
+					subType = -1;
+				}
+
+				for (uint16_t i = 0; i < amount; ++i) {
+					Item* item = Item::CreateItem(it.id, subType);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
+
+					if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+				}
+			}
+		} else {
+			// accept store coins buy offer
+			buyerPlayer = getPlayerByGUID(offer.playerId);
+			if (!buyerPlayer) {
+				buyerPlayer = new Player(nullptr);
+				if (!IOLoginData::loadPlayerById(buyerPlayer, offer.playerId)) {
+					delete buyerPlayer;
+					return;
+				}
+			}
+
+			// check buyer account id
+			if (IOLoginData::getAccountIdByPlayerId(offer.playerId) == 0) {
+				return;
+			}
+
+			// check if player has enough coins
+			int32_t playerCoins = player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+			if (playerCoins < amount) {
+				return;
+			}
+
+			// remove coins from the player
+			player->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, -amount);
+
+			// add bank money
+			player->bankBalance += totalPrice;
+
+			// add coins to the buyer
+			buyerPlayer->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, amount);
 		}
 
-		if (buyerPlayer->isOffline()) {
-			IOLoginData::savePlayer(buyerPlayer);
-			delete buyerPlayer;
+		if (it.id != ITEM_STORE_COIN) {
+			// normal transaction
+			if (buyerPlayer->isOffline()) {
+				IOLoginData::savePlayer(buyerPlayer);
+				delete buyerPlayer;
+			} else {
+				buyerPlayer->onReceiveMail();
+			}
 		} else {
-			buyerPlayer->onReceiveMail();
+			// store coins transaction
+			IOLoginData::savePlayer(player);
+			IOLoginData::savePlayer(buyerPlayer);
+			player->saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+			buyerPlayer->saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+
+			if (buyerPlayer->isOffline()) {
+				delete buyerPlayer;
+			}
 		}
 	} else {
 		if (totalPrice > (player->getMoney() + player->bankBalance)) {
@@ -5589,41 +5684,48 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		removeMoney(player, debitCash);
 		player->bankBalance -= debitBank;
 
-		if (it.stackable) {
-			uint16_t tmpAmount = amount;
-			while (tmpAmount > 0) {
-				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
-				Item* item = Item::CreateItem(it.id, stackCount);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+		if (it.id != ITEM_STORE_COIN) {
+			// accepting normal sell offer
+			if (it.stackable) {
+				uint16_t tmpAmount = amount;
+				while (tmpAmount > 0) {
+					uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
+					Item* item = Item::CreateItem(it.id, stackCount);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
+
+					if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+
+					tmpAmount -= stackCount;
+				}
+			} else {
+				int32_t subType;
+				if (it.charges != 0) {
+					subType = it.charges;
+				} else {
+					subType = -1;
 				}
 
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
+				for (uint16_t i = 0; i < amount; ++i) {
+					Item* item = Item::CreateItem(it.id, subType);
+					if (offer.tier > 0) {
+						item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
+					}
 
-				tmpAmount -= stackCount;
+					if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
+						delete item;
+						break;
+					}
+				}
 			}
 		} else {
-			int32_t subType;
-			if (it.charges != 0) {
-				subType = it.charges;
-			} else {
-				subType = -1;
-			}
-
-			for (uint16_t i = 0; i < amount; ++i) {
-				Item* item = Item::CreateItem(it.id, subType);
-				if (offer.tier > 0) {
-					item->setIntAttr(ITEM_ATTRIBUTE_TIER, offer.tier);
-				}
-
-				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
-					delete item;
-					break;
-				}
-			}
+			// accepting coins sell offer
+			player->addAccountResource(ACCOUNTRESOURCE_STORE_COINS, amount);
+			player->saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
 		}
 
 		Player* sellerPlayer = getPlayerByGUID(offer.playerId);
@@ -5633,7 +5735,12 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 			IOLoginData::increaseBankBalance(offer.playerId, totalPrice);
 		}
 
-		player->onReceiveMail();
+		if (it.id != ITEM_STORE_COIN) {
+			player->onReceiveMail();
+		} else {
+			// coins were traded, better save at this point
+			IOLoginData::savePlayer(player);
+		}
 	}
 
 	const int32_t marketOfferDuration = g_config.getNumber(ConfigManager::MARKET_OFFER_DURATION);
@@ -5653,6 +5760,24 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	player->sendMarketEnter(player->getLastDepotId());
 	offer.timestamp += marketOfferDuration;
 	player->sendMarketAcceptOffer(offer);
+}
+
+void Game::playerRegisterCurrencies(uint32_t playerId)
+{
+	// initialize store and tournament coins
+	uint32_t accountId = IOLoginData::getAccountIdByPlayerId(playerId);
+	if (accountId == 0) {
+		return;
+	}
+
+	if (g_game.getAccountStorageValue(accountId, ASTRG_RESERVED_RANGE_START) == -1) {
+		g_game.setAccountStorageValue(accountId, ASTRG_RESERVED_RANGE_START, 1);
+		g_game.saveAccountStorageKey(accountId, ASTRG_RESERVED_RANGE_START);
+		for (uint16_t i = ACCOUNTRESOURCE_FIRST; i <= ACCOUNTRESOURCE_LAST; ++i) {
+			g_game.setAccountStorageValue(accountId, ASTRG_RESERVED_RANGE_START + i, 0);
+			g_game.saveAccountStorageKey(accountId, ASTRG_RESERVED_RANGE_START + i);
+		}
+	}
 }
 
 void Game::parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message)

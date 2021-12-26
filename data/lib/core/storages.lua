@@ -1,9 +1,12 @@
 --[[
-Reserved storage ranges:
+Reserved player storage ranges:
 - 300000 to 310000+ reserved for achievements
 - 310000 to 320000+ reserved for achievement progress
 - 320000 to 320255 reserved for player resources (wildcards, charms, etc)
 - 10000000 to 20000000 reserved for outfits and mounts on source
+
+Reserved account storage ranges:
+-- 1000000 reserved for store coins
 ]]--
 PlayerStorageKeys = {
 	annihilatorReward = 70015,
@@ -36,3 +39,6 @@ PlayerStorageKeys = {
 
 GlobalStorageKeys = {
 }
+
+-- unused
+-- AccountStorageKeys = {}

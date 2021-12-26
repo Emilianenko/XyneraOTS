@@ -233,6 +233,9 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			player->registerCreatureEvent("ExtendedOpcode");
 		}
 
+		// initialize account currencies
+		addGameTask(&Game::playerRegisterCurrencies, player->getGUID());
+
 		player->lastIP = player->getIP();
 		player->lastLoginSaved = std::max<time_t>(time(nullptr), player->lastLoginSaved + 1);
 		acceptPackets = true;
@@ -1972,15 +1975,16 @@ void ProtocolGame::sendStoreBalance()
 {
 	NetworkMessage msg;
 
-	// send update
+	// header
 	msg.addByte(0xDF);
 	msg.addByte(0x01);
 
-	// placeholder packet / to do
-	msg.add<uint32_t>(0); // total store coins (transferable + non-t)
-	msg.add<uint32_t>(0); // transferable store coins
-	msg.add<uint32_t>(0); // reserved auction coins
-	msg.add<uint32_t>(0); // tournament coins
+	// resources
+	int32_t storeCoins = player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+	msg.add<int32_t>(storeCoins + player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS_NONTRANSFERABLE)); // total store coins (transferable + non-t)
+	msg.add<int32_t>(storeCoins); // transferable store coins
+	msg.add<int32_t>(player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS_RESERVED)); // reserved auction coins
+	msg.add<int32_t>(player->getAccountResource(ACCOUNTRESOURCE_TOURNAMENT_COINS)); // tournament coins
 	writeToOutputBuffer(msg);
 }
 
@@ -2017,6 +2021,11 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 				continue;
 			}
 
+			// store coins (item) are not marketable
+			if (itemType.id == ITEM_STORE_COIN) {
+				continue;
+			}
+
 			if (c && (!itemType.isContainer() || c->capacity() != itemType.maxItems)) {
 				continue;
 			}
@@ -2028,6 +2037,11 @@ void ProtocolGame::sendMarketEnter(uint32_t depotId)
 			depotItems[{itemType.id, item->getTier()}] += Item::countByType(item, -1);
 		}
 	} while (!containerList.empty());
+
+	if (uint32_t playerStoreBalance = std::max<int32_t>(0, player->getAccountResource(ACCOUNTRESOURCE_STORE_COINS))) {
+		// add store coins to market list
+		depotItems[{ITEM_STORE_COIN, 0}] += playerStoreBalance;
+	}
 
 	uint16_t itemsToSend = std::min<size_t>(depotItems.size(), std::numeric_limits<uint16_t>::max());
 	uint16_t i = 0;

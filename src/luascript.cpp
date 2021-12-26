@@ -2113,6 +2113,11 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_TALKACTIONS)
 	registerEnum(RELOAD_TYPE_WEAPONS)
 
+	registerEnum(ACCOUNTRESOURCE_STORE_COINS)
+	registerEnum(ACCOUNTRESOURCE_STORE_COINS_NONTRANSFERABLE)
+	registerEnum(ACCOUNTRESOURCE_STORE_COINS_RESERVED)
+	registerEnum(ACCOUNTRESOURCE_TOURNAMENT_COINS)
+
 	registerEnum(RESOURCE_BANK_BALANCE)
 	registerEnum(RESOURCE_GOLD_EQUIPPED)
 	registerEnum(RESOURCE_PREY_WILDCARDS)
@@ -2606,6 +2611,11 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getAccountType", LuaScriptInterface::luaPlayerGetAccountType);
 	registerMethod("Player", "setAccountType", LuaScriptInterface::luaPlayerSetAccountType);
+
+	registerMethod("Player", "addAccountResource", LuaScriptInterface::luaPlayerAddAccountResource);
+	registerMethod("Player", "setAccountResource", LuaScriptInterface::luaPlayerSetAccountResource);
+	registerMethod("Player", "getAccountResource", LuaScriptInterface::luaPlayerGetAccountResource);
+	registerMethod("Player", "saveAccountResource", LuaScriptInterface::luaPlayerSaveAccountResource);
 
 	registerMethod("Player", "getCapacity", LuaScriptInterface::luaPlayerGetCapacity);
 	registerMethod("Player", "setCapacity", LuaScriptInterface::luaPlayerSetCapacity);
@@ -8776,6 +8786,81 @@ int LuaScriptInterface::luaPlayerSetAccountType(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetAccountResource(lua_State* L)
+{
+	// player:getAccountResource(resourceId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint16_t resourceId = getNumber<uint16_t>(L, 2);
+		if (resourceId <= ACCOUNTRESOURCE_LAST) {
+			lua_pushnumber(L, player->getAccountResource(static_cast<AccountResourceTypes_t>(resourceId)));
+		} else {
+			lua_pushnil(L);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetAccountResource(lua_State* L)
+{
+	// player:setAccountResource(resourceId, amount)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint16_t resourceId = getNumber<uint16_t>(L, 2);
+		if (resourceId <= ACCOUNTRESOURCE_LAST) {
+			player->setAccountResource(static_cast<AccountResourceTypes_t>(resourceId), getNumber<int32_t>(L, 3));
+			lua_pushboolean(L, true);
+		} else {
+			lua_pushboolean(L, false);
+		}
+	} else {
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerAddAccountResource(lua_State* L)
+{
+	// player:addAccountResource(resourceId, amount)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint16_t resourceId = getNumber<uint16_t>(L, 2);
+		if (resourceId <= ACCOUNTRESOURCE_LAST) {
+			player->addAccountResource(static_cast<AccountResourceTypes_t>(resourceId), getNumber<int32_t>(L, 3));
+			lua_pushboolean(L, true);
+		} else {
+			lua_pushboolean(L, false);
+		}
+	} else {
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSaveAccountResource(lua_State* L)
+{
+	// player:saveAccountResource(resourceId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		uint16_t resourceId = getNumber<uint16_t>(L, 2);
+		if (resourceId <= ACCOUNTRESOURCE_LAST) {
+			player->saveAccountResource(static_cast<AccountResourceTypes_t>(resourceId));
+			lua_pushboolean(L, true);
+		} else {
+			lua_pushboolean(L, false);
+		}
+	} else {
+		lua_pushboolean(L, false);
+	}
+
 	return 1;
 }
 

@@ -562,6 +562,14 @@ class Player final : public Creature, public Cylinder
 			return shopOwner;
 		}
 
+		// account resources (store and tournament coins)
+		int32_t getAccountResource(AccountResourceTypes_t resourceType);
+		void setAccountResource(AccountResourceTypes_t resourceType, int32_t value);
+		void addAccountResource(AccountResourceTypes_t resourceType, int32_t value) {
+			setAccountResource(resourceType, getAccountResource(resourceType) + value);
+		}
+		void saveAccountResource(AccountResourceTypes_t resourceType);
+
 		// V.I.P. functions
 		void notifyStatusChange(Player* loginPlayer, VipStatus_t status);
 		bool removeVIP(uint32_t vipGuid);

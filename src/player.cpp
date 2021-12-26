@@ -2343,6 +2343,36 @@ void Player::kickPlayer(bool displayEffect, const std::string& message)
 	}
 }
 
+int32_t Player::getAccountResource(AccountResourceTypes_t resourceType)
+{
+	int32_t accId = accountNumber != 0 ? accountNumber : IOLoginData::getAccountIdByPlayerId(guid);
+	if (accId == 0) {
+		return 0;
+	}
+
+	return g_game.getAccountStorageValue(accId, ASTRG_RESERVED_RANGE_START + resourceType);
+}
+
+void Player::setAccountResource(AccountResourceTypes_t resourceType, int32_t value)
+{
+	int32_t accId = accountNumber != 0 ? accountNumber : IOLoginData::getAccountIdByPlayerId(guid);
+	if (accId == 0) {
+		return;
+	}
+
+	g_game.setAccountStorageValue(accId, ASTRG_RESERVED_RANGE_START + resourceType, value);
+}
+
+void Player::saveAccountResource(AccountResourceTypes_t resourceType)
+{
+	int32_t accId = accountNumber != 0 ? accountNumber : IOLoginData::getAccountIdByPlayerId(guid);
+	if (accId == 0) {
+		return;
+	}
+
+	g_game.saveAccountStorageKey(accId, ASTRG_RESERVED_RANGE_START + resourceType);
+}
+
 void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
 {
 	if (!client) {

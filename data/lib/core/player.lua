@@ -554,3 +554,21 @@ function Player:addStoreItem(itemId, subType)
 	end
 	return storeItem
 end
+
+-- account resources
+function Player:getStoreCoins()
+	return self:getAccountResource(ACCOUNTRESOURCE_STORE_COINS)
+end
+
+function Player:addStoreCoins(amount)
+	local ret = self:addAccountResource(ACCOUNTRESOURCE_STORE_COINS, amount)
+	if ret then
+		self:saveAccountResource(ACCOUNTRESOURCE_STORE_COINS)
+	end
+	
+	return ret
+end
+
+function Player:removeStoreCoins(amount)
+	return self:addStoreCoins(-amount)
+end

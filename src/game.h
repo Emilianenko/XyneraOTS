@@ -425,6 +425,7 @@ class Game
 		void playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spriteId, uint16_t amount, uint8_t tier, uint64_t price, bool anonymous);
 		void playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
+		void playerRegisterCurrencies(uint32_t playerId);
 
 		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
@@ -478,6 +479,7 @@ class Game
 		int32_t getAccountStorageValue(const uint32_t accountId, const uint32_t key) const;
 		void loadAccountStorageValues();
 		bool saveAccountStorageValues() const;
+		bool saveAccountStorageKey(uint32_t accountId, uint32_t key) const;
 
 		void startDecay(Item* item);
 
