@@ -20,7 +20,7 @@ Version Plus goals are:
 
 ### Discussion
 
-* [Discord](https://discord.gg/mscommunity)(:uk: :brazil: :poland: :es:) - If you ran into issues, want to suggest a new feature or just discuss the development of the server, you're welcome to post on "Dev Chat" of this multi-language community.
+* [Discord](https://discord.gg/otacademy)(:uk: :brazil: :poland: :es:) - If you ran into issues, want to suggest a new feature or just discuss the development of the server, visit "DEVELOPMENT" section of this multi-language community.
 
 
 Don't want to use discord? You can also post in one of these sections:
