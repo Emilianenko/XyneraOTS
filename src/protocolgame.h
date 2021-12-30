@@ -41,6 +41,7 @@ class Container;
 class Tile;
 class Connection;
 class Quest;
+class TrackedQuest;
 class ProtocolGame;
 using ProtocolGame_ptr = std::shared_ptr<ProtocolGame>;
 
@@ -134,6 +135,7 @@ class ProtocolGame final : public Protocol
 		void parsePlayerSale(NetworkMessage& msg);
 
 		void parseQuestLine(NetworkMessage& msg);
+		void parseQuestTracker(NetworkMessage& msg);
 
 		void parseInviteToParty(NetworkMessage& msg);
 		void parseJoinParty(NetworkMessage& msg);
@@ -198,6 +200,8 @@ class ProtocolGame final : public Protocol
 
 		void sendQuestLog();
 		void sendQuestLine(const Quest* quest);
+		void sendQuestTracker();
+		void sendUpdateQuestTracker(const TrackedQuest& trackedQuest);
 
 		void sendCancelWalk();
 		void sendChangeSpeed(const Creature* creature, uint32_t speed);
