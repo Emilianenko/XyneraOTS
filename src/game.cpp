@@ -5337,11 +5337,6 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 		return;
 	}
 
-	if (g_config.getBoolean(ConfigManager::MARKET_PREMIUM) && !player->isPremium()) {
-		player->sendTextMessage(MESSAGE_MARKET, "Only premium accounts may create offers for that object.");
-		return;
-	}
-
 	const ItemType& itt = Item::items.getItemIdByClientId(spriteId);
 	if (itt.id == 0 || itt.wareId == 0) {
 		return;
@@ -5349,6 +5344,13 @@ void Game::playerCreateMarketOffer(uint32_t playerId, uint8_t type, uint16_t spr
 
 	const ItemType& it = Item::items.getItemIdByClientId(itt.wareId);
 	if (it.id == 0 || it.wareId == 0) {
+		return;
+	}
+
+	if (g_config.getBoolean(ConfigManager::MARKET_PREMIUM) && !player->isPremium()) {
+		if (it.id != ITEM_STORE_COIN || type != MARKETACTION_BUY) {
+			player->sendTextMessage(MESSAGE_MARKET, "Only premium accounts may create offers for that object.");
+		}
 		return;
 	}
 
