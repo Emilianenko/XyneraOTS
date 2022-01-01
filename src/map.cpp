@@ -658,7 +658,7 @@ const Tile* Map::canWalkTo(const Creature& creature, const Position& pos) const
 	return tile;
 }
 
-bool Map::getPathMatching(const Creature& creature, std::vector<Direction>& dirList, const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const
+bool Map::getPathMatching(const Creature& creature, Position targetPos, std::vector<Direction>& dirList, const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const
 {
 	Position pos = creature.getPosition();
 	Position endPos;
@@ -779,7 +779,9 @@ bool Map::getPathMatching(const Creature& creature, std::vector<Direction>& dirL
 				nodes.openNode(neighborNode);
 			} else {
 				//Does not exist in the open/closed list, create a new node
-				neighborNode = nodes.createOpenNode(n, pos.x, pos.y, newf);
+				neighborNode = nodes.createOpenNode(n, pos.x, pos.y, newf,
+					((std::abs(targetPos.x - pos.x) + std::abs(targetPos.y - pos.y)) * 10)
+				);
 				if (!neighborNode) {
 					if (found) {
 						break;
@@ -850,7 +852,7 @@ AStarNodes::AStarNodes(uint32_t x, uint32_t y)
 	nodeTable[(x << 16) | y] = nodes;
 }
 
-AStarNode* AStarNodes::createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f)
+AStarNode* AStarNodes::createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f, int_fast32_t g)
 {
 	if (curNode >= MAX_NODES) {
 		return nullptr;
@@ -865,20 +867,22 @@ AStarNode* AStarNodes::createOpenNode(AStarNode* parent, uint32_t x, uint32_t y,
 	node->x = x;
 	node->y = y;
 	node->f = f;
+	node->g = g;
 	return node;
 }
 
 AStarNode* AStarNodes::getBestNode()
 {
-	if (curNode == 0) {
-		return nullptr;
-	}
-
 	int32_t best_node_f = std::numeric_limits<int32_t>::max();
 	int32_t best_node = -1;
 	for (size_t i = 0; i < curNode; i++) {
-		if (openNodes[i] && nodes[i].f < best_node_f) {
-			best_node_f = nodes[i].f;
+		if (!openNodes[i]) {
+			continue;
+		}
+		
+		int32_t cost = nodes[i].f + nodes[i].g;
+		if (cost < best_node_f) {
+			best_node_f = cost;
 			best_node = i;
 		}
 	}

@@ -41,7 +41,7 @@ static constexpr int32_t MAP_MAX_LAYERS = 16;
 struct FindPathParams;
 struct AStarNode {
 	AStarNode* parent;
-	int_fast32_t f;
+	int_fast32_t f, g;
 	uint16_t x, y;
 };
 
@@ -55,7 +55,7 @@ class AStarNodes
 	public:
 		AStarNodes(uint32_t x, uint32_t y);
 
-		AStarNode* createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f);
+		AStarNode* createOpenNode(AStarNode* parent, uint32_t x, uint32_t y, int_fast32_t f, int_fast32_t g);
 		AStarNode* getBestNode();
 		void closeNode(AStarNode* node);
 		void openNode(AStarNode* node);
@@ -268,7 +268,7 @@ class Map
 
 		const Tile* canWalkTo(const Creature& creature, const Position& pos) const;
 
-		bool getPathMatching(const Creature& creature, std::vector<Direction>& dirList,
+		bool getPathMatching(const Creature& creature, Position targetPos, std::vector<Direction>& dirList,
 		                     const FrozenPathingConditionCall& pathCondition, const FindPathParams& fpp) const;
 
 		std::map<std::string, Position> waypoints;

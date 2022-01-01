@@ -1081,6 +1081,9 @@ class LuaScriptInterface
 		static int luaMonsterIsIdle(lua_State* L);
 		static int luaMonsterSetIdle(lua_State* L);
 
+		static int luaMonsterIsFamiliar(lua_State* L);
+		static int luaMonsterSetFamiliar(lua_State* L);
+
 		static int luaMonsterIsTarget(lua_State* L);
 		static int luaMonsterIsOpponent(lua_State* L);
 		static int luaMonsterIsFriend(lua_State* L);

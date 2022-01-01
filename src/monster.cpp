@@ -718,6 +718,11 @@ void Monster::updateIdleStatus()
 	setIdle(idle);
 }
 
+void Monster::setFamiliar(bool familiarStatus)
+{
+	familiar = familiarStatus;
+}
+
 void Monster::onAddCondition(ConditionType_t type)
 {
 	if (type == CONDITION_FIRE || type == CONDITION_ENERGY || type == CONDITION_POISON) {

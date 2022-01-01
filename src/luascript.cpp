@@ -2796,6 +2796,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Monster", "isIdle", LuaScriptInterface::luaMonsterIsIdle);
 	registerMethod("Monster", "setIdle", LuaScriptInterface::luaMonsterSetIdle);
 
+	registerMethod("Monster", "isFamiliar", LuaScriptInterface::luaMonsterIsFamiliar);
+	registerMethod("Monster", "setFamiliar", LuaScriptInterface::luaMonsterSetFamiliar);
+
 	registerMethod("Monster", "isTarget", LuaScriptInterface::luaMonsterIsTarget);
 	registerMethod("Monster", "isOpponent", LuaScriptInterface::luaMonsterIsOpponent);
 	registerMethod("Monster", "isFriend", LuaScriptInterface::luaMonsterIsFriend);
@@ -11054,6 +11057,32 @@ int LuaScriptInterface::luaMonsterSetIdle(lua_State* L)
 	}
 
 	monster->setIdle(getBoolean(L, 2));
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterIsFamiliar(lua_State* L)
+{
+	// monster:isFamiliar()
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (monster) {
+		pushBoolean(L, monster->isFamiliar());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterSetFamiliar(lua_State* L)
+{
+	// monster:setFamiliar(familiarStatus)
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (!monster) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	monster->setFamiliar(getBoolean(L, 2));
 	pushBoolean(L, true);
 	return 1;
 }

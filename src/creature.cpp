@@ -153,12 +153,8 @@ void Creature::onThink(uint32_t interval)
 	}
 
 	if (followCreature) {
-		walkUpdateTicks += interval;
-		if (forceUpdateFollowPath || walkUpdateTicks >= 2000) {
-			walkUpdateTicks = 0;
-			forceUpdateFollowPath = false;
-			isUpdatingPath = true;
-		}
+		forceUpdateFollowPath = false;
+		isUpdatingPath = true;
 	}
 
 	if (isUpdatingPath) {
@@ -175,7 +171,7 @@ void Creature::onThink(uint32_t interval)
 
 void Creature::onAttacking(uint32_t interval)
 {
-	if (!attackedCreature) {
+	if (!attackedCreature || (tile && tile->hasFlag(TILESTATE_PROTECTIONZONE))) {
 		return;
 	}
 
@@ -507,8 +503,16 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 			std::forward_list<Creature*> despawnList;
 			for (Creature* summon : summons) {
 				const Position& pos = summon->getPosition();
-				if (Position::getDistanceZ(newPos, pos) > 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 30)) {
-					despawnList.push_front(summon);
+				Monster* monsterSummon = summon->getMonster();
+				int32_t triggerRange = monsterSummon && monsterSummon->isFamiliar() ? 20 : 30; // more responsive familiars follow mechanic
+				if (Position::getDistanceZ(newPos, pos) > 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > triggerRange)) {
+					if (triggerRange == 20) {
+						// teleport familiar to player
+						g_game.internalTeleport(summon, newPos);
+					} else {
+						// remove classic summon
+						despawnList.push_front(summon);
+					}
 				}
 			}
 
@@ -1643,7 +1647,7 @@ bool Creature::isInvisible() const
 
 bool Creature::getPathTo(const Position& targetPos, std::vector<Direction>& dirList, const FindPathParams& fpp) const
 {
-	return g_game.map.getPathMatching(*this, dirList, FrozenPathingConditionCall(targetPos), fpp);
+	return g_game.map.getPathMatching(*this, targetPos, dirList, FrozenPathingConditionCall(targetPos), fpp);
 }
 
 bool Creature::getPathTo(const Position& targetPos, std::vector<Direction>& dirList, int32_t minTargetDist, int32_t maxTargetDist, bool fullPathSearch /*= true*/, bool clearSight /*= true*/, int32_t maxSearchDist /*= 0*/) const

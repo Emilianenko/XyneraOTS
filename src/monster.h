@@ -156,6 +156,11 @@ class Monster final : public Creature
 			return lastMeleeAttack == 0;
 		}
 
+		void setFamiliar(bool familiarStatus);
+		bool isFamiliar() const {
+			return familiar;
+		}
+
 		bool searchTarget(TargetSearchType_t searchType = TARGETSEARCH_DEFAULT);
 		bool selectTarget(Creature* creature);
 
@@ -211,6 +216,7 @@ class Monster final : public Creature
 
 		bool ignoreFieldDamage = false;
 		bool isIdle = true;
+		bool familiar = false;
 		bool isMasterInRange = false;
 		bool randomStepping = false;
 		bool walkingToSpawn = false;
