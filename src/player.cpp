@@ -1357,6 +1357,12 @@ bool Player::closeShopWindow(bool sendCloseShopWindow /*= true*/)
 
 void Player::onWalk(Direction& dir)
 {
+	// cache waypoints for familiars every 5 steps
+	if (++waypointCacheTicks >= 5) {
+		waypointCacheTicks = 0;
+		cacheWaypoint(&position, false);
+	}
+
 	Creature::onWalk(dir);
 	setNextActionTask(nullptr);
 	setNextAction(OTSYS_TIME() + getStepDuration(dir));
@@ -1573,9 +1579,9 @@ void Player::onThink(uint32_t interval)
 
 	sendPing();
 
-	MessageBufferTicks += interval;
-	if (MessageBufferTicks >= 1500) {
-		MessageBufferTicks = 0;
+	messageBufferTicks += interval;
+	if (messageBufferTicks >= 1500) {
+		messageBufferTicks = 0;
 		addMessageBuffer();
 	}
 

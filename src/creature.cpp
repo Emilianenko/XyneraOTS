@@ -51,8 +51,13 @@ Creature::~Creature()
 	}
 }
 
-bool Creature::canSee(const Position& myPos, const Position& pos, int32_t viewRangeX, int32_t viewRangeY)
+bool Creature::canSee(const Position& myPos, const Position& pos, int32_t viewRangeX, int32_t viewRangeY, bool sameFloor)
 {
+	const int_fast32_t offsetz = myPos.getZ() - pos.getZ();
+	if (sameFloor && offsetz != 0) {
+		return false;
+	}
+
 	if (myPos.z <= 7) {
 		// we are on ground level or above (7 -> 0)
 		// view is from 7 -> 0
@@ -72,7 +77,7 @@ bool Creature::canSee(const Position& myPos, const Position& pos, int32_t viewRa
 		}
 	}
 
-	const int_fast32_t offsetz = myPos.getZ() - pos.getZ();
+	
 	return (pos.getX() >= myPos.getX() - viewRangeX + offsetz) && (pos.getX() <= myPos.getX() + viewRangeX + offsetz)
 		&& (pos.getY() >= myPos.getY() - viewRangeY + offsetz) && (pos.getY() <= myPos.getY() + viewRangeY + offsetz);
 }
@@ -503,14 +508,36 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 			std::forward_list<Creature*> despawnList;
 			for (Creature* summon : summons) {
 				const Position& pos = summon->getPosition();
+
 				Monster* monsterSummon = summon->getMonster();
-				int32_t triggerRange = monsterSummon && monsterSummon->isFamiliar() ? 20 : 30; // more responsive familiars follow mechanic
-				if (Position::getDistanceZ(newPos, pos) > 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > triggerRange)) {
-					if (triggerRange == 20) {
-						// teleport familiar to player
+				if (monsterSummon && monsterSummon->isFamiliar()) {
+					// familiar - teleport if walked too far
+					if (Position::getDistanceZ(newPos, pos) > 1) {
+						// walked two floors up - teleport instantly
 						g_game.internalTeleport(summon, newPos);
-					} else {
-						// remove classic summon
+					} else if (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 20) {
+						// player is moving away faster than the summon can follow
+						Player* masterPlayer = getPlayer();
+						if (masterPlayer) {
+							std::deque<FamiliarWaypoint>& waypointsCache = masterPlayer->getWaypointsCache();
+							if (!waypointsCache.empty()) {
+								// teleport to next waypoint
+								g_game.internalTeleport(summon, newPos);
+								waypointsCache.pop_front();
+							} else {
+								// no cached waypoints found
+								// teleport to master
+								g_game.internalTeleport(summon, newPos);
+							}
+						} else {
+							// summon is a familiar, but master is not a player
+							// teleport to master instantly
+							g_game.internalTeleport(summon, newPos);
+						}
+					}
+				} else {
+					// classic summon - schedule despawn if walked too far
+					if (Position::getDistanceZ(newPos, pos) > 2 || (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 30)) {
 						despawnList.push_front(summon);
 					}
 				}

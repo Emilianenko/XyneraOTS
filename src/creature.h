@@ -55,6 +55,7 @@ struct FindPathParams {
 	bool allowDiagonal = true;
 	bool keepDistance = false;
 	bool summonFollowMode = false;
+	bool canChangeFloor = false;
 	int32_t maxSearchDist = 0;
 	int32_t minTargetDist = -1;
 	int32_t maxTargetDist = -1;
@@ -465,7 +466,7 @@ class Creature : virtual public Thing
 			lastPosition = newLastPos;
 		}
 
-		static bool canSee(const Position& myPos, const Position& pos, int32_t viewRangeX, int32_t viewRangeY);
+		static bool canSee(const Position& myPos, const Position& pos, int32_t viewRangeX, int32_t viewRangeY, bool sameFloor = false);
 
 		double getDamageRatio(Creature* attacker) const;
 

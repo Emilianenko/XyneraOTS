@@ -139,6 +139,7 @@ class Monster final : public Creature
 			return walkingToSpawn;
 		}
 		bool walkToSpawn();
+		void followMasterTrail();
 		void onWalk() override;
 		void onWalkComplete() override;
 		bool getNextStep(Direction& direction, uint32_t& flags) override;
@@ -158,7 +159,7 @@ class Monster final : public Creature
 
 		void setFamiliar(bool familiarStatus);
 		bool isFamiliar() const {
-			return familiar;
+			return familiar && master && master->getPlayer();
 		}
 
 		bool searchTarget(TargetSearchType_t searchType = TARGETSEARCH_DEFAULT);

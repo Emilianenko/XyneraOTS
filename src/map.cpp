@@ -322,11 +322,18 @@ void Map::moveCreature(Creature& creature, Tile& newTile, bool forceTeleport/* =
 		}
 	}
 
-	//send to client
+	// register waypoints for familiars
+	Player* player = creature.getPlayer();
+	if (player && teleport) {
+		player->cacheWaypoint(new Position(oldPos.x, oldPos.y, oldPos.z), false);
+		player->cacheWaypoint(new Position(newPos.x, newPos.y, newPos.z), true);
+	}
+
+	// send to client
 	size_t i = 0;
 	for (Creature* spectator : spectators) {
 		if (Player* tmpPlayer = spectator->getPlayer()) {
-			//Use the correct stackpos
+			// Use the correct stackpos
 			int32_t stackpos = oldStackPosVector[i++];
 			if (stackpos != -1) {
 				tmpPlayer->sendCreatureMove(&creature, newPos, newTile.getClientIndexOfCreature(tmpPlayer, &creature), oldPos, stackpos, teleport);

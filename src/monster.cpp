@@ -120,7 +120,7 @@ const std::string& Monster::getNameDescription() const
 bool Monster::canSee(const Position& pos) const
 {
 	return Creature::canSee(getPosition(), pos,
-		Map::maxClientViewportX + 1, Map::maxClientViewportX + 1);
+		Map::maxClientViewportX + 1, Map::maxClientViewportX + 1, isFamiliar());
 }
 
 bool Monster::canWalkOnFieldType(CombatType_t combatType) const
@@ -526,6 +526,11 @@ void Monster::onCreatureLeave(Creature* creature)
 				walkToSpawn();
 			}
 		}
+	}
+
+	// recall the familiar
+	if (isFamiliar() && targetList.empty()) {
+		followMasterTrail();
 	}
 }
 
@@ -1078,6 +1083,75 @@ bool Monster::walkToSpawn()
 	return true;
 }
 
+namespace {
+Position getClosestFreeTile(Creature* creature, Position& centerPos)
+{
+	// exact tile is available
+	Tile* tile = g_game.map.getTile(centerPos);
+	if (tile && tile->queryAdd(0, *creature, 1, FLAG_PATHFINDING | FLAG_IGNOREFIELDDAMAGE) == RETURNVALUE_NOERROR) {
+		return centerPos;
+	}
+
+	// search closest tiles
+	static std::vector<std::pair<int32_t, int32_t>> relList{
+		{-1, -1}, {0, -1}, {1, -1},
+		{-1,  0},          {1,  0},
+		{-1,  1}, {0,  1}, {1,  1}
+	};
+	std::shuffle(relList.begin(), relList.end(), getRandomGenerator());
+
+	for (const auto& it : relList) {
+		Position tryPos(centerPos.x + it.first, centerPos.y + it.second, centerPos.z);
+		tile = g_game.map.getTile(tryPos.x, tryPos.y, tryPos.z);
+		if (tile && tile->queryAdd(0, *creature, 1, FLAG_PATHFINDING | FLAG_IGNOREFIELDDAMAGE) == RETURNVALUE_NOERROR) {
+			return tryPos;
+		}
+	}
+
+	return Position(0, 0, 16); // no tile was found
+}
+}
+
+void Monster::followMasterTrail()
+{
+	if (!master) {
+		return;
+	}
+
+	Player* followPlayer = master->getPlayer();
+	if (!followPlayer) {
+		return;
+	}
+
+	FindPathParams fpp;
+	getPathSearchParams(master, fpp);
+
+	std::deque<FamiliarWaypoint>& waypointsCache = followPlayer->getWaypointsCache();
+	while (waypointsCache.size() > 0) {
+		if (waypointsCache.front().isTeleport) {
+			// use stairs or teleport
+			g_game.internalTeleport(this, *waypointsCache.front().pos);
+			waypointsCache.pop_front();
+			return;
+		} else {
+			Position targetPos = getClosestFreeTile(this, *waypointsCache.front().pos);
+			listWalkDir.clear();
+			if (targetPos.z < 16 && getPathTo(targetPos, listWalkDir, fpp)) {
+				// walk to the waypoint
+				startAutoWalk();
+				waypointsCache.pop_front();
+				return;
+			} else {
+				// unable to walk to the position, try next waypoint
+				waypointsCache.pop_front();
+			}
+		}
+	}
+
+	// unable to walk, teleport instead
+	g_game.internalTeleport(this, master->getPosition());
+}
+
 void Monster::onWalk()
 {
 	Creature::onWalk();
@@ -1204,10 +1278,18 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 
 	bool result = false;
 	if (!walkingToSpawn && (!followCreature || !hasFollowPath) && (!isSummon() || !isMasterInRange)) {
-		if (getTimeSinceLastMove() >= 1000) {
-			randomStepping = true;
-			//choose a random direction
-			result = getRandomStep(getPosition(), direction);
+		if (!isFamiliar()) {
+			if (getTimeSinceLastMove() >= 1000) {
+				randomStepping = true;
+				//choose a random direction
+				result = getRandomStep(getPosition(), direction);
+			}
+		} else {
+			if (listWalkDir.empty()) {
+				followMasterTrail();
+			} else {
+				result = Creature::getNextStep(direction, flags);
+			}
 		}
 	} else if ((isSummon() && isMasterInRange) || followCreature || walkingToSpawn) {
 		randomStepping = false;

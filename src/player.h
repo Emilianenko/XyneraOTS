@@ -108,6 +108,13 @@ struct Skill {
 	uint8_t percent = 0;
 };
 
+struct FamiliarWaypoint {
+	constexpr FamiliarWaypoint(Position* pos, bool isTeleport) : pos(pos), isTeleport(isTeleport) {}
+
+	Position* pos;
+	bool isTeleport = false;
+};
+
 using MuteCountMap = std::map<uint32_t, uint32_t>;
 
 static constexpr int32_t PLAYER_MAX_SPEED = 2 * std::numeric_limits<uint16_t>::max();
@@ -1207,6 +1214,18 @@ class Player final : public Creature, public Cylinder
 			return openContainers;
 		}
 
+		// waypoints cache for familiars
+		void cacheWaypoint(Position* pos, bool isTeleport) {
+			if (waypointsCache.size() >= 5) {
+				waypointsCache.pop_front();
+			}
+
+			waypointsCache.push_back(FamiliarWaypoint(pos, isTeleport));
+		}
+		std::deque<FamiliarWaypoint>& getWaypointsCache() {
+			return waypointsCache;
+		}
+
 	private:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1227,7 +1246,7 @@ class Player final : public Creature, public Cylinder
 		bool dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified) override;
 		Item* getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature) override;
 
-		//cylinder implementations
+		// cylinder implementations
 		ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count, uint32_t& maxQueryCount,
@@ -1272,8 +1291,12 @@ class Player final : public Creature, public Cylinder
 		std::forward_list<std::string> learnedInstantSpellList;
 		std::forward_list<Condition*> storedConditionList; // TODO: This variable is only temporarily used when logging in, get rid of it somehow
 
-		//quest tracker
+		// quest tracker
 		std::vector<TrackedQuest> trackedQuests;
+
+		// helper for familiars (pos, isTeleport)
+		std::deque<FamiliarWaypoint> waypointsCache;
+		uint32_t waypointCacheTicks = 0;
 
 		std::string name;
 		std::string guildNick;
@@ -1328,7 +1351,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t actionTaskEvent = 0;
 		uint32_t nextStepEvent = 0;
 		uint32_t walkTaskEvent = 0;
-		uint32_t MessageBufferTicks = 0;
+		uint32_t messageBufferTicks = 0;
 		uint32_t lastIP = 0;
 		uint32_t accountNumber = 0;
 		uint32_t guid = 0;
