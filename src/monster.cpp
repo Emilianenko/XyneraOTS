@@ -635,6 +635,15 @@ void Monster::onFollowCreatureComplete(const Creature* creature)
 	}
 }
 
+void Monster::onChangeZone(ZoneType_t zone)
+{
+	if (attackedCreature && zone == ZONE_PROTECTION) {
+		onCreatureDisappear(attackedCreature, false);
+	}
+
+	g_game.updateCreatureWalkthrough(this);
+}
+
 BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
                               bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */, bool /* ignoreResistances = false */)
 {

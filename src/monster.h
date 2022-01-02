@@ -144,6 +144,7 @@ class Monster final : public Creature
 		void onWalkComplete() override;
 		bool getNextStep(Direction& direction, uint32_t& flags) override;
 		void onFollowCreatureComplete(const Creature* creature) override;
+		void onChangeZone(ZoneType_t zone) override;
 
 		void onThink(uint32_t interval) override;
 

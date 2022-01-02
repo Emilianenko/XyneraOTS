@@ -764,27 +764,33 @@ bool Player::canSeeGhostMode(const Creature*) const
 	return group->access;
 }
 
+// walkthrough logic for server processing
 bool Player::canWalkthrough(const Creature* creature) const
 {
+	// server staff can walk through everything
+	// ghost mode targets are not supposed to block anything
 	if (group->access || creature->isInGhostMode()) {
 		return true;
 	}
 
-	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	// check client walkthrough logic
+	if (!canWalkthroughEx(creature)) {
 		return false;
 	}
 
-	const Tile* playerTile = player->getTile();
-	if (!playerTile || (!playerTile->hasFlag(TILESTATE_PROTECTIONZONE) && player->getLevel() > static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL)))) {
+	// check if creature has tile assigned
+	const Tile* targetTile = creature->getTile();
+	if (!targetTile) {
 		return false;
 	}
 
-	const Item* playerTileGround = playerTile->getGround();
-	if (!playerTileGround || !playerTileGround->hasWalkStack()) {
+	// check if tile is not a depot tile
+	const Item* tileGround = targetTile->getGround();
+	if (!tileGround || !tileGround->hasWalkStack()) {
 		return false;
 	}
 
+	// walkthrough pauses
 	Player* thisPlayer = const_cast<Player*>(this);
 	if ((OTSYS_TIME() - lastWalkthroughAttempt) > 2000) {
 		thisPlayer->setLastWalkthroughAttempt(OTSYS_TIME());
@@ -796,23 +802,60 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 	}
 
+	// walkthrough
 	thisPlayer->setLastWalkthroughPosition(creature->getPosition());
 	return true;
 }
 
+// walkthrough info for game UI
 bool Player::canWalkthroughEx(const Creature* creature) const
 {
 	if (group->access) {
+		// server staff can walk through everything
 		return true;
 	}
 
-	const Player* player = creature->getPlayer();
-	if (!player || !g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+	const Npc* npc = creature->getNpc();
+	if (npc) {
+		// npc can never be walked through
 		return false;
 	}
 
-	const Tile* playerTile = player->getTile();
-	return playerTile && (playerTile->hasFlag(TILESTATE_PROTECTIONZONE) || player->getLevel() <= static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL)));
+	const Tile* targetTile = creature->getTile();
+	if (!targetTile) {
+		// tile not found
+		return false;
+	}
+
+	const Player* player = creature->getPlayer();
+	if (player) {
+		// walkthrough disabled by config
+		if (!g_config.getBoolean(ConfigManager::ALLOW_WALKTHROUGH)) {
+			return false;
+		}
+
+		// protection zone
+		if (targetTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+			return true;
+		}
+
+		// pvp protected level
+		if (player->getLevel() <= static_cast<uint32_t>(g_config.getNumber(ConfigManager::PROTECTION_LEVEL))) {
+			return true;
+		}
+
+		// default
+		return false;
+	}
+
+	const Monster* monster = creature->getMonster();
+	if (monster && targetTile->hasFlag(TILESTATE_PROTECTIONZONE)) {
+		// monsters in PZ, most likely familiars
+		return true;
+	}
+
+	// unrecognized creature
+	return false;
 }
 
 void Player::onReceiveMail() const

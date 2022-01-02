@@ -472,6 +472,7 @@ void Creature::onCreatureDisappear(const Creature* creature, bool isLogout)
 
 void Creature::onChangeZone(ZoneType_t zone)
 {
+	// currently used by npcs only
 	if (attackedCreature && zone == ZONE_PROTECTION) {
 		onCreatureDisappear(attackedCreature, false);
 	}
