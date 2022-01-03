@@ -19,7 +19,7 @@
 
 #ifndef FS_FAMILIARS_H_C00089BD41B5F10BED759BFF7590782C
 #define FS_FAMILIARS_H_C00089BD41B5F10BED759BFF7590782C
-/*
+
 struct Familiar
 {
 		Familiar(uint8_t id, uint16_t clientId, std::string name, bool premium, bool unlocked) :
@@ -49,5 +49,5 @@ class Familiars
 	private:
 		std::vector<Familiar> familiars;
 };
-*/
+
 #endif

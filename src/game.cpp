@@ -3601,6 +3601,19 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRand
 	}
 }
 
+void Game::playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Familiar* requestedFamiliar = g_game.familiars.getFamiliarByClientID(lookFamiliar);
+	if (requestedFamiliar && player->hasFamiliar(requestedFamiliar)) {
+		player->setCurrentFamiliar(requestedFamiliar->id);
+	}
+}
+
 void Game::playerShowQuestLog(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
@@ -6174,6 +6187,7 @@ bool Game::reload(ReloadTypes_t reloadType)
 			g_weapons->loadDefaults();
 			quests.reload();
 			mounts.reload();
+			familiars.reload();
 			g_globalEvents->reload();
 			g_events->load();
 			g_chat->load();

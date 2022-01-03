@@ -125,6 +125,9 @@ void sighupHandler()
 	g_game.mounts.reload();
 	std::cout << "Reloaded mounts." << std::endl;
 
+	g_game.familiars.reload();
+	std::cout << "Reloaded familiars." << std::endl;
+
 	g_globalEvents->reload();
 	std::cout << "Reloaded globalevents." << std::endl;
 

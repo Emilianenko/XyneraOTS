@@ -161,6 +161,12 @@ class Player final : public Creature, public Cylinder
 		bool hasMount(const Mount* mount) const;
 		void dismount();
 
+		uint8_t getCurrentFamiliar() const;
+		void setCurrentFamiliar(uint8_t familiarId);
+		bool addFamiliar(uint8_t familiarId);
+		bool removeFamiliar(uint8_t familiarId);
+		bool hasFamiliar(const Familiar* familiar) const;
+
 		void sendFYIBox(const std::string& message) {
 			if (client) {
 				client->sendFYIBox(message);
@@ -1279,7 +1285,7 @@ class Player final : public Creature, public Cylinder
 		// quest tracker
 		std::vector<TrackedQuest> trackedQuests;
 
-		// helper for familiars (pos, isTeleport)
+		// helper for familiars
 		uint32_t waypointCacheTicks = 0;
 
 		std::string name;

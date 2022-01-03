@@ -249,13 +249,11 @@ void mainLoader(int, char*[], ServiceManager* services)
 		return;
 	}
 
-	/*
 	std::cout << ">> Loading familiars" << std::endl;
 	if (!g_game.familiars.loadFromXml()) {
 		startupErrorMessage("Unable to load familiars!");
 		return;
 	}
-	*/
 
 	// load item data
 	std::cout << ">> Loading items... ";

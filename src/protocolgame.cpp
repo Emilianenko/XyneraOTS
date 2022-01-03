@@ -953,7 +953,7 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 			newOutfit.lookMountFeet = currentOutfit.lookMountFeet;
 		}
 
-		msg.get<uint16_t>(); // familiar looktype
+		addGameTask(&Game::playerSelectFamiliar, player->getID(), msg.get<uint16_t>());
 		addGameTask(&Game::playerChangeOutfit, player->getID(), newOutfit, msg.getByte() == 0x01);
 
 	// Store "try outfit" window
@@ -2997,28 +2997,30 @@ void ProtocolGame::sendHouseWindow(uint32_t windowTextId, const std::string& tex
 
 void ProtocolGame::sendOutfitWindow()
 {
+	// get player outfits
 	const auto& outfits = Outfits::getInstance().getOutfits(player->getSex());
 	if (outfits.size() == 0) {
 		return;
 	}
 
-	NetworkMessage msg;
-	msg.addByte(0xC8);
-
+	// get current outfit info
 	Outfit_t currentOutfit = player->getDefaultOutfit();
-
 	if (currentOutfit.lookType == 0) {
 		Outfit_t newOutfit;
 		newOutfit.lookType = outfits.front().lookType;
 		currentOutfit = newOutfit;
 	}
 
-	Mount* currentMount = g_game.mounts.getMountByID(player->getCurrentMount());
+	// get current mount info
+	const Mount* currentMount = g_game.mounts.getMountByID(player->getCurrentMount());
 	if (currentMount) {
 		currentOutfit.lookMount = currentMount->clientId;
 	}
-
 	bool mounted = currentOutfit.lookMount != 0;
+
+	// start building the response
+	NetworkMessage msg;
+	msg.addByte(0xC8);
 	AddOutfit(msg, currentOutfit);
 
 	// mount color bytes are required here regardless of having one
@@ -3029,14 +3031,35 @@ void ProtocolGame::sendOutfitWindow()
 		msg.addByte(currentOutfit.lookMountFeet);
 	}
 
-	msg.add<uint16_t>(0); // current familiar looktype
+	// get available familiars
+	std::vector<const Familiar*> familiars;
+	for (const Familiar& familiar : g_game.familiars.getFamiliars()) {
+		if (player->hasFamiliar(&familiar)) {
+			familiars.push_back(&familiar);
+		}
+	}
 
+	// add current familiar
+	if (familiars.size() > 0) {
+		const Familiar* currentFamiliar = g_game.familiars.getFamiliarByID(player->getCurrentFamiliar());
+		if (currentFamiliar && player->hasFamiliar(currentFamiliar)) {
+			msg.add<uint16_t>(currentFamiliar->clientId);
+		} else {
+			currentFamiliar = familiars.front();
+			msg.add<uint16_t>(currentFamiliar->clientId);
+		}
+	} else {
+		msg.add<uint16_t>(0);
+	}
+
+	// add GM outfit
 	std::vector<ProtocolOutfit> protocolOutfits;
 	if (player->isAccessPlayer()) {
 		static const std::string gamemasterOutfitName = "Gamemaster";
 		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
 	}
 
+	// get other available outfits
 	protocolOutfits.reserve(outfits.size());
 	for (const Outfit& outfit : outfits) {
 		uint8_t addons;
@@ -3047,6 +3070,7 @@ void ProtocolGame::sendOutfitWindow()
 		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
 	}
 
+	// add available outfits
 	msg.add<uint16_t>(protocolOutfits.size());
 	for (const ProtocolOutfit& outfit : protocolOutfits) {
 		msg.add<uint16_t>(outfit.lookType);
@@ -3055,6 +3079,7 @@ void ProtocolGame::sendOutfitWindow()
 		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId), 0x02 golden outfit tooltip (hardcoded)
 	}
 
+	// get available mounts
 	std::vector<const Mount*> mounts;
 	for (const Mount& mount : g_game.mounts.getMounts()) {
 		if (player->hasMount(&mount)) {
@@ -3062,6 +3087,7 @@ void ProtocolGame::sendOutfitWindow()
 		}
 	}
 
+	// add available mounts
 	msg.add<uint16_t>(mounts.size());
 	for (const Mount* mount : mounts) {
 		msg.add<uint16_t>(mount->clientId);
@@ -3069,11 +3095,13 @@ void ProtocolGame::sendOutfitWindow()
 		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
 	}
 
-	msg.add<uint16_t>(0x00); // familiars.size()
-	// size > 0
-	// U16 looktype
-	// String name
-	// 0x00 // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	// add available familiars
+	msg.add<uint16_t>(familiars.size());
+	for (const Familiar* familiar : familiars) {
+		msg.add<uint16_t>(familiar->clientId);
+		msg.addString(familiar->name);
+		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	}
 
 	msg.addByte(0x00); // Try outfit mode (?)
 	msg.addByte(mounted ? 0x01 : 0x00);

@@ -7,8 +7,45 @@
 		premium - needs premium to choose
 		unlocked - can be used without quest
 	-->
-	<familiar id="1" clientid="368" name="Widow Queen" premium="yes" unlocked="yes">
+	<!-- base familiars -->
+	<familiar id="1" clientid="991" name="Skullfrost" premium="yes" unlocked="yes">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" />
+	</familiar>
+	
+	<familiar id="2" clientid="992" name="Emberwing" premium="yes" unlocked="yes">
+		<vocation name="Paladin" />
+		<vocation name="Royal Paladin" />
+	</familiar>
+	
+	<familiar id="3" clientid="993" name="Grovebeast" premium="yes" unlocked="yes">
+		<vocation name="Druid" />
+		<vocation name="Elder Druid" />
+	</familiar>
+	
+	<familiar id="4" clientid="994" name="Thundergiant" premium="yes" unlocked="yes">
+		<vocation name="Sorcerer" />
+		<vocation name="Master Sorcerer" />
+	</familiar>
+	
+	<!-- quest familiars -->
+	<familiar id="5" clientid="1365" name="Snowbash" premium="yes" unlocked="no">
+		<vocation name="Knight" />
+		<vocation name="Elite Knight" />
+	</familiar>
+	
+	<familiar id="6" clientid="1366" name="Sandscourge" premium="yes" unlocked="no">
+		<vocation name="Paladin" />
+		<vocation name="Royal Paladin" />
+	</familiar>
+	
+	<familiar id="7" clientid="1364" name="Mossmasher" premium="yes" unlocked="no">
+		<vocation name="Druid" />
+		<vocation name="Elder Druid" />
+	</familiar>
+	
+	<familiar id="8" clientid="1367" name="Bladespark" premium="yes" unlocked="no">
+		<vocation name="Sorcerer" />
+		<vocation name="Master Sorcerer" />
 	</familiar>
 </familiars>

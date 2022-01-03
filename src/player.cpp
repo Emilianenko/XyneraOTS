@@ -689,7 +689,7 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 				value & 0xFF
 			);
 			return;
-		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE)) {
+		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE) || IS_IN_KEYRANGE(key, FAMILIARS_RANGE)) {
 			// do nothing
 		} else {
 			std::cout << "Warning: unknown reserved key: " << key << " player: " << getName() << std::endl;
@@ -4590,6 +4590,93 @@ void Player::dismount()
 	}
 
 	defaultOutfit.lookMount = 0;
+}
+
+uint8_t Player::getCurrentFamiliar() const
+{
+	int32_t value;
+	if (getStorageValue(PSTRG_FAMILIARS_CURRENTFAMILIAR, value)) {
+		return value;
+	}
+	return 0;
+}
+
+void Player::setCurrentFamiliar(uint8_t familiarId)
+{
+	addStorageValue(PSTRG_FAMILIARS_CURRENTFAMILIAR, familiarId);
+}
+
+bool Player::addFamiliar(uint8_t familiarId)
+{
+	if (!g_game.familiars.getFamiliarByID(familiarId)) {
+		return false;
+	}
+
+	const uint8_t tmpFamiliarId = familiarId - 1;
+	const uint32_t key = PSTRG_FAMILIARS_RANGE_START + (tmpFamiliarId / 31);
+
+	int32_t value;
+	if (getStorageValue(key, value)) {
+		value |= (1 << (tmpFamiliarId % 31));
+	} else {
+		value = (1 << (tmpFamiliarId % 31));
+	}
+
+	addStorageValue(key, value);
+	return true;
+}
+
+bool Player::removeFamiliar(uint8_t familiarId)
+{
+	if (!g_game.familiars.getFamiliarByID(familiarId)) {
+		return false;
+	}
+
+	const uint8_t tmpFamiliarId = familiarId - 1;
+	const uint32_t key = PSTRG_FAMILIARS_RANGE_START + (tmpFamiliarId / 31);
+
+	int32_t value;
+	if (!getStorageValue(key, value)) {
+		return true;
+	}
+
+	value &= ~(1 << (tmpFamiliarId % 31));
+	addStorageValue(key, value);
+
+	if (getCurrentFamiliar() == familiarId) {
+		setCurrentFamiliar(0);
+	}
+
+	return true;
+}
+
+bool Player::hasFamiliar(const Familiar* familiar) const
+{
+	// access check
+	if (isAccessPlayer()) {
+		return true;
+	}
+
+	// premium check
+	if (familiar->premium && !isPremium()) {
+		return false;
+	}
+
+	// vocation check
+	if (std::find(familiar->vocations.begin(), familiar->vocations.end(), vocation->getId()) == familiar->vocations.end()) {
+		return false;
+	}
+	const uint8_t tmpFamiliarId = familiar->id - 1;
+
+	// storage check
+	if (!familiar->unlocked) {
+		int32_t value;
+		if (!getStorageValue(PSTRG_FAMILIARS_RANGE_START + (tmpFamiliarId / 31), value) || ((1 << (tmpFamiliarId % 31)) & value) == 0) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 bool Player::addOfflineTrainingTries(skills_t skill, uint64_t tries)

@@ -23,7 +23,7 @@
 #include "vocation.h"
 #include "pugicast.h"
 #include "tools.h"
-/*
+
 extern Vocations g_vocations;
 
 bool Familiars::reload()
@@ -111,4 +111,3 @@ Familiar* Familiars::getFamiliarByClientID(uint16_t clientId)
 
 	return it != familiars.end() ? &*it : nullptr;
 }
-*/
