@@ -1012,6 +1012,24 @@ void LuaScriptInterface::pushMount(lua_State* L, const Mount* mount)
 	setField(L, "premium", mount->premium);
 }
 
+void LuaScriptInterface::pushFamiliar(lua_State* L, const Familiar* familiar)
+{
+	lua_createtable(L, 0, 6);
+	setField(L, "name", familiar->name);
+	setField(L, "id", familiar->id);
+	setField(L, "clientId", familiar->clientId);
+	setField(L, "premium", familiar->premium);
+	setField(L, "unlocked", familiar->unlocked);
+	
+	// Vocations
+	lua_createtable(L, 0, familiar->vocations.size() + 1);
+	for (int32_t i = 0; i < familiar->vocations.size(); i++) {
+		lua_pushnumber(L, familiar->vocations[i]);
+		lua_rawseti(L, -2, i + 1);
+	}
+	lua_setfield(L, -2, "vocations");
+}
+
 void LuaScriptInterface::pushLoot(lua_State* L, const std::vector<LootBlock>& lootList)
 {
 	lua_createtable(L, lootList.size(), 0);
@@ -2270,6 +2288,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getHouses", LuaScriptInterface::luaGameGetHouses);
 	registerMethod("Game", "getOutfits", LuaScriptInterface::luaGameGetOutfits);
 	registerMethod("Game", "getMounts", LuaScriptInterface::luaGameGetMounts);
+	registerMethod("Game", "getFamiliars", LuaScriptInterface::luaGameGetFamiliars);
 	registerMethod("Game", "getInstantSpells", LuaScriptInterface::luaGameGetInstantSpells);
 	registerMethod("Game", "getRuneSpells", LuaScriptInterface::luaGameGetRuneSpells);
 
@@ -2738,6 +2757,11 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasMount", LuaScriptInterface::luaPlayerHasMount);
 	registerMethod("Player", "hasRandomizedMount", LuaScriptInterface::luaPlayerHasRandomizedMount);
 	registerMethod("Player", "setRandomizedMount", LuaScriptInterface::luaPlayerSetRandomizedMount);
+
+	registerMethod("Player", "addFamiliar", LuaScriptInterface::luaPlayerAddFamiliar);
+	registerMethod("Player", "removeFamiliar", LuaScriptInterface::luaPlayerRemoveFamiliar);
+	registerMethod("Player", "hasFamiliar", LuaScriptInterface::luaPlayerHasFamiliar);
+	registerMethod("Player", "canUseFamiliar", LuaScriptInterface::luaPlayerCanUseFamiliar);
 
 	registerMethod("Player", "getPremiumEndsAt", LuaScriptInterface::luaPlayerGetPremiumEndsAt);
 	registerMethod("Player", "setPremiumEndsAt", LuaScriptInterface::luaPlayerSetPremiumEndsAt);
@@ -4719,6 +4743,21 @@ int LuaScriptInterface::luaGameGetMounts(lua_State* L)
 	int index = 0;
 	for (auto& mount : mounts) {
 		pushMount(L, &mount);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetFamiliars(lua_State* L)
+{
+	// Game.getFamiliars()
+	const auto& familiars = g_game.familiars.getFamiliars();
+	lua_createtable(L, familiars.size(), 0);
+
+	int index = 0;
+	for (auto& familiar : familiars) {
+		pushFamiliar(L, &familiar);
 		lua_rawseti(L, -2, ++index);
 	}
 
@@ -10437,6 +10476,99 @@ int LuaScriptInterface::luaPlayerSetRandomizedMount(lua_State* L)
 
 	player->setRandomizedMount(getBoolean(L, 2));
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerAddFamiliar(lua_State* L)
+{
+	// player:addFamiliar(server id or familiar name)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint8_t familiarId;
+	if (isNumber(L, 2)) {
+		familiarId = getNumber<uint8_t>(L, 2);
+	} else {
+		Familiar* familiar = g_game.familiars.getFamiliarByName(getString(L, 2));
+		if (!familiar) {
+			lua_pushnil(L);
+			return 1;
+		}
+		familiarId = familiar->id;
+	}
+	pushBoolean(L, player->addFamiliar(familiarId));
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerRemoveFamiliar(lua_State* L) {
+	// player:removeFamiliar(server id or familiar name)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint8_t familiarId;
+	if (isNumber(L, 2)) {
+		familiarId = getNumber<uint8_t>(L, 2);
+	} else {
+		Familiar* familiar = g_game.familiars.getFamiliarByName(getString(L, 2));
+		if (!familiar) {
+			lua_pushnil(L);
+			return 1;
+		}
+		familiarId = familiar->id;
+	}
+	pushBoolean(L, player->removeFamiliar(familiarId));
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerHasFamiliar(lua_State* L) {
+	// player:hasFamiliar(server id or familiar name)
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Familiar* familiar = nullptr;
+	if (isNumber(L, 2)) {
+		familiar = g_game.familiars.getFamiliarByID(getNumber<uint8_t>(L, 2));
+	} else {
+		familiar = g_game.familiars.getFamiliarByName(getString(L, 2));
+	}
+
+	if (familiar) {
+		pushBoolean(L, player->hasFamiliar(familiar));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerCanUseFamiliar(lua_State* L) {
+	// player:canUseFamiliar(server id or familiar name)
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Familiar* familiar = nullptr;
+	if (isNumber(L, 2)) {
+		familiar = g_game.familiars.getFamiliarByID(getNumber<uint8_t>(L, 2));
+	} else {
+		familiar = g_game.familiars.getFamiliarByName(getString(L, 2));
+	}
+
+	if (familiar) {
+		pushBoolean(L, player->canUseFamiliar(familiar));
+	} else {
+		lua_pushnil(L);
+	}
 	return 1;
 }
 

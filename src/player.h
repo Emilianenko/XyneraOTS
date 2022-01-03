@@ -166,6 +166,7 @@ class Player final : public Creature, public Cylinder
 		bool addFamiliar(uint8_t familiarId);
 		bool removeFamiliar(uint8_t familiarId);
 		bool hasFamiliar(const Familiar* familiar) const;
+		bool canUseFamiliar(const Familiar* familiar) const;
 
 		void sendFYIBox(const std::string& message) {
 			if (client) {

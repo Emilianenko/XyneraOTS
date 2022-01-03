@@ -41,6 +41,7 @@
 #include "position.h"
 #include "outfit.h"
 #include "mounts.h"
+#include "familiars.h"
 
 class Thing;
 class Creature;
@@ -402,6 +403,7 @@ class LuaScriptInterface
 		static void pushOutfit(lua_State* L, const Outfit_t& outfit);
 		static void pushOutfit(lua_State* L, const Outfit* outfit);
 		static void pushMount(lua_State* L, const Mount* mount);
+		static void pushFamiliar(lua_State* L, const Familiar* familiar);
 		static void pushLoot(lua_State* L, const std::vector<LootBlock>& lootList);
 
 		//
@@ -566,6 +568,7 @@ class LuaScriptInterface
 		static int luaGameGetHouses(lua_State* L);
 		static int luaGameGetOutfits(lua_State* L);
 		static int luaGameGetMounts(lua_State* L);
+		static int luaGameGetFamiliars(lua_State* L);
 		static int luaGameGetInstantSpells(lua_State* L);
 		static int luaGameGetRuneSpells(lua_State* L);
 
@@ -1024,6 +1027,11 @@ class LuaScriptInterface
 		static int luaPlayerHasMount(lua_State* L);
 		static int luaPlayerHasRandomizedMount(lua_State* L);
 		static int luaPlayerSetRandomizedMount(lua_State* L);
+
+		static int luaPlayerAddFamiliar(lua_State* L);
+		static int luaPlayerRemoveFamiliar(lua_State* L);
+		static int luaPlayerHasFamiliar(lua_State* L);
+		static int luaPlayerCanUseFamiliar(lua_State* L);
 
 		static int luaPlayerGetPremiumEndsAt(lua_State* L);
 		static int luaPlayerSetPremiumEndsAt(lua_State* L);

@@ -4650,7 +4650,28 @@ bool Player::removeFamiliar(uint8_t familiarId)
 	return true;
 }
 
+// storage check if player has this familiar unlocked (no voc check involved)
 bool Player::hasFamiliar(const Familiar* familiar) const
+{
+	// access check
+	if (isAccessPlayer()) {
+		return true;
+	}
+
+	// storage check
+	if (!familiar->unlocked) {
+		const uint8_t tmpFamiliarId = familiar->id - 1;
+		int32_t value;
+		if (!getStorageValue(PSTRG_FAMILIARS_RANGE_START + (tmpFamiliarId / 31), value) || ((1 << (tmpFamiliarId % 31)) & value) == 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+// check if player can select this familiar in outfit dialog
+bool Player::canUseFamiliar(const Familiar* familiar) const
 {
 	// access check
 	if (isAccessPlayer()) {
@@ -4663,13 +4684,13 @@ bool Player::hasFamiliar(const Familiar* familiar) const
 	}
 
 	// vocation check
-	if (std::find(familiar->vocations.begin(), familiar->vocations.end(), vocation->getId()) == familiar->vocations.end()) {
+	if (familiar->vocations.size() > 0 && std::find(familiar->vocations.begin(), familiar->vocations.end(), vocation->getId()) == familiar->vocations.end()) {
 		return false;
 	}
-	const uint8_t tmpFamiliarId = familiar->id - 1;
 
 	// storage check
 	if (!familiar->unlocked) {
+		const uint8_t tmpFamiliarId = familiar->id - 1;
 		int32_t value;
 		if (!getStorageValue(PSTRG_FAMILIARS_RANGE_START + (tmpFamiliarId / 31), value) || ((1 << (tmpFamiliarId % 31)) & value) == 0) {
 			return false;

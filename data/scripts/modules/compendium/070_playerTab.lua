@@ -409,19 +409,21 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		end
 
 		-- add mounts
-		if #COMPENDIUM_CACHE.mountLookTypes > 0 then
+		if #COMPENDIUM_CACHE.mounts > 0 then
 			local displayMounts = {}
-			for i = 1, #COMPENDIUM_CACHE.mountLookTypes do
-				if creature:hasMount(COMPENDIUM_CACHE.mountLookTypeToId[COMPENDIUM_CACHE.mountLookTypes[i]]) then
-					displayMounts[#displayMounts + 1] = COMPENDIUM_CACHE.mountLookTypes[i]
+			for i = 1, #COMPENDIUM_CACHE.mounts do
+				local mount = COMPENDIUM_CACHE.mounts[i]
+			
+				if creature:hasMount(mount.id) then
+					displayMounts[#displayMounts + 1] = mount
 				end
 			end
 
 			response:addU16(#displayMounts)
 			if #displayMounts > 0 then
 				for i = 1, #displayMounts do
-					response:addU16(displayMounts[i])
-					response:addString("")
+					response:addU16(displayMounts[i].clientId)
+					response:addString(displayMounts[i].name)
 					response:addByte(OUTFIT_TYPE_NORMAL)
 					response:addU32(0) -- store offer id?
 				end
@@ -435,10 +437,36 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 			response:addU16(0)
 		end
 
-		-- add familiars (placeholder)
-		response:addU16(0)
-		-- same structure as mounts
-		-- colors not included at the end of familiars block
+		-- add familiars
+		if #COMPENDIUM_CACHE.familiars > 0 then
+			local displayFamiliars = {}
+			
+			if not creature:getGroup():getAccess() then
+				for i = 1, #COMPENDIUM_CACHE.familiars do
+					local familiar = COMPENDIUM_CACHE.familiars[i]
+					if creature:hasFamiliar(familiar.id) and (#familiar.vocations == 0 or table.contains(familiar.vocations, creature:getVocation():getId())) then
+						displayFamiliars[#displayFamiliars + 1] = familiar
+					end	
+				end			
+			else
+				for i = 1, #COMPENDIUM_CACHE.familiars do
+					displayFamiliars[#displayFamiliars + 1] = COMPENDIUM_CACHE.familiars[i]
+				end
+			end
+			
+			response:addU16(#displayFamiliars)
+			if #displayFamiliars > 0 then
+				for i = 1, #displayFamiliars do
+					local currentFamiliar = displayFamiliars[i]
+					response:addU16(currentFamiliar.clientId)
+					response:addString(currentFamiliar.name)
+					response:addByte(currentFamiliar.unlocked == 1 and OUTFIT_TYPE_NORMAL or OUTFIT_TYPE_QUEST)
+					response:addU32(0) -- store offer id?
+				end
+			end
+		else
+			response:addU16(0)
+		end
 		
 		response:sendToPlayer(player)
 		return

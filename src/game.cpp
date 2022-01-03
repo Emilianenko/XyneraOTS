@@ -3609,7 +3609,7 @@ void Game::playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar)
 	}
 
 	Familiar* requestedFamiliar = g_game.familiars.getFamiliarByClientID(lookFamiliar);
-	if (requestedFamiliar && player->hasFamiliar(requestedFamiliar)) {
+	if (requestedFamiliar && player->canUseFamiliar(requestedFamiliar)) {
 		player->setCurrentFamiliar(requestedFamiliar->id);
 	}
 }

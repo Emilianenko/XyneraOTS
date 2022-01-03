@@ -3034,7 +3034,7 @@ void ProtocolGame::sendOutfitWindow()
 	// get available familiars
 	std::vector<const Familiar*> familiars;
 	for (const Familiar& familiar : g_game.familiars.getFamiliars()) {
-		if (player->hasFamiliar(&familiar)) {
+		if (player->canUseFamiliar(&familiar)) {
 			familiars.push_back(&familiar);
 		}
 	}
@@ -3042,7 +3042,7 @@ void ProtocolGame::sendOutfitWindow()
 	// add current familiar
 	if (familiars.size() > 0) {
 		const Familiar* currentFamiliar = g_game.familiars.getFamiliarByID(player->getCurrentFamiliar());
-		if (currentFamiliar && player->hasFamiliar(currentFamiliar)) {
+		if (currentFamiliar && player->canUseFamiliar(currentFamiliar)) {
 			msg.add<uint16_t>(currentFamiliar->clientId);
 		} else {
 			currentFamiliar = familiars.front();
