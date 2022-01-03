@@ -4865,6 +4865,15 @@ void Player::resetQuestTracker(const std::vector<uint16_t>& missionIds)
 	sendQuestTracker();
 }
 
+void Player::cacheWaypoint(Position* pos, bool isTeleport) {
+	// save path to follow for familiars
+	for (Creature* summon : summons) {
+		if (Monster* monsterSummon = summon->getMonster()) {
+			monsterSummon->cacheWaypoint(pos, isTeleport);
+		}
+	}
+}
+
 std::forward_list<Condition*> Player::getMuteConditions() const
 {
 	std::forward_list<Condition*> muteConditions;

@@ -36,6 +36,7 @@
 #include "groups.h"
 #include "town.h"
 #include "mounts.h"
+#include "familiars.h"
 #include "storeinbox.h"
 
 #include <bitset>
@@ -106,13 +107,6 @@ struct Skill {
 	uint64_t tries = 0;
 	uint16_t level = MINIMUM_SKILL_LEVEL;
 	uint8_t percent = 0;
-};
-
-struct FamiliarWaypoint {
-	constexpr FamiliarWaypoint(Position* pos, bool isTeleport) : pos(pos), isTeleport(isTeleport) {}
-
-	Position* pos;
-	bool isTeleport = false;
 };
 
 using MuteCountMap = std::map<uint32_t, uint32_t>;
@@ -731,9 +725,12 @@ class Player final : public Creature, public Cylinder
 		size_t getMaxVIPEntries() const;
 		size_t getMaxDepotItems() const;
 
-		//quest tracker
+		// quest tracker
 		size_t getMaxTrackedQuests() const;
 		void resetQuestTracker(const std::vector<uint16_t>& missionIds);
+
+		// helper for familiars
+		void cacheWaypoint(Position* pos, bool isTeleport);
 
 		// tile
 		// send methods
@@ -1214,18 +1211,6 @@ class Player final : public Creature, public Cylinder
 			return openContainers;
 		}
 
-		// waypoints cache for familiars
-		void cacheWaypoint(Position* pos, bool isTeleport) {
-			if (waypointsCache.size() >= 5) {
-				waypointsCache.pop_front();
-			}
-
-			waypointsCache.push_back(FamiliarWaypoint(pos, isTeleport));
-		}
-		std::deque<FamiliarWaypoint>& getWaypointsCache() {
-			return waypointsCache;
-		}
-
 	private:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1295,7 +1280,6 @@ class Player final : public Creature, public Cylinder
 		std::vector<TrackedQuest> trackedQuests;
 
 		// helper for familiars (pos, isTeleport)
-		std::deque<FamiliarWaypoint> waypointsCache;
 		uint32_t waypointCacheTicks = 0;
 
 		std::string name;

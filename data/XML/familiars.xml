@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<familiars>
+	<!--
+		id - server id
+		clientid - looktype in outfit dialog
+		name - name of monster to summon
+		premium - needs premium to choose
+		unlocked - can be used without quest
+	-->
+	<familiar id="1" clientid="368" name="Widow Queen" premium="yes" unlocked="yes">
+		<vocation name="Knight" />
+		<vocation name="Elite Knight" />
+	</familiar>
+</familiars>

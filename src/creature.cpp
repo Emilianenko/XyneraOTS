@@ -517,22 +517,15 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 						// walked two floors up - teleport instantly
 						g_game.internalTeleport(summon, newPos);
 					} else if (std::max<int32_t>(Position::getDistanceX(newPos, pos), Position::getDistanceY(newPos, pos)) > 20) {
-						// player is moving away faster than the summon can follow
-						Player* masterPlayer = getPlayer();
-						if (masterPlayer) {
-							std::deque<FamiliarWaypoint>& waypointsCache = masterPlayer->getWaypointsCache();
-							if (!waypointsCache.empty()) {
-								// teleport to next waypoint
-								g_game.internalTeleport(summon, newPos);
-								waypointsCache.pop_front();
-							} else {
-								// no cached waypoints found
-								// teleport to master
-								g_game.internalTeleport(summon, newPos);
-							}
+						// master is moving away faster than the summon can follow
+						std::deque<FamiliarWaypoint>& waypointsCache = monsterSummon->getWaypointsCache();
+						if (!waypointsCache.empty()) {
+							// teleport to next waypoint
+							g_game.internalTeleport(summon, newPos);
+							waypointsCache.pop_front();
 						} else {
-							// summon is a familiar, but master is not a player
-							// teleport to master instantly
+							// no cached waypoints found
+							// teleport to master
 							g_game.internalTeleport(summon, newPos);
 						}
 					}

@@ -1135,7 +1135,6 @@ void Monster::followMasterTrail()
 	FindPathParams fpp;
 	getPathSearchParams(master, fpp);
 
-	std::deque<FamiliarWaypoint>& waypointsCache = followPlayer->getWaypointsCache();
 	while (waypointsCache.size() > 0) {
 		if (waypointsCache.front().isTeleport) {
 			// use stairs or teleport
@@ -1156,7 +1155,7 @@ void Monster::followMasterTrail()
 			}
 		}
 	}
-
+	
 	// unable to walk, teleport instead
 	g_game.internalTeleport(this, master->getPosition());
 }

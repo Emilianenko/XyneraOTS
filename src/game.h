@@ -531,6 +531,7 @@ class Game
 		Groups groups;
 		Map map;
 		Mounts mounts;
+		//Familiars familiars;
 		Raids raids;
 		Quests quests;
 

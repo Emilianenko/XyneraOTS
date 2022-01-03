@@ -37,6 +37,13 @@ enum TargetSearchType_t {
 	TARGETSEARCH_NEAREST,
 };
 
+struct FamiliarWaypoint {
+	constexpr FamiliarWaypoint(Position* pos, bool isTeleport) : pos(pos), isTeleport(isTeleport) {}
+
+	Position* pos;
+	bool isTeleport = false;
+};
+
 class Monster final : public Creature
 {
 	public:
@@ -189,6 +196,18 @@ class Monster final : public Creature
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 		                     bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false) override;
 
+		// waypoints cache for familiars
+		void cacheWaypoint(Position* pos, bool isTeleport) {
+			if (waypointsCache.size() >= 5) {
+				waypointsCache.pop_front();
+			}
+
+			waypointsCache.push_back(FamiliarWaypoint(pos, isTeleport));
+		}
+		std::deque<FamiliarWaypoint>& getWaypointsCache() {
+			return waypointsCache;
+		}
+
 		static uint32_t monsterAutoID;
 
 	private:
@@ -222,6 +241,8 @@ class Monster final : public Creature
 		bool isMasterInRange = false;
 		bool randomStepping = false;
 		bool walkingToSpawn = false;
+
+		std::deque<FamiliarWaypoint> waypointsCache;
 
 		void onCreatureEnter(Creature* creature);
 		void onCreatureLeave(Creature* creature);
