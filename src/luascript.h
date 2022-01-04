@@ -569,6 +569,7 @@ class LuaScriptInterface
 		static int luaGameGetOutfits(lua_State* L);
 		static int luaGameGetMounts(lua_State* L);
 		static int luaGameGetFamiliars(lua_State* L);
+		static int luaGameGetFamiliarById(lua_State* L);
 		static int luaGameGetInstantSpells(lua_State* L);
 		static int luaGameGetRuneSpells(lua_State* L);
 
@@ -1032,6 +1033,8 @@ class LuaScriptInterface
 		static int luaPlayerRemoveFamiliar(lua_State* L);
 		static int luaPlayerHasFamiliar(lua_State* L);
 		static int luaPlayerCanUseFamiliar(lua_State* L);
+		static int luaPlayerGetCurrentFamiliar(lua_State* L);
+		static int luaPlayerSetCurrentFamiliar(lua_State* L);
 
 		static int luaPlayerGetPremiumEndsAt(lua_State* L);
 		static int luaPlayerSetPremiumEndsAt(lua_State* L);

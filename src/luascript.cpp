@@ -2158,6 +2158,16 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(SPELL_INSTANT)
 	registerEnum(SPELL_RUNE)
 
+	registerEnum(SPELLGROUP_NONE)
+	registerEnum(SPELLGROUP_ATTACK)
+	registerEnum(SPELLGROUP_HEALING)
+	registerEnum(SPELLGROUP_SUPPORT)
+	registerEnum(SPELLGROUP_SPECIAL)
+	registerEnum(SPELLGROUP_CONJURE)
+	registerEnum(SPELLGROUP_CRIPPLING)
+	registerEnum(SPELLGROUP_FOCUS)
+	registerEnum(SPELLGROUP_ULTIMATE)
+
 	registerEnum(MONSTERS_EVENT_THINK)
 	registerEnum(MONSTERS_EVENT_APPEAR)
 	registerEnum(MONSTERS_EVENT_DISAPPEAR)
@@ -2289,6 +2299,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getOutfits", LuaScriptInterface::luaGameGetOutfits);
 	registerMethod("Game", "getMounts", LuaScriptInterface::luaGameGetMounts);
 	registerMethod("Game", "getFamiliars", LuaScriptInterface::luaGameGetFamiliars);
+	registerMethod("Game", "getFamiliarById", LuaScriptInterface::luaGameGetFamiliarById);
 	registerMethod("Game", "getInstantSpells", LuaScriptInterface::luaGameGetInstantSpells);
 	registerMethod("Game", "getRuneSpells", LuaScriptInterface::luaGameGetRuneSpells);
 
@@ -2762,6 +2773,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "removeFamiliar", LuaScriptInterface::luaPlayerRemoveFamiliar);
 	registerMethod("Player", "hasFamiliar", LuaScriptInterface::luaPlayerHasFamiliar);
 	registerMethod("Player", "canUseFamiliar", LuaScriptInterface::luaPlayerCanUseFamiliar);
+	registerMethod("Player", "getCurrentFamiliar", LuaScriptInterface::luaPlayerGetCurrentFamiliar);
+	registerMethod("Player", "setCurrentFamiliar", LuaScriptInterface::luaPlayerSetCurrentFamiliar);
 
 	registerMethod("Player", "getPremiumEndsAt", LuaScriptInterface::luaPlayerGetPremiumEndsAt);
 	registerMethod("Player", "setPremiumEndsAt", LuaScriptInterface::luaPlayerSetPremiumEndsAt);
@@ -4761,6 +4774,19 @@ int LuaScriptInterface::luaGameGetFamiliars(lua_State* L)
 		lua_rawseti(L, -2, ++index);
 	}
 
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetFamiliarById(lua_State* L)
+{
+	// Game.getFamiliarById(id)
+	uint8_t familiarId = getNumber<uint8_t>(L, 1);
+	Familiar* familiar = g_game.familiars.getFamiliarByID(familiarId);
+	if (familiar) {
+		pushFamiliar(L, familiar);
+	} else {
+		lua_pushnil(L);
+	}
 	return 1;
 }
 
@@ -10569,6 +10595,31 @@ int LuaScriptInterface::luaPlayerCanUseFamiliar(lua_State* L) {
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetCurrentFamiliar(lua_State* L) {
+	// player:getCurrentFamiliar()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnumber(L, player->getCurrentFamiliar());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetCurrentFamiliar(lua_State* L) {
+	// player:setCurrentFamiliar(server id or familiar name)
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	//pushBoolean(L, false);
+
 	return 1;
 }
 
