@@ -1169,7 +1169,7 @@ void Creature::onGainExperience(uint64_t gainExp, Creature* target)
 	// familiars give all exp to master
 	if (master->getPlayer()) {
 		const Monster* monster = getMonster();
-		if (monster->isFamiliar()) {
+		if (monster && monster->isFamiliar()) {
 			master->onGainExperience(gainExp, target);
 			return;
 		}
