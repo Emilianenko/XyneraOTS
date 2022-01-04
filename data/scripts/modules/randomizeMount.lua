@@ -11,7 +11,10 @@ creatureevent:register()
 -- update the preference on changing outfit
 local ec = EventCallback
 ec.onChangeOutfit = function(self, outfit)
-	self:setStorageValue(PlayerStorageKeys.randomizeMount, self:hasRandomizedMount() and 1 or 0)
+	if self:isPlayer() then
+		self:setStorageValue(PlayerStorageKeys.randomizeMount, self:hasRandomizedMount() and 1 or 0)
+	end
+	
 	return true
 end
 ec:register()
