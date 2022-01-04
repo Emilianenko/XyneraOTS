@@ -23,8 +23,8 @@ PlayerStorageKeys = {
 	afflictedOutfit = 70026,
 	afflictedPlagueMask = 70027,
 	afflictedPlagueBell = 70028,
-	-- empty 70029
-	-- empty 70030
+	familiarHealth = 70029,
+	familiarDuration = 70030,
 	nailCaseUseCount = 70031,
 	swampDigging = 70032,
 	insectoidCell = 70033,
