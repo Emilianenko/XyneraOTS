@@ -2,8 +2,14 @@
 Reserved player storage ranges:
 - 300000 to 310000+ reserved for achievements
 - 310000 to 320000+ reserved for achievement progress
+
 - 320000 to 320255 reserved for player resources (wildcards, charms, etc)
-- 10000000 to 20000000 reserved for outfits and mounts on source
+
+- 330000 to 340000 reserved for bestiary killCount
+- 340000 to 350000 reserved for bestiary unlock levels
+- 360000 to 360100 reserved for bestiary categories progress
+
+- 10000000 to 20000000 reserved for outfits, mounts and familiars on source
 
 Reserved account storage ranges:
 -- 1000000 reserved for store coins
@@ -35,6 +41,10 @@ PlayerStorageKeys = {
 	achievementsCounter = 310000,
 	resourcesBase = 320000,
 	forgeDustLevel = 320256,
+	bestiaryInitCharmSystem = 329999,
+	bestiaryKillCountBase = 330000,
+	bestiaryRaceProgressBase = 340000,
+	bestiaryCategoryProgressBase = 350000,
 }
 
 GlobalStorageKeys = {

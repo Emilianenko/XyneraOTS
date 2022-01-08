@@ -535,6 +535,23 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:sendToPlayer(player)
 		return
 	elseif infoType == COMPENDIUM_PLAYER_BADGES then
+		--[[
+		response:addByte(1) -- show this info (bool)
+		response:addByte(0) -- account online?
+		response:addByte(0) -- is premium?
+		response:addString("test") -- loyalty title
+		
+		response:addByte(2) -- count
+			-- emblem 1
+			response:addU32(20)
+			response:addString("test")
+			
+			-- emblem 2
+			response:addU32(21)
+			response:addString("test2")
+		
+		response:sendToPlayer(player)
+		]]
 		return
 	elseif infoType == COMPENDIUM_PLAYER_TITLES then
 		return
