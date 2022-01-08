@@ -116,7 +116,6 @@ GameBestiary = {
 	["rotten golem"] = {id = 1939, class = BESTIARY_TYPE_CONSTRUCT, difficulty = 5, rarity = 1},
 	
 	---- Demon
-	-- to do: make sure demongoblin doesnt count
 	["demon"] = {id = 35, class = BESTIARY_TYPE_DEMON, difficulty = 4, rarity = 1},
 	["fire devil"] = {id = 40, class = BESTIARY_TYPE_DEMON, difficulty = 2, rarity = 1},
 	["dark torturer"] = {id = 285, class = BESTIARY_TYPE_DEMON, difficulty = 4, rarity = 1},
@@ -1344,9 +1343,3 @@ do
 	end
 	setPacketEvent(COMPENDIUM_REQUEST_BESTIARY_RACE, callback)
 end
---[[
-To successfully complete a creature entry, you will have to unlock a total of three detail stages.
-The first stage will unlock basic information like hitpoints, speed, armor and common loot items, for example.
-The second stage will allow you to see uncommon loot items, resistances and locations of where the creature can be found.
-Once you have killed enough creatures to unlock the final stage, semi-rare and rare loot items will be displayed. 
-]]
