@@ -330,6 +330,7 @@ bool Items::loadFromOtb(const std::string& file)
 			return false;
 		}
 
+		std::string name;
 		uint16_t serverId = 0;
 		uint16_t clientId = 0;
 		uint16_t speed = 0;
@@ -342,10 +343,11 @@ bool Items::loadFromOtb(const std::string& file)
 		uint8_t attrib;
 		while (stream.read<uint8_t>(attrib)) {
 			uint16_t datalen;
-			if (!stream.read<uint16_t>(datalen)) {
-				return false;
+			if (attrib != ITEM_ATTR_NAME) {
+				if (!stream.read<uint16_t>(datalen)) {
+					return false;
+				}
 			}
-
 			switch (attrib) {
 				case ITEM_ATTR_SERVERID: {
 					if (datalen != sizeof(uint16_t)) {
@@ -366,6 +368,16 @@ bool Items::loadFromOtb(const std::string& file)
 					if (!stream.read<uint16_t>(clientId)) {
 						return false;
 					}
+					break;
+				}
+
+				case ITEM_ATTR_NAME: {
+					std::string itemName;
+					if (!stream.readString(itemName)) {
+						return false;
+					}
+
+					name = itemName;
 					break;
 				}
 
@@ -500,6 +512,7 @@ bool Items::loadFromOtb(const std::string& file)
 
 		iType.id = serverId;
 		iType.clientId = clientId;
+		iType.name = name;
 		iType.speed = speed;
 		iType.lightLevel = lightLevel;
 		iType.lightColor = lightColor;
@@ -559,11 +572,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 	ItemType& it = getItemType(id);
 	if (it.id == 0) {
-		return;
-	}
-
-	if (!it.name.empty()) {
-		std::cout << "[Warning - Items::parseItemNode] Duplicate item with id: " << id << std::endl;
 		return;
 	}
 
