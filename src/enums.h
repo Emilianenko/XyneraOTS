@@ -632,6 +632,7 @@ enum CombatOrigin
 	ORIGIN_MELEE,
 	ORIGIN_RANGED,
 	ORIGIN_WAND,
+	ORIGIN_REFLECT,
 };
 
 struct CombatDamage
@@ -646,6 +647,20 @@ struct CombatDamage
 	bool critical = false;
 	bool leeched = false;
 	bool fatal = false;
+};
+
+struct Reflect {
+	Reflect() = default;
+	Reflect(uint16_t percent, uint16_t chance) : percent(percent), chance(chance) {};
+
+	Reflect& operator+=(const Reflect& other) {
+		percent += other.percent;
+		chance = std::min(100, chance + other.chance);
+		return *this;
+	}
+
+	uint16_t percent = 0;
+	uint16_t chance = 0;
 };
 
 using MarketOfferList = std::list<MarketOffer>;

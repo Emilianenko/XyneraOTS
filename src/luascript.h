@@ -351,6 +351,7 @@ class LuaScriptInterface
 		static Outfit getOutfitClass(lua_State* L, int32_t arg);
 		static LuaVariant getVariant(lua_State* L, int32_t arg);
 		static InstantSpell* getInstantSpell(lua_State* L, int32_t arg);
+		static Reflect getReflect(lua_State* L, int32_t arg);
 
 		static Thing* getThing(lua_State* L, int32_t arg);
 		static Creature* getCreature(lua_State* L, int32_t arg);
@@ -405,6 +406,7 @@ class LuaScriptInterface
 		static void pushMount(lua_State* L, const Mount* mount);
 		static void pushFamiliar(lua_State* L, const Familiar* familiar);
 		static void pushLoot(lua_State* L, const std::vector<LootBlock>& lootList);
+		static void pushReflect(lua_State* L, const Reflect& reflect);
 
 		//
 		static void setField(lua_State* L, const char* index, lua_Number value)
@@ -772,6 +774,12 @@ class LuaScriptInterface
 
 		static int luaItemSetStoreItem(lua_State* L);
 		static int luaItemIsStoreItem(lua_State* L);
+
+		static int luaItemSetReflect(lua_State* L);
+		static int luaItemGetReflect(lua_State* L);
+
+		static int luaItemSetBoostPercent(lua_State* L);
+		static int luaItemGetBoostPercent(lua_State* L);
 
 		// Container
 		static int luaContainerCreate(lua_State* L);
