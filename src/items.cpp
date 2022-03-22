@@ -343,7 +343,7 @@ bool Items::loadFromOtb(const std::string& file)
 
 		uint8_t attrib;
 		while (stream.read<uint8_t>(attrib)) {
-			uint16_t datalen;
+			uint16_t datalen = 0;
 			if (attrib != ITEM_ATTR_NAME && attrib != ITEM_ATTR_ARTICLE) {
 				if (!stream.read<uint16_t>(datalen)) {
 					return false;
