@@ -141,17 +141,19 @@ enum itemattrib_t {
 	ITEM_ATTR_LIGHT,
 
 	//1-byte aligned
-	ITEM_ATTR_DECAY2, //deprecated
-	ITEM_ATTR_WEAPON2, //deprecated
-	ITEM_ATTR_AMU2, //deprecated
-	ITEM_ATTR_ARMOR2, //deprecated
-	ITEM_ATTR_WRITEABLE2, //deprecated
+	ITEM_ATTR_DECAY2, // deprecated
+	ITEM_ATTR_WEAPON2, // deprecated
+	ITEM_ATTR_AMU2, // deprecated
+	ITEM_ATTR_ARMOR2, // deprecated
+	ITEM_ATTR_WRITEABLE2, // deprecated
 	ITEM_ATTR_LIGHT2,
 	ITEM_ATTR_TOPORDER,
-	ITEM_ATTR_WRITEABLE3, //deprecated
+	ITEM_ATTR_WRITEABLE3, // deprecated
 
 	ITEM_ATTR_WAREID,
 	ITEM_ATTR_CLASSIFICATION,
+
+	ITEM_ATTR_ARTICLE, // item article from OTB
 
 	ITEM_ATTR_LAST
 };

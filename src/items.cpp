@@ -331,6 +331,7 @@ bool Items::loadFromOtb(const std::string& file)
 		}
 
 		std::string name;
+		std::string article;
 		uint16_t serverId = 0;
 		uint16_t clientId = 0;
 		uint16_t speed = 0;
@@ -343,7 +344,7 @@ bool Items::loadFromOtb(const std::string& file)
 		uint8_t attrib;
 		while (stream.read<uint8_t>(attrib)) {
 			uint16_t datalen;
-			if (attrib != ITEM_ATTR_NAME) {
+			if (attrib != ITEM_ATTR_NAME && attrib != ITEM_ATTR_ARTICLE) {
 				if (!stream.read<uint16_t>(datalen)) {
 					return false;
 				}
@@ -378,6 +379,16 @@ bool Items::loadFromOtb(const std::string& file)
 					}
 
 					name = itemName;
+					break;
+				}
+
+				case ITEM_ATTR_ARTICLE: {
+					std::string itemArticle;
+					if (!stream.readString(itemArticle)) {
+						return false;
+					}
+
+					article = itemArticle;
 					break;
 				}
 
@@ -513,6 +524,7 @@ bool Items::loadFromOtb(const std::string& file)
 		iType.id = serverId;
 		iType.clientId = clientId;
 		iType.name = name;
+		iType.article = article;
 		iType.speed = speed;
 		iType.lightLevel = lightLevel;
 		iType.lightColor = lightColor;
