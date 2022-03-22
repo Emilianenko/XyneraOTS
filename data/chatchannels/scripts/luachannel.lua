@@ -62,6 +62,7 @@ local function InteractiveConsole(env)
 		sandbox._G = sandbox
 		sandbox.os = {
 			time = function() return os.time() end,
+			mtime = function() return os.mtime() end,
 			date = function(...) return os.date(...) end,
 			-- execute = function(...) return os.execute(...) end
 		}
