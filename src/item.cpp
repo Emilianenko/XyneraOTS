@@ -664,6 +664,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 				getAttributes()->reflect[combatType] = reflect;
 			}
+			break;
 		}
 
 		case ATTR_BOOST: {
@@ -682,6 +683,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 				getAttributes()->boostPercent[combatType] = percent;
 			}
+			break;
 		}
 
 		// these should be handled through derived classes
@@ -1277,6 +1279,19 @@ bool Item::hasMarketAttributes() const
 		return true;
 	}
 
+	// discard items with custom boost and reflect
+	for (uint16_t i = 0; i < COMBAT_COUNT; ++i) {
+		if (getBoostPercent(indexToCombatType(i), false) > 0) {
+			return false;
+		}
+
+		Reflect tmpReflect = getReflect(indexToCombatType(i), false);
+		if (tmpReflect.chance != 0 || tmpReflect.percent != 0) {
+			return false;
+		}
+	}
+
+	// discard items with other modified attributes
 	const ItemType& itemType = Item::items[id];
 
 	for (const auto& attr : attributes->getList()) {

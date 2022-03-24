@@ -102,6 +102,10 @@ function ItemType:isPodium()
 	return self:getGroup() == ITEM_GROUP_PODIUM
 end
 
+function ItemType:isTeleport()
+	return self:getGroup() == ITEM_GROUP_TELEPORT or self:getType() == ITEM_TYPE_TELEPORT
+end
+
 function ItemType:getWeaponString()
 	local weaponType = self:getWeaponType()
 	local weaponString = "unknown"
@@ -129,6 +133,27 @@ function ItemType:getTier()
 	return 0
 end
 
+-- used interchangeably with Item:getAllReflects() for polymorphism in onLook
+-- returns table with [combatId] = {chance = x, percent = y}
+-- COMBAT_(element)DAMAGE = 2^combatId
+function ItemType:getAllReflects()
+	local abilities = self:getAbilities()
+	local response = {}
+	
+	for combatId, chance in pairs(abilities.reflectChance) do
+		local percent = abilities.reflectPercent[combatId]
+		response[combatId] = {chance = chance, percent = percent}
+	end
+	
+	return response
+end
+
+-- same as above
+function ItemType:getAllBoosts()
+	return self:getAbilities().boostPercent
+end
+
+-- bonus scaling for tiered items
 do
 	local function calculateTierBonus(tier, x, y)
 		return x * tier + y * (tier-1)^2

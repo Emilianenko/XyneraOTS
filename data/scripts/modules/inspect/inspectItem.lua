@@ -251,6 +251,104 @@ function getItemDetails(item)
 	end
 	skillBoosts = nil
 	
+	-- damage boost
+	do
+		local boostInfo = item:getAllBoosts()
+		local boosts = {}
+		
+		local allElements = true
+		local identicalValue = true
+		local currentValue = -1
+
+		for combatId, boost in pairs(boostInfo) do
+			if boost > 0 then
+				boosts[#boosts + 1] = {element = getCombatName(2^(combatId-1)), percent = boost}
+			else
+				allElements = false
+			end
+		end
+		
+		if #boosts > 0 then
+			local boostResponse = ""
+			
+			if allElements and identicalValue then
+				-- all elements identical value
+				-- display short info
+				boostResponse = string.format("damage and healing %+d%%", boosts[1].percent)
+
+			else
+				-- incomplete elements list/different values
+				-- display full info
+				local boostValues = {}
+				for i = 1, #boosts do
+					boostValues[#boostValues + 1] = string.format("%s %+d%%", boosts[i].element, boosts[i].percent)
+				end
+				
+				boostResponse = table.concat(boostValues, ", ")
+			end
+												
+			descriptions[#descriptions + 1] = {"Damage Boost", boostResponse}
+		end
+	end
+	
+	-- damage reflection
+	do
+		local reflectInfo = item:getAllReflects()
+		local reflects = {}
+		
+		local allElements = true
+												
+		local identicalChance = true
+		local currentChance = -1
+												
+		for combatId, reflect in pairs(reflectInfo) do
+			if reflect.chance > 0 and reflect.percent > 0 then
+				reflects[#reflects + 1] = {element = getCombatName(2^(combatId-1)), percent = reflect.percent, chance = reflect.chance}
+				
+				if currentChance == -1 then
+					currentChance = reflect.chance
+				elseif currentChance ~= reflect.chance then
+					identicalChance = false
+				end
+			else
+				allElements = false
+			end
+		end
+		
+		if #reflects > 0 then
+			local reflectResponse = ""
+			
+			if allElements and identicalChance then
+				-- chance and amount are identical
+				-- display single values for chance and amount
+				local chanceInfo = reflects[1].chance ~= 100 and string.format(" (%d%% chance)", reflects[1].chance) or ""
+				reflectResponse = string.format("%+d%%%s", reflects[1].percent, chanceInfo)
+				
+			elseif identicalChance then
+				-- incomplete elements list (chances still identical)
+				-- display single value for chance only
+				local reflectValues = {}
+				for i = 1, #reflects do
+					reflectValues[#reflectValues + 1] = string.format("%s %+d%%", reflects[i].element, reflects[i].percent)
+				end
+				
+				local chanceInfo = reflects[1].chance ~= 100 and string.format(" (%d%% chance)", reflects[1].chance) or ""
+				reflectResponse = string.format("%s%s", table.concat(reflectValues, ", "), chanceInfo)
+			else
+				-- chances or amounts are different
+				-- display full info
+				local reflectValues = {}
+				for i = 1, #reflects do
+					reflectValues[#reflectValues + 1] = string.format("%s %+d%% (%d%% chance)", reflects[i].element, reflects[i].percent, reflects[i].chance)
+				end
+				
+				reflectResponse = table.concat(reflectValues, ", ")
+			end
+												
+			descriptions[#descriptions + 1] = {"Damage Reflection", reflectResponse}
+		end
+	end
+	
 	-- item classification (will be reused later)
 	local classification = itemType:getClassification()
 	
