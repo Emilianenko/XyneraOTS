@@ -689,8 +689,12 @@ void Events::eventPlayerOnItemMoved(Player* player, Item* item, uint16_t count, 
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	LuaScriptInterface::pushUserdata<Item>(L, item);
-	LuaScriptInterface::setItemMetatable(L, -1, item);
+	if (item) {
+		LuaScriptInterface::pushUserdata<Item>(L, item);
+		LuaScriptInterface::setItemMetatable(L, -1, item);
+	} else {
+		lua_pushnil(L);
+	}
 
 	lua_pushnumber(L, count);
 	LuaScriptInterface::pushPosition(L, fromPosition);
