@@ -43,6 +43,8 @@
 #include "mounts.h"
 #include "familiars.h"
 
+#include <fmt/format.h>
+
 class Thing;
 class Creature;
 class Player;
@@ -297,11 +299,29 @@ class LuaScriptInterface
 			return static_cast<T>(static_cast<int64_t>(lua_tonumber(L, arg)));
 		}
 		template<typename T>
-		static typename std::enable_if<std::is_integral<T>::value || std::is_floating_point<T>::value, T>::type
+		static typename std::enable_if<std::is_integral<T>::value && std::is_unsigned<T>::value, T>::type
 			getNumber(lua_State* L, int32_t arg)
 		{
-			return static_cast<T>(lua_tonumber(L, arg));
+			LUA_NUMBER luaNum = lua_tonumber(L, arg);
+			if (luaNum < 0 || luaNum > std::numeric_limits<T>::max()) {
+				reportErrorFunc(L, fmt::format("Passed argument '{:s}' has invalid value: {:d}", arg, luaNum));
+			}
+
+			return static_cast<T>(luaNum);
 		}
+
+		template<typename T>
+		static typename std::enable_if<(std::is_integral<T>::value && std::is_signed<T>::value) || std::is_floating_point<T>::value, T>::type
+			getNumber(lua_State* L, int32_t arg)
+		{
+			LUA_NUMBER luaNum = lua_tonumber(L, arg);
+			if (luaNum > std::numeric_limits<T>::max()) {
+				reportErrorFunc(L, fmt::format("Passed argument '{:s}' has invalid value: {:d}", arg, luaNum));
+			}
+
+			return static_cast<T>(luaNum);
+		}
+
 		template<typename T>
 		static T getNumber(lua_State *L, int32_t arg, T defaultValue)
 		{
