@@ -95,7 +95,7 @@ bool Familiars::loadFromXml()
 	familiars.shrink_to_fit();
 
 	// show how many loaded
-	console::printResultText(console::getColumns("Familiars:", fmt::format("{:d}", familiars.size())));
+	console::printResultText(console::getColumns("Familiars:", std::to_string(familiars.size())));
 
 	// show warnings
 	if (!warnings.empty()) {

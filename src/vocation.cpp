@@ -126,7 +126,7 @@ bool Vocations::loadFromXml()
 	}
 
 	// show how many loaded
-	console::printResultText(console::getColumns("Vocations:", fmt::format("{:d}", vocationsMap.size())));
+	console::printResultText(console::getColumns("Vocations:", std::to_string(vocationsMap.size())));
 	
 	// show warnings
 	if (!warnings.empty()) {

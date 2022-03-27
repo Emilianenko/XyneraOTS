@@ -588,7 +588,7 @@ bool Items::loadFromOtb(const std::string& file)
 	items.shrink_to_fit();
 
 	// show how many items loaded
-	console::printResultText(console::getColumns("Items:", fmt::format("{:d}", Item::items.size())));
+	console::printResultText(console::getColumns("Items:", std::to_string(Item::items.size())));
 	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "", false);
 	console::printResultText(console::getColumns("OTB:", fmt::format("v{:d}.{:d}", Item::items.majorVersion, Item::items.minorVersion)));
 

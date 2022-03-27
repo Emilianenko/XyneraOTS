@@ -389,7 +389,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	g_game.setGameState(GAME_STATE_INIT);
 
 	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "");
-	//printConsoleMessage(CONSOLEMESSAGE_TYPE_STARTUP, "Binding ports ...");
+	//console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Binding ports ...");
 
 	uint16_t loginPort = static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT));
 	uint16_t gamePort = static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
@@ -406,7 +406,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 	services->add<ProtocolOld>(loginPort);
 
 	console::printLoginPorts(loginPort, gamePort, statusPort);
-	//printConsoleMessage(CONSOLEMESSAGE_TYPE_STARTUP, "Initializing gamestate ...");
+	//console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Initializing gamestate ...");
 
 	RentPeriod_t rentPeriod;
 	std::string strRentPeriod = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_RENT_PERIOD));
@@ -430,7 +430,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 #ifndef _WIN32
 	if (getuid() == 0 || geteuid() == 0) {
-		printConsoleMessage(CONSOLEMESSAGE_TYPE_WARNING, "Server is running with root permissions. Running as a normal user recommended.");
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, "Server is running with root permissions. Running as a normal user recommended.");
 	}
 #endif
 

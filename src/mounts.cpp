@@ -76,7 +76,7 @@ bool Mounts::loadFromXml()
 	mounts.shrink_to_fit();
 
 	// show how many loaded
-	console::printResultText(console::getColumns("Mounts:", fmt::format("{:d}", mounts.size())));
+	console::printResultText(console::getColumns("Mounts:", std::to_string(mounts.size())));
 
 	// show warnings
 	if (!warnings.empty()) {

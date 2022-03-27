@@ -72,7 +72,7 @@ bool Outfits::loadFromXml()
 	for (std::vector<Outfit> outfitType : outfits) {
 		outfitCount += outfitType.size();
 	}
-	console::printResultText(console::getColumns("Outfits:", fmt::format("{:d}", outfitCount)));
+	console::printResultText(console::getColumns("Outfits:", std::to_string(outfitCount)));
 
 	// show warnings
 	if (!warnings.empty()) {
