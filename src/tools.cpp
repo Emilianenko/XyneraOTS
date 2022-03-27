@@ -26,10 +26,12 @@ extern ConfigManager g_config;
 
 void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result)
 {
-	std::cout << '[' << where << "] Failed to load " << fileName << ": " << result.description() << std::endl;
+	std::ostringstream msg;
+	msg << "Failed to load " << fileName << ": " << result.description() << "\n";
 
 	FILE* file = fopen(fileName.c_str(), "rb");
 	if (!file) {
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, msg.str(), true, where);
 		return;
 	}
 
@@ -61,16 +63,17 @@ void printXMLError(const std::string& where, const std::string& fileName, const 
 	} while (bytes == 32768);
 	fclose(file);
 
-	std::cout << "Line " << currentLine << ':' << std::endl;
-	std::cout << line << std::endl;
+	msg << "Line " << currentLine << ':' << "\n";
+	msg << line << "\n";
 	for (size_t i = 0; i < lineOffsetPosition; i++) {
 		if (line[i] == '\t') {
-			std::cout << '\t';
+			msg << '\t';
 		} else {
-			std::cout << ' ';
+			msg << ' ';
 		}
 	}
-	std::cout << '^' << std::endl;
+	msg << '^' << "\n";
+	console::print(CONSOLEMESSAGE_TYPE_ERROR, msg.str(), true, where);
 }
 
 static uint32_t circularShift(int bits, uint32_t value)

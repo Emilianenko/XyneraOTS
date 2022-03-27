@@ -314,6 +314,10 @@ class Houses
 			return houseMap;
 		}
 
+		size_t size() {
+			return houseMap.size();
+		}
+
 	private:
 		HouseMap houseMap;
 };

@@ -38,7 +38,7 @@ bool Events::load()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/events/events.xml");
 	if (!result) {
-		printXMLError("Error - Events::load", "data/events/events.xml", result);
+		printXMLError("Events::load", "data/events/events.xml", result);
 		return false;
 	}
 

@@ -45,7 +45,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		printXMLError("Error - Spawns::loadFromXml", filename, result);
+		printXMLError("Spawns::loadFromXml", filename, result);
 		return false;
 	}
 
@@ -151,6 +151,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 				}
 
 				spawn.addBlock(sb);
+				++monsterCount;
 			} else if (strcasecmp(childNode.name(), "monster") == 0) {
 				pugi::xml_attribute nameAttribute = childNode.attribute("name");
 				if (!nameAttribute) {
@@ -181,6 +182,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 						std::cout << "[Warning - Spawns::loadFromXml] " << nameAttribute.as_string() << ' ' << pos << " spawntime can not be more than " << MAXSPAWN_INTERVAL / 1000 << " seconds." << std::endl;
 					}
 				}
+				++monsterCount;
 			} else if (strcasecmp(childNode.name(), "npc") == 0) {
 				pugi::xml_attribute nameAttribute = childNode.attribute("name");
 				if (!nameAttribute) {
@@ -203,6 +205,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 					centerPos.z
 				), radius);
 				npcList.push_front(npc);
+				++npcCount;
 			}
 		}
 	}

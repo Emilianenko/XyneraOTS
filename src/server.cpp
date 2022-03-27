@@ -157,7 +157,7 @@ void ServicePort::openAcceptor(std::weak_ptr<ServicePort> weak_service, uint16_t
 	}
 }
 
-void ServicePort::open(uint16_t port)
+bool ServicePort::open(uint16_t port)
 {
 	close();
 
@@ -177,12 +177,16 @@ void ServicePort::open(uint16_t port)
 
 		accept();
 	} catch (boost::system::system_error& e) {
-		std::cout << "[ServicePort::open] Error: " << e.what() << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, e.what(), true, "ServicePort::open");
 
 		pendingStart = true;
 		g_scheduler.addEvent(createSchedulerTask(15000,
 		                     std::bind(&ServicePort::openAcceptor, std::weak_ptr<ServicePort>(shared_from_this()), port)));
+		return false;
 	}
+
+	return true;
 }
 
 void ServicePort::close()

@@ -38,7 +38,10 @@
 #include <thread>
 #include <unordered_map>
 #include <vector>
+#include <deque>
 
 #include <boost/asio.hpp>
 
 #include <pugixml.hpp>
+
+#include "consolemanager.h"

@@ -44,7 +44,7 @@ bool BaseEvents::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		printXMLError("Error - BaseEvents::loadFromXml", filename, result);
+		printXMLError("BaseEvents::loadFromXml", filename, result);
 		return false;
 	}
 

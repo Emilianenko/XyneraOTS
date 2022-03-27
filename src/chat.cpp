@@ -286,7 +286,7 @@ bool Chat::load()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/chatchannels/chatchannels.xml");
 	if (!result) {
-		printXMLError("Error - Chat::load", "data/chatchannels/chatchannels.xml", result);
+		printXMLError("Chat::load", "data/chatchannels/chatchannels.xml", result);
 		return false;
 	}
 

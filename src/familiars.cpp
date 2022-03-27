@@ -37,19 +37,33 @@ bool Familiars::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/familiars.xml");
 	if (!result) {
-		printXMLError("Error - Familiars::loadFromXml", "data/XML/familiars.xml", result);
+		console::printResult(CONSOLE_LOADING_ERROR);
+		printXMLError("Familiars::loadFromXml", "data/XML/familiars.xml", result);
 		return false;
 	}
 
+	std::deque<std::string> warnings;
+
 	for (auto familiarNode : doc.child("familiars").children()) {
+		if (!(familiarNode.attribute("id"))) {
+			warnings.push_back("Missing familiar id!");
+			continue;
+		}
+
 		uint16_t nodeId = pugi::cast<uint16_t>(familiarNode.attribute("id").value());
 		if (nodeId == 0 || nodeId > std::numeric_limits<uint8_t>::max()) {
-			std::cout << "[Notice - Familiars::loadFromXml] Familiar id \"" << nodeId << "\" is not within 1 and 255 range" << std::endl;
+			warnings.push_back(fmt::format("Familiar id \"{:d}\" is not within 1 and 255 range!", nodeId));
 			continue;
 		}
 
 		if (getFamiliarByID(nodeId)) {
-			std::cout << "[Notice - Familiars::loadFromXml] Duplicate familiar with id: " << nodeId << std::endl;
+			warnings.push_back(fmt::format("Duplicate familiar with id \"{:d}\"!", nodeId));
+			continue;
+		}
+
+		pugi::xml_attribute lookTypeAttribute = familiarNode.attribute("clientid");
+		if (!lookTypeAttribute) {
+			warnings.push_back(fmt::format("Missing cliendid for familiar id {:d}!", nodeId));
 			continue;
 		}
 
@@ -71,7 +85,7 @@ bool Familiars::loadFromXml()
 			if (vocationId != -1) {
 				familiar.vocations.push_back(vocationId);
 			} else {
-				std::cout << "[Warning - Familiars::loadFromXml] Wrong vocation name: " << attr.as_string() << " for familiar with id " << nodeId << "." << std::endl;
+				warnings.push_back(fmt::format("Vocation name \"{:s}\" does not exist! Familiar id: {:d}", attr.as_string(), nodeId));
 			}
 		}
 
@@ -79,6 +93,16 @@ bool Familiars::loadFromXml()
 	}
 
 	familiars.shrink_to_fit();
+
+	// show how many loaded
+	console::printResultText(console::getColumns("Familiars:", fmt::format("{:d}", familiars.size())));
+
+	// show warnings
+	if (!warnings.empty()) {
+		for (int warningId = 0; warningId < warnings.size(); ++warningId) {
+			console::print(CONSOLEMESSAGE_TYPE_WARNING, warnings[warningId], true, "Familiars::loadFromXml");
+		}
+	}
 	return true;
 }
 

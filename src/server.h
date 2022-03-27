@@ -70,7 +70,7 @@ class ServicePort : public std::enable_shared_from_this<ServicePort>
 		ServicePort& operator=(const ServicePort&) = delete;
 
 		static void openAcceptor(std::weak_ptr<ServicePort> weak_service, uint16_t port);
-		void open(uint16_t port);
+		bool open(uint16_t port);
 		void close();
 		bool is_single_socket() const;
 		std::string get_protocol_names() const;
@@ -127,7 +127,7 @@ template <typename ProtocolType>
 bool ServiceManager::add(uint16_t port)
 {
 	if (port == 0) {
-		std::cout << "ERROR: No port provided for service " << ProtocolType::protocol_name() << ". Service disabled." << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, fmt::format("No port provided for service {:s}. Service offline.", ProtocolType::protocol_name()));
 		return false;
 	}
 
@@ -137,15 +137,15 @@ bool ServiceManager::add(uint16_t port)
 
 	if (foundServicePort == acceptors.end()) {
 		service_port = std::make_shared<ServicePort>(io_service);
-		service_port->open(port);
+		if (!service_port->open(port)) {
+			return false;
+		}
 		acceptors[port] = service_port;
 	} else {
 		service_port = foundServicePort->second;
 
 		if (service_port->is_single_socket() || ProtocolType::server_sends_first) {
-			std::cout << "ERROR: " << ProtocolType::protocol_name() <<
-			          " and " << service_port->get_protocol_names() <<
-			          " cannot use the same port " << port << '.' << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_ERROR, fmt::format("{:s} port ({:d}) already in use by {:s}. Service offline.", ProtocolType::protocol_name(), port, service_port->get_protocol_names()));
 			return false;
 		}
 	}

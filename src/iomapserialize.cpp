@@ -29,13 +29,14 @@ extern Game g_game;
 
 void IOMapSerialize::loadHouseItems(Map* map)
 {
-	int64_t start = OTSYS_TIME();
+	//int64_t start = OTSYS_TIME();
 
 	DBResult_ptr result = Database::getInstance().storeQuery("SELECT `data` FROM `tile_store`");
 	if (!result) {
 		return;
 	}
 
+	uint64_t houseItemCount = 0;
 	do {
 		unsigned long attrSize;
 		const char* attr = result->getStream("data", attrSize);
@@ -59,11 +60,16 @@ void IOMapSerialize::loadHouseItems(Map* map)
 			continue;
 		}
 
+		houseItemCount += item_count;
+
 		while (item_count--) {
 			loadItem(propStream, tile);
 		}
 	} while (result->next());
-	std::cout << "> Loaded house items in: " << (OTSYS_TIME() - start) / (1000.) << " s" << std::endl;
+	//std::cout << "> Loaded house items in: " << (OTSYS_TIME() - start) / (1000.) << " s" << std::endl;
+
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "");
+	console::printWorldInfo("House items", std::to_string(houseItemCount));
 }
 
 bool IOMapSerialize::saveHouseItems()

@@ -30,14 +30,17 @@ bool Vocations::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/vocations.xml");
 	if (!result) {
-		printXMLError("Error - Vocations::loadFromXml", "data/XML/vocations.xml", result);
+		console::printResult(CONSOLE_LOADING_ERROR);
+		printXMLError("Vocations::loadFromXml", "data/XML/vocations.xml", result);
 		return false;
 	}
+
+	std::deque<std::string> warnings;
 
 	for (auto vocationNode : doc.child("vocations").children()) {
 		pugi::xml_attribute attr = vocationNode.attribute("id");
 		if (!attr) {
-			std::cout << "[Warning - Vocations::loadFromXml] Missing vocation id" << std::endl;
+			warnings.push_back("Missing vocation id!");
 			continue;
 		}
 
@@ -86,7 +89,7 @@ bool Vocations::loadFromXml()
 			} else if (strcasecmp(attrName, "nopongkicktime") == 0) {
 				voc.noPongKickTime = pugi::cast<uint32_t>(attrNode.value()) * 1000;
 			} else {
-				std::cout << "[Notice - Vocations::loadFromXml] Unknown attribute: \"" << attrName << "\" for vocation: " << voc.id << std::endl;
+				warnings.push_back(fmt::format("Unknown attribute: \"{:s}\" for vocation id {:d}!", attrName, voc.id));
 			}
 		}
 
@@ -97,10 +100,10 @@ bool Vocations::loadFromXml()
 					if (skillId <= SKILL_LAST) {
 						voc.skillMultipliers[skillId] = pugi::cast<double>(childNode.attribute("multiplier").value());
 					} else {
-						std::cout << "[Notice - Vocations::loadFromXml] No valid skill id: " << skillId << " for vocation: " << voc.id << std::endl;
+						warnings.push_back(fmt::format("No valid skill id: {:d} for vocation id {:d}!", skillId, voc.id));
 					}
 				} else {
-					std::cout << "[Notice - Vocations::loadFromXml] Missing skill id for vocation: " << voc.id << std::endl;
+					warnings.push_back(fmt::format("Missing skill id for vocation id {:d}!", voc.id));
 				}
 			} else if (strcasecmp(childNode.name(), "formula") == 0) {
 				if ((attr = childNode.attribute("meleeDamage"))) {
@@ -119,6 +122,16 @@ bool Vocations::loadFromXml()
 					voc.armorMultiplier = pugi::cast<float>(attr.value());
 				}
 			}
+		}
+	}
+
+	// show how many loaded
+	console::printResultText(console::getColumns("Vocations:", fmt::format("{:d}", vocationsMap.size())));
+	
+	// show warnings
+	if (!warnings.empty()) {
+		for (int warningId = 0; warningId < warnings.size(); ++warningId) {
+			console::print(CONSOLEMESSAGE_TYPE_WARNING, warnings[warningId], true, "Vocations::loadFromXml");
 		}
 	}
 	return true;

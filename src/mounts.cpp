@@ -35,31 +35,56 @@ bool Mounts::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/mounts.xml");
 	if (!result) {
-		printXMLError("Error - Mounts::loadFromXml", "data/XML/mounts.xml", result);
+		console::printResult(CONSOLE_LOADING_ERROR);
+		printXMLError("Mounts::loadFromXml", "data/XML/mounts.xml", result);
 		return false;
 	}
 
+	std::deque<std::string> warnings;
+
 	for (auto mountNode : doc.child("mounts").children()) {
+		if (!(mountNode.attribute("id"))) {
+			warnings.push_back("Missing mount id!");
+			continue;
+		}
+
 		uint16_t nodeId = pugi::cast<uint16_t>(mountNode.attribute("id").value());
 		if (nodeId == 0 || nodeId > std::numeric_limits<uint8_t>::max()) {
-			std::cout << "[Notice - Mounts::loadFromXml] Mount id \"" << nodeId << "\" is not within 1 and 255 range" << std::endl;
+			warnings.push_back(fmt::format("Mount id \"{:d}\" is not within 1 and 255 range!", nodeId));
 			continue;
 		}
 
 		if (getMountByID(nodeId)) {
-			std::cout << "[Notice - Mounts::loadFromXml] Duplicate mount with id: " << nodeId << std::endl;
+			warnings.push_back(fmt::format("Duplicate mount with id \"{:d}\"!", nodeId));
+			continue;
+		}
+
+		pugi::xml_attribute lookTypeAttribute = mountNode.attribute("clientid");
+		if (!lookTypeAttribute) {
+			warnings.push_back(fmt::format("Missing cliendid for mount id {:d}!", nodeId));
 			continue;
 		}
 
 		mounts.emplace_back(
 			static_cast<uint8_t>(nodeId),
-			pugi::cast<uint16_t>(mountNode.attribute("clientid").value()),
+			pugi::cast<uint16_t>(lookTypeAttribute.value()),
 			mountNode.attribute("name").as_string(),
 			pugi::cast<int32_t>(mountNode.attribute("speed").value()),
 			mountNode.attribute("premium").as_bool()
 		);
 	}
 	mounts.shrink_to_fit();
+
+	// show how many loaded
+	console::printResultText(console::getColumns("Mounts:", fmt::format("{:d}", mounts.size())));
+
+	// show warnings
+	if (!warnings.empty()) {
+		for (int warningId = 0; warningId < warnings.size(); ++warningId) {
+			console::print(CONSOLEMESSAGE_TYPE_WARNING, warnings[warningId], true, "Mounts::loadFromXml");
+		}
+	}
+
 	return true;
 }
 

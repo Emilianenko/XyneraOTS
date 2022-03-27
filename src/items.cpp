@@ -319,6 +319,8 @@ bool Items::loadFromOtb(const std::string& file)
 {
 	OTB::Loader loader{file, OTBI};
 
+	bool isGenericHeader = false;
+
 	auto& root = loader.parseTree();
 
 	PropStream props;
@@ -358,12 +360,14 @@ bool Items::loadFromOtb(const std::string& file)
 	}
 
 	if (majorVersion == 0xFFFFFFFF) {
-		std::cout << "[Warning - Items::loadFromOtb] items.otb using generic client version." << std::endl;
+		isGenericHeader = true;
 	} else if (majorVersion != 3) {
-		std::cout << "Old version detected, a newer version of items.otb is required." << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, fmt::format("Unsupported items.otb major version {:d}!", majorVersion), true, "Items::loadFromOtb");
 		return false;
 	} else if (minorVersion < CLIENT_VERSION_LAST) {
-		std::cout << "A newer version of items.otb is required." << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, "A newer version of items.otb is required!", true, "Items::loadFromOtb");
 		return false;
 	}
 
@@ -582,6 +586,15 @@ bool Items::loadFromOtb(const std::string& file)
 	}
 
 	items.shrink_to_fit();
+
+	// show how many items loaded
+	console::printResultText(console::getColumns("Items:", fmt::format("{:d}", Item::items.size())));
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "", false);
+	console::printResultText(console::getColumns("OTB:", fmt::format("v{:d}.{:d}", Item::items.majorVersion, Item::items.minorVersion)));
+
+	if (isGenericHeader) {
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, "Generic OTB header!", true, "Items::loadFromOtb");
+	}
 	return true;
 }
 
@@ -590,26 +603,31 @@ bool Items::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/items/items.xml");
 	if (!result) {
-		printXMLError("Error - Items::loadFromXml", "data/items/items.xml", result);
+		printXMLError("Items::loadFromXml", "data/items/items.xml", result);
 		return false;
 	}
+
+	uint16_t previousId = 0;
+	uint16_t currentId = 0;
 
 	for (auto itemNode : doc.child("items").children()) {
 		pugi::xml_attribute idAttribute = itemNode.attribute("id");
 		if (idAttribute) {
-			parseItemNode(itemNode, pugi::cast<uint16_t>(idAttribute.value()));
+			currentId = pugi::cast<uint16_t>(idAttribute.value());
+			previousId = currentId;
+			parseItemNode(itemNode, currentId);
 			continue;
 		}
 
 		pugi::xml_attribute fromIdAttribute = itemNode.attribute("fromid");
 		if (!fromIdAttribute) {
-			std::cout << "[Warning - Items::loadFromXml] No item id found" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Missing \"fromid\"! Previous id: {:d}", previousId), true, "Items::loadFromXml");
 			continue;
 		}
 
 		pugi::xml_attribute toIdAttribute = itemNode.attribute("toid");
 		if (!toIdAttribute) {
-			std::cout << "[Warning - Items::loadFromXml] fromid (" << fromIdAttribute.value() << ") without toid" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("fromid {:s}: missing \"toid\"", fromIdAttribute.value()), true, "Items::loadFromXml");
 			continue;
 		}
 
@@ -618,6 +636,8 @@ bool Items::loadFromXml()
 		while (id <= toId) {
 			parseItemNode(itemNode, id++);
 		}
+
+		previousId = toId;
 	}
 
 	return true;
@@ -681,7 +701,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 							it.group = ITEM_GROUP_CONTAINER;
 						}
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown type: " << valueAttribute.as_string() << std::endl;
+						console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Unknown type: {:s}", valueAttribute.as_string()), true, "Items::parseItemNode");
 					}
 					break;
 				}
@@ -729,7 +749,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				case ITEM_PARSE_ATTACK_SPEED: {
 					it.attackSpeed = pugi::cast<uint32_t>(valueAttribute.value());
 					if (it.attackSpeed > 0 && it.attackSpeed < 100) {
-						std::cout << "[Warning - Items::parseItemNode] AttackSpeed lower than 100 for item: " << it.id << std::endl;
+						console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Attackspeed lower than 100 for item: {:d}", it.id), true, "Items::parseItemNode");
 						it.attackSpeed = 100;
 					}
 					break;

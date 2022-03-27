@@ -144,7 +144,7 @@ bool Npc::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		printXMLError("Error - Npc::loadFromXml", filename, result);
+		printXMLError("Npc::loadFromXml", filename, result);
 		return false;
 	}
 

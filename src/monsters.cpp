@@ -62,7 +62,7 @@ bool Monsters::loadFromXml(bool reloading /*= false*/)
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/monster/monsters.xml");
 	if (!result) {
-		printXMLError("Error - Monsters::loadFromXml", "data/monster/monsters.xml", result);
+		printXMLError("Monsters::loadFromXml", "data/monster/monsters.xml", result);
 		return false;
 	}
 
@@ -785,7 +785,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(file.c_str());
 	if (!result) {
-		printXMLError("Error - Monsters::loadMonster", file, result);
+		printXMLError("Monsters::loadMonster", file, result);
 		return nullptr;
 	}
 

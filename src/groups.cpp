@@ -71,7 +71,7 @@ bool Groups::load()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/groups.xml");
 	if (!result) {
-		printXMLError("Error - Groups::load", "data/XML/groups.xml", result);
+		printXMLError("Groups::load", "data/XML/groups.xml", result);
 		return false;
 	}
 

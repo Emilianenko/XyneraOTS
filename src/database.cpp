@@ -38,7 +38,8 @@ bool Database::connect()
 	// connection handle initialization
 	handle = mysql_init(nullptr);
 	if (!handle) {
-		std::cout << std::endl << "Failed to initialize MySQL connection handle." << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, "Failed to initialize MySQL connection handle.", true, "Database::connect");
 		return false;
 	}
 
@@ -48,7 +49,8 @@ bool Database::connect()
 
 	// connects to database
 	if (!mysql_real_connect(handle, g_config.getString(ConfigManager::MYSQL_HOST).c_str(), g_config.getString(ConfigManager::MYSQL_USER).c_str(), g_config.getString(ConfigManager::MYSQL_PASS).c_str(), g_config.getString(ConfigManager::MYSQL_DB).c_str(), g_config.getNumber(ConfigManager::SQL_PORT), g_config.getString(ConfigManager::MYSQL_SOCK).c_str(), 0)) {
-		std::cout << std::endl << "MySQL Error Message: " << mysql_error(handle) << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, "MySQL: " + std::string(mysql_error(handle)), true, "Database::connect");
 		return false;
 	}
 

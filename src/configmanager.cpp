@@ -125,7 +125,8 @@ ExperienceStages loadXMLStages()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/stages.xml");
 	if (!result) {
-		printXMLError("Error - loadXMLStages", "data/XML/stages.xml", result);
+		// deleted file from deprecated way of loading should not error with "file not found"
+		//printXMLError("loadXMLStages", "data/XML/stages.xml", result);
 		return {};
 	}
 
@@ -174,7 +175,8 @@ bool ConfigManager::load()
 	luaL_openlibs(L);
 
 	if (luaL_dofile(L, getString(CONFIG_FILE).c_str())) {
-		std::cout << "[Error - ConfigManager::load] " << lua_tostring(L, -1) << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, lua_tostring(L, -1), true, "ConfigManager::load");
 		lua_close(L);
 		return false;
 	}
@@ -297,12 +299,18 @@ bool ConfigManager::load()
 	integer[MIN_MARKET_FEE] = getGlobalNumber(L, "minMarketFee", 20);
 	integer[MAX_MARKET_FEE] = getGlobalNumber(L, "maxMarketFee", 100000);
 
+	// config loaded successfully
+	console::printResult(CONSOLE_LOADING_OK);
 
+	// load exp stages
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading stages ... ", false);
 	expStages = loadXMLStages();
+	console::printResult(CONSOLE_LOADING_OK);
+
 	if (expStages.empty()) {
 		expStages = loadLuaStages(L);
 	} else {
-		std::cout << "[Warning - ConfigManager::load] XML stages are deprecated, consider moving to config.lua." << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, "XML stages are deprecated, consider moving to " + getString(CONFIG_FILE) + "!", true, "ConfigManager::load");
 	}
 	expStages.shrink_to_fit();
 

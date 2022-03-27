@@ -28,7 +28,6 @@
 #include <typeinfo>
 
 #include <boost/variant.hpp>
-#include <deque>
 
 class Creature;
 class Player;

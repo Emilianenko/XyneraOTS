@@ -1,0 +1,183 @@
+/**
+ * The Forgotten Server - a free and open-source MMORPG server emulator
+ * Copyright (C) 2019  Mark Samman <mark.samman@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+#include "otpch.h"
+
+#include "consolemanager.h"
+
+namespace console {
+
+void print(ConsoleMessageType messageType, const std::string& message, bool newLine, const std::string& location)
+{
+	std::string prefix;
+	Color color;
+
+	switch (messageType) {
+		case CONSOLEMESSAGE_TYPE_ERROR:
+			prefix = "Error";
+			color = error;
+			break;
+		case CONSOLEMESSAGE_TYPE_WARNING:
+			prefix = "Warning";
+			color = warning;
+			break;
+		case CONSOLEMESSAGE_TYPE_STARTUP:
+		case CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL:
+			prefix = "Start";
+			color = start;
+			break;
+		case CONSOLEMESSAGE_TYPE_INFO:
+		default:
+			prefix = "Info";
+			color = info;
+			break;
+	}
+
+	size_t realMsgLength = prefix.size() + message.size() + location.size();
+
+	if (!location.empty()) {
+		prefix = fmt::format("{:s} - {:s}", prefix, location);
+		realMsgLength += 3;
+	}
+
+	prefix = fmt::format("[{:s}]: ", setColor(color, prefix));
+
+	if (messageType == CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL) {
+		color = serveronline;
+	}
+
+	std::string outputMessage = prefix;
+	if (messageType == CONSOLEMESSAGE_TYPE_STARTUP) {
+		outputMessage += message;
+	} else {
+		outputMessage += setColor(color, message);
+	}
+
+	size_t formattedMsgLength = outputMessage.size();
+
+	std::ostringstream outStr;
+	if (!newLine) {
+		outStr << std::setw(58 + formattedMsgLength - realMsgLength) << std::left;
+	}
+
+	outStr << outputMessage;
+
+	if (newLine) {
+		outStr << std::endl;
+	} else {
+		outStr << std::flush;
+	}
+
+	std::cout << outStr.str();
+}
+
+// pattern for functions below
+const std::string pattern = fmt::format("{{:^{:d}}}", TAG_WIDTH);
+
+void printResult(ConsoleLoadingResult result)
+{
+	Color color;
+	std::string msg;
+
+	switch (result) {
+		case CONSOLE_LOADING_OK:
+			color = Color::green;
+			msg = "OK";
+			break;
+		case CONSOLE_LOADING_PENDING:
+			color = Color::yellow;
+			msg = "";
+			break;
+			/*
+			case CONSOLE_LOADING_WARNING:
+				color = Color::yellow;
+				msg = "WARNING";
+				break;
+			*/
+		case CONSOLE_LOADING_ERROR:
+		default:
+			color = Color::red;
+			msg = "ERROR";
+			break;
+	}
+
+	fmt::print("[{:s}]\n", setColor(color, fmt::format(pattern, msg)));
+}
+
+void printResultText(const std::string& msg, Color color)
+{
+	fmt::print("[{:s}]\n", setColor(color, fmt::format(pattern, msg)));
+}
+
+void printPVPType(const std::string& worldType)
+{
+	Color color = pvp;
+	if (worldType == "no-pvp"){
+		color = noPvp;
+	} else if (worldType == "pvp-enforced") {
+		color = pvpEnfo;
+	}
+
+	printResultText(asUpperCaseString(worldType), color);
+}
+
+void printLoginPorts(uint16_t loginPort, uint16_t gamePort, uint16_t statusPort)
+{
+	print(
+		CONSOLEMESSAGE_TYPE_STARTUP,
+		fmt::format(
+			"Login port: {:s}        Game port: {:s}        Status port: {:s}",
+			setColor(serverPorts, std::to_string(loginPort)),
+			setColor(serverPorts, std::to_string(gamePort)),
+			setColor(serverPorts, std::to_string(statusPort))
+		)
+	);
+}
+
+void printWorldInfo(const std::string& key, const std::string& value, bool isStartup, size_t width)
+{
+	std::ostringstream worldInfo;
+	worldInfo << std::setw(width) << std::left << fmt::format(">> {:s}:", key) << value;
+	print(isStartup ? CONSOLEMESSAGE_TYPE_STARTUP : CONSOLEMESSAGE_TYPE_INFO, worldInfo.str());
+}
+
+std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width)
+{
+	std::ostringstream response;
+	response << leftColumn;
+
+	// align if left column is shorter than limit
+	if (leftColumn.size() < width) {
+		response << std::setw(width - leftColumn.size()) << std::right;
+	}
+
+	response << rightColumn;
+	return response.str();
+}
+
+#ifdef USE_COLOR_CONSOLE
+std::string setColor(Color color, const std::string& text)
+{
+	return fmt::format(fg(color) | fmt::emphasis::bold, text);
+}
+#else
+std::string setColor(Color, const std::string& text) { return text; }
+#endif
+
+} // namespace console

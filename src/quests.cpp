@@ -174,7 +174,7 @@ bool Quests::loadFromXml()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/quests.xml");
 	if (!result) {
-		printXMLError("Error - Quests::loadFromXml", "data/XML/quests.xml", result);
+		printXMLError("Quests::loadFromXml", "data/XML/quests.xml", result);
 		return false;
 	}
 

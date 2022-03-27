@@ -18,9 +18,7 @@
  */
 
 #include "otpch.h"
-
 #include "server.h"
-
 #include "game.h"
 
 #include "iomarket.h"
@@ -58,7 +56,7 @@ std::unique_lock<std::mutex> g_loaderUniqueLock(g_loaderLock);
 
 void startupErrorMessage(const std::string& errorStr)
 {
-	fmt::print(fg(fmt::color::crimson) | fmt::emphasis::bold, "> ERROR: {:s}\n", errorStr);
+	console::print(CONSOLEMESSAGE_TYPE_ERROR, errorStr);
 	g_loaderSignal.notify_all();
 }
 
@@ -71,6 +69,11 @@ bool argumentsHandler(const StringVector& args);
 	puts("Allocation failed, server out of memory.\nDecrease the size of your map or compile in 64 bits mode.\n");
 	getchar();
 	exit(-1);
+}
+
+void printHorizontalLine()
+{
+	std::cout << std::setw(80) << std::setfill('-') << "" << std::endl << std::setfill(' ');
 }
 
 int main(int argc, char* argv[])
@@ -93,10 +96,11 @@ int main(int argc, char* argv[])
 	g_loaderSignal.wait(g_loaderUniqueLock);
 
 	if (serviceManager.is_running()) {
-		std::cout << ">> " << g_config.getString(ConfigManager::SERVER_NAME) << " Server Online!" << std::endl << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL, g_config.getString(ConfigManager::SERVER_NAME) + " Server Online!");
+		printHorizontalLine();
 		serviceManager.run();
 	} else {
-		std::cout << ">> No services running. The server is NOT online." << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, "No services running. The server is NOT online!");
 		g_scheduler.shutdown();
 		g_databaseTasks.shutdown();
 		g_dispatcher.shutdown();
@@ -108,14 +112,10 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-namespace {
-const std::string& horizontalLine = "----------------------------------------------------------------------";
-}
-
 void printServerVersion()
 {
 
-	std::cout << horizontalLine << std::endl;
+	printHorizontalLine();
 
 #if defined(GIT_RETRIEVED_STATE) && GIT_RETRIEVED_STATE
 	std::cout << STATUS_SERVER_NAME << " - Version " << GIT_DESCRIBE << std::endl;
@@ -145,12 +145,12 @@ void printServerVersion()
 	std::cout << "- " << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
 #endif
 
-	std::cout << horizontalLine << std::endl;
+	printHorizontalLine();
 	std::cout << "- " << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	std::cout << horizontalLine << std::endl;
+	printHorizontalLine();
 	std::cout << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
 	std::cout << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
-	std::cout << horizontalLine << std::endl;
+	printHorizontalLine();
 }
 
 void mainLoader(int, char*[], ServiceManager* services)
@@ -161,30 +161,56 @@ void mainLoader(int, char*[], ServiceManager* services)
 	srand(static_cast<unsigned int>(OTSYS_TIME()));
 #ifdef _WIN32
 	SetConsoleTitle(STATUS_SERVER_NAME);
+
+	// fixes a problem with escape characters not being processed in Windows consoles
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwMode = 0;
+	GetConsoleMode(hOut, &dwMode);
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	SetConsoleMode(hOut, dwMode);
 #endif
 
+	//// SERVER STARTUP
+	// The Forgotten Server (version)
 	printServerVersion();
 
-	// check if config.lua or config.lua.dist exist
+	// Loading config.lua ...
 	const std::string& configFile = g_config.getString(ConfigManager::CONFIG_FILE);
+	const std::string& distFile = configFile + ".dist";
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading " + configFile + " ... ", false);
+
+	// load config.lua or generate one from config.lua.dist file
 	std::ifstream c_test("./" + configFile);
 	if (!c_test.is_open()) {
-		std::ifstream config_lua_dist("./config.lua.dist");
+		std::ifstream config_lua_dist("./" + distFile);
+
+		// config file not found, inform about generating it
+		console::printResult(CONSOLE_LOADING_PENDING);
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "Copying " + distFile + " to " + configFile + " ... ", false);
+
 		if (config_lua_dist.is_open()) {
-			std::cout << ">> copying config.lua.dist to " << configFile << std::endl;
+
 			std::ofstream config_lua(configFile);
 			config_lua << config_lua_dist.rdbuf();
 			config_lua.close();
 			config_lua_dist.close();
+
+			// confirm success
+			console::printResult(CONSOLE_LOADING_OK);
+			console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading " + configFile + " ... ", false);
+		} else {
+			// access denied / file not found
+			console::printResult(CONSOLE_LOADING_ERROR);
+			console::print(CONSOLEMESSAGE_TYPE_ERROR, "Unable to load " + distFile + "!");
+			return;
 		}
 	} else {
 		c_test.close();
 	}
 
-	// read global config
-	std::cout << ">> Loading config" << std::endl;
+	// config.lua existence confirmed, load it
 	if (!g_config.load()) {
-		startupErrorMessage("Unable to load " + configFile + "!");
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, "Unable to load " + configFile + "!");
 		return;
 	}
 
@@ -197,106 +223,132 @@ void mainLoader(int, char*[], ServiceManager* services)
 	}
 #endif
 
-	//set RSA key
-	std::cout << ">> Loading RSA key " << std::endl;
+
+	// set RSA key
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading RSA key ... ", false);
 	try {
 		g_RSA.loadPEM("key.pem");
 	} catch(const std::exception& e) {
+		console::printResult(CONSOLE_LOADING_ERROR);
 		startupErrorMessage(e.what());
 		return;
 	}
+	console::printResult(CONSOLE_LOADING_OK);
 
-	std::cout << ">> Establishing database connection..." << std::flush;
+
+	// connect to the database
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Establishing database connection ... ", false);
 
 	if (!Database::getInstance().connect()) {
-		startupErrorMessage("Failed to connect to database.");
+		// normally this line is executed in startupErrorMessage
+		// in this situation the error is being sent from connect method
+		// so no message is needed
+		g_loaderSignal.notify_all();
 		return;
 	}
 
-	std::cout << " MySQL " << Database::getClientVersion() << std::endl;
+	console::printResultText("MySQL " + std::string(Database::getClientVersion()));
 
 	// run database manager
-	std::cout << ">> Running database manager" << std::endl;
 
+	// check if database exists
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Checking database setup ... ", false);
 	if (!DatabaseManager::isDatabaseSetup()) {
+		console::printResult(CONSOLE_LOADING_ERROR);
 		startupErrorMessage("The database you have specified in config.lua is empty, please import the schema.sql to your database.");
 		return;
 	}
+	console::printResult(CONSOLE_LOADING_OK);
+
+	// start database tasks
 	g_databaseTasks.start();
 
+	// run database migrations if necessary
+	// Checking database migrations...
 	DatabaseManager::updateDatabase();
 
-	if (g_config.getBoolean(ConfigManager::OPTIMIZE_DATABASE) && !DatabaseManager::optimizeTables()) {
-		std::cout << "> No tables were optimized." << std::endl;
+	// optimize tables
+	if (g_config.getBoolean(ConfigManager::OPTIMIZE_DATABASE)) {
+		console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Optimizing database tables ... ", false);
+		if (!DatabaseManager::optimizeTables()) {
+			console::printResult(CONSOLE_LOADING_OK);
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "No tables were optimized.");
+		} else {
+			console::printResult(CONSOLE_LOADING_OK);
+		}
 	}
 
 	// load vocations
-	std::cout << ">> Loading vocations" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading vocations ... ", false);
 	if (!g_vocations.loadFromXml()) {
 		startupErrorMessage("Unable to load vocations!");
 		return;
 	}
 
 	// load cosmetics
-	std::cout << ">> Loading outfits" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading outfits ... ", false);
 	if (!Outfits::getInstance().loadFromXml()) {
 		startupErrorMessage("Unable to load outfits!");
 		return;
 	}
 
-	std::cout << ">> Loading mounts" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading mounts ... ", false);
 	if (!g_game.mounts.loadFromXml()) {
 		startupErrorMessage("Unable to load mounts!");
 		return;
 	}
 
-	std::cout << ">> Loading familiars" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading familiars ... ", false);
 	if (!g_game.familiars.loadFromXml()) {
 		startupErrorMessage("Unable to load familiars!");
 		return;
 	}
 
 	// load item data
-	std::cout << ">> Loading items... ";
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading items ... ", false);
 	if (!Item::items.loadFromOtb("data/items/items.otb")) {
-		startupErrorMessage("Unable to load items (OTB)!");
+		startupErrorMessage("Unable to load items.otb!");
 		return;
 	}
-	std::cout << fmt::format("OTB v{:d}.{:d}.{:d}", Item::items.majorVersion, Item::items.minorVersion, Item::items.buildNumber) << std::endl;
 
 	if (!Item::items.loadFromXml()) {
-		startupErrorMessage("Unable to load items (XML)!");
+		startupErrorMessage("Unable to load items.xml!");
 		return;
 	}
 
 	// load lua scripts
-	std::cout << ">> Loading script systems" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading script systems ... ", false);
+	
+#if defined(LUAJIT_VERSION)
+	console::printResultText(LUAJIT_VERSION);
+#else
+	console::printResultText(LUA_RELEASE);
+#endif
+
 	if (!ScriptingManager::getInstance().loadScriptSystems()) {
 		startupErrorMessage("Failed to load script systems");
 		return;
 	}
 
-	std::cout << ">> Loading lua scripts" << std::endl;
 	if (!g_scripts->loadScripts("scripts", false, false)) {
 		startupErrorMessage("Failed to load lua scripts");
 		return;
 	}
 
 	// load monsters
-	std::cout << ">> Loading monsters" << std::endl;
+	//console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading monsters ... ");
 	if (!g_monsters.loadFromXml()) {
 		startupErrorMessage("Unable to load monsters!");
 		return;
 	}
 
-	std::cout << ">> Loading lua monsters" << std::endl;
 	if (!g_scripts->loadScripts("monster", false, false)) {
 		startupErrorMessage("Failed to load lua monsters");
 		return;
 	}
 
 	// load world type
-	std::cout << ">> Checking world type... " << std::flush;
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Configuring world type ... ", false);
 	std::string worldType = asLowerCaseString(g_config.getString(ConfigManager::WORLD_TYPE));
 	if (worldType == "pvp") {
 		g_game.setWorldType(WORLD_TYPE_PVP);
@@ -305,31 +357,56 @@ void mainLoader(int, char*[], ServiceManager* services)
 	} else if (worldType == "pvp-enforced") {
 		g_game.setWorldType(WORLD_TYPE_PVP_ENFORCED);
 	} else {
-		std::cout << std::endl;
+		console::printResult(CONSOLE_LOADING_ERROR);
 		startupErrorMessage(fmt::format("Unknown world type: {:s}, valid world types are: pvp, no-pvp and pvp-enforced.", g_config.getString(ConfigManager::WORLD_TYPE)));
 		return;
 	}
-	std::cout << asUpperCaseString(worldType) << std::endl;
+
+	console::printPVPType(worldType);
 
 	// load map
-	std::cout << ">> Loading map" << std::endl;
-	if (!g_game.loadMainMap(g_config.getString(ConfigManager::MAP_NAME))) {
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading world map...");
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "");
+
+
+	const std::string& worldName = g_config.getString(ConfigManager::MAP_NAME);
+	console::printWorldInfo("Filename", worldName + ".otbm");
+
+	if (!g_game.loadMainMap(worldName)) {
 		startupErrorMessage("Failed to load map");
 		return;
 	}
 
-	std::cout << ">> Initializing gamestate" << std::endl;
+	console::printWorldInfo("Houses", std::to_string(g_game.map.houses.size()));
+
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "");
+
+	console::printWorldInfo("Monsters", std::to_string(g_game.map.spawns.getMonsterCount()));
+	console::printWorldInfo("NPCs", std::to_string(g_game.map.spawns.getNpcCount()));
+	console::printWorldInfo("Spawns", std::to_string(g_game.map.spawns.size()));
+
+	// bind service ports
 	g_game.setGameState(GAME_STATE_INIT);
 
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "");
+	//printConsoleMessage(CONSOLEMESSAGE_TYPE_STARTUP, "Binding ports ...");
+
+	uint16_t loginPort = static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT));
+	uint16_t gamePort = static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
+	uint16_t statusPort = static_cast<uint16_t>(g_config.getNumber(ConfigManager::STATUS_PORT));
+
 	// Game client protocols
-	services->add<ProtocolGame>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT)));
-	services->add<ProtocolLogin>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
+	services->add<ProtocolGame>(gamePort);
+	services->add<ProtocolLogin>(loginPort);
 
 	// OT protocols
-	services->add<ProtocolStatus>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::STATUS_PORT)));
+	services->add<ProtocolStatus>(statusPort);
 
 	// Legacy login protocol
-	services->add<ProtocolOld>(static_cast<uint16_t>(g_config.getNumber(ConfigManager::LOGIN_PORT)));
+	services->add<ProtocolOld>(loginPort);
+
+	console::printLoginPorts(loginPort, gamePort, statusPort);
+	//printConsoleMessage(CONSOLEMESSAGE_TYPE_STARTUP, "Initializing gamestate ...");
 
 	RentPeriod_t rentPeriod;
 	std::string strRentPeriod = asLowerCaseString(g_config.getString(ConfigManager::HOUSE_RENT_PERIOD));
@@ -351,11 +428,9 @@ void mainLoader(int, char*[], ServiceManager* services)
 	IOMarket::checkExpiredOffers();
 	IOMarket::getInstance().updateStatistics();
 
-	std::cout << ">> Loaded all modules, server starting up..." << std::endl;
-
 #ifndef _WIN32
 	if (getuid() == 0 || geteuid() == 0) {
-		std::cout << "> Warning: " << STATUS_SERVER_NAME << " has been executed as root user, please consider running it as a normal user." << std::endl;
+		printConsoleMessage(CONSOLEMESSAGE_TYPE_WARNING, "Server is running with root permissions. Running as a normal user recommended.");
 	}
 #endif
 
