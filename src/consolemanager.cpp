@@ -157,6 +157,11 @@ void printWorldInfo(const std::string& key, const std::string& value, bool isSta
 	print(isStartup ? CONSOLEMESSAGE_TYPE_STARTUP : CONSOLEMESSAGE_TYPE_INFO, worldInfo.str());
 }
 
+void reportOverflow(const std::string location)
+{
+	print(CONSOLEMESSAGE_TYPE_ERROR, "Call stack overflow!", true, location);
+}
+
 std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width)
 {
 	std::ostringstream response;

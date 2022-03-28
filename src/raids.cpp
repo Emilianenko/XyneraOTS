@@ -573,7 +573,7 @@ bool ScriptEvent::executeEvent()
 {
 	//onRaid()
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - ScriptEvent::onRaid] Call stack overflow" << std::endl;
+		console::reportOverflow("ScriptEvent::onRaid");
 		return false;
 	}
 

@@ -66,6 +66,9 @@ void printLoginPorts(uint16_t loginPort, uint16_t gamePort, uint16_t statusPort)
 // output: ">> key:     value"
 void printWorldInfo(const std::string& key, const std::string& value, bool isStartup = true, size_t width = WORLDINFO_SPACING);
 
+// output: [Error - location] Call stack overflow!
+void reportOverflow(const std::string location);
+
 // returns formatted string
 // args: leftColumn, rightColumn, total width
 std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width = TAG_WIDTH);

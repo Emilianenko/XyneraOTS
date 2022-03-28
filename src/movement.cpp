@@ -990,7 +990,7 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos)
 	//onStepIn(creature, item, pos, fromPosition)
 	//onStepOut(creature, item, pos, fromPosition)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - MoveEvent::executeStep] Call stack overflow" << std::endl;
+		console::reportOverflow("MoveEvent::executeStep");
 		return false;
 	}
 
@@ -1028,7 +1028,7 @@ bool MoveEvent::executeEquip(Player* player, Item* item, slots_t slot, bool isCh
 	//onEquip(player, item, slot, isCheck)
 	//onDeEquip(player, item, slot, isCheck)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - MoveEvent::executeEquip] Call stack overflow" << std::endl;
+		console::reportOverflow("MoveEvent::executeEquip");
 		return false;
 	}
 
@@ -1060,7 +1060,7 @@ bool MoveEvent::executeAddRemItem(Item* item, Item* tileItem, const Position& po
 	//onaddItem(moveitem, tileitem, pos)
 	//onRemoveItem(moveitem, tileitem, pos)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - MoveEvent::executeAddRemItem] Call stack overflow" << std::endl;
+		console::reportOverflow("MoveEvent::executeAddRemItem");
 		return false;
 	}
 

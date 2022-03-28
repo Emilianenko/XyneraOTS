@@ -37,7 +37,7 @@ void RSA::decrypt(char* msg) const
 		auto c = pk.CalculateInverse(prng, m);
 		c.Encode(reinterpret_cast<uint8_t*>(msg), 128);
 	} catch (const CryptoPP::Exception& e) {
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, e.what());
+		console::print(CONSOLEMESSAGE_TYPE_ERROR, e.what(), true, "RSA::decrypt");
 	}
 }
 

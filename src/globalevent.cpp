@@ -334,7 +334,7 @@ bool GlobalEvent::executeRecord(uint32_t current, uint32_t old)
 {
 	//onRecord(current, old)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - GlobalEvent::executeRecord] Call stack overflow" << std::endl;
+		console::reportOverflow("GlobalEvent::executeRecord");
 		return false;
 	}
 
@@ -352,7 +352,7 @@ bool GlobalEvent::executeRecord(uint32_t current, uint32_t old)
 bool GlobalEvent::executeEvent() const
 {
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - GlobalEvent::executeEvent] Call stack overflow" << std::endl;
+		console::reportOverflow("GlobalEvent::executeEvent");
 		return false;
 	}
 

@@ -499,7 +499,7 @@ bool Weapon::executeUseWeapon(Player* player, const LuaVariant& var) const
 {
 	//onUseWeapon(player, var)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - Weapon::executeUseWeapon] Call stack overflow" << std::endl;
+		console::reportOverflow("Weapon::executeUseWeapon");
 		return false;
 	}
 

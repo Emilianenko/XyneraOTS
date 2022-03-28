@@ -166,7 +166,7 @@ bool Events::eventMonsterOnSpawn(Monster* monster, const Position& position, boo
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::monsterOnSpawn] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::monsterOnSpawn");
 		return false;
 	}
 
@@ -194,7 +194,7 @@ bool Events::eventCreatureOnChangeOutfit(Creature* creature, const Outfit_t& out
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventCreatureOnChangeOutfit] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventCreatureOnChangeOutfit");
 		return false;
 	}
 
@@ -220,7 +220,7 @@ ReturnValue Events::eventCreatureOnAreaCombat(Creature* creature, Tile* tile, bo
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventCreatureOnAreaCombat] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventCreatureOnAreaCombat");
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
@@ -263,7 +263,7 @@ ReturnValue Events::eventCreatureOnTargetCombat(Creature* creature, Creature* ta
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventCreatureOnTargetCombat] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventCreatureOnTargetCombat");
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
@@ -304,7 +304,7 @@ void Events::eventCreatureOnHear(Creature* creature, Creature* speaker, const st
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventCreatureOnHear] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventCreatureOnHear");
 		return;
 	}
 
@@ -335,7 +335,7 @@ bool Events::eventPartyOnJoin(Party* party, Player* player)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPartyOnJoin] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPartyOnJoin");
 		return false;
 	}
 
@@ -362,7 +362,7 @@ bool Events::eventPartyOnLeave(Party* party, Player* player)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPartyOnLeave] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPartyOnLeave");
 		return false;
 	}
 
@@ -389,7 +389,7 @@ bool Events::eventPartyOnDisband(Party* party)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPartyOnDisband] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPartyOnDisband");
 		return false;
 	}
 
@@ -413,7 +413,7 @@ void Events::eventPartyOnShareExperience(Party* party, uint64_t& exp)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPartyOnShareExperience] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPartyOnShareExperience");
 		return;
 	}
 
@@ -447,7 +447,7 @@ bool Events::eventPlayerOnBrowseField(Player* player, const Position& position)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnBrowseField] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnBrowseField");
 		return false;
 	}
 
@@ -473,7 +473,7 @@ void Events::eventPlayerOnLook(Player* player, const Position& position, Thing* 
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLook] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLook");
 		return;
 	}
 
@@ -510,7 +510,7 @@ void Events::eventPlayerOnLookInBattleList(Player* player, Creature* creature, i
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLookInBattleList] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLookInBattleList");
 		return;
 	}
 
@@ -539,7 +539,7 @@ void Events::eventPlayerOnLookInTrade(Player* player, Player* partner, Item* ite
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLookInTrade] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLookInTrade");
 		return;
 	}
 
@@ -571,7 +571,7 @@ bool Events::eventPlayerOnLookInShop(Player* player, const ItemType* itemType, u
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLookInShop] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLookInShop");
 		return false;
 	}
 
@@ -603,7 +603,7 @@ bool Events::eventPlayerOnLookInMarket(Player* player, const ItemType* itemType,
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLookInMarket] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLookInMarket");
 		return false;
 	}
 
@@ -632,7 +632,7 @@ ReturnValue Events::eventPlayerOnMoveItem(Player* player, Item* item, uint16_t c
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnMoveItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnMoveItem");
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
@@ -676,7 +676,7 @@ void Events::eventPlayerOnItemMoved(Player* player, Item* item, uint16_t count, 
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnItemMoved] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnItemMoved");
 		return;
 	}
 
@@ -714,7 +714,7 @@ bool Events::eventPlayerOnMoveCreature(Player* player, Creature* creature, const
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnMoveCreature] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnMoveCreature");
 		return false;
 	}
 
@@ -744,7 +744,7 @@ void Events::eventPlayerOnReportRuleViolation(Player* player, const std::string&
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnReportRuleViolation] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnReportRuleViolation");
 		return;
 	}
 
@@ -776,7 +776,7 @@ bool Events::eventPlayerOnReportBug(Player* player, const std::string& message, 
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnReportBug] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnReportBug");
 		return false;
 	}
 
@@ -804,7 +804,7 @@ bool Events::eventPlayerOnTurn(Player* player, Direction direction)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnTurn] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnTurn");
 		return false;
 	}
 
@@ -830,7 +830,7 @@ bool Events::eventPlayerOnTradeRequest(Player* player, Player* target, Item* ite
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnTradeRequest] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnTradeRequest");
 		return false;
 	}
 
@@ -860,7 +860,7 @@ bool Events::eventPlayerOnTradeAccept(Player* player, Player* target, Item* item
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnTradeAccept] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnTradeAccept");
 		return false;
 	}
 
@@ -893,7 +893,7 @@ void Events::eventPlayerOnTradeCompleted(Player* player, Player* target, Item* i
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnTradeCompleted] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnTradeCompleted");
 		return;
 	}
 
@@ -928,7 +928,7 @@ void Events::eventPlayerOnPodiumRequest(Player* player, Item* item)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnPodiumRequest] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnPodiumRequest");
 		return;
 	}
 
@@ -955,7 +955,7 @@ void Events::eventPlayerOnPodiumEdit(Player* player, Item* item, const Outfit_t&
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnPodiumEdit] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnPodiumEdit");
 		return;
 	}
 
@@ -988,7 +988,7 @@ void Events::eventPlayerOnGainExperience(Player* player, Creature* source, uint6
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnGainExperience] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnGainExperience");
 		return;
 	}
 
@@ -1029,7 +1029,7 @@ void Events::eventPlayerOnLoseExperience(Player* player, uint64_t& exp)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnLoseExperience] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnLoseExperience");
 		return;
 	}
 
@@ -1062,7 +1062,7 @@ void Events::eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnGainSkillTries] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnGainSkillTries");
 		return;
 	}
 
@@ -1096,7 +1096,7 @@ void Events::eventPlayerOnWrapItem(Player* player, Item* item)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnWrapItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnWrapItem");
 		return;
 	}
 
@@ -1123,7 +1123,7 @@ void Events::eventPlayerOnInspectItem(Player* player, Item* item)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnInspectItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnInspectItem");
 		return;
 	}
 
@@ -1150,7 +1150,7 @@ void Events::eventPlayerOnInspectTradeItem(Player* player, Player* tradePartner,
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::onInspectTradeItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::onInspectTradeItem");
 		return;
 	}
 
@@ -1180,7 +1180,7 @@ void Events::eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::onInspectNpcTradeItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::onInspectNpcTradeItem");
 		return;
 	}
 
@@ -1209,7 +1209,7 @@ void Events::eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::onInspectCompendiumItem] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::onInspectCompendiumItem");
 		return;
 	}
 
@@ -1235,7 +1235,7 @@ void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventPlayerOnExtendedProtocol] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventPlayerOnExtendedProtocol");
 		return;
 	}
 
@@ -1264,7 +1264,7 @@ void Events::eventMonsterOnDropLoot(Monster* monster, Container* corpse)
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		std::cout << "[Error - Events::eventMonsterOnDropLoot] Call stack overflow" << std::endl;
+		console::reportOverflow("Events::eventMonsterOnDropLoot");
 		return;
 	}
 

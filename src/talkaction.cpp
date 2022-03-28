@@ -177,7 +177,7 @@ bool TalkAction::executeSay(Player* player, const std::string& words, const std:
 {
 	//onSay(player, words, param, type)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - TalkAction::executeSay] Call stack overflow" << std::endl;
+		console::reportOverflow("TalkAction::executeSay");
 		return false;
 	}
 

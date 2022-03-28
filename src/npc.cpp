@@ -1157,7 +1157,7 @@ void NpcEventsHandler::onCreatureAppear(Creature* creature)
 
 	//onCreatureAppear(creature)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onCreatureAppear] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onCreatureAppear");
 		return;
 	}
 
@@ -1180,7 +1180,7 @@ void NpcEventsHandler::onCreatureDisappear(Creature* creature)
 
 	//onCreatureDisappear(creature)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onCreatureDisappear] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onCreatureDisappear");
 		return;
 	}
 
@@ -1203,7 +1203,7 @@ void NpcEventsHandler::onCreatureMove(Creature* creature, const Position& oldPos
 
 	//onCreatureMove(creature, oldPos, newPos)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onCreatureMove] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onCreatureMove");
 		return;
 	}
 
@@ -1228,7 +1228,7 @@ void NpcEventsHandler::onCreatureSay(Creature* creature, SpeakClasses type, cons
 
 	//onCreatureSay(creature, type, msg)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onCreatureSay] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onCreatureSay");
 		return;
 	}
 
@@ -1254,7 +1254,7 @@ void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t 
 
 	//onBuy(player, itemid, count, amount, ignore, inbackpacks)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onPlayerTrade] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onPlayerTrade");
 		return;
 	}
 
@@ -1282,7 +1282,7 @@ void NpcEventsHandler::onPlayerCloseChannel(Player* player)
 
 	//onPlayerCloseChannel(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onPlayerCloseChannel] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onPlayerCloseChannel");
 		return;
 	}
 
@@ -1305,7 +1305,7 @@ void NpcEventsHandler::onPlayerEndTrade(Player* player)
 
 	//onPlayerEndTrade(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onPlayerEndTrade] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onPlayerEndTrade");
 		return;
 	}
 
@@ -1328,7 +1328,7 @@ void NpcEventsHandler::onThink()
 
 	//onThink()
 	if (!scriptInterface->reserveScriptEnv()) {
-		std::cout << "[Error - NpcScript::onThink] Call stack overflow" << std::endl;
+		console::reportOverflow("NpcScript::onThink");
 		return;
 	}
 

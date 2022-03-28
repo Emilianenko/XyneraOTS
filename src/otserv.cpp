@@ -71,9 +71,11 @@ bool argumentsHandler(const StringVector& args);
 	exit(-1);
 }
 
-void printHorizontalLine()
+std::string getHorizontalLine()
 {
-	std::cout << std::setw(80) << std::setfill('-') << "" << std::endl << std::setfill(' ');
+	std::ostringstream s;
+	s << std::setw(80) << std::setfill('-') << "" << std::endl << std::setfill(' ');
+	return s.str();
 }
 
 int main(int argc, char* argv[])
@@ -97,7 +99,7 @@ int main(int argc, char* argv[])
 
 	if (serviceManager.is_running()) {
 		console::print(CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL, g_config.getString(ConfigManager::SERVER_NAME) + " Server Online!");
-		printHorizontalLine();
+		std::cout << getHorizontalLine();
 		serviceManager.run();
 	} else {
 		console::print(CONSOLEMESSAGE_TYPE_ERROR, "No services running. The server is NOT online!");
@@ -114,43 +116,45 @@ int main(int argc, char* argv[])
 
 void printServerVersion()
 {
-
-	printHorizontalLine();
+	std::ostringstream startupMsg;
+	std::string hrLine = getHorizontalLine();
+	startupMsg << hrLine;
 
 #if defined(GIT_RETRIEVED_STATE) && GIT_RETRIEVED_STATE
-	std::cout << STATUS_SERVER_NAME << " - Version " << GIT_DESCRIBE << std::endl;
-	std::cout << "Git SHA1 " << GIT_SHORT_SHA1 << " dated " << GIT_COMMIT_DATE_ISO8601 << std::endl;
+	startupMsg << STATUS_SERVER_NAME << " - Version " << GIT_DESCRIBE << std::endl;
+	startupMsg << "Git SHA1 " << GIT_SHORT_SHA1 << " dated " << GIT_COMMIT_DATE_ISO8601 << std::endl;
 	#if GIT_IS_DIRTY
-	std::cout << "*** DIRTY - NOT OFFICIAL RELEASE ***" << std::endl;
+	startupMsg << "*** DIRTY - NOT OFFICIAL RELEASE ***" << std::endl;
 	#endif
 #else
-	std::cout << "- " << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
+	startupMsg << "- " << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
 #endif
-	std::cout << std::endl;
+	startupMsg << std::endl;
 
-	std::cout << "- " << "Compiled with " << BOOST_COMPILER << std::endl;
-	std::cout << "- " << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
+	startupMsg << "- " << "Compiled with " << BOOST_COMPILER << std::endl;
+	startupMsg << "- " << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
 #if defined(__amd64__) || defined(_M_X64)
-	std::cout << "x64" << std::endl;
+	startupMsg << "x64" << std::endl;
 #elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
-	std::cout << "x86" << std::endl;
+	startupMsg << "x86" << std::endl;
 #elif defined(__arm__)
-	std::cout << "ARM" << std::endl;
+	startupMsg << "ARM" << std::endl;
 #else
-	std::cout << "unknown" << std::endl;
+	startupMsg << "unknown" << std::endl;
 #endif
 #if defined(LUAJIT_VERSION)
-	std::cout << "- " << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
+	startupMsg << "- " << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
 #else
-	std::cout << "- " << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
+	startupMsg << "- " << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
 #endif
 
-	printHorizontalLine();
-	std::cout << "- " << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	printHorizontalLine();
-	std::cout << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
-	std::cout << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
-	printHorizontalLine();
+	startupMsg << hrLine;
+	startupMsg << "- " << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
+	startupMsg << hrLine;
+	startupMsg << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
+	startupMsg << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
+	startupMsg << hrLine;
+	std::cout << startupMsg.str();
 }
 
 void mainLoader(int, char*[], ServiceManager* services)
