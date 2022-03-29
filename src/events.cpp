@@ -57,7 +57,7 @@ bool Events::load()
 		if (res.second) {
 			const std::string& lowercase = asLowerCaseString(className);
 			if (scriptInterface.loadFile("data/events/scripts/" + lowercase + ".lua") != 0) {
-				console::reportFileError("Events::load", lowercase, scriptInterface.getLastLuaError());
+				console::reportFileError(location, lowercase, scriptInterface.getLastLuaError());
 			}
 		}
 

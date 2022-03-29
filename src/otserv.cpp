@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 
 	if (serviceManager.is_running()) {
 		console::print(CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL, g_config.getString(ConfigManager::SERVER_NAME) + " Server Online!");
-		std::cout << getHorizontalLine();
+		std::cout << getHorizontalLine() << std::flush;
 		serviceManager.run();
 	} else {
 		console::print(CONSOLEMESSAGE_TYPE_ERROR, "No services running. The server is NOT online!");
@@ -154,7 +154,7 @@ void printServerVersion()
 	startupMsg << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
 	startupMsg << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
 	startupMsg << hrLine;
-	std::cout << startupMsg.str();
+	std::cout << startupMsg.str() << std::flush;
 }
 
 void mainLoader(int, char*[], ServiceManager* services)

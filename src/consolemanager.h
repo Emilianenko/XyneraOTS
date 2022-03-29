@@ -78,7 +78,7 @@ void reportError(const std::string location, const std::string text);
 void reportWarning(const std::string location, const std::string text);
 
 // output: [Error - location] Unable to load fileName!
-// output line2: [Warning - location] text
+// output line2: [Error - location] text
 void reportFileError(const std::string location, const std::string fileName, const std::string text = std::string());
 
 // returns formatted string

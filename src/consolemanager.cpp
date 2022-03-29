@@ -84,7 +84,7 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 		outStr << std::flush;
 	}
 
-	std::cout << outStr.str();
+	std::cout << outStr.str() << std::flush;
 }
 
 // pattern for functions below

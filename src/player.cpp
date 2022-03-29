@@ -692,7 +692,7 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE) || IS_IN_KEYRANGE(key, FAMILIARS_RANGE)) {
 			// do nothing
 		} else {
-			std::cout << "Warning: unknown reserved key: " << key << " player: " << getName() << std::endl;
+			console::reportWarning("Player::addStorageValue", fmt::format("Storage belongs to reserved range of unknown type! storage: {:d}, player: {:s})", key, getName()));
 			return;
 		}
 	}
@@ -1221,7 +1221,7 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 		Account account = IOLoginData::loadAccount(accountNumber);
 
 		if (g_config.getBoolean(ConfigManager::PLAYER_CONSOLE_LOGS)) {
-			std::cout << name << " has logged in." << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, name + " has logged in.");
 		}
 
 		if (guild) {
@@ -1345,7 +1345,7 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 		g_chat->removeUserFromAllChannels(*this);
 
 		if (g_config.getBoolean(ConfigManager::PLAYER_CONSOLE_LOGS)) {
-			std::cout << getName() << " has logged out." << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, getName() + " has logged out.");
 		}
 
 		if (guild) {
@@ -1363,7 +1363,7 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 		}
 
 		if (!saved) {
-			std::cout << "Error while saving player: " << getName() << std::endl;
+			console::reportError("Player::onRemoveCreature", "Unable to save player " + getName() + "!");
 		}
 	}
 }

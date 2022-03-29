@@ -149,7 +149,7 @@ bool Spells::registerEvent(Event_ptr event, const pugi::xml_node&)
 	if (instant) {
 		auto result = instants.emplace(instant->getWords(), std::move(*instant));
 		if (!result.second) {
-			std::cout << "[Warning - Spells::registerEvent] Duplicate registered instant spell with words: " << instant->getWords() << std::endl;
+			console::reportWarning("Spells::registerEvent", "Duplicate registered instant spell with words \"" + instant->getWords() + "\"!");
 		}
 		return result.second;
 	}
@@ -158,7 +158,7 @@ bool Spells::registerEvent(Event_ptr event, const pugi::xml_node&)
 	if (rune) {
 		auto result = runes.emplace(rune->getRuneItemId(), std::move(*rune));
 		if (!result.second) {
-			std::cout << "[Warning - Spells::registerEvent] Duplicate registered rune with id: " << rune->getRuneItemId() << std::endl;
+			console::reportWarning("Spells::registerEvent", fmt::format("Duplicate registered rune with id: {:d}!", rune->getRuneItemId()));
 		}
 		return result.second;
 	}
@@ -170,10 +170,9 @@ bool Spells::registerInstantLuaEvent(InstantSpell* event)
 {
 	InstantSpell_ptr instant { event };
 	if (instant) {
-		std::string words = instant->getWords();
 		auto result = instants.emplace(instant->getWords(), std::move(*instant));
 		if (!result.second) {
-			std::cout << "[Warning - Spells::registerInstantLuaEvent] Duplicate registered instant spell with words: " << words << std::endl;
+			console::reportWarning("Spells::registerInstantLuaEvent", "Duplicate registered instant spell with words \"" + instant->getWords() + "\"!");
 		}
 		return result.second;
 	}
@@ -185,10 +184,9 @@ bool Spells::registerRuneLuaEvent(RuneSpell* event)
 {
 	RuneSpell_ptr rune { event };
 	if (rune) {
-		uint16_t id = rune->getRuneItemId();
 		auto result = runes.emplace(rune->getRuneItemId(), std::move(*rune));
 		if (!result.second) {
-			std::cout << "[Warning - Spells::registerRuneLuaEvent] Duplicate registered rune with id: " << id << std::endl;
+			console::reportWarning("Spells::registerRuneLuaEvent", fmt::format("Duplicate registered rune with id: {:d}!", rune->getRuneItemId()));
 		}
 		return result.second;
 	}
@@ -377,9 +375,10 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 
 bool Spell::configureSpell(const pugi::xml_node& node)
 {
+	std::string location = "Spell::configureSpell";
 	pugi::xml_attribute nameAttribute = node.attribute("name");
 	if (!nameAttribute) {
-		std::cout << "[Error - Spell::configureSpell] Spell without name" << std::endl;
+		console::reportError(location, "Missing name attribute!");
 		return false;
 	}
 
@@ -390,11 +389,15 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		"physical",
 		"poison",
 		"fire",
+		"ice",
+		"earth",
 		"energy",
 		"drown",
 		"lifedrain",
 		"manadrain",
 		"healing",
+		"holy",
+		"death",
 		"speed",
 		"outfit",
 		"invisible",
@@ -415,7 +418,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 	//for (size_t i = 0; i < size; ++i) {
 	for (const char* reserved : reservedList) {
 		if (strcasecmp(reserved, name.c_str()) == 0) {
-			std::cout << "[Error - Spell::configureSpell] Spell is using a reserved name: " << reserved << std::endl;
+			console::reportError(location, fmt::format("Spell \"{:s}\" is using a reserved name!", reserved));
 			return false;
 		}
 	}
@@ -446,7 +449,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		} else if (tmpStr == "ultimate" || tmpStr == "8") {
 			group = SPELLGROUP_ULTIMATE;
 		} else {
-			std::cout << "[Warning - Spell::configureSpell] Unknown group: " << attr.as_string() << std::endl;
+			console::reportWarning(location, fmt::format("Unknown spell group {:s}!", attr.as_string()));
 		}
 	}
 
@@ -475,7 +478,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		} else if (tmpStr == "ultimate" || tmpStr == "8") {
 			secondaryGroup = SPELLGROUP_ULTIMATE;
 		} else {
-			std::cout << "[Warning - Spell::configureSpell] Unknown secondarygroup: " << attr.as_string() << std::endl;
+			console::reportWarning(location, fmt::format("Unknown secondary spell group {:s}!", attr.as_string()));
 		}
 	}
 
@@ -550,7 +553,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		} else if (tmpStrValue == "creature") {
 			blockingCreature = true;
 		} else {
-			std::cout << "[Warning - Spell::configureSpell] Blocktype \"" << attr.as_string() << "\" does not exist." << std::endl;
+			console::reportWarning(location, fmt::format("Blocktype {:s} does not exist!", attr.as_string()));
 		}
 	}
 
@@ -576,7 +579,7 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 			attr = vocationNode.attribute("showInDescription");
 			vocSpellMap[vocationId] = !attr || attr.as_bool();
 		} else {
-			std::cout << "[Warning - Spell::configureSpell] Wrong vocation name: " << attr.as_string() << std::endl;
+			console::reportWarning(location, fmt::format("Vocation \"{:s}\" not found!", attr.as_string()));
 		}
 	}
 	return true;
@@ -1145,7 +1148,7 @@ bool RuneSpell::configureEvent(const pugi::xml_node& node)
 
 	pugi::xml_attribute attr;
 	if (!(attr = node.attribute("id"))) {
-		std::cout << "[Error - RuneSpell::configureSpell] Rune spell without id." << std::endl;
+		console::reportError("RuneSpell::configureSpell", "Missing rune spell id!");
 		return false;
 	}
 	runeId = pugi::cast<uint16_t>(attr.value());

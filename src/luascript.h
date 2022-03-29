@@ -529,6 +529,8 @@ class LuaScriptInterface
 
 		static int luaIsScriptsInterface(lua_State* L);
 
+		static int luaRefreshConsole(lua_State* L);
+
 #ifndef LUAJIT_VERSION
 		static int luaBitNot(lua_State* L);
 		static int luaBitAnd(lua_State* L);

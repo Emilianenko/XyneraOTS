@@ -1149,6 +1149,9 @@ void LuaScriptInterface::registerFunctions()
 	//isScriptsInterface()
 	lua_register(luaState, "isScriptsInterface", LuaScriptInterface::luaIsScriptsInterface);
 
+	//refreshConsole()
+	lua_register(luaState, "refreshConsole", LuaScriptInterface::luaRefreshConsole);
+
 #ifndef LUAJIT_VERSION
 	//bit operations for Lua, based on bitlib project release 24
 	//bit.bnot, bit.band, bit.bor, bit.bxor, bit.lshift, bit.rshift
@@ -4212,6 +4215,15 @@ int LuaScriptInterface::luaIsScriptsInterface(lua_State* L)
 		reportErrorFunc(L, "EventCallback: can only be called inside (data/scripts/)");
 		pushBoolean(L, false);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaRefreshConsole(lua_State* L)
+{
+	// refreshConsole()
+	// fixes unresponsive terminal (linux and git bash)
+	std::cout << std::flush;
+	lua_pushnil(L);
 	return 1;
 }
 
