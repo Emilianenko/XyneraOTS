@@ -110,10 +110,12 @@ Tile* HouseTile::queryDestination(int32_t& index, const Thing& thing, Item** des
 				const Position& entryPos = house->getEntryPosition();
 				Tile* destTile = g_game.map.getTile(entryPos);
 				if (!destTile) {
-					std::cout << "Error: [HouseTile::queryDestination] House entry not correct"
-					          << " - Name: " << house->getName()
-					          << " - House id: " << house->getId()
-					          << " - Tile not found: " << entryPos << std::endl;
+					std::ostringstream errMsg;
+					errMsg << "No tile found at exit position " << entryPos;
+					errMsg << " of house \"" << house->getName() << "\"";
+					errMsg << " (id: " << house->getId() << ")";
+
+					console::reportError("HouseTile::queryDestination", errMsg.str());
 
 					destTile = g_game.map.getTile(player->getTemplePosition());
 					if (!destTile) {

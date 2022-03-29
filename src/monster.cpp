@@ -61,7 +61,7 @@ Monster::Monster(MonsterType* mType) :
 	// register creature events
 	for (const std::string& scriptName : mType->info.scripts) {
 		if (!registerCreatureEvent(scriptName)) {
-			std::cout << "[Warning - Monster::Monster] Unknown event name: " << scriptName << std::endl;
+			console::reportWarning("Monster::Monster", "Unknown event name: \"" + scriptName + "\"!");
 		}
 	}
 }
@@ -449,8 +449,6 @@ void Monster::onCreatureFound(Creature* creature, bool pushFront/* = false*/)
 
 void Monster::onCreatureEnter(Creature* creature)
 {
-	// std::cout << "onCreatureEnter - " << creature->getName() << std::endl;
-
 	if (getMaster() == creature) {
 		//Follow master again
 		isMasterInRange = true;
@@ -503,8 +501,6 @@ bool Monster::isOpponent(const Creature* creature) const
 
 void Monster::onCreatureLeave(Creature* creature)
 {
-	// std::cout << "onCreatureLeave - " << creature->getName() << std::endl;
-
 	if (getMaster() == creature) {
 		//Take random steps and only use defense abilities (e.g. heal) until its master comes back
 		isMasterInRange = false;

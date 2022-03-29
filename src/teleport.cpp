@@ -85,7 +85,9 @@ void Teleport::addThing(int32_t, Thing* thing)
 		while (true) {
 			const Position& nextPos = destTeleport->getDestPos();
 			if (std::find(lastPositions.begin(), lastPositions.end(), nextPos) != lastPositions.end()) {
-				std::cout << "Warning: possible infinite loop teleport. " << nextPos << std::endl;
+				std::ostringstream s;
+				s << nextPos;
+				console::reportWarning("Teleport::addThing", "Potentially looped teleport chain at " + s.str() + "!");
 				return;
 			}
 

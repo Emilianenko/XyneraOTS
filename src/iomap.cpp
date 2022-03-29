@@ -320,7 +320,12 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 					}
 
 					if (isHouseTile && item->isMoveable()) {
-						std::cout << "[Warning - IOMap::loadMap] Moveable item with ID: " << item->getID() << ", in house: " << house->getId() << ", at position [x: " << x << ", y: " << y << ", z: " << z << "]." << std::endl;
+						std::ostringstream warnMsg;
+						warnMsg << "Moveable item with id: " << item->getID();
+						warnMsg << ", in house \"" << house->getName() << "\"";
+						warnMsg << " (house id: " << house->getId() << ")";
+						warnMsg << ", at position " << fmt::format("{:d}, {:d}, {:d}!", x, y, z);
+						console::reportWarning("IOMap::loadMap", warnMsg.str());
 						delete item;
 					} else {
 						if (item->getItemCount() == 0) {
@@ -375,7 +380,12 @@ bool IOMap::parseTileArea(OTB::Loader& loader, const OTB::Node& tileAreaNode, Ma
 			}
 
 			if (isHouseTile && item->isMoveable()) {
-				std::cout << "[Warning - IOMap::loadMap] Moveable item with ID: " << item->getID() << ", in house: " << house->getId() << ", at position [x: " << x << ", y: " << y << ", z: " << z << "]." << std::endl;
+				std::ostringstream warnMsg;
+				warnMsg << "Moveable item with id: " << item->getID();
+				warnMsg << ", in house \"" << house->getName() << "\"";
+				warnMsg << " (house id: " << house->getId() << ")";
+				warnMsg << ", at position " << fmt::format("{:d}, {:d}, {:d}!", x, y, z);
+				console::reportWarning("IOMap::loadMap", warnMsg.str());
 				delete item;
 			} else {
 				if (item->getItemCount() == 0) {

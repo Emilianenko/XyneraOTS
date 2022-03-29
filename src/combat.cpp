@@ -1197,7 +1197,7 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage) const
 		}
 
 		default: {
-			std::cout << "ValueCallback::getMinMaxValues - unknown callback type" << std::endl;
+			console::reportWarning("ValueCallback::getMinMaxValues", "Unknown callback type!");
 			scriptInterface->resetScriptEnv();
 			return;
 		}

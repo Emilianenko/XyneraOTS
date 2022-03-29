@@ -101,7 +101,7 @@ bool Raids::loadFromXml()
 		if (newRaid->loadFromXml("data/raids/" + file)) {
 			raidList.push_back(newRaid);
 		} else {
-			std::cout << "[Error - Raids::loadFromXml] Failed to load raid: " << name << std::endl;
+			console::reportFileError("Raids::loadFromXml", "raid " + name);
 			delete newRaid;
 		}
 	}
@@ -558,7 +558,7 @@ bool ScriptEvent::configureRaidEvent(const pugi::xml_node& eventNode)
 	}
 
 	if (!loadScript("data/raids/scripts/" + std::string(scriptAttribute.as_string()))) {
-		std::cout << "Error: [ScriptEvent::configureRaidEvent] Can not load raid script." << std::endl;
+		console::reportFileError("ScriptEvent::configureRaidEvent", "raid script " + std::string(scriptAttribute.as_string()));
 		return false;
 	}
 	return true;

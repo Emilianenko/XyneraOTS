@@ -151,7 +151,8 @@ class DBResult
 		{
 			auto it = listNames.find(s);
 			if (it == listNames.end()) {
-				std::cout << "[Error - DBResult::getNumber] Column '" << s << "' doesn't exist in the result set" << std::endl;
+				console::reportError("DBResult::getNumber", fmt::format("Column '{:s}' does not exist in result set.", s));
+
 				return static_cast<T>(0);
 			}
 

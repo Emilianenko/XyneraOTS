@@ -77,6 +77,10 @@ void reportError(const std::string location, const std::string text);
 // output: [Warning - location] text
 void reportWarning(const std::string location, const std::string text);
 
+// output: [Error - location] Unable to load fileName!
+// output line2: [Warning - location] text
+void reportFileError(const std::string location, const std::string fileName, const std::string text = std::string());
+
 // returns formatted string
 // args: leftColumn, rightColumn, total width
 std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width = TAG_WIDTH);

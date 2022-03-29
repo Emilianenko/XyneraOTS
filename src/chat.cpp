@@ -309,7 +309,7 @@ bool Chat::load()
 					channel.onJoinEvent = scriptInterface.getEvent("onJoin");
 					channel.onLeaveEvent = scriptInterface.getEvent("onLeave");
 				} else {
-					std::cout << "[Warning - Chat::load] Can not load script: " << scriptAttribute.as_string() << std::endl;
+					console::reportFileError("Chat::load", scriptAttribute.as_string());
 				}
 			}
 
@@ -330,7 +330,7 @@ bool Chat::load()
 				channel.onJoinEvent = scriptInterface.getEvent("onJoin");
 				channel.onLeaveEvent = scriptInterface.getEvent("onLeave");
 			} else {
-				std::cout << "[Warning - Chat::load] Can not load script: " << scriptAttribute.as_string() << std::endl;
+				console::reportFileError("Chat::load", scriptAttribute.as_string());
 			}
 		}
 

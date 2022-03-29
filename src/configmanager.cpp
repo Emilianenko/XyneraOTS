@@ -334,7 +334,7 @@ static std::string dummyStr;
 const std::string& ConfigManager::getString(string_config_t what) const
 {
 	if (what >= LAST_STRING_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getString] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::getString", "Accessing invalid index: " + std::to_string(what) + "!");
 		return dummyStr;
 	}
 	return string[what];
@@ -343,7 +343,7 @@ const std::string& ConfigManager::getString(string_config_t what) const
 int32_t ConfigManager::getNumber(integer_config_t what) const
 {
 	if (what >= LAST_INTEGER_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getNumber] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::getNumber", "Accessing invalid index: " + std::to_string(what) + "!");
 		return 0;
 	}
 	return integer[what];
@@ -352,7 +352,7 @@ int32_t ConfigManager::getNumber(integer_config_t what) const
 bool ConfigManager::getBoolean(boolean_config_t what) const
 {
 	if (what >= LAST_BOOLEAN_CONFIG) {
-		std::cout << "[Warning - ConfigManager::getBoolean] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::getBoolean", "Accessing invalid index: " + std::to_string(what) + "!");
 		return false;
 	}
 	return boolean[what];
@@ -374,7 +374,7 @@ float ConfigManager::getExperienceStage(uint32_t level) const
 bool ConfigManager::setString(string_config_t what, const std::string& value)
 {
 	if (what >= LAST_STRING_CONFIG) {
-		std::cout << "[Warning - ConfigManager::setString] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::setString", "Accessing invalid index: " + std::to_string(what) + "!");
 		return false;
 	}
 
@@ -385,7 +385,7 @@ bool ConfigManager::setString(string_config_t what, const std::string& value)
 bool ConfigManager::setNumber(integer_config_t what, int32_t value)
 {
 	if (what >= LAST_INTEGER_CONFIG) {
-		std::cout << "[Warning - ConfigManager::setNumber] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::setNumber", "Accessing invalid index: " + std::to_string(what) + "!");
 		return false;
 	}
 
@@ -396,7 +396,7 @@ bool ConfigManager::setNumber(integer_config_t what, int32_t value)
 bool ConfigManager::setBoolean(boolean_config_t what, bool value)
 {
 	if (what >= LAST_BOOLEAN_CONFIG) {
-		std::cout << "[Warning - ConfigManager::setBoolean] Accessing invalid index: " << what << std::endl;
+		console::reportWarning("ConfigManager::setBoolean", "Accessing invalid index: " + std::to_string(what) + "!");
 		return false;
 	}
 

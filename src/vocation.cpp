@@ -141,7 +141,7 @@ Vocation* Vocations::getVocation(uint16_t id)
 {
 	auto it = vocationsMap.find(id);
 	if (it == vocationsMap.end()) {
-		std::cout << "[Warning - Vocations::getVocation] Vocation " << id << " not found." << std::endl;
+		console::reportWarning("Vocations::getVocation", fmt::format("Vocation {:d} not found!", id));
 		return nullptr;
 	}
 	return &it->second;

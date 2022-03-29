@@ -90,7 +90,7 @@ void Connection::closeSocket()
 			socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, error);
 			socket.close(error);
 		} catch (boost::system::system_error& e) {
-			std::cout << "[Network error - Connection::closeSocket] " << e.what() << std::endl;
+			console::reportError("Connection::closeSocket", fmt::format("Network error: {:s}", e.what()));
 		}
 	}
 }
@@ -125,7 +125,7 @@ void Connection::accept()
 								boost::asio::buffer(msg.getBuffer(), bufferLength),
 								std::bind(&Connection::parseHeader, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
-		std::cout << "[Network error - Connection::accept] " << e.what() << std::endl;
+		console::reportError("Connection::accept", fmt::format("Network error: {:s}", e.what()));
 		close(FORCE_CLOSE);
 	}
 }
@@ -144,7 +144,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 	uint32_t timePassed = std::max<uint32_t>(1, (time(nullptr) - timeConnected) + 1);
 	if ((++packetsSent / timePassed) > static_cast<uint32_t>(g_config.getNumber(ConfigManager::MAX_PACKETS_PER_SECOND))) {
-		std::cout << convertIPToString(getIP()) << " disconnected for exceeding packet per second limit." << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, fmt::format("{:s} disconnected for exceeding packet per second limit.", convertIPToString(getIP()))); //, true, "Connection::parseHeader");
 		close();
 		return;
 	}
@@ -196,7 +196,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 		boost::asio::async_read(socket, boost::asio::buffer(msg.getBodyBuffer(), size),
 								std::bind(&Connection::parsePacket, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
-		std::cout << "[Network error - Connection::parseHeader] " << e.what() << std::endl;
+		console::reportError("Connection::parseHeader", fmt::format("Network error: {:s}", e.what()));
 		close(FORCE_CLOSE);
 	}
 }
@@ -251,7 +251,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 								boost::asio::buffer(msg.getBuffer(), NetworkMessage::HEADER_LENGTH),
 								std::bind(&Connection::parseHeader, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
-		std::cout << "[Network error - Connection::parsePacket] " << e.what() << std::endl;
+		console::reportError("Connection::parsePacket", fmt::format("Network error: {:s}", e.what()));
 		close(FORCE_CLOSE);
 	}
 }
@@ -282,7 +282,7 @@ void Connection::internalSend(const OutputMessage_ptr& msg)
 								 boost::asio::buffer(msg->getOutputBuffer(), msg->getLength()),
 								 std::bind(&Connection::onWriteOperation, shared_from_this(), std::placeholders::_1));
 	} catch (boost::system::system_error& e) {
-		std::cout << "[Network error - Connection::internalSend] " << e.what() << std::endl;
+		console::reportError("Connection::internalSend", fmt::format("Network error: {:s}", e.what()));
 		close(FORCE_CLOSE);
 	}
 }

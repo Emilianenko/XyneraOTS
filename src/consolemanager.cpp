@@ -172,6 +172,14 @@ void reportWarning(const std::string location, const std::string text)
 	print(CONSOLEMESSAGE_TYPE_WARNING, text, true, location);
 }
 
+void reportFileError(const std::string location, const std::string fileName, const std::string text)
+{
+	console::reportError(location, fmt::format("Unable to load {:s}!", fileName));
+	if (text.size() > 0) {
+		console::reportError(location, text);
+	}
+}
+
 std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width)
 {
 	std::ostringstream response;

@@ -4609,8 +4609,7 @@ int LuaScriptInterface::luaGameLoadMap(lua_State* L)
 			g_game.loadMap(path);
 		} catch (const std::exception& e) {
 			// FIXME: Should only catch some exceptions
-			std::cout << "[Error - LuaScriptInterface::luaGameLoadMap] Failed to load map: "
-				<< e.what() << std::endl;
+			console::reportFileError("LuaScriptInterface::luaGameLoadMap", "map", e.what());
 		}
 	}));
 	return 0;

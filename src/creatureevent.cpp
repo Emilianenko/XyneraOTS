@@ -71,7 +71,7 @@ bool CreatureEvents::registerEvent(Event_ptr event, const pugi::xml_node&)
 {
 	CreatureEvent_ptr creatureEvent{static_cast<CreatureEvent*>(event.release())}; //event is guaranteed to be a CreatureEvent
 	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
-		std::cout << "Error: [CreatureEvents::registerEvent] Trying to register event without type!" << std::endl;
+		console::reportError("CreatureEvents::registerEvent", "Trying to register an event without type!");
 		return false;
 	}
 
@@ -94,7 +94,7 @@ bool CreatureEvents::registerLuaEvent(CreatureEvent* event)
 {
 	CreatureEvent_ptr creatureEvent{ event };
 	if (creatureEvent->getEventType() == CREATURE_EVENT_NONE) {
-		std::cout << "Error: [CreatureEvents::registerLuaEvent] Trying to register event without type!" << std::endl;
+		console::reportError("CreatureEvents::registerLuaEvent", "Trying to register an event without type!");
 		return false;
 	}
 
@@ -174,7 +174,7 @@ bool CreatureEvent::configureEvent(const pugi::xml_node& node)
 	// lua function to register events to reference this event
 	pugi::xml_attribute nameAttribute = node.attribute("name");
 	if (!nameAttribute) {
-		std::cout << "[Error - CreatureEvent::configureEvent] Missing name for creature event" << std::endl;
+		console::reportError("CreatureEvent::configureEvent", "Missing name for creature event!");
 		return false;
 	}
 
@@ -182,7 +182,7 @@ bool CreatureEvent::configureEvent(const pugi::xml_node& node)
 
 	pugi::xml_attribute typeAttribute = node.attribute("type");
 	if (!typeAttribute) {
-		std::cout << "[Error - CreatureEvent::configureEvent] Missing type for creature event: " << eventName << std::endl;
+		console::reportError("CreatureEvent::configureEvent", fmt::format("Missing type for creature event \"{:s}\"!", eventName));
 		return false;
 	}
 
@@ -212,7 +212,7 @@ bool CreatureEvent::configureEvent(const pugi::xml_node& node)
 	} else if (tmpStr == "extendedopcode") {
 		type = CREATURE_EVENT_EXTENDED_OPCODE;
 	} else {
-		std::cout << "[Error - CreatureEvent::configureEvent] Invalid type for creature event: " << eventName << std::endl;
+		console::reportError("CreatureEvent::configureEvent", fmt::format("Invalid type for creature event \"{:s}\"!", eventName));
 		return false;
 	}
 

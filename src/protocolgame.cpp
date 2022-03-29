@@ -665,7 +665,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xFE: break; // store window history 2
 
 		default:
-			// std::cout << "Player: " << player->getName() << " sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
+			// std::cout << "[DEBUG]: Player " << player->getName() << " has sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
 
 			// redirecting all unknown headers to lua
 			addGameTask(&Game::parseExtendedProtocol, player->getID(), recvbyte, new NetworkMessage(msg));

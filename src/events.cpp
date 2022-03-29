@@ -35,10 +35,12 @@ Events::Events() :
 
 bool Events::load()
 {
+	std::string location = "Events::load";
+
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/events/events.xml");
 	if (!result) {
-		printXMLError("Events::load", "data/events/events.xml", result);
+		printXMLError(location, "data/events/events.xml", result);
 		return false;
 	}
 
@@ -55,8 +57,7 @@ bool Events::load()
 		if (res.second) {
 			const std::string& lowercase = asLowerCaseString(className);
 			if (scriptInterface.loadFile("data/events/scripts/" + lowercase + ".lua") != 0) {
-				std::cout << "[Warning - Events::load] Can not load script: " << lowercase << ".lua" << std::endl;
-				std::cout << scriptInterface.getLastLuaError() << std::endl;
+				console::reportFileError("Events::load", lowercase, scriptInterface.getLastLuaError());
 			}
 		}
 
@@ -72,7 +73,7 @@ bool Events::load()
 			} else if (methodName == "onHear") {
 				info.creatureOnHear = event;
 			} else {
-				std::cout << "[Warning - Events::load] Unknown creature method: " << methodName << std::endl;
+				console::reportWarning(location, "Unknown creature method \"" + methodName + "\"!");
 			}
 		} else if (className == "Party") {
 			if (methodName == "onJoin") {
@@ -84,7 +85,7 @@ bool Events::load()
 			} else if (methodName == "onShareExperience") {
 				info.partyOnShareExperience = event;
 			} else {
-				std::cout << "[Warning - Events::load] Unknown party method: " << methodName << std::endl;
+				console::reportWarning(location, "Unknown party method \"" + methodName + "\"!");
 			}
 		} else if (className == "Player") {
 			if (methodName == "onBrowseField") {
@@ -140,7 +141,7 @@ bool Events::load()
 			} else if (methodName == "onExtendedProtocol") {
 				info.playerOnExtendedProtocol = event;
 			} else {
-				std::cout << "[Warning - Events::load] Unknown player method: " << methodName << std::endl;
+				console::reportWarning(location, "Unknown player method \"" + methodName + "\"!");
 			}
 		} else if (className == "Monster") {
 			if (methodName == "onDropLoot") {
@@ -148,10 +149,10 @@ bool Events::load()
 			} else if (methodName == "onSpawn") {
 				info.monsterOnSpawn = event;
 			} else {
-				std::cout << "[Warning - Events::load] Unknown monster method: " << methodName << std::endl;
+				console::reportWarning(location, "Unknown monster method \"" + methodName + "\"!");
 			}
 		} else {
-			std::cout << "[Warning - Events::load] Unknown class: " << className << std::endl;
+			console::reportWarning(location, "Unknown class \"" + className + "\"!");
 		}
 	}
 	return true;

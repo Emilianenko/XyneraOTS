@@ -205,7 +205,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 		} else {
 			// access denied / file not found
 			console::printResult(CONSOLE_LOADING_ERROR);
-			console::print(CONSOLEMESSAGE_TYPE_ERROR, "Unable to load " + distFile + "!");
+			console::reportFileError("", distFile);
 			return;
 		}
 	} else {
@@ -214,7 +214,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 	// config.lua existence confirmed, load it
 	if (!g_config.load()) {
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, "Unable to load " + configFile + "!");
+		console::reportFileError("", configFile);
 		return;
 	}
 

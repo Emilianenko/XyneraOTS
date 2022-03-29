@@ -153,7 +153,7 @@ bool TalkAction::configureEvent(const pugi::xml_node& node)
 {
 	pugi::xml_attribute wordsAttribute = node.attribute("words");
 	if (!wordsAttribute) {
-		std::cout << "[Error - TalkAction::configureEvent] Missing words for talk action or spell" << std::endl;
+		console::reportError("TalkAction::configureEvent", "Missing words for talk action or spell!");
 		return false;
 	}
 

@@ -57,7 +57,7 @@ void ServiceManager::stop()
 		try {
 			io_service.post(std::bind(&ServicePort::onStopServer, servicePortIt.second));
 		} catch (boost::system::system_error& e) {
-			std::cout << "[ServiceManager::stop] Network Error: " << e.what() << std::endl;
+			console::reportError("ServiceManager::stop", fmt::format("Network error: {:s}", e.what()));
 		}
 	}
 

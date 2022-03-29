@@ -150,7 +150,7 @@ bool Npc::loadFromXml()
 
 	pugi::xml_node npcNode = doc.child("npc");
 	if (!npcNode) {
-		std::cout << "[Error - Npc::loadFromXml] Missing npc tag in " << filename << std::endl;
+		console::reportFileError("Npc::loadFromXml", filename, "Missing npc tag!");
 		return false;
 	}
 
@@ -205,7 +205,7 @@ bool Npc::loadFromXml()
 
 		if (health > healthMax) {
 			health = healthMax;
-			std::cout << "[Warning - Npc::loadFromXml] Health now is greater than health max in " << filename << std::endl;
+			console::reportWarning("Npc::loadFromXml", "healthnow is greater than healthmax in " + filename);
 		}
 	}
 
@@ -619,7 +619,7 @@ bool NpcScriptInterface::loadNpcLib(const std::string& file)
 	}
 
 	if (loadFile(file) == -1) {
-		std::cout << "[Warning - NpcScriptInterface::loadNpcLib] Can not load " << file << std::endl;
+		console::reportFileError("NpcScriptInterface::loadNpcLib", file);
 		return false;
 	}
 
@@ -1131,8 +1131,7 @@ NpcEventsHandler::NpcEventsHandler(const std::string& file, Npc* npc) :
 {
 	loaded = scriptInterface->loadFile("data/npc/scripts/" + file, npc) == 0;
 	if (!loaded) {
-		std::cout << "[Warning - NpcScript::NpcScript] Can not load script: " << file << std::endl;
-		std::cout << scriptInterface->getLastLuaError() << std::endl;
+		console::reportFileError("NpcScript::NpcScript", file, scriptInterface->getLastLuaError());
 	} else {
 		creatureSayEvent = scriptInterface->getEvent("onCreatureSay");
 		creatureDisappearEvent = scriptInterface->getEvent("onCreatureDisappear");

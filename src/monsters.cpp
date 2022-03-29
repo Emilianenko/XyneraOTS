@@ -872,8 +872,7 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 			mType->info.creatureSayEvent = scriptInterface->getEvent("onCreatureSay");
 			mType->info.thinkEvent = scriptInterface->getEvent("onThink");
 		} else {
-			std::cout << "[Warning - Monsters::loadMonster] Can not load script: " << script << std::endl;
-			std::cout << scriptInterface->getLastLuaError() << std::endl;
+			console::reportFileError("Monsters::loadMonster", script, scriptInterface->getLastLuaError());
 		}
 	}
 
