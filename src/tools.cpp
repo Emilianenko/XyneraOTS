@@ -31,7 +31,7 @@ void printXMLError(const std::string& where, const std::string& fileName, const 
 
 	FILE* file = fopen(fileName.c_str(), "rb");
 	if (!file) {
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, msg.str(), true, where);
+		console::reportError(where, msg.str());
 		return;
 	}
 
@@ -73,7 +73,7 @@ void printXMLError(const std::string& where, const std::string& fileName, const 
 		}
 	}
 	msg << '^' << "\n";
-	console::print(CONSOLEMESSAGE_TYPE_ERROR, msg.str(), true, where);
+	console::reportError(where, msg.str());
 }
 
 static uint32_t circularShift(int bits, uint32_t value)

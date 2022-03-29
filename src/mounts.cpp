@@ -81,7 +81,7 @@ bool Mounts::loadFromXml()
 	// show warnings
 	if (!warnings.empty()) {
 		for (int warningId = 0; warningId < warnings.size(); ++warningId) {
-			console::print(CONSOLEMESSAGE_TYPE_WARNING, warnings[warningId], true, "Mounts::loadFromXml");
+			console::reportWarning("Mounts::loadFromXml", warnings[warningId]);
 		}
 	}
 

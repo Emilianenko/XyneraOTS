@@ -162,6 +162,16 @@ void reportOverflow(const std::string location)
 	print(CONSOLEMESSAGE_TYPE_ERROR, "Call stack overflow!", true, location);
 }
 
+void reportError(const std::string location, const std::string text)
+{
+	print(CONSOLEMESSAGE_TYPE_ERROR, text, true, location);
+}
+
+void reportWarning(const std::string location, const std::string text)
+{
+	print(CONSOLEMESSAGE_TYPE_WARNING, text, true, location);
+}
+
 std::string getColumns(const std::string& leftColumn, const std::string& rightColumn, size_t width)
 {
 	std::ostringstream response;

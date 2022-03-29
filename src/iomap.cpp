@@ -125,7 +125,7 @@ bool IOMap::loadMap(Map* map, const std::string& fileName)
 		}
 
 		if (root_header.minorVersionItems > Item::items.minorVersion) {
-			console::print(CONSOLEMESSAGE_TYPE_WARNING, "This map was made on a higher items.otb version than the server is currently running.", true, "IOMap::loadMap");
+			console::reportWarning("IOMap::loadMap", "This map was made on a higher items.otb version than the server is currently running.");
 		}
 
 		console::printWorldInfo("Map size", fmt::format("{:d}x{:d}", root_header.width, root_header.height), isStartup);

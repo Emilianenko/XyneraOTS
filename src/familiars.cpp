@@ -100,7 +100,7 @@ bool Familiars::loadFromXml()
 	// show warnings
 	if (!warnings.empty()) {
 		for (int warningId = 0; warningId < warnings.size(); ++warningId) {
-			console::print(CONSOLEMESSAGE_TYPE_WARNING, warnings[warningId], true, "Familiars::loadFromXml");
+			console::reportWarning("Familiars::loadFromXml", warnings[warningId]);
 		}
 	}
 	return true;

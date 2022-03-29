@@ -48,6 +48,7 @@ static constexpr size_t WORLDINFO_SPACING = 24;
 
 // functions responsible for printing formatted messages in the console
 
+//// startup messages
 // output: [messageType - location]: message
 void print(ConsoleMessageType messageType, const std::string& message, bool newLine = true, const std::string& location = std::string());
 
@@ -66,8 +67,15 @@ void printLoginPorts(uint16_t loginPort, uint16_t gamePort, uint16_t statusPort)
 // output: ">> key:     value"
 void printWorldInfo(const std::string& key, const std::string& value, bool isStartup = true, size_t width = WORLDINFO_SPACING);
 
+//// error reporting functions
 // output: [Error - location] Call stack overflow!
 void reportOverflow(const std::string location);
+
+// output: [Error - location] text
+void reportError(const std::string location, const std::string text);
+
+// output: [Warning - location] text
+void reportWarning(const std::string location, const std::string text);
 
 // returns formatted string
 // args: leftColumn, rightColumn, total width

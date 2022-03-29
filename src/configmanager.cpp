@@ -176,7 +176,7 @@ bool ConfigManager::load()
 
 	if (luaL_dofile(L, getString(CONFIG_FILE).c_str())) {
 		console::printResult(CONSOLE_LOADING_ERROR);
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, lua_tostring(L, -1), true, "ConfigManager::load");
+		console::reportError("ConfigManager::load", lua_tostring(L, -1));
 		lua_close(L);
 		return false;
 	}
@@ -310,7 +310,7 @@ bool ConfigManager::load()
 	if (expStages.empty()) {
 		expStages = loadLuaStages(L);
 	} else {
-		console::print(CONSOLEMESSAGE_TYPE_WARNING, "XML stages are deprecated, consider moving to " + getString(CONFIG_FILE) + "!", true, "ConfigManager::load");
+		console::reportWarning("ConfigManager::load", fmt::format("XML stages are deprecated, consider moving to {:d}!", getString(CONFIG_FILE)));
 	}
 	expStages.shrink_to_fit();
 

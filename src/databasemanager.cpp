@@ -102,7 +102,7 @@ void DatabaseManager::updateDatabase()
 
 	do {
 		if (luaL_dofile(L, fmt::format("data/migrations/{:d}.lua", version).c_str()) != 0) {
-			console::print(CONSOLEMESSAGE_TYPE_ERROR, lua_tostring(L, -1), true, "DatabaseManager::updateDatabase - Version " + version);
+			console::reportError("DatabaseManager::updateDatabase - Version " + version, lua_tostring(L, -1));
 			break;
 		}
 
@@ -113,7 +113,7 @@ void DatabaseManager::updateDatabase()
 		lua_getglobal(L, "onUpdateDatabase");
 		if (lua_pcall(L, 0, 1, 0) != 0) {
 			LuaScriptInterface::resetScriptEnv();
-			console::print(CONSOLEMESSAGE_TYPE_ERROR, lua_tostring(L, -1), true, "DatabaseManager::updateDatabase - Version " + version);
+			console::reportError("DatabaseManager::updateDatabase - Version " + version, lua_tostring(L, -1));
 			break;
 		}
 

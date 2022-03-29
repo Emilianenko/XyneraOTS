@@ -363,11 +363,11 @@ bool Items::loadFromOtb(const std::string& file)
 		isGenericHeader = true;
 	} else if (majorVersion != 3) {
 		console::printResult(CONSOLE_LOADING_ERROR);
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, fmt::format("Unsupported items.otb major version {:d}!", majorVersion), true, "Items::loadFromOtb");
+		console::reportError("Items::loadFromOtb", fmt::format("Unsupported items.otb major version {:d}!", majorVersion));
 		return false;
 	} else if (minorVersion < CLIENT_VERSION_LAST) {
 		console::printResult(CONSOLE_LOADING_ERROR);
-		console::print(CONSOLEMESSAGE_TYPE_ERROR, "A newer version of items.otb is required!", true, "Items::loadFromOtb");
+		console::reportError("Items::loadFromOtb", "A newer version of items.otb is required!");
 		return false;
 	}
 
@@ -593,7 +593,7 @@ bool Items::loadFromOtb(const std::string& file)
 	console::printResultText(console::getColumns("OTB:", fmt::format("v{:d}.{:d}", Item::items.majorVersion, Item::items.minorVersion)));
 
 	if (isGenericHeader) {
-		console::print(CONSOLEMESSAGE_TYPE_WARNING, "Generic OTB header!", true, "Items::loadFromOtb");
+		console::reportWarning("Items::loadFromOtb", "Generic OTB header!");
 	}
 	return true;
 }
@@ -621,13 +621,13 @@ bool Items::loadFromXml()
 
 		pugi::xml_attribute fromIdAttribute = itemNode.attribute("fromid");
 		if (!fromIdAttribute) {
-			console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Missing \"fromid\"! Previous id: {:d}", previousId), true, "Items::loadFromXml");
+			console::reportWarning("Items::loadFromXml", fmt::format("Missing \"fromid\"! Previous id: {:d}", previousId));
 			continue;
 		}
 
 		pugi::xml_attribute toIdAttribute = itemNode.attribute("toid");
 		if (!toIdAttribute) {
-			console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("fromid {:s}: missing \"toid\"", fromIdAttribute.value()), true, "Items::loadFromXml");
+			console::reportWarning("Items::loadFromXml", fmt::format("fromid {:s}: missing \"toid\"", fromIdAttribute.value()));
 			continue;
 		}
 
@@ -701,7 +701,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 							it.group = ITEM_GROUP_CONTAINER;
 						}
 					} else {
-						console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Unknown type: {:s}", valueAttribute.as_string()), true, "Items::parseItemNode");
+						console::reportWarning("Items::parseItemNode", fmt::format("Unknown type: {:s}", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -749,7 +749,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				case ITEM_PARSE_ATTACK_SPEED: {
 					it.attackSpeed = pugi::cast<uint32_t>(valueAttribute.value());
 					if (it.attackSpeed > 0 && it.attackSpeed < 100) {
-						console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Attackspeed lower than 100 for item: {:d}", it.id), true, "Items::parseItemNode");
+						console::reportWarning("Items::parseItemNode", fmt::format("Attackspeed lower than 100 for item: {:d}", it.id));
 						it.attackSpeed = 100;
 					}
 					break;
