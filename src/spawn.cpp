@@ -42,10 +42,12 @@ bool Spawns::loadFromXml(const std::string& filename)
 		return true;
 	}
 
+	std::string location = "Spawns::loadFromXml";
+
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(filename.c_str());
 	if (!result) {
-		printXMLError("Spawns::loadFromXml", filename, result);
+		printXMLError(location, filename, result);
 		return false;
 	}
 
@@ -68,11 +70,18 @@ bool Spawns::loadFromXml(const std::string& filename)
 		}
 
 		if (radius > 30) {
-			std::cout << "[Warning - Spawns::loadFromXml] Radius size bigger than 30 at position: " << centerPos << ", consider lowering it." << std::endl;
+			std::ostringstream warnMsg;
+			warnMsg << "Radius size bigger than 30 at position : ";
+			warnMsg << centerPos << ", consider lowering it!";
+			console::reportWarning(location, warnMsg.str());
 		}
 
 		if (!spawnNode.first_child()) {
-			std::cout << "[Warning - Spawns::loadFromXml] Empty spawn at position: " << centerPos << " with radius: " << radius << '.' << std::endl;
+			std::ostringstream warnMsg;
+			warnMsg << "Empty spawn at position : ";
+			warnMsg << centerPos << ", with radius: ";
+			warnMsg << radius << "!";
+			console::reportWarning(location, warnMsg.str());
 			continue;
 		}
 
@@ -89,16 +98,24 @@ bool Spawns::loadFromXml(const std::string& filename)
 
 				int32_t interval = pugi::cast<int32_t>(childNode.attribute("spawntime").value()) * 1000;
 				if (interval < MINSPAWN_INTERVAL) {
-					std::cout << "[Warning - Spawns::loadFromXml] " << pos << " spawntime can not be less than " << MINSPAWN_INTERVAL / 1000 << " seconds." << std::endl;
+					std::ostringstream warnMsg;
+					warnMsg << pos << " spawntime can not be less than ";
+					warnMsg << MINSPAWN_INTERVAL / 1000 << " seconds!";
+					console::reportWarning(location, warnMsg.str());
 					continue;
 				} else if (interval > MAXSPAWN_INTERVAL) {
-					std::cout << "[Warning - Spawns::loadFromXml] " << pos << " spawntime can not be more than " << MAXSPAWN_INTERVAL / 1000 << " seconds." << std::endl;
+					std::ostringstream warnMsg;
+					warnMsg << pos << " spawntime can not be more than ";
+					warnMsg << MAXSPAWN_INTERVAL / 1000 << " seconds!";
+					console::reportWarning(location, warnMsg.str());
 					continue;
 				}
 
 				size_t monstersCount = std::distance(childNode.children().begin(), childNode.children().end());
 				if (monstersCount == 0) {
-					std::cout << "[Warning - Spawns::loadFromXml] " << pos << " empty monsters set." << std::endl;
+					std::ostringstream warnMsg;
+					warnMsg << pos << " empty monsters set!";
+					console::reportWarning(location, warnMsg.str());
 					continue;
 				}
 
@@ -117,7 +134,10 @@ bool Spawns::loadFromXml(const std::string& filename)
 
 					MonsterType* mType = g_monsters.getMonsterType(nameAttribute.as_string());
 					if (!mType) {
-						std::cout << "[Warning - Spawn::loadFromXml] " << pos << " can not find " << nameAttribute.as_string() << std::endl;
+						std::ostringstream warnMsg;
+						warnMsg << pos << " unknown monster type \"";
+						warnMsg << nameAttribute.as_string() << "\"!";
+						console::reportWarning(location, warnMsg.str());
 						continue;
 					}
 
@@ -130,7 +150,9 @@ bool Spawns::loadFromXml(const std::string& filename)
 					if (chance + totalChance > 100) {
 						chance = 100 - totalChance;
 						totalChance = 100;
-						std::cout << "[Warning - Spawns::loadFromXml] " << mType->name << ' ' << pos << " total chance for set can not be higher than 100." << std::endl;
+						std::ostringstream warnMsg;
+						warnMsg << pos << " total chance for set can not be higher than 100!";
+						console::reportWarning(location, warnMsg.str());
 					} else {
 						totalChance += chance;
 					}
@@ -139,7 +161,9 @@ bool Spawns::loadFromXml(const std::string& filename)
 				}
 
 				if (sb.mTypes.empty()) {
-					std::cout << "[Warning - Spawns::loadFromXml] " << pos << " empty monsters set." << std::endl;
+					std::ostringstream warnMsg;
+					warnMsg << pos << " empty monsters set!";
+					console::reportWarning(location, warnMsg.str());
 					continue;
 				}
 
@@ -177,9 +201,15 @@ bool Spawns::loadFromXml(const std::string& filename)
 					spawn.addMonster(nameAttribute.as_string(), pos, dir, static_cast<uint32_t>(interval));
 				} else {
 					if (interval < MINSPAWN_INTERVAL) {
-						std::cout << "[Warning - Spawns::loadFromXml] " << nameAttribute.as_string() << ' ' << pos << " spawntime can not be less than " << MINSPAWN_INTERVAL / 1000 << " seconds." << std::endl;
+						std::ostringstream warnMsg;
+						warnMsg << nameAttribute.as_string() << " " << pos;
+						warnMsg << " spawntime can not be less than " << MINSPAWN_INTERVAL / 1000 << " seconds!";
+						console::reportWarning(location, warnMsg.str());
 					} else {
-						std::cout << "[Warning - Spawns::loadFromXml] " << nameAttribute.as_string() << ' ' << pos << " spawntime can not be more than " << MAXSPAWN_INTERVAL / 1000 << " seconds." << std::endl;
+						std::ostringstream warnMsg;
+						warnMsg << nameAttribute.as_string() << " " << pos;
+						warnMsg << " spawntime can not be more than " << MAXSPAWN_INTERVAL / 1000 << " seconds!";
+						console::reportWarning(location, warnMsg.str());
 					}
 				}
 				++monsterCount;
@@ -220,7 +250,10 @@ void Spawns::startup()
 
 	for (Npc* npc : npcList) {
 		if (!g_game.placeCreature(npc, npc->getMasterPos(), false, true)) {
-			std::cout << "[Warning - Spawns::startup] Couldn't spawn npc \"" << npc->getName() << "\" on position: " << npc->getMasterPos() << '.' << std::endl;
+			std::ostringstream warnMsg;
+			warnMsg << "Couldn't spawn NPC \"" << npc->getName() << "\"";
+			warnMsg << " on position: " << npc->getMasterPos() << "!";
+			console::reportWarning("Spawns::startup", warnMsg.str());
 			delete npc;
 		}
 	}
@@ -336,7 +369,10 @@ bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& p
 	if (startup) {
 		//No need to send out events to the surrounding since there is no one out there to listen!
 		if (!g_game.internalPlaceCreature(monster_ptr.get(), pos, true)) {
-			std::cout << "[Warning - Spawns::startup] Couldn't spawn monster \"" << monster_ptr->getName() << "\" on position: " << pos << '.' << std::endl;
+			std::ostringstream warnMsg;
+			warnMsg << "Couldn't spawn monster \"" << monster_ptr->getName() << "\"";
+			warnMsg << " on position: " << pos << "!";
+			console::reportWarning("Spawns::startup", warnMsg.str());
 			return false;
 		}
 	} else {
@@ -427,7 +463,10 @@ bool Spawn::addMonster(const std::string& name, const Position& pos, Direction d
 {
 	MonsterType* mType = g_monsters.getMonsterType(name);
 	if (!mType) {
-		std::cout << "[Warning - Spawn::addMonster] Can not find " << name << std::endl;
+		std::ostringstream warnMsg;
+		warnMsg << pos << " unknown monster type \"";
+		warnMsg << name << "\"!";
+		console::reportWarning("Spawn::addMonster", warnMsg.str());
 		return false;
 	}
 

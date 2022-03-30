@@ -194,7 +194,7 @@ void GlobalEvents::think()
 		}
 
 		if (!globalEvent.executeEvent()) {
-			std::cout << "[Error - GlobalEvents::think] Failed to execute event: " << globalEvent.getName() << std::endl;
+			console::reportError("GlobalEvents::think", "Failed to execute event \"" + globalEvent.getName() + "\"!");
 		}
 
 		nextExecutionTime = globalEvent.getInterval();
