@@ -201,7 +201,7 @@ std::string getColumns(const std::string& leftColumn, const std::string& rightCo
 #ifdef USE_COLOR_CONSOLE
 std::string setColor(Color color, const std::string& text)
 {
-	return fmt::format(fg(color) | fmt::emphasis::bold, text);
+	return fmt::format(fg(color), text);
 }
 #else
 std::string setColor(Color, const std::string& text) { return text; }

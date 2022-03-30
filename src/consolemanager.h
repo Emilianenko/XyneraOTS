@@ -37,17 +37,17 @@ static constexpr Color
 	serveronline = Color::lime_green,
 	serverPorts = Color::lime_green,
 	pvp = Color(0xBFBF00),
-	pvpEnfo = Color(0xBF0000),
+	pvpEnfo = Color::fire_brick,
 	noPvp = Color::lime_green,
 
 	// loading results
 	loading_ok_text = Color::lime_green,
 	loading_ok = Color::green,
-	loading_error = Color(0xBF0000),
+	loading_error = Color::fire_brick,
 	loading_pending = Color(0xBFBF00),
 
 	// message types
-	error = Color(0xBF0000),
+	error = Color::fire_brick,
 	warning = Color(0xBFBF00),
 	start = Color::green,
 	info = Color::cornflower_blue,
