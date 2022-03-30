@@ -655,6 +655,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 		return;
 	}
 
+	const std::string location = "Items::parseItemNode";
+
 	it.name = itemNode.attribute("name").as_string();
 
 	if (!it.name.empty()) {
@@ -786,7 +788,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (it2 != TileStatesMap.end()) {
 						it.floorChange |= it2->second;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown floorChange: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown floorChange \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -797,7 +799,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (it2 != RaceTypesMap.end()) {
 						it.corpseType = it2->second;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown corpseType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown corpseType \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -813,7 +815,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (it2 != FluidTypesMap.end()) {
 						it.fluidSource = it2->second;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown fluidSource: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown fluidSource \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -845,7 +847,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (it2 != WeaponTypesMap.end()) {
 						it.weaponType = it2->second;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown weaponType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown weaponType \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -877,7 +879,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					} else if (tmpStrValue == "hand") {
 						it.slotPosition |= SLOTP_HAND;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown slotType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown slotType \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -885,7 +887,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				case ITEM_PARSE_AMMOTYPE: {
 					it.ammoType = getAmmoType(asLowerCaseString(valueAttribute.as_string()));
 					if (it.ammoType == AMMO_NONE) {
-						std::cout << "[Warning - Items::parseItemNode] Unknown ammoType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown ammoType \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -895,7 +897,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (shoot != CONST_ANI_NONE) {
 						it.shootType = shoot;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown shootType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown shootType \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -905,7 +907,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					if (effect != CONST_ME_NONE) {
 						it.magicEffect = effect;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown effect: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown effect \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}
@@ -1618,7 +1620,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 						conditionDamage = new ConditionDamage(CONDITIONID_COMBAT, CONDITION_BLEEDING);
 						combatType = COMBAT_PHYSICALDAMAGE;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown field value: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(location, fmt::format("Unknown field value \"{:s}\"!", valueAttribute.as_string()));
 					}
 
 					if (combatType != COMBAT_NONE) {
@@ -1797,7 +1799,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				case ITEM_PARSE_WORTH: {
 					uint64_t worth = pugi::cast<uint64_t>(valueAttribute.value());
 					if (currencyItems.find(worth) != currencyItems.end()) {
-						std::cout << "[Warning - Items::parseItemNode] Duplicated currency worth. Item " << id << " redefines worth " << worth << std::endl;
+						console::reportWarning(location, fmt::format("Duplicated currency worth. Item {:d} redefines worth {:d}!", id, worth));
 					} else {
 						currencyItems.insert(CurrencyMap::value_type(worth, id));
 						it.worth = worth;
@@ -1807,18 +1809,18 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 				default: {
 					// It should not ever get to here, only if you add a new key to the map and don't configure a case for it.
-					std::cout << "[Warning - Items::parseItemNode] Not configured key value: " << keyAttribute.as_string() << std::endl;
+					console::reportWarning(location, fmt::format("No configured key value \"{:s}\"!", keyAttribute.as_string()));
 					break;
 				}
 			}
 		} else {
-			std::cout << "[Warning - Items::parseItemNode] Unknown key value: " << keyAttribute.as_string() << std::endl;
+			console::reportWarning(location, fmt::format("Unknown key value \"{:s}\"!", keyAttribute.as_string()));
 		}
 	}
 
-	//check bed items
+	// check bed items
 	if ((it.transformToFree != 0 || it.transformToOnUse[PLAYERSEX_FEMALE] != 0 || it.transformToOnUse[PLAYERSEX_MALE] != 0) && it.type != ITEM_TYPE_BED) {
-		std::cout << "[Warning - Items::parseItemNode] Item " << it.id << " is not set as a bed-type" << std::endl;
+		console::reportWarning(location, fmt::format("Item {:d} is not set as a bed type!", it.id));
 	}
 }
 

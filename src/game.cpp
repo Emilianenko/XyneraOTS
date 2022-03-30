@@ -1868,7 +1868,9 @@ bool Game::playerBroadcastMessage(Player* player, const std::string& text) const
 		return false;
 	}
 
-	console::print(CONSOLEMESSAGE_TYPE_INFO, fmt::format("{:s} broadcasted: \"{:s}\"", player->getName(), text));
+	time_t current_time = time(nullptr);
+	tm* timeinfo = localtime(&current_time);
+	console::print(CONSOLEMESSAGE_TYPE_BROADCAST, fmt::format("{:02d}:{:02d} {:s} [{:d}]: {:s}", timeinfo->tm_hour, timeinfo->tm_min, player->getName(), player->getLevel(), text));
 
 	for (const auto& it : players) {
 		it.second->sendPrivateMessage(player, TALKTYPE_BROADCAST, text);

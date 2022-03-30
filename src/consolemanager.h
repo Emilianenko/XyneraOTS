@@ -41,7 +41,8 @@ static constexpr Color
 	info = Color::cornflower_blue,
 	pvp = Color::yellow,
 	pvpEnfo = Color::red,
-	noPvp = Color::lime;
+	noPvp = Color::lime,
+	broadcast = Color::crimson;
 
 static constexpr size_t TAG_WIDTH = 12;
 static constexpr size_t WORLDINFO_SPACING = 24;

@@ -42,6 +42,10 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 			prefix = "Start";
 			color = start;
 			break;
+		case CONSOLEMESSAGE_TYPE_BROADCAST:
+			prefix = "Broadcast";
+			color = broadcast;
+			break;
 		case CONSOLEMESSAGE_TYPE_INFO:
 		default:
 			prefix = "Info";

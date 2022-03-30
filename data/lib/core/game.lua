@@ -3,6 +3,8 @@ function Game.broadcastMessage(message, messageType)
 		messageType = MESSAGE_STATUS_WARNING
 	end
 
+	Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_BROADCAST, os.date("%H:%M") .. " " .. message)
+
 	for _, player in ipairs(Game.getPlayers()) do
 		player:sendTextMessage(messageType, message)
 	end

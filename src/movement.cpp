@@ -343,7 +343,7 @@ void MoveEvents::addEvent(MoveEvent moveEvent, int32_t id, MoveListMap& map)
 		std::list<MoveEvent>& moveEventList = it->second.moveEvent[moveEvent.getEventType()];
 		for (MoveEvent& existingMoveEvent : moveEventList) {
 			if (existingMoveEvent.getSlot() == moveEvent.getSlot()) {
-				std::cout << "[Warning - MoveEvents::addEvent] Duplicate move event found: " << id << std::endl;
+				console::reportWarning("MoveEvents::addEvent", "Duplicate event id: " + std::to_string(id) + "!");
 			}
 		}
 		moveEventList.push_back(std::move(moveEvent));
@@ -423,7 +423,9 @@ void MoveEvents::addEvent(MoveEvent moveEvent, const Position& pos, MovePosListM
 	} else {
 		std::list<MoveEvent>& moveEventList = it->second.moveEvent[moveEvent.getEventType()];
 		if (!moveEventList.empty()) {
-			std::cout << "[Warning - MoveEvents::addEvent] Duplicate move event found: " << pos << std::endl;
+			std::ostringstream msg;
+			msg << "Duplicate move event found: " << pos << "!";
+			console::reportWarning("MoveEvents::addEvent", msg.str());
 		}
 
 		moveEventList.push_back(std::move(moveEvent));
@@ -543,7 +545,7 @@ std::string MoveEvent::getScriptEventName() const
 		case MOVE_EVENT_ADD_ITEM: return "onAddItem";
 		case MOVE_EVENT_REMOVE_ITEM: return "onRemoveItem";
 		default:
-			std::cout << "[Error - MoveEvent::getScriptEventName] Invalid event type" << std::endl;
+			console::reportError("MoveEvent::getScriptEventName", "Invalid event type!");
 			return std::string();
 	}
 }
@@ -552,7 +554,7 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 {
 	pugi::xml_attribute eventAttr = node.attribute("event");
 	if (!eventAttr) {
-		std::cout << "[Error - MoveEvent::configureMoveEvent] Missing event" << std::endl;
+		console::reportError("MoveEvent::configureMoveEvent", "Missing event!");
 		return false;
 	}
 
@@ -570,7 +572,7 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 	} else if (tmpStr == "removeitem") {
 		eventType = MOVE_EVENT_REMOVE_ITEM;
 	} else {
-		std::cout << "Error: [MoveEvent::configureMoveEvent] No valid event name " << eventAttr.as_string() << std::endl;
+		console::reportError("MoveEvent::configureMoveEvent", fmt::format("No valid event name \"{:s}\"!", eventAttr.as_string()));
 		return false;
 	}
 
@@ -601,7 +603,7 @@ bool MoveEvent::configureEvent(const pugi::xml_node& node)
 			} else if (tmpStr == "ammo") {
 				slot = SLOTP_AMMO;
 			} else {
-				std::cout << "[Warning - MoveEvent::configureMoveEvent] Unknown slot type: " << slotAttribute.as_string() << std::endl;
+				console::reportWarning("MoveEvent::configureMoveEvent", fmt::format("Unknown slot type {:s}!", slotAttribute.as_string()));
 			}
 		}
 
@@ -956,7 +958,7 @@ bool MoveEvent::loadFunction(const pugi::xml_attribute& attr, bool isScripted)
 		equipFunction = DeEquipItem;
 	} else {
 		if (!isScripted) {
-			std::cout << "[Warning - MoveEvent::loadFunction] Function \"" << functionName << "\" does not exist." << std::endl;
+			console::reportWarning("MoveEvent::loadFunction", fmt::format("Function \"{:s}\" does not exist!", functionName));
 			return false;
 		}
 	}
