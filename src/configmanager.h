@@ -144,7 +144,7 @@ class ConfigManager
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
 
-		bool load();
+		bool load(bool isReload = false);
 		bool reload();
 
 		const std::string& getString(string_config_t what) const;

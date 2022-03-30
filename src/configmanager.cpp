@@ -165,7 +165,7 @@ ExperienceStages loadXMLStages()
 
 }
 
-bool ConfigManager::load()
+bool ConfigManager::load(bool isReload)
 {
 	lua_State* L = luaL_newstate();
 	if (!L) {
@@ -303,7 +303,11 @@ bool ConfigManager::load()
 	console::printResult(CONSOLE_LOADING_OK);
 
 	// load exp stages
-	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading stages ... ", false);
+	if (isReload) {
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading stages ... ", false);
+	} else {
+		console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading stages ... ", false);
+	}
 	expStages = loadXMLStages();
 	console::printResult(CONSOLE_LOADING_OK);
 
@@ -322,7 +326,8 @@ bool ConfigManager::load()
 
 bool ConfigManager::reload()
 {
-	bool result = load();
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading config ... ", false);
+	bool result = load(true);
 	if (transformToSHA1(getString(ConfigManager::MOTD)) != g_game.getMotdHash()) {
 		g_game.incrementMotdNum();
 	}

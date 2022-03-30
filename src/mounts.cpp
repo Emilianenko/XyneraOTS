@@ -26,6 +26,7 @@
 
 bool Mounts::reload()
 {
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading mounts ... ", false);
 	mounts.clear();
 	return loadFromXml();
 }

@@ -28,6 +28,7 @@ extern Vocations g_vocations;
 
 bool Familiars::reload()
 {
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading familiars ... ", false);
 	familiars.clear();
 	return loadFromXml();
 }

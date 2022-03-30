@@ -88,5 +88,6 @@ function onSay(player, words, param)
 	end
 	
 	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("Reloaded %s.", param:lower()))
+	Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_INFO, string.format("Reloaded %s.", param:lower()))
 	return false
 end

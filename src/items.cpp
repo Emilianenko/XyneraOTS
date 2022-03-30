@@ -300,8 +300,10 @@ void Items::clear()
 
 bool Items::reload()
 {
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading items ... ", false);
+
 	clear();
-	loadFromOtb("data/items/items.otb");
+	loadFromOtb("data/items/items.otb", true);
 
 	if (!loadFromXml()) {
 		return false;
@@ -315,7 +317,7 @@ bool Items::reload()
 
 constexpr auto OTBI = OTB::Identifier{{'O','T', 'B', 'I'}};
 
-bool Items::loadFromOtb(const std::string& file)
+bool Items::loadFromOtb(const std::string& file, bool isReload)
 {
 	OTB::Loader loader{file, OTBI};
 
@@ -589,7 +591,7 @@ bool Items::loadFromOtb(const std::string& file)
 
 	// show how many items loaded
 	console::printResultText(console::getColumns("Items:", std::to_string(Item::items.size())));
-	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "", false);
+	console::print(isReload ? CONSOLEMESSAGE_TYPE_INFO : CONSOLEMESSAGE_TYPE_STARTUP, "", false);
 	console::printResultText(console::getColumns("OTB:", fmt::format("v{:d}.{:d}", Item::items.majorVersion, Item::items.minorVersion)));
 
 	if (isGenericHeader) {
