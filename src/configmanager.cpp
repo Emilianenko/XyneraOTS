@@ -314,7 +314,7 @@ bool ConfigManager::load(bool isReload)
 	if (expStages.empty()) {
 		expStages = loadLuaStages(L);
 	} else {
-		console::reportWarning("ConfigManager::load", fmt::format("XML stages are deprecated, consider moving to {:d}!", getString(CONFIG_FILE)));
+		console::reportWarning("ConfigManager::load", fmt::format("XML stages are deprecated, consider moving to {:s}!", getString(CONFIG_FILE)));
 	}
 	expStages.shrink_to_fit();
 
