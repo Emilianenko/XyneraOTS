@@ -33,16 +33,25 @@ typedef fmt::color Color;
 
 // stylesheet
 static constexpr Color
-	serveronline = Color::lime,
-	serverPorts = Color::lime,
-	error = Color::red,
-	warning = Color::yellow,
+	// server loading
+	serveronline = Color::lime_green,
+	serverPorts = Color::lime_green,
+	pvp = Color(0xBFBF00),
+	pvpEnfo = Color(0xBF0000),
+	noPvp = Color::lime_green,
+
+	// loading results
+	loading_ok_text = Color::lime_green,
+	loading_ok = Color::green,
+	loading_error = Color(0xBF0000),
+	loading_pending = Color(0xBFBF00),
+
+	// message types
+	error = Color(0xBF0000),
+	warning = Color(0xBFBF00),
 	start = Color::green,
 	info = Color::cornflower_blue,
-	pvp = Color::yellow,
-	pvpEnfo = Color::red,
-	noPvp = Color::lime,
-	broadcast = Color::crimson;
+	broadcast = Color(0xF86060);
 
 static constexpr size_t TAG_WIDTH = 12;
 static constexpr size_t WORLDINFO_SPACING = 24;
@@ -57,7 +66,7 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 void printResult(ConsoleLoadingResult result);
 
 // output: [msg]
-void printResultText(const std::string& msg, Color color = Color::lime);
+void printResultText(const std::string& msg, Color color = loading_ok_text);
 
 // output: [PVP-TYPE]
 void printPVPType(const std::string& worldType);

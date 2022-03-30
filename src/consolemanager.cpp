@@ -101,11 +101,11 @@ void printResult(ConsoleLoadingResult result)
 
 	switch (result) {
 		case CONSOLE_LOADING_OK:
-			color = Color::green;
+			color = loading_ok;
 			msg = "OK";
 			break;
 		case CONSOLE_LOADING_PENDING:
-			color = Color::yellow;
+			color = loading_pending;
 			msg = "";
 			break;
 			/*
@@ -116,7 +116,7 @@ void printResult(ConsoleLoadingResult result)
 			*/
 		case CONSOLE_LOADING_ERROR:
 		default:
-			color = Color::red;
+			color = loading_error;
 			msg = "ERROR";
 			break;
 	}
