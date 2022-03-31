@@ -34,6 +34,7 @@
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
 	<event class="Player" method="onWrapItem" enabled="1" />
+	<event class="Player" method="onInventoryUpdate" enabled="1" />
 	<event class="Player" method="onInspectItem" enabled="1" />
 	<event class="Player" method="onInspectTradeItem" enabled="1" />
 	<event class="Player" method="onInspectNpcTradeItem" enabled="1" />

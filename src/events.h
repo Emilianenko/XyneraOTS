@@ -22,6 +22,7 @@
 
 #include "luascript.h"
 #include "const.h"
+#include "creature.h"
 #include "networkmessage.h"
 
 class Party;
@@ -74,6 +75,7 @@ class Events
 		int32_t playerOnInspectTradeItem = -1;
 		int32_t playerOnInspectNpcTradeItem = -1;
 		int32_t playerOnInspectCompendiumItem = -1;
+		int32_t playerOnInventoryUpdate = -1;
 
 		// Monster
 		int32_t monsterOnDropLoot = -1;
@@ -123,6 +125,7 @@ class Events
 		void eventPlayerOnInspectTradeItem(Player* player, Player* tradePartner, Item* item);
 		void eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t itemId);
 		void eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId);
+		void eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t slot, bool equip);
 		void eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message);
 
 		// Monster

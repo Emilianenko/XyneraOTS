@@ -283,6 +283,12 @@ function Player:onWrapItem(item)
 	end
 end
 
+function Player:onInventoryUpdate(item, slot, equip)
+	if hasEventCallback(EVENT_CALLBACK_ONINVENTORYUPDATE) then
+		EventCallback(EVENT_CALLBACK_ONINVENTORYUPDATE, self, item, slot, equip)
+	end
+end
+
 -- begin inspection feature
 function Player:onInspectItem(item)
 	if hasEventCallback(EVENT_CALLBACK_ONINSPECTITEM) then
