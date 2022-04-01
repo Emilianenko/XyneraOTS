@@ -101,6 +101,10 @@ forceMonsterTypesOnLoad = true
 cleanProtectionZones = false
 showPlayerLogInConsole = true
 
+-- false: player will see base exp * stage
+-- true: player will see base monster exp
+analyserSendTrueRawExp = false
+
 -- VIP and Depot limits
 -- NOTE: you can set custom limits per group in data/XML/groups.xml
 vipFreeLimit = 20
