@@ -1,8 +1,8 @@
 // Copyright 2022 The Forgotten Server Authors. All rights reserved.
 // Use of this source code is governed by the GPL-2.0 License that can be found in the LICENSE file.
 
-#ifndef FS_FAMILIARS_H_C00089BD41B5F10BED759BFF7590782C
-#define FS_FAMILIARS_H_C00089BD41B5F10BED759BFF7590782C
+#ifndef FS_FAMILIARS_H
+#define FS_FAMILIARS_H
 
 struct Familiar
 {
