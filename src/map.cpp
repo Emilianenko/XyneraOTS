@@ -190,7 +190,7 @@ bool Map::placeCreature(const Position& centerPos, Creature* creature, bool exte
 	Tile* tile = getTile(centerPos.x, centerPos.y, centerPos.z);
 	if (tile) {
 		placeInPZ = tile->hasFlag(TILESTATE_PROTECTIONZONE);
-		ReturnValue ret = tile->queryAdd(0, *creature, 1, FLAG_IGNOREBLOCKITEM + FLAG_IGNOREFIELDDAMAGE);
+		ReturnValue ret = tile->queryAdd(0, *creature, 1, FLAG_IGNOREBLOCKITEM | FLAG_IGNOREFIELDDAMAGE);
 		foundTile = forceLogin || ret == RETURNVALUE_NOERROR || ret == RETURNVALUE_PLAYERISNOTINVITED;
 	} else {
 		placeInPZ = false;
