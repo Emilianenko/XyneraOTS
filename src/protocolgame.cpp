@@ -543,7 +543,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x70: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_EAST); break;
 		case 0x71: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_SOUTH); break;
 		case 0x72: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerTurn, player->getID(), DIRECTION_WEST); break;
-		//case 0x73: break; // map click(?)
+		case 0x73: parsePlayerMinimapQuery(msg); break; // ctrl+shift+left click on minimap
 		case 0x77: parseEquipObject(msg); break;
 		case 0x78: parseThrow(msg); break;
 		case 0x79: parseLookInShop(msg); break;
@@ -1422,6 +1422,11 @@ void ProtocolGame::parseInspectItem(NetworkMessage& msg)
 		default:
 			break;
 	}
+}
+
+void ProtocolGame::parsePlayerMinimapQuery(NetworkMessage& msg)
+{
+	addGameTask(&Game::playerMinimapQuery, player->getID(), msg.getPosition());
 }
 
 // Send methods

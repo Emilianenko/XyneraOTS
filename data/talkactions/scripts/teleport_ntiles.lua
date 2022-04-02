@@ -11,7 +11,11 @@ function onSay(player, words, param)
 	local position = player:getPosition()
 	position:getNextPosition(player:getDirection(), steps)
 
-	position = player:getClosestFreePosition(position, false)
+	local tile = Tile(position)
+	if not tile then
+		Game.createTile(position)
+	end
+	
 	if position.x == 0 then
 		player:sendCancelMessage("You cannot teleport there.")
 		return false

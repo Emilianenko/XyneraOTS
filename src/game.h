@@ -364,6 +364,7 @@ class Game
 		void playerInspectItem(uint32_t playerId, const Position& pos);
 		void playerInspectClientItem(uint32_t playerId, uint16_t spriteId, bool isNpcTrade);
 		void playerInspectTradeItem(uint32_t playerId, bool isInspectingPartnerOffer, uint8_t index);
+		void playerMinimapQuery(uint32_t playerId, const Position& position);
 		void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		void playerWrapItem(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
 		void playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,

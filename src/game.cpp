@@ -2683,6 +2683,16 @@ void Game::playerInspectTradeItem(uint32_t playerId, bool isInspectingPartnerOff
 	}
 }
 
+void Game::playerMinimapQuery(uint32_t playerId, const Position& position)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnMinimapQuery(player, position);
+}
+
 void Game::playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text)
 {
 	Player* player = getPlayerByID(playerId);

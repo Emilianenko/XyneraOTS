@@ -135,6 +135,8 @@ class ProtocolGame final : public Protocol
 		void parseSeekInContainer(NetworkMessage& msg);
 		void parseInspectItem(NetworkMessage& msg);
 
+		void parsePlayerMinimapQuery(NetworkMessage& msg);
+
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);

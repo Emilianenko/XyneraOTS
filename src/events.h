@@ -59,6 +59,7 @@ class Events
 		int32_t playerOnInspectTradeItem = -1;
 		int32_t playerOnInspectNpcTradeItem = -1;
 		int32_t playerOnInspectCompendiumItem = -1;
+		int32_t playerOnMinimapQuery = -1;
 		int32_t playerOnInventoryUpdate = -1;
 
 		// Monster
@@ -109,6 +110,7 @@ class Events
 		void eventPlayerOnInspectTradeItem(Player* player, Player* tradePartner, Item* item);
 		void eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t itemId);
 		void eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId);
+		void eventPlayerOnMinimapQuery(Player* player, const Position& position);
 		void eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t slot, bool equip);
 		void eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message);
 

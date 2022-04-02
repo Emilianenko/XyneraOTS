@@ -122,6 +122,8 @@ bool Events::load()
 				info.playerOnInspectNpcTradeItem = event;
 			} else if (methodName == "onInspectCompendiumItem") {
 				info.playerOnInspectCompendiumItem = event;
+			} else if (methodName == "onMinimapQuery") {
+				info.playerOnMinimapQuery = event;
 			} else if (methodName == "onInventoryUpdate") {
 				info.playerOnInventoryUpdate = event;
 			} else if (methodName == "onExtendedProtocol") {
@@ -1210,6 +1212,32 @@ void Events::eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId)
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
 	lua_pushnumber(L, itemId);
+
+	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnMinimapQuery(Player* player, const Position& position)
+{
+	// Player:onMinimapQuery(position)
+	if (info.playerOnMinimapQuery == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::onMinimapQuery");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnMinimapQuery, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnMinimapQuery);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	LuaScriptInterface::pushPosition(L, position);
 
 	scriptInterface.callVoidFunction(2);
 }

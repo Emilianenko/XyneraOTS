@@ -315,6 +315,25 @@ function Player:onInspectCompendiumItem(itemId)
 end
 -- end inspection feature
 
+function Player:onMinimapQuery(position)
+	if EventCallback.onMinimapQuery then
+		EventCallback.onMinimapQuery(self, position)
+	end
+	
+	-- teleport action for server staff
+	-- ctrl + shift + click on minimap
+	if not self:getGroup():getAccess() then
+		return
+	end
+	
+	local tile = Tile(position)
+	if not tile then
+		Game.createTile(position)
+	end
+	
+	self:teleportTo(position)
+end
+
 -- begin extended protocol
 packetEvents = {}
 function getPacketEvent(recvbyte)
