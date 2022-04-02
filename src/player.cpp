@@ -3255,14 +3255,14 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 	bool requireListUpdate = false;
 
 	if (link == LINK_OWNER || link == LINK_TOPPARENT) {
-		const Item* i = (oldParent ? oldParent->getItem() : nullptr);
+		const Item* item = (oldParent ? oldParent->getItem() : nullptr);
 
 		// Check if we owned the old container too, so we don't need to do anything,
 		// as the list was updated in postRemoveNotification
-		assert(i ? i->getContainer() != nullptr : true);
+		assert(item ? item->getContainer() != nullptr : true);
 
-		if (i) {
-			requireListUpdate = i->getContainer()->getHoldingPlayer() != this;
+		if (item) {
+			requireListUpdate = item->getContainer()->getHoldingPlayer() != this;
 		} else {
 			requireListUpdate = oldParent != this;
 		}
