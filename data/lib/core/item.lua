@@ -42,6 +42,30 @@ function Item:isItemType()
 	return false
 end
 
+function Item:pauseDecay()
+	if self:getAttribute(ITEM_ATTRIBUTE_DURATION) == 0 or self:getAttribute(ITEM_ATTRIBUTE_DECAYTO) == -1 then
+		return false
+	end
+	
+	local decayId = self:getAttribute(ITEM_ATTRIBUTE_DECAYTO)
+	self:setAttribute(ITEM_ATTRIBUTE_DECAYTO, -1)
+	self:setAttribute(ITEM_ATTRIBUTE_DECAYSTATE, 0)
+	self:setCustomAttribute("targetDecayId", decayId)
+	return true
+end
+
+function Item:resumeDecay()
+	local decayId = self:getAttribute(ITEM_ATTRIBUTE_DECAYTO)
+	if decayId <= 0 then
+		local decayAttr = self:getCustomAttribute("targetDecayId")
+		decayId = decayAttr or math.max(decayId, self:getType():getDecayId())
+	end
+	
+	self:removeCustomAttribute("targetDecayId")
+	self:setAttribute(ITEM_ATTRIBUTE_DECAYTO, decayId)
+	self:decay()
+end
+
 function Item:setTier(newTier)
 	return newTier >= 0 and newTier < 256 and self:setAttribute(ITEM_ATTRIBUTE_TIER, newTier)
 end
