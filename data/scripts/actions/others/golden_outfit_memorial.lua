@@ -10,13 +10,15 @@ local function updateGoldenOutfitCache()
 		return
 	end
 	
+	goldenOutfitCache = {[1] = {}, [2] = {}, [3] = {}}
+	
 	local resultId = db.storeQuery("SELECT `name`, `value` FROM `player_storage` INNER JOIN `players` as `p` ON `p`.`id` = `player_id` WHERE `key` = " .. PlayerStorageKeys.goldenOutfit .. " AND `value` >= 1;")
 	if not resultId then
-		result.free(resultId)
+		result.free(resultId)		
+		lastUpdated = os.time()
 		return
 	end
 
-	goldenOutfitCache = {[1] = {}, [2] = {}, [3] = {}}
 	repeat
 		local addons = result.getNumber(resultId, "value")
 		local name = result.getString(resultId, "name")
