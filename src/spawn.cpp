@@ -73,7 +73,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 		Spawn& spawn = spawnList.front();
 
 		for (auto childNode : spawnNode.children()) {
-			if (strcasecmp(childNode.name(), "monsters") == 0) {
+			if (caseInsensitiveEqual(childNode.name(), "monsters")) {
 				Position pos(
 					centerPos.x + pugi::cast<uint16_t>(childNode.attribute("x").value()),
 					centerPos.y + pugi::cast<uint16_t>(childNode.attribute("y").value()),
@@ -160,7 +160,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 
 				spawn.addBlock(sb);
 				++monsterCount;
-			} else if (strcasecmp(childNode.name(), "monster") == 0) {
+			} else if (caseInsensitiveEqual(childNode.name(), "monster")) {
 				pugi::xml_attribute nameAttribute = childNode.attribute("name");
 				if (!nameAttribute) {
 					continue;
@@ -197,7 +197,7 @@ bool Spawns::loadFromXml(const std::string& filename)
 					}
 				}
 				++monsterCount;
-			} else if (strcasecmp(childNode.name(), "npc") == 0) {
+			} else if (caseInsensitiveEqual(childNode.name(), "npc")) {
 				pugi::xml_attribute nameAttribute = childNode.attribute("name");
 				if (!nameAttribute) {
 					continue;

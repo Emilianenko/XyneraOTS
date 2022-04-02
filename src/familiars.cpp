@@ -104,7 +104,7 @@ Familiar* Familiars::getFamiliarByName(const std::string& name)
 {
 	auto familiarName = name.c_str();
 	for (auto& it : familiars) {
-		if (strcasecmp(familiarName, it.name.c_str()) == 0) {
+		if (caseInsensitiveEqual(familiarName, it.name.c_str())) {
 			return &it;
 		}
 	}

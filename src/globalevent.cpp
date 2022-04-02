@@ -49,7 +49,7 @@ void GlobalEvents::clear(bool fromLua)
 
 Event_ptr GlobalEvents::getEvent(const std::string& nodeName)
 {
-	if (strcasecmp(nodeName.c_str(), "globalevent") != 0) {
+	if (!caseInsensitiveEqual(nodeName, "globalevent")) {
 		return nullptr;
 	}
 	return Event_ptr(new GlobalEvent(&scriptInterface));
@@ -285,11 +285,11 @@ bool GlobalEvent::configureEvent(const pugi::xml_node& node)
 		eventType = GLOBALEVENT_TIMER;
 	} else if ((attr = node.attribute("type"))) {
 		const char* value = attr.value();
-		if (strcasecmp(value, "startup") == 0) {
+		if (caseInsensitiveEqual(value, "startup")) {
 			eventType = GLOBALEVENT_STARTUP;
-		} else if (strcasecmp(value, "shutdown") == 0) {
+		} else if (caseInsensitiveEqual(value, "shutdown")) {
 			eventType = GLOBALEVENT_SHUTDOWN;
-		} else if (strcasecmp(value, "record") == 0) {
+		} else if (caseInsensitiveEqual(value, "record")) {
 			eventType = GLOBALEVENT_RECORD;
 		} else {
 			console::reportError(location, fmt::format("No valid type \"{:s}\" for globalevent with name \"{:s}\"!", attr.as_string(), name));
