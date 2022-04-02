@@ -8196,10 +8196,10 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 	// update summon icon
 	SpectatorVec spectators;
 	g_game.map.getSpectators(spectators, creature->getPosition(), true, true);
-
 	for (Creature* spectator : spectators) {
 		spectator->getPlayer()->sendUpdateTileCreature(creature);
 	}
+
 	return 1;
 }
 
@@ -11735,10 +11735,31 @@ int LuaScriptInterface::luaNpcSetSpeechBubble(lua_State* L)
 {
 	// npc:setSpeechBubble(speechBubble)
 	Npc* npc = getUserdata<Npc>(L, 1);
-	if (npc) {
-		npc->setSpeechBubble(getNumber<uint8_t>(L, 2));
+	if (!npc) {
+		lua_pushnil(L);
+		return 1;
 	}
-	return 0;
+
+	if (!isNumber(L, 2)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	uint8_t speechBubble = getNumber<uint8_t>(L, 2);
+	bool success = speechBubble <= SPEECHBUBBLE_LAST;
+	if (success) {
+		npc->setSpeechBubble(speechBubble);
+
+		// refresh npc bubble
+		SpectatorVec spectators;
+		g_game.map.getSpectators(spectators, npc->getPosition(), true, true);
+		for (Creature* spectator : spectators) {
+			spectator->getPlayer()->sendUpdateTileCreature(npc);
+		}
+	}
+
+	pushBoolean(L, success);
+	return 1;
 }
 
 // Guild
