@@ -5,25 +5,22 @@
 #define FS_ITEM_H
 
 #include "cylinder.h"
-#include "thing.h"
 #include "items.h"
 #include "luascript.h"
+#include "thing.h"
 #include "tools.h"
-#include <typeinfo>
 
 #include <boost/variant.hpp>
 
-class Creature;
-class Player;
+class BedItem;
 class Container;
-class Depot;
-class Teleport;
-class TrashHolder;
-class Mailbox;
 class Door;
 class MagicField;
-class BedItem;
+class Mailbox;
+class Player;
 class Podium;
+class Teleport;
+class TrashHolder;
 
 enum ITEMPROPERTY {
 	CONST_PROP_BLOCKSOLID = 0,

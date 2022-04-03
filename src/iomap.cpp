@@ -4,12 +4,8 @@
 #include "otpch.h"
 
 #include "iomap.h"
-
-#include "bed.h"
-
 #include "game.h"
-
-#include <fmt/format.h>
+#include "housetile.h"
 
 extern Game g_game;
 

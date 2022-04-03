@@ -6,8 +6,6 @@
 
 #include "item.h"
 
-class Player;
-
 class Podium final : public Item
 {
 	public:

@@ -4,6 +4,7 @@
 #include "otpch.h"
 
 #include "bed.h"
+#include "condition.h"
 #include "game.h"
 #include "iologindata.h"
 #include "scheduler.h"

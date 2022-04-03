@@ -4,9 +4,11 @@
 #include "otpch.h"
 
 #include "familiars.h"
-#include "vocation.h"
+
+#include "definitions.h"
 #include "pugicast.h"
 #include "tools.h"
+#include "vocation.h"
 
 extern Vocations g_vocations;
 

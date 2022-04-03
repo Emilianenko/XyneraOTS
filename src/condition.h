@@ -7,9 +7,12 @@
 #include "fileloader.h"
 #include "enums.h"
 
+#include <limits>
+
 class Creature;
 class Player;
 class PropStream;
+class PropWriteStream;
 
 enum ConditionAttr_t {
 	CONDITIONATTR_TYPE = 1,

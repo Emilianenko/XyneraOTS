@@ -7,10 +7,28 @@
 // comment this line if you wish to disable colors in console
 #define USE_COLOR_CONSOLE
 
-#include "enums.h"
 #include "tools.h"
 
 #include <fmt/color.h>
+
+enum ConsoleMessageType : uint16_t {
+	CONSOLEMESSAGE_TYPE_INFO,
+	CONSOLEMESSAGE_TYPE_STARTUP,
+	CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL,
+	CONSOLEMESSAGE_TYPE_WARNING,
+	CONSOLEMESSAGE_TYPE_ERROR,
+	CONSOLEMESSAGE_TYPE_BROADCAST,
+
+	CONSOLEMESSAGE_TYPE_LAST
+};
+
+enum ConsoleLoadingResult {
+	CONSOLE_LOADING_OK,
+	//CONSOLE_LOADING_WARNING,
+	CONSOLE_LOADING_ERROR,
+	CONSOLE_LOADING_PENDING
+};
+
 namespace console {
 
 typedef fmt::color Color;

@@ -5,6 +5,8 @@
 
 #include "consolemanager.h"
 
+#include <iomanip>
+
 namespace console {
 
 void print(ConsoleMessageType messageType, const std::string& message, bool newLine, const std::string& location)

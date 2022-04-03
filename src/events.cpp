@@ -4,12 +4,10 @@
 #include "otpch.h"
 
 #include "events.h"
-#include "tools.h"
 #include "item.h"
 #include "player.h"
 #include "pugicast.h"
-
-#include <set>
+#include "tools.h"
 
 Events::Events() :
 	scriptInterface("Event Interface")
