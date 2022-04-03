@@ -1477,7 +1477,7 @@ do
 	}
 
 	function getCombatName(combat)
-		return combats[combat]
+		return combats[combat] or "unknown"
 	end
 end
 
