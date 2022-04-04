@@ -118,7 +118,7 @@ TrackableSupplies = {
 }
 
 function ItemType:isSupply()
-	return table.contains(TrackableSupplies, self:getId()) or self:getDecayId < 1 and (self:getCharges() > 0 or self:getDuration() > 0)
+	return table.contains(TrackableSupplies, self:getId()) or self:getDecayId() < 1 and (self:getCharges() > 0 or self:getDuration() > 0)
 end
 
 function registerSupply(itemId)

@@ -123,6 +123,14 @@ local potions = {
 	}
 }
 
+-- register as supplies
+for itemId, _ in pairs(potions) do
+	if not registerSupply(itemId) then
+		-- no point in looping when they are already registered
+		break
+	end
+end
+
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if type(target) == "userdata" and not target:isPlayer() then
 		return false
@@ -172,6 +180,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	end
 
+	player:sendSupplyUsed(item)
 	item:remove(1)
 	return true
 end
