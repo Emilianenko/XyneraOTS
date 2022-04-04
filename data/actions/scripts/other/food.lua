@@ -118,12 +118,7 @@ local foods = {
 }
 
 -- register as supplies
-for itemId, _ in pairs(foods) do
-	if not registerSupply(itemId) then
-		-- no point in looping when they are already registered
-		break
-	end
-end
+registerSupplies(foods)
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local food = foods[item.itemid]

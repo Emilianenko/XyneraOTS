@@ -108,10 +108,7 @@ end
 
 TrackableSupplies = {
 	-- enchanting
-	2146, 2147, 2149, 2150, 2342, 7759, 7760, 7761, 7762, 24739,
-
-	-- blessing charms
-	11258, 11259, 11260, 11261, 11262,
+	2146, 2147, 2149, 2150, 7759, 7760, 7761, 7762, 24739,
 	
 	-- rust and muck removers
 	9930, 18395
@@ -128,6 +125,16 @@ function registerSupply(itemId)
 	end
 
 	return false
+end
+
+-- register as supplies, supplyBlock = {[itemId] = anything}
+function registerSupplies(supplyBlock)
+	for itemId, _ in pairs(supplyBlock) do
+		if not registerSupply(itemId) then
+			-- no point in looping when they are already registered
+			break
+		end
+	end
 end
 
 function ItemType:getWeaponString()

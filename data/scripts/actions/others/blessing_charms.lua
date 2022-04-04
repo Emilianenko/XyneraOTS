@@ -6,6 +6,9 @@ local items = {
 	[11258] = {text = "The Spark of the Phoenix emblazes you.", id = 5, effect = CONST_ME_FIREATTACK}
 }
 
+-- register as supplies
+registerSupplies(items)
+
 local blessingCharms = Action()
 
 function blessingCharms.onUse(player, item, fromPosition, target, toPosition, isHotkey)
