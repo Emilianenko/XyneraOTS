@@ -10,8 +10,6 @@
 #include "thing.h"
 #include "tools.h"
 
-#include <boost/variant.hpp>
-
 class BedItem;
 class Container;
 class Door;

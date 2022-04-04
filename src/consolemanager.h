@@ -9,8 +9,6 @@
 
 #include "tools.h"
 
-#include <fmt/color.h>
-
 enum ConsoleMessageType : uint16_t {
 	CONSOLEMESSAGE_TYPE_INFO,
 	CONSOLEMESSAGE_TYPE_STARTUP,

@@ -4,8 +4,6 @@
 #ifndef TFS_XTEA_H
 #define TFS_XTEA_H
 
-#include <array>
-
 namespace xtea {
 
 using key = std::array<uint32_t, 4>;
