@@ -111,6 +111,7 @@ class Condition
 		uint32_t subId;
 		int32_t ticks;
 		ConditionType_t conditionType;
+		uint32_t icons = 0;
 		bool isBuff;
 		bool aggressive;
 

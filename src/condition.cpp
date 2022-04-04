@@ -33,6 +33,11 @@ bool Condition::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
+		case CONDITION_PARAM_ICONS: {
+			icons |= value;
+			return true;
+		}
+
 		default: {
 			return false;
 		}
@@ -307,7 +312,8 @@ bool Condition::isPersistent() const
 
 uint32_t Condition::getIcons() const
 {
-	return isBuff ? ICON_PARTY_BUFF : 0;
+	uint32_t tmpIcons = icons;
+	return tmpIcons |= (isBuff ? ICON_PARTY_BUFF : 0);
 }
 
 bool Condition::updateCondition(const Condition* addCondition)
@@ -2018,7 +2024,8 @@ void ConditionDrunk::endCondition(Creature* creature)
 
 uint32_t ConditionDrunk::getIcons() const
 {
-	return ICON_DRUNK;
+	uint32_t icons = Condition::getIcons();
+	return icons |= ICON_DRUNK;
 }
 
 bool ConditionDrunk::setParam(ConditionParam_t param, int32_t value)
