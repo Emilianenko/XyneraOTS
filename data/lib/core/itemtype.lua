@@ -151,6 +151,8 @@ function ItemType:getWeaponString()
 		weaponString = self:isBow() and "firearm" or "missile"
 	elseif weaponType == WEAPON_WAND then
 		weaponString = "wand/rod"
+	elseif weaponType == WEAPON_FIST then
+		weaponString = "punching weapon"
 	end
 	
 	if self:isTwoHanded() then

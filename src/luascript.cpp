@@ -1992,6 +1992,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(WEAPON_SHIELD)
 	registerEnum(WEAPON_DISTANCE)
 	registerEnum(WEAPON_WAND)
+	registerEnum(WEAPON_FIST)
 	registerEnum(WEAPON_AMMO)
 
 	registerEnum(WORLD_TYPE_NO_PVP)
@@ -17809,7 +17810,8 @@ int LuaScriptInterface::luaCreateWeapon(lua_State* L)
 	switch (type) {
 		case WEAPON_SWORD:
 		case WEAPON_AXE:
-		case WEAPON_CLUB: {
+		case WEAPON_CLUB:
+		case WEAPON_FIST: {
 			WeaponMelee* weapon = new WeaponMelee(getScriptEnv()->getScriptInterface());
 			if (weapon) {
 				pushUserdata<WeaponMelee>(L, weapon);

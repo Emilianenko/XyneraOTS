@@ -50,8 +50,8 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 	response:sendToPlayer(self)
 end
 
-local showAtkWeaponTypes = {WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE}
-local showDefWeaponTypes = {WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE, WEAPON_SHIELD}
+local showAtkWeaponTypes = {WEAPON_FIST, WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE}
+local showDefWeaponTypes = {WEAPON_FIST, WEAPON_CLUB, WEAPON_SWORD, WEAPON_AXE, WEAPON_DISTANCE, WEAPON_SHIELD}
 
 -- Item, itemType or item id
 function getItemDetails(item)

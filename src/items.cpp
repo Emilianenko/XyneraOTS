@@ -240,6 +240,7 @@ const std::unordered_map<std::string, WeaponType_t> WeaponTypesMap = {
 	{"shield", WEAPON_SHIELD},
 	{"distance", WEAPON_DISTANCE},
 	{"wand", WEAPON_WAND},
+	{"fist", WEAPON_FIST},
 	{"ammunition", WEAPON_AMMO},
 };
 
