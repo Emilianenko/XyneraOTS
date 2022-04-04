@@ -2787,6 +2787,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "addItemEx", LuaScriptInterface::luaPlayerAddItemEx);
 	registerMethod("Player", "removeItem", LuaScriptInterface::luaPlayerRemoveItem);
 
+	registerMethod("Player", "sendSupplyUsed", LuaScriptInterface::luaPlayerSendSupplyUsed);
+
 	registerMethod("Player", "getMoney", LuaScriptInterface::luaPlayerGetMoney);
 	registerMethod("Player", "addMoney", LuaScriptInterface::luaPlayerAddMoney);
 	registerMethod("Player", "removeMoney", LuaScriptInterface::luaPlayerRemoveMoney);
@@ -10189,6 +10191,28 @@ int LuaScriptInterface::luaPlayerRemoveItem(lua_State* L)
 	bool ignoreEquipped = getBoolean(L, 5, false);
 	bool skipTiered = getBoolean(L, 6, false);
 	pushBoolean(L, player->removeItemOfType(itemId, count, subType, ignoreEquipped, skipTiered));
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSendSupplyUsed(lua_State* L)
+{
+	// player:sendSupplyUsed(item)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		reportErrorFunc(L, getErrorDesc(LUA_ERROR_PLAYER_NOT_FOUND));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	Item* item = getUserdata<Item>(L, 2);
+	if (!item) {
+		reportErrorFunc(L, getErrorDesc(LUA_ERROR_ITEM_NOT_FOUND));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	player->sendSupplyUsed(item->getClientID());
+	pushBoolean(L, true);
 	return 1;
 }
 

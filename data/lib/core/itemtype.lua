@@ -106,6 +106,22 @@ function ItemType:isTeleport()
 	return self:getGroup() == ITEM_GROUP_TELEPORT or self:getType() == ITEM_TYPE_TELEPORT
 end
 
+do
+	local supplies = {
+		-- enchanting
+		2146, 2147, 2149, 2150, 2342, 7759, 7760, 7761, 7762, 24739,
+	
+		-- blessing charms
+		11258, 11259, 11260, 11261, 11262,
+		
+		-- rust and muck removers
+		9930, 18395
+	}
+	function ItemType:isSupply()
+		return self:getCharges() > 0 or self:getDuration() > 0 or table.contains(supplies, self:getId())
+	end
+end
+
 function ItemType:getWeaponString()
 	local weaponType = self:getWeaponType()
 	local weaponString = "unknown"

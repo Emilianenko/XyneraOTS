@@ -42,6 +42,10 @@ function Item:isItemType()
 	return false
 end
 
+function Item:isSupply()
+	return self:getType():isSupply()
+end
+
 function Item:pauseDecay()
 	if self:getAttribute(ITEM_ATTRIBUTE_DURATION) == 0 or self:getAttribute(ITEM_ATTRIBUTE_DECAYTO) == -1 then
 		return false

@@ -5,6 +5,8 @@
 
 #include "consolemanager.h"
 
+#include <boost/algorithm/string/replace.hpp>
+
 namespace console {
 
 void print(ConsoleMessageType messageType, const std::string& message, bool newLine, const std::string& location)
@@ -185,7 +187,10 @@ std::string getColumns(const std::string& leftColumn, const std::string& rightCo
 #ifdef USE_COLOR_CONSOLE
 std::string setColor(Color color, const std::string& text)
 {
-	return fmt::format(fg(color), text);
+	std::string newText = text;
+	boost::replace_all(newText, "{", "{{");
+	boost::replace_all(newText, "}", "}}");
+	return fmt::format(fg(color), newText);
 }
 #else
 std::string setColor(Color, const std::string& text) { return text; }

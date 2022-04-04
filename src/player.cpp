@@ -2147,7 +2147,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 
 				uint16_t charges = item->getCharges();
 				if (charges != 0) {
-					g_game.transformItem(item, item->getID(), charges - 1);
+					consumeCharge(item);
 				}
 			}
 
@@ -2160,7 +2160,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 
 					uint16_t charges = item->getCharges();
 					if (charges != 0) {
-						g_game.transformItem(item, item->getID(), charges - 1);
+						consumeCharge(item);
 					}
 				}
 			}
@@ -2180,6 +2180,15 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 		blockType = BLOCK_ARMOR;
 	}
 	return blockType;
+}
+
+void Player::consumeCharge(Item* item) const
+{
+	uint16_t newCharges = item->getCharges() - 1;
+	if (newCharges == 0) {
+		sendSupplyUsed(item->getClientID());
+	}
+	g_game.transformItem(item, item->getID(), newCharges);
 }
 
 uint32_t Player::getIP() const

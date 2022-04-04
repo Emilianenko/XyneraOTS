@@ -303,6 +303,8 @@ class Player final : public Creature, public Cylinder
 			return blessings.test(blessing);
 		}
 
+		void consumeCharge(Item* item) const;
+
 		bool isOffline() const {
 			return (getID() == 0);
 		}
@@ -858,6 +860,11 @@ class Player final : public Creature, public Cylinder
 		void sendUseItemCooldown(uint32_t time) {
 			if (client) {
 				client->sendUseItemCooldown(time);
+			}
+		}
+		void sendSupplyUsed(const uint16_t clientId) const {
+			if (client) {
+				client->sendSupplyUsed(clientId);
 			}
 		}
 		void sendModalWindow(const ModalWindow& modalWindow);

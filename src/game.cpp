@@ -1665,7 +1665,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	}
 
 	if (curType.type == newType.type) {
-		//Both items has the same type so we can safely change id/subtype
+		//Both items have the same type so we can safely change id/subtype
 		if (newCount == 0 && (item->isStackable() || item->hasAttribute(ITEM_ATTRIBUTE_CHARGES))) {
 			if (item->isStackable()) {
 				internalRemoveItem(item);
@@ -4833,6 +4833,13 @@ void Game::internalDecayItem(Item* item)
 	if (decayTo > 0) {
 		startDecay(transformItem(item, decayTo));
 	} else {
+		// send supply used notification
+		if (const Player* player = item->getHoldingPlayer()) {
+			const ItemType& it = Item::items[item->getID()];
+			player->sendSupplyUsed(it.transformDeEquipTo != 0 ? Item::items[it.transformDeEquipTo].clientId : item->getClientID());
+		}
+
+		// remove decayed item
 		ReturnValue ret = internalRemoveItem(item);
 		if (ret != RETURNVALUE_NOERROR) {
 			console::reportError("Game::internalDecayItem", fmt::format("Failed to decay item with id: {:d}, returnvalue: {:d}", item->getID(), static_cast<uint32_t>(ret)));
