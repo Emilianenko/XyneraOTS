@@ -58,7 +58,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 		return RETURNVALUE_NOERROR
 	end
 
-	
+	-- logic for moving items between/to containers
 	local itemId = item:getId()
 	if toCylinder:isItem() then
 		local parent = toCylinder:getParent()

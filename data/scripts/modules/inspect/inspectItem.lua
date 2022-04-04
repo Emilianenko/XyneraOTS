@@ -127,7 +127,7 @@ function getItemDetails(item)
 	
 	-- bonus element
 	local elementDmg = itemType:getElementDamage()
-	if elementDmg ~= 0 then
+	if elementDmg and elementDmg ~= 0 then
 		descriptions[#descriptions][2] = string.format("%d %+d %s", descriptions[#descriptions][2], elementDmg, getCombatName(itemType:getElementType()))
 	end
 	
@@ -516,21 +516,45 @@ end
 
 local onInspectItem = function(self, item)
 	local descriptions = getItemDetails(item)
+	
+	if self:getGroup():getAccess() then
+		descriptions[#descriptions + 1] = {"Server ID", item:getId()}
+		descriptions[#descriptions + 1] = {"Client ID", item:getType():getClientId()}
+	end
+	
 	self:sendItemInspection(item, descriptions, false)
 end
 
 local onInspectTradeItem = function(self, tradePartner, item)
 	local descriptions = getItemDetails(item)
+
+	if self:getGroup():getAccess() then
+		descriptions[#descriptions + 1] = {"Server ID", item:getId()}
+		descriptions[#descriptions + 1] = {"Client ID", item:getType():getClientId()}
+	end
+
 	self:sendItemInspection(item, descriptions, false)
 end
 
 local onInspectNpcTradeItem = function(self, npc, itemId)
 	local descriptions = getItemDetails(itemId)
+
+	if self:getGroup():getAccess() then
+		descriptions[#descriptions + 1] = {"Server ID", itemId}
+		descriptions[#descriptions + 1] = {"Client ID", ItemType(itemId):getClientId()}
+	end
+
 	self:sendItemInspection(itemId, descriptions, false)
 end
 
 local onInspectCompendiumItem = function(self, itemId)
 	local descriptions = getItemDetails(itemId)
+
+	if self:getGroup():getAccess() then
+		descriptions[#descriptions + 1] = {"Server ID", itemId}
+		descriptions[#descriptions + 1] = {"Client ID", ItemType(itemId):getClientId()}
+	end
+
 	self:sendItemInspection(itemId, descriptions, true)
 end
 
