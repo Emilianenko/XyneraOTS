@@ -117,6 +117,14 @@ local foods = {
 	[34725] = {15, "Slurp."}, -- candy floss
 }
 
+-- register as supplies
+for itemId, _ in pairs(foods) do
+	if not registerSupply(itemId) then
+		-- no point in looping when they are already registered
+		break
+	end
+end
+
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local food = foods[item.itemid]
 	if not food then

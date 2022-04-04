@@ -106,20 +106,28 @@ function ItemType:isTeleport()
 	return self:getGroup() == ITEM_GROUP_TELEPORT or self:getType() == ITEM_TYPE_TELEPORT
 end
 
-do
-	local supplies = {
-		-- enchanting
-		2146, 2147, 2149, 2150, 2342, 7759, 7760, 7761, 7762, 24739,
+TrackableSupplies = {
+	-- enchanting
+	2146, 2147, 2149, 2150, 2342, 7759, 7760, 7761, 7762, 24739,
+
+	-- blessing charms
+	11258, 11259, 11260, 11261, 11262,
 	
-		-- blessing charms
-		11258, 11259, 11260, 11261, 11262,
-		
-		-- rust and muck removers
-		9930, 18395
-	}
-	function ItemType:isSupply()
-		return self:getCharges() > 0 or self:getDuration() > 0 or table.contains(supplies, self:getId())
+	-- rust and muck removers
+	9930, 18395
+}
+
+function ItemType:isSupply()
+	return table.contains(TrackableSupplies, self:getId()) or self:getDecayId < 1 and (self:getCharges() > 0 or self:getDuration() > 0)
+end
+
+function registerSupply(itemId)
+	if not table.contains(TrackableSupplies, itemId) then
+		TrackableSupplies[#TrackableSupplies + 1] = itemId
+		return true
 	end
+
+	return false
 end
 
 function ItemType:getWeaponString()
