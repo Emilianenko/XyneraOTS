@@ -312,7 +312,7 @@ do
 					
 					local hitPercent = item:getHitChance()
 					if hitPercent ~= 0 then
-						descriptions[#descriptions + 1] = string.format("Hit%%:%+d", item:hitPercent())
+						descriptions[#descriptions + 1] = string.format("Hit%%:%+d", hitPercent)
 					end
 					
 				-- melee weapons and missiles
