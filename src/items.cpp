@@ -791,6 +791,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 				}
 
 				case ITEM_PARSE_CONTAINERSIZE: {
+					it.group = ITEM_GROUP_CONTAINER;
 					it.maxItems = pugi::cast<uint16_t>(valueAttribute.value());
 					break;
 				}

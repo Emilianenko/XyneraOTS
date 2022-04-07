@@ -88,7 +88,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 		addByte(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		addByte(count == 0 ? count : fluidMap[count & 7]);
-	} else if (it.isContainer()) {
+	} else if (it.type == ITEM_TYPE_CONTAINER) {
 		addByte(0x00); // assigned loot container icon
 		addByte(0x00); // quiver ammo count
 	} else if (it.classification > 0) {
@@ -118,7 +118,7 @@ void NetworkMessage::addItem(const Item* item)
 		addByte(item->getIntAttr(ITEM_ATTRIBUTE_TIER)); // item tier (0-10)
 	}
 
-	if (it.isContainer()) {
+	if (it.type == ITEM_TYPE_CONTAINER) {
 		addByte(0x00); // assigned loot container icon
 		addByte(0x00); // quiver ammo count
 	}
