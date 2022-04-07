@@ -2374,6 +2374,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getFamiliarById", LuaScriptInterface::luaGameGetFamiliarById);
 	registerMethod("Game", "getInstantSpells", LuaScriptInterface::luaGameGetInstantSpells);
 	registerMethod("Game", "getRuneSpells", LuaScriptInterface::luaGameGetRuneSpells);
+	registerMethod("Game", "getVocations", LuaScriptInterface::luaGameGetVocations);
 
 	registerMethod("Game", "getGameState", LuaScriptInterface::luaGameGetGameState);
 	registerMethod("Game", "setGameState", LuaScriptInterface::luaGameSetGameState);
@@ -4921,6 +4922,21 @@ int LuaScriptInterface::luaGameGetRuneSpells(lua_State* L)
 	for (auto spell : spells) {
 		pushRuneSpell(L, *spell);
 		lua_rawseti(L, -2, ++index);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetVocations(lua_State* L)
+{
+	// Game.getVocations()
+	auto& vocMap = g_vocations.getVocations();
+	lua_createtable(L, vocMap.size(), 0);
+
+	for (auto& voc : vocMap) {
+		setMetatable(L, -2, "Vocation");
+		pushUserdata<Vocation>(L, &voc.second);
+		lua_rawseti(L, -2, voc.first);
 	}
 
 	return 1;
