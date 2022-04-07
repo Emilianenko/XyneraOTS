@@ -60,6 +60,15 @@ function Creature:isTile()
 	return false
 end
 
+function Creature:isSummon()
+	local master = self:getMaster()
+	if not master then
+		return false
+	end
+	
+	return self:getId() ~= master:getId()
+end
+
 function Creature:setMonsterOutfit(monster, time)
 	local monsterType = MonsterType(monster)
 	if not monsterType then

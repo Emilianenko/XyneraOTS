@@ -23,7 +23,7 @@ local iconToLevel = {
 
 ---- FUNCTIONS
 
--- note: hex descriptions are hardcoded
+-- note: hex descriptions are hardcoded in client
 -- - lesser = less healing
 -- - intense = less healing + less damage
 -- - greater = less healing + less damage + reduced max hp
@@ -85,20 +85,22 @@ do
 		end
 
 		-- damage output debuff
-		local attackerHex = attacker:getHexLevel()
-		if attackerHex > 0 then
-			local hexInfo = hex[attackerHex]
-			if not hexInfo then
-				return primaryDamage, primaryType, secondaryDamage, secondaryType
-			end
-			
-			local damageMod = hexInfo.damagePercent
-			if primaryType ~= COMBAT_HEALING and damageMod then
-				primaryDamage = primaryDamage * damageMod / 100
-			end
+		if attacker then
+			local attackerHex = attacker:getHexLevel()
+			if attackerHex > 0 then
+				local hexInfo = hex[attackerHex]
+				if not hexInfo then
+					return primaryDamage, primaryType, secondaryDamage, secondaryType
+				end
+				
+				local damageMod = hexInfo.damagePercent
+				if primaryType ~= COMBAT_HEALING and damageMod then
+					primaryDamage = primaryDamage * damageMod / 100
+				end
 
-			if secondaryType ~= COMBAT_HEALING and damageMod then
-				secondaryDamage = secondaryDamage * damageMod / 100
+				if secondaryType ~= COMBAT_HEALING and damageMod then
+					secondaryDamage = secondaryDamage * damageMod / 100
+				end
 			end
 		end
 		

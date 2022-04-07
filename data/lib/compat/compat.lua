@@ -1531,6 +1531,26 @@ do
 end
 
 do
+	local slots = {
+		[CONST_SLOT_HEAD] = "head",
+		[CONST_SLOT_NECKLACE] = "necklace",
+		[CONST_SLOT_BACKPACK] = "backpack",
+		[CONST_SLOT_ARMOR] = "armor",
+		[CONST_SLOT_LEFT] = "left-hand",
+		[CONST_SLOT_RIGHT] = "shield",
+		[CONST_SLOT_LEGS] = "legs",
+		[CONST_SLOT_FEET] = "feet",
+		[CONST_SLOT_RING] = "ring",
+		[CONST_SLOT_AMMO] = "ammo"
+	}
+	
+	-- returns server slot names
+	function getEquipSlotName(slot)
+		return slots[slot]
+	end
+end
+
+do
 	local mounts = {}
 	for _, mountData in pairs(Game.getMounts()) do
 		mounts[mountData.clientId] = mountData.name

@@ -106,6 +106,63 @@ function ItemType:isTeleport()
 	return self:getGroup() == ITEM_GROUP_TELEPORT or self:getType() == ITEM_TYPE_TELEPORT
 end
 
+do
+	local realSlot = {
+		isHelmet = CONST_SLOT_HEAD,
+		isArmor = CONST_SLOT_ARMOR,
+		isLegs = CONST_SLOT_LEGS,
+		isBoots = CONST_SLOT_FEET,
+		
+		isWeapon = CONST_SLOT_LEFT,
+		isWand = CONST_SLOT_LEFT,
+		isMissile = CONST_SLOT_LEFT,
+		isBow = CONST_SLOT_LEFT,
+		
+		isShield = CONST_SLOT_RIGHT,
+		
+		isBackpack = CONST_SLOT_BACKPACK,
+		isNecklace = CONST_SLOT_NECKLACE,
+		isRing = CONST_SLOT_RING,
+		isAmmo = CONST_SLOT_AMMO,
+		isTrinket = CONST_SLOT_AMMO
+	}
+
+	function ItemType:getRealSlot()
+		for func, slot in pairs(realSlot) do
+			if ItemType[func](self) then
+				return slot
+			end
+		end
+	end
+end
+
+function ItemType:getWeaponString()
+	local weaponType = self:getWeaponType()
+	local weaponString = "unknown"
+
+	if weaponType == WEAPON_CLUB then
+		weaponString = "blunt instrument"
+	elseif weaponType == WEAPON_SWORD then
+		weaponString = "stabbing weapon"
+	elseif weaponType == WEAPON_AXE then
+		weaponString = "cutting weapon"
+	elseif weaponType == WEAPON_DISTANCE then
+		weaponString = self:isBow() and "firearm" or "missile"
+	elseif weaponType == WEAPON_WAND then
+		weaponString = "wand/rod"
+	elseif weaponType == WEAPON_FIST then
+		weaponString = "punching weapon"
+	end
+	
+	if self:isTwoHanded() then
+		weaponString = string.format("%s, two-handed", weaponString)
+	end
+	
+	return weaponString
+end
+
+
+---- BEGIN SUPPLY SYSTEM
 TrackableSupplies = {
 	-- enchanting
 	2146, 2147, 2149, 2150, 7759, 7760, 7761, 7762, 24739,
@@ -136,36 +193,10 @@ function registerSupplies(supplyBlock)
 		end
 	end
 end
+---- END SUPPLY SYSTEM
 
-function ItemType:getWeaponString()
-	local weaponType = self:getWeaponType()
-	local weaponString = "unknown"
 
-	if weaponType == WEAPON_CLUB then
-		weaponString = "blunt instrument"
-	elseif weaponType == WEAPON_SWORD then
-		weaponString = "stabbing weapon"
-	elseif weaponType == WEAPON_AXE then
-		weaponString = "cutting weapon"
-	elseif weaponType == WEAPON_DISTANCE then
-		weaponString = self:isBow() and "firearm" or "missile"
-	elseif weaponType == WEAPON_WAND then
-		weaponString = "wand/rod"
-	elseif weaponType == WEAPON_FIST then
-		weaponString = "punching weapon"
-	end
-	
-	if self:isTwoHanded() then
-		weaponString = string.format("%s, two-handed", weaponString)
-	end
-	
-	return weaponString
-end
-
-function ItemType:getTier()
-	return 0
-end
-
+---- BEGIN BOOST REFLECT
 -- used interchangeably with Item:getAllReflects() for polymorphism in onLook
 -- returns table with [combatId] = {chance = x, percent = y}
 -- COMBAT_(element)DAMAGE = 2^combatId
@@ -184,6 +215,13 @@ end
 -- same as above
 function ItemType:getAllBoosts()
 	return self:getAbilities().boostPercent
+end
+---- END BOOST REFLECT
+
+
+---- BEGIN TIER SYSTEM
+function ItemType:getTier()
+	return 0
 end
 
 -- bonus scaling for tiered items
@@ -211,3 +249,4 @@ do
 		return -1, 0
 	end
 end
+---- END TIER SYSTEM

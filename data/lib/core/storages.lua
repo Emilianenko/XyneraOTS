@@ -37,6 +37,12 @@ PlayerStorageKeys = {
 	vortexTamer = 70034,
 	mutatedPumpkin = 70035,
 	randomizeMount = 70036,
+	
+	-- condition taint storages
+	taints = 70041,
+	taintB_cooldown = 70047,
+	taintD_cooldown = 70049,
+	
 	achievementsBase = 300000,
 	achievementsCounter = 310000,
 	resourcesBase = 320000,

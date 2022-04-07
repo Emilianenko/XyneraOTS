@@ -4933,10 +4933,11 @@ int LuaScriptInterface::luaGameGetVocations(lua_State* L)
 	auto& vocMap = g_vocations.getVocations();
 	lua_createtable(L, vocMap.size(), 0);
 
-	for (auto& voc : vocMap) {
-		setMetatable(L, -2, "Vocation");
-		pushUserdata<Vocation>(L, &voc.second);
-		lua_rawseti(L, -2, voc.first);
+	int index = 0;
+	for (auto& vocEntry : vocMap) {
+		pushUserdata<Vocation>(L, &vocEntry.second);
+		setMetatable(L, -1, "Vocation");
+		lua_rawseti(L, -2, index++); //lets index from 0 for key parity with voc id
 	}
 
 	return 1;

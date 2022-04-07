@@ -30377,6 +30377,7 @@
 		<attribute key="weight" value="980" />
 	</item>
 	<item id="23816" article="a" name="war backpack">
+		<attribute key="containerSize" value="20" />
 		<attribute key="weight" value="1800" />
 		<attribute key="writeable" value="0" />
 		<attribute key="description" value="Carry all you need for battle in it." />
