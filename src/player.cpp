@@ -217,7 +217,7 @@ Item* Player::getWeapon(slots_t slot, bool ignoreAmmo) const
 	}
 
 	WeaponType_t weaponType = item->getWeaponType();
-	if (weaponType == WEAPON_NONE || weaponType == WEAPON_SHIELD || weaponType == WEAPON_AMMO) {
+	if (weaponType == WEAPON_NONE || weaponType == WEAPON_SHIELD || weaponType == WEAPON_AMMO || weaponType == WEAPON_QUIVER) {
 		return nullptr;
 	}
 
@@ -329,7 +329,8 @@ void Player::getShieldAndWeapon(const Item*& shield, const Item*& weapon) const
 			case WEAPON_NONE:
 				break;
 
-			case WEAPON_SHIELD: {
+			case WEAPON_SHIELD:
+			case WEAPON_QUIVER: {
 				if (!shield || item->getDefense() > shield->getDefense()) {
 					shield = item;
 				}
@@ -2644,12 +2645,12 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 		case CONST_SLOT_RIGHT: {
 			if (slotPosition & SLOTP_RIGHT) {
 				if (!g_config.getBoolean(ConfigManager::CLASSIC_EQUIPMENT_SLOTS)) {
-					if (item->getWeaponType() != WEAPON_SHIELD) {
+					if (item->getWeaponType() != WEAPON_SHIELD && item->getWeaponType() != WEAPON_QUIVER) {
 						ret = RETURNVALUE_CANNOTBEDRESSED;
 					} else {
 						const Item* leftItem = inventory[CONST_SLOT_LEFT];
 						if (leftItem) {
-							if ((leftItem->getSlotPosition() | slotPosition) & SLOTP_TWO_HAND) {
+							if (leftItem->getWeaponType() != WEAPON_DISTANCE && (leftItem->getSlotPosition() | slotPosition) & SLOTP_TWO_HAND) {
 								ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 							} else {
 								ret = RETURNVALUE_NOERROR;
@@ -2659,7 +2660,8 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 						}
 					}
 				} else if (slotPosition & SLOTP_TWO_HAND) {
-					if (inventory[CONST_SLOT_LEFT] && inventory[CONST_SLOT_LEFT] != item) {
+					const Item* leftItem = inventory[CONST_SLOT_LEFT];
+					if (leftItem && leftItem != item && leftItem->getWeaponType() != WEAPON_DISTANCE && item->getWeaponType() != WEAPON_QUIVER) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;
@@ -2668,15 +2670,17 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					const Item* leftItem = inventory[CONST_SLOT_LEFT];
 					WeaponType_t type = item->getWeaponType(), leftType = leftItem->getWeaponType();
 
-					if (leftItem->getSlotPosition() & SLOTP_TWO_HAND) {
+					if (leftItem->getSlotPosition() & SLOTP_TWO_HAND && type != WEAPON_QUIVER) {
 						ret = RETURNVALUE_DROPTWOHANDEDITEM;
 					} else if (item == leftItem && count == item->getItemCount()) {
 						ret = RETURNVALUE_NOERROR;
 					} else if (leftType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (leftType == WEAPON_NONE || type == WEAPON_NONE ||
-							   leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO
-							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+						leftType == WEAPON_SHIELD || type == WEAPON_SHIELD ||
+						leftType == WEAPON_AMMO || type == WEAPON_AMMO ||
+						leftType == WEAPON_QUIVER || type == WEAPON_QUIVER
+						) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;
@@ -2692,15 +2696,18 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 			if (slotPosition & SLOTP_LEFT) {
 				if (!g_config.getBoolean(ConfigManager::CLASSIC_EQUIPMENT_SLOTS)) {
 					WeaponType_t type = item->getWeaponType();
+					const Item* rightItem = inventory[CONST_SLOT_RIGHT];
+
 					if (type == WEAPON_NONE || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_CANNOTBEDRESSED;
-					} else if (inventory[CONST_SLOT_RIGHT] && (slotPosition & SLOTP_TWO_HAND)) {
+					} else if (rightItem && (slotPosition & SLOTP_TWO_HAND) && rightItem->getWeaponType() != WEAPON_DISTANCE && type != WEAPON_QUIVER) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;
 					}
 				} else if (slotPosition & SLOTP_TWO_HAND) {
-					if (inventory[CONST_SLOT_RIGHT] && inventory[CONST_SLOT_RIGHT] != item) {
+					const Item* rightItem = inventory[CONST_SLOT_RIGHT];
+					if (rightItem && rightItem != item && rightItem->getWeaponType() != WEAPON_DISTANCE && item->getWeaponType() != WEAPON_QUIVER) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;
@@ -2716,8 +2723,10 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else if (rightType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
 						ret = RETURNVALUE_CANONLYUSEONESHIELD;
 					} else if (rightType == WEAPON_NONE || type == WEAPON_NONE ||
-							   rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO
-							   || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+								rightType == WEAPON_SHIELD || type == WEAPON_SHIELD ||
+								rightType == WEAPON_AMMO || type == WEAPON_AMMO ||
+								rightType == WEAPON_QUIVER || type == WEAPON_QUIVER
+								) {
 						ret = RETURNVALUE_NOERROR;
 					} else {
 						ret = RETURNVALUE_CANONLYUSEONEWEAPON;

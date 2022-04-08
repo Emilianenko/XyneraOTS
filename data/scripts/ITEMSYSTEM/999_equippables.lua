@@ -127,7 +127,6 @@ local lightSources = {
 	[31149] = {}, -- bone fiddle
 	[35247] = {}, -- soulforged lantern
 	[36672] = {}, -- lit torch
-	[39364] = {}, -- the Eye of Suon
 	[40958] = {}, -- Morshabaal's extract
 }
 
@@ -265,6 +264,8 @@ local necklaces = {
 	[32084] = {}, -- sleep shawl
 	[32085] = {}, -- pendulet
 	[32979] = {}, -- rainbow necklace
+	[32998] = {}, -- enchanted sleep shawl
+	[32999] = {}, -- enchanted sleep shawl
 	[33000] = {}, -- enchanted pendulet
 	[33001] = {}, -- enchanted pendulet
 	[33057] = {}, -- amulet of theurgy
@@ -282,6 +283,7 @@ local necklaces = {
 	[38263] = {}, -- diamond necklace
 	[38264] = {}, -- rhodolith necklace
 	[38265] = {}, -- amethyst necklace
+	[39364] = {}, -- the Eye of Suon
 	[39715] = {}, -- lucky clover amulet
 }
 
@@ -1123,6 +1125,7 @@ local weapons = {
 	[30109] = { level = 200, vocs = {4}, sockets = 2 }, -- mace of destruction
 	[30110] = { level = 200, vocs = {4}, sockets = 3 }, -- hammer of destruction
 	[30179] = {}, -- strange mallet
+	[30181] = {}, -- mallet handle
 	[30307] = { sockets = 2 }, -- gnome sword
 	[31120] = {}, -- test weapon for knights 
 	[31379] = { sockets = 2 }, -- falcon longsword

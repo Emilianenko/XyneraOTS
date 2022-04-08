@@ -2023,6 +2023,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(WEAPON_WAND)
 	registerEnum(WEAPON_FIST)
 	registerEnum(WEAPON_AMMO)
+	registerEnum(WEAPON_QUIVER)
 
 	registerEnum(WORLD_TYPE_NO_PVP)
 	registerEnum(WORLD_TYPE_PVP)
