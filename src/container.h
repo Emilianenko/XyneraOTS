@@ -76,6 +76,9 @@ class Container : public Item, public Cylinder
 		uint32_t capacity() const {
 			return maxSize;
 		}
+		uint32_t getAmmoCount() const {
+			return ammoCount;
+		}
 
 		ContainerIterator iterator() const;
 
@@ -148,6 +151,7 @@ class Container : public Item, public Cylinder
 		uint32_t maxSize;
 		uint32_t totalWeight = 0;
 		uint32_t serializationCount = 0;
+		uint32_t ammoCount = 0;
 
 		bool unlocked;
 		bool pagination;

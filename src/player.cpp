@@ -222,10 +222,27 @@ Item* Player::getWeapon(slots_t slot, bool ignoreAmmo) const
 	}
 
 	if (!ignoreAmmo && weaponType == WEAPON_DISTANCE) {
-		const ItemType& it = Item::items[item->getID()];
-		if (it.ammoType != AMMO_NONE) {
+		const ItemType& itemType = Item::items[item->getID()];
+		if (itemType.ammoType != AMMO_NONE) {
 			Item* ammoItem = inventory[CONST_SLOT_AMMO];
-			if (!ammoItem || ammoItem->getAmmoType() != it.ammoType) {
+			if (!ammoItem || ammoItem->getAmmoType() != itemType.ammoType) {
+				// no ammo item was found, search for quiver instead
+				Container* quiver = inventory[CONST_SLOT_RIGHT] ? inventory[CONST_SLOT_RIGHT]->getContainer() : nullptr;
+				if (!quiver || quiver->getWeaponType() != WEAPON_QUIVER) {
+					// no quiver equipped
+					return nullptr;
+				}
+
+				for (ContainerIterator containerItem = quiver->iterator(); containerItem.hasNext(); containerItem.advance()) {
+					if (itemType.ammoType == (*containerItem)->getAmmoType()) {
+						const Weapon* weapon = g_weapons->getWeapon(*containerItem);
+						if (weapon && weapon->ammoCheck(this)) {
+							return *containerItem;
+						}
+					}
+				}
+
+				// no valid ammo was found in quiver
 				return nullptr;
 			}
 			item = ammoItem;
@@ -2700,14 +2717,14 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 
 					if (type == WEAPON_NONE || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
 						ret = RETURNVALUE_CANNOTBEDRESSED;
-					} else if (rightItem && (slotPosition & SLOTP_TWO_HAND) && rightItem->getWeaponType() != WEAPON_DISTANCE && type != WEAPON_QUIVER) {
+					} else if (rightItem && (slotPosition & SLOTP_TWO_HAND) && type != WEAPON_DISTANCE && rightItem->getWeaponType() != WEAPON_QUIVER) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;
 					}
 				} else if (slotPosition & SLOTP_TWO_HAND) {
 					const Item* rightItem = inventory[CONST_SLOT_RIGHT];
-					if (rightItem && rightItem != item && rightItem->getWeaponType() != WEAPON_DISTANCE && item->getWeaponType() != WEAPON_QUIVER) {
+					if (rightItem && rightItem != item && item->getWeaponType() != WEAPON_DISTANCE && rightItem->getWeaponType() != WEAPON_QUIVER) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;

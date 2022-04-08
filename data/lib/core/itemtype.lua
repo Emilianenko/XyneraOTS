@@ -58,6 +58,10 @@ function ItemType:isMissile()
 	return self:getWeaponType() == WEAPON_DISTANCE and ammoType ~= AMMO_ARROW and ammoType ~= AMMO_BOLT
 end
 
+function ItemType:isQuiver()
+	return self:getWeaponType() == WEAPON_QUIVER
+end
+
 function ItemType:isWand()
 	return self:getWeaponType() == WEAPON_WAND
 end

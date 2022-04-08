@@ -119,7 +119,9 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			if parent:isContainer() and parent:getSize() == parent:getCapacity() then
 				return RETURNVALUE_CONTAINERNOTENOUGHROOM
 			else
-				return moveItem:moveTo(parent)
+				if not (item:getType():isBow() and moveItem:getType():isQuiver()) then
+					return moveItem:moveTo(parent)
+				end
 			end
 		end
 	end
