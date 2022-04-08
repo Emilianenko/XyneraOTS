@@ -61,8 +61,13 @@ TaintLevels = {
 }
 
 TaintGivers = {
--- to do
+	["brachiodemon"] = TAINT_INFERNO,
+	["bony sea devil"] = TAINT_EBBFLOW,
+	["cloak of terror"] = TAINT_CRATER,
+	["many faces"] = TAINT_MIRROR,
+	["branchy crawler"] = TAINT_ROTTEN
 }
+
 -- returns the amount of active player taints
 function Player:getTaintCount()
 	local taintCount = 0
@@ -279,10 +284,15 @@ end
 do
 	local creatureevent = CreatureEvent("damageTaint")
 	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+		-- apply taint on-hit
 		if attacker and attacker:isMonster() then
-		
+			local taintId = TaintGivers[attacker:getName():lower()]
+			if taintId then
+				creature:setTaintStatus(taintId, true)
+			end
 		end
 		
+		-- activate taint 3
 		local taintCount = creature:getTaintCount()
 		if taintCount > 2 then
 			local args = TaintLevels[3].args
