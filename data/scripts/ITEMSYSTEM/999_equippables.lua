@@ -407,20 +407,21 @@ local weapons_magic = {
 }
 
 local throwables = {
-	[2111] = {},
-	[2389] = {}, -- spear
-	[2399] = {}, -- throwing star
-	[2410] = {}, -- throwing knife
-	[3965] = { level = 20 }, -- hunting spear
-	[7366] = {}, -- viper star
-	[7367] = { level = 42 }, -- enchanted spear
-	[7368] = { level = 80 }, -- assassin star
-	[7378] = { level = 25 }, -- royal spear
-	[19390] = {}, -- mean paladin spear
-	[23529] = { level = 60 }, -- glooth spear
-	[25526] = { level = 250 }, -- throwing star of sula
-	[28391] = {},
-	[28415] = { level = 120 }, -- royal star
+	[1294] = { breakChance = 3, maxHitChance = 75, }, -- small stone
+	[2111] = { breakChance = 100 }, -- snowball
+	[2389] = { breakChance = 3, maxHitChance = 80 }, -- spear
+	[2399] = { breakChance = 10, maxHitChance = 75 }, -- throwing star
+	[2410] = { breakChance = 7, maxHitChance = 75 }, -- throwing knife
+	[3965] = { breakChance = 6, level = 20, maxHitChance = 80 }, -- hunting spear
+	[7366] = { breakChance = 10, callback = generateViperStar }, -- viper star
+	[7367] = { breakChance = 1, level = 42, maxHitChance = 80 }, -- enchanted spear
+	[7368] = { breakChance = 33, level = 80, maxHitChance = 95 }, -- assassin star
+	[7378] = { breakChance = 3, level = 25, maxHitChance = 80 }, -- royal spear
+	[19390] = { breakChance = 3, maxHitChance = 80 }, -- mean paladin spear
+	[23529] = { breakChance = 20, level = 60, maxHitChance = 80 }, -- glooth spear
+	[25526] = { breakChance = 33, level = 250, maxHitChance = 95 }, -- throwing star of sula
+	[28391] = { breakChance = 40, maxHitChance = 85 }, -- leaf star
+	[28415] = { breakChance = 30, level = 120, maxHitChance = 95 }, -- royal star
 }
 
 local weapons_distance = {
@@ -539,8 +540,8 @@ local weapons_distance = {
 local ammo = {
 	[2543] = {}, -- bolt
 	[2544] = {}, -- arrow
-	[2545] = {}, -- poison arrow
-	[2546] = {}, -- burst arrow
+	[2545] = { callback = generatePoisonArrow }, -- poison arrow
+	[2546] = { callback = generateBurstArrow }, -- burst arrow
 	[2547] = { level = 55 }, -- power bolt
 	[6529] = { level = 110 }, -- infernal bolt
 	[7363] = { level = 30 }, -- piercing bolt
@@ -562,10 +563,10 @@ local ammo = {
 	[24704] = { level = 20 }, -- sniper arrow
 	[24705] = { level = 30 }, -- piercing bolt
 	[24706] = { level = 1 }, -- simple arrow
-	[24775] = {}, -- burst arrow
-	[28413] = { level = 150 }, -- diamond arrow
+	[24775] = { callback = generateBurstArrow }, -- burst arrow
+	[28413] = { level = 150, callback = generateDiamondArrow }, -- diamond arrow
 	[28414] = { level = 150 }, -- spectral bolt
-	[38557] = { level = 150 }, -- diamond arrow
+	[38557] = { level = 150, callback = generateDiamondArrow }, -- diamond arrow
 	[38558] = { level = 150 }, -- spectral bolt
 }
 
@@ -1701,6 +1702,7 @@ Equippables = {
 	shields = shields
 }
 
+---- REGISTER EQUIP SCRIPTS
 local slotTypes = {
 	backpacks = "backpack",
 	lightSources = "ammo",
@@ -1758,5 +1760,23 @@ for slotType, slotItems in pairs(Equippables) do
 		de:slot(slotTypes[slotType])
 		de:id(itemId)
 		de:register()
+	end
+end
+
+---- REGISTER AMMO SCRIPTS
+for itemId, itemData in pairs(Equippables.ammo) do
+	if itemData.callback then
+		itemData.callback(itemId)
+	else
+		generateDefaultArrow(itemId)
+	end
+end
+
+---- REGISTER MISSILES (spears, throwing stars)
+for itemId, itemData in pairs(Equippables.throwables) do
+	if itemData.callback then
+		itemData.callback(itemId)
+	else
+		generateDefaultMissile(itemId)
 	end
 end

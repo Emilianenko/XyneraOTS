@@ -31380,6 +31380,60 @@
 		<attribute key="weight" value="5000" />
 		<attribute key="description" value="Souvenir from Thais Museum." />
 	</item>
+	<item id="24699" article="an" name="arrow">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="arrow"/>
+		<attribute key="shootType" value="arrow"/>
+		<attribute key="maxhitchance" value="91"/>
+		<attribute key="attack" value="25"/>
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="24702" article="a" name="bolt">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="bolt"/>
+		<attribute key="shootType" value="bolt"/>
+		<attribute key="maxhitchance" value="87"/>
+		<attribute key="attack" value="30"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="24703" article="a" name="power bolt">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="bolt"/>
+		<attribute key="shootType" value="powerbolt"/>
+		<attribute key="maxhitchance" value="91"/>
+		<attribute key="attack" value="40"/>
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="24704" article="a" name="sniper arrow">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="arrow"/>
+		<attribute key="shootType" value="sniperarrow"/>
+		<attribute key="maxhitchance" value="100"/>
+		<attribute key="attack" value="28"/>
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="24705" article="a" name="piercing bolt">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="bolt"/>
+		<attribute key="shootType" value="piercingbolt"/>
+		<attribute key="maxhitchance" value="87"/>
+		<attribute key="attack" value="33"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="24706" article="a" name="simple arrow" plural="simple arrows">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="arrow"/>
+		<attribute key="shootType" value="arrow"/>
+		<attribute key="maxhitchance" value="40"/>
+		<attribute key="attack" value="20"/>
+		<attribute key="weight" value="60"/>
+	</item>
 	<item id="24707" name="werebadger claws">
 		<attribute key="weight" value="110" />
 	</item>
@@ -31615,6 +31669,15 @@
 	<item id="24774" name="Store Coins">
 		<attribute key="weight" value="0" />
 		<attribute key="description" value="Store Coins are needed to shop exclusive products in the Store, including fabulous mounts, classy outfits, a Name Change or even Premium Time." />
+	</item>
+	<item id="24775" article="a" name="burst arrow">
+		<attribute key="weaponType" value="ammunition"/>
+		<attribute key="slotType" value="ammo"/>
+		<attribute key="ammotype" value="arrow"/>
+		<attribute key="shootType" value="burstarrow"/>
+		<attribute key="maxhitchance" value="100"/>
+		<attribute key="attack" value="27"/>
+		<attribute key="weight" value="90"/>
 	</item>
 	<item id="24776" article="a" name="little adventurer doll">
 		<attribute key="weight" value="2613" />
@@ -33765,6 +33828,7 @@
 		<attribute key="shootType" value="leafstar" />
 	</item>
 	<item id="28413" article="a" name="diamond arrow">
+		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="80" />
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
@@ -33772,6 +33836,7 @@
 		<attribute key="shootType" value="diamondarrow" />
 	</item>
 	<item id="28414" article="a" name="spectral bolt">
+		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="90" />
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
@@ -34023,6 +34088,7 @@
 		<attribute key="slotType" value="backpack" />
 	</item>
 	<item id="38557" article="a" name="diamond arrow">
+		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="80" />
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
@@ -34030,6 +34096,7 @@
 		<attribute key="shootType" value="diamondarrow" />
 	</item>
 	<item id="38558" article="a" name="spectral bolt">
+		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="90" />
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
