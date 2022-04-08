@@ -207,8 +207,8 @@ do
 		missile:id(itemId)
 		missile:breakChance(30)
 		missile:attack(itemType:getAttack())
-		if Equippables.ammo[itemId] and Equippables.ammo[itemId].level then
-			missile:level(Equippables.ammo[itemId].level)
+		if Equippables.throwables[itemId] and Equippables.throwables[itemId].level then
+			missile:level(Equippables.throwables[itemId].level)
 			missile:wieldUnproperly(true)
 		end
 		missile:range(itemType:getShootRange())
