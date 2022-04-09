@@ -17571,9 +17571,13 @@ int LuaScriptInterface::luaMoveEventVocation(lua_State* L)
 			lastVoc = getBoolean(L, 4);
 		}
 		if (showInDescription) {
+			std::string vocName = asLowerCaseString(getString(L, 2)) + "s";
+			if (vocName.compare("nones") == 0) {
+				vocName = "players without vocation";
+			}
+
 			if (moveevent->getVocationString().empty()) {
-				tmp = asLowerCaseString(getString(L, 2));
-				tmp += "s";
+				tmp = vocName;
 				moveevent->setVocationString(tmp);
 			} else {
 				tmp = moveevent->getVocationString();
@@ -17582,8 +17586,7 @@ int LuaScriptInterface::luaMoveEventVocation(lua_State* L)
 				} else {
 					tmp += ", ";
 				}
-				tmp += asLowerCaseString(getString(L, 2));
-				tmp += "s";
+				tmp += vocName;
 				moveevent->setVocationString(tmp);
 			}
 		}

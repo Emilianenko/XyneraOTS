@@ -173,8 +173,8 @@ local rings = {
 	[10315] = { level = 100 }, -- claw of 'The Noxious Spawn'
 	[10502] = {}, -- engraved wedding ring
 	[10510] = {}, -- broken wedding ring
-	[13825] = {}, -- star ring
-	[13826] = {}, -- star ring
+	[13825] = { vocs = {0} }, -- star ring
+	[13826] = { vocs = {0} }, -- star ring
 	[13877] = {}, -- broken ring of ending
 	[14327] = {}, -- shapeshifter ring
 	[18408] = { level = 120 }, -- prismatic ring
@@ -574,9 +574,9 @@ local ammo = {
 
 local quivers = {
 	[38180] = { level = 150, vocs = {3} }, -- jungle quiver
-	[38218] = { vocs = {3} }, -- quiver
-	[38504] = { vocs = {3} }, -- blue quiver
-	[38505] = { vocs = {3} }, -- red quiver
+	[38218] = { vocs = {3, 0} }, -- quiver
+	[38504] = { vocs = {3, 0} }, -- blue quiver
+	[38505] = { vocs = {3, 0} }, -- red quiver
 	[39322] = { level = 250, vocs = {3} }, -- eldritch quiver
 }
 
@@ -1738,21 +1738,24 @@ for slotType, slotItems in pairs(Equippables) do
 
 		-- required voc + autogenerate promos
 		if itemData.vocs then
-			local vocM = {}
-			local lastVocId = 0
+			local vocPromoData = {}
+			local realVocs = {}
+			local lastVocId = -1
 			for a, vocId in pairs(itemData.vocs) do
-				vocM[vocId] = true
+				vocPromoData[vocId] = true
+				realVocs[#realVocs + 1] = vocId
 				lastVocId = vocId
 				local promos = Vocation(vocId):getAllPromotions()
 				if promos then
 					for b, promoVocId in pairs(promos) do
-						vocM[promoVocId] = false
+						vocPromoData[promoVocId] = false
+						realVocs[#realVocs + 1] = promoVocId
 					end
 				end
 			end
 		
-			for vocId, showDesc in pairs(vocM) do
-				eq:vocation(Vocation(vocId):getName(), showDesc, vocId == lastVocId)
+			for _, vocId in pairs(realVocs) do
+				eq:vocation(Vocation(vocId):getName(), vocPromoData[vocId], vocId == lastVocId)
 			end
 		end
 		
