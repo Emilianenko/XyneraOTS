@@ -1,9 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Eryn" script="runes.lua" walkinterval="2000" floorchange="0">
+<npc name="Eryn" script="default.lua" walkinterval="2000" floorchange="0">
 	<health now="100" max="100" />
-	<look type="130" head="39" body="122" legs="125" feet="57" addons="0" />
+	<look type="133" head="0" body="77" legs="114" feet="0" addons="3"/>
 	<parameters>
-		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell runes, potions, wands and rods." />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell runes, potions, wands and rods. Say {trade}." />
 		<parameter key="message_decline" value="Is |TOTALCOST| gold coins too much for you? Get out of here!" />
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_buyable" value="
+			avalanche rune, 2274, 57;
+			blank rune, 2260, 10;
+			chameleon rune, 2291, 210;
+			convince creature rune, 2290, 80;
+			cure poison rune, 2266, 65;
+			destroy field rune, 2261, 15;
+			durable exercise axe, 37936, 945000, 1800;
+			durable exercise bow, 37938, 945000, 1800;
+			durable exercise club, 37937, 945000, 1800;
+			durable exercise sword, 37935, 945000, 1800;
+			durable exercise rod, 37939, 945000, 1800;
+			durable exercise wand, 37940, 945000, 1800;
+			energy bomb rune, 2262, 203;
+			energy field rune, 2277, 38;
+			energy wall rune, 2279, 85;
+			exercise axe, 31209, 262500, 500;
+			exercise bow, 31211, 262500, 500;
+			exercise club, 31210, 262500, 500;
+			exercise sword, 31208, 262500, 500;
+			exercise rod, 31212, 262500, 500;
+			exercise wand, 31213, 262500, 500;
+			explosion rune, 2313, 31;
+			fire bomb rune, 2305, 147;
+			fire field rune, 2301, 28;
+			fire wall rune, 2303, 61;
+			great fireball rune, 2304, 57;
+			great health potion, 7591, 225;
+			great mana potion, 7590, 144;
+			great spirit potion, 8472, 228;
+			hailstorm rod, 2183, 15000;
+			health potion, 7618, 50;
+			heavy magic missile rune, 2311, 12;
+			intense healing rune, 2265, 95;
+			lasting exercise axe, 37942, 7560000, 14400;
+			lasting exercise bow, 37944, 7560000, 14400;
+			lasting exercise club, 37943, 7560000, 14400;
+			lasting exercise sword, 37941, 7560000, 14400;
+			lasting exercise rod, 37945, 7560000, 14400;
+			lasting exercise wand, 37946, 7560000, 14400;
+			light magic missile rune, 2287, 4;
+			mana potion, 7620, 56;
+			moonlight rod, 2186, 1000;
+			necrotic rod, 2185, 5000;
+			northwind rod, 8911, 7500;
+			paralyze rune, 8921, 900;
+			poison field rune, 2285, 21;
+			poison wall rune, 2289, 52;
+			snakebite rod, 2182, 500;
+			spellbook, 2175, 150;
+			springsprout rod, 8912, 18000;
+			stalagmite rune, 2292, 12;
+			strong health potion, 7588, 115;
+			strong mana potion, 7589, 93;
+			sudden death rune, 2268, 135;
+			supreme health potion, 26031, 625;
+			terra rod, 2181, 10000;
+			thunderstorm rune, 2315, 47;
+			ultimate healing rune, 2273, 175;
+			ultimate health potion, 8473, 379;
+			ultimate mana potion, 26029, 438;
+			ultimate spirit potion, 26030, 438;
+			underworld rod, 8910, 22000;
+			wand of cosmic energy, 2189, 10000;
+			wand of decay, 2188, 5000;
+			wand of draconia, 2278, 7500;
+			wand of dragonbreath, 2191, 1000;
+			wand of inferno, 2187, 15000;
+			wand of starstorm, 8920, 18000;
+			wand of voodoo, 8922, 22000;
+			wand of vortex, 2190, 500;
+			wild growth rune, 2269, 160;"/>
+		<parameter key="shop_sellable" value="
+			empty potion flask, 7634, 5;
+			empty potion flask, 7635, 5;
+			empty potion flask, 7636, 5;
+			vial, 2006, 5;
+			spellwand, 7735, 299;"/>
 	</parameters>
 </npc>

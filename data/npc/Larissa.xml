@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Larissa" walkinterval="2000" floorchange="0" script="default.lua">
+	<health now="100" max="100"/>
+	<look type="150" head="0" body="80" legs="90" feet="114" addons="3"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_sellable" value="
+		    beetle necklace, 11374, 1500;
+			crystal necklace, 2125, 400;
+			ruby necklace, 2133, 2000;
+			necklace of the deep, 15403, 3000;
+			garlic necklace, 2199, 100;
+			demonbone amulet, 2136, 32000;
+			glacier amulet, 7888, 1500;
+			leviathan's amulet, 10220, 3000;
+			magma amulet, 7890, 1500;
+			platinum amulet, 2171, 2500;
+			sacred tree amulet, 10219, 3000;
+			crystal ring, 6093, 250;
+			death ring, 6300, 1000;
+			gold ring, 2179, 8000;
+			ring of the sky, 2123, 30000;
+			axe ring, 2208, 100;
+			club ring, 2209, 100;
+			power ring, 2166, 50;
+			stealth ring, 2165, 200;
+			sword ring, 2207, 100;
+			dwarven ring, 2213, 100;
+			energy ring, 2167, 100;
+			life ring, 2168, 50;
+			might ring, 2164, 250;
+			ring of healing, 2214, 100;
+			time ring, 2169, 100;
+			scarab amulet, 2135, 200;
+			terra amulet, 7887, 1500;
+			bronze amulet, 2172, 50;
+			elven amulet, 2198, 100;
+			stone skin amulet, 2197, 500;
+			protection amulet, 2200, 100;
+			silver amulet, 2170, 50;
+			golden amulet, 2130, 2000;
+			glooth amulet, 23554, 2000;
+			shockwave amulet, 10221, 3000;
+			wailing widow's necklace, 11329, 3000;
+			ancient amulet, 2142, 200;
+			collar of blue plasma, 26198, 6000;
+			collar of green plasma, 26199, 6000;
+			collar of red plasma, 26200, 6000;
+			ring of blue plasma, 26185, 8000;
+			ring of green plasma, 26187, 8000;
+			ring of red plasma, 26189, 8000;"/>
+		<parameter key="shop_buyable" value="
+			spike sword, 2383, 8000;
+			axe ring, 2208, 500;
+			bronze amulet, 2172, 100;
+			club ring, 2209, 500;
+			elven amulet, 2198, 500;
+			garlic necklace, 2199, 100;
+			power ring, 2166, 100;
+			stealth ring, 2165, 5000;
+			stone skin amulet, 2197, 5000;
+			dwarven ring, 2213, 2000;
+			energy ring, 2167, 2000;
+			life ring, 2168, 900;
+			might ring, 2164, 5000;
+			protection amulet, 2200, 700;
+			ring of healing, 2214, 2000;
+			silver amulet, 2170, 100;
+			strange talisman, 2161, 100;
+			time ring, 2169, 2000;
+			sword ring, 2207, 500;"/>
+	</parameters>
+</npc>

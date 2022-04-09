@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Bertha" walkinterval="2000" floorchange="0" script="default.lua">
+	<health now="100" max="100"/>
+	<look type="140" head="79" body="80" legs="76" feet="94" addons="3"/>
+	<parameters>
+		<parameter key="module_keywords" value="1"/>
+		<parameter key="keywords" value="goods;"/>
+		<parameter key="keyword_reply1" value="My inventory of general goods is large, ask me for a {trade} to take a look."/>
+		<parameter key="message_farewell" value="Good bye, |PLAYERNAME|."/>
+		<parameter key="message_walkaway" value="Good bye, |PLAYERNAME|."/>
+		<parameter key="message_greet" value="Oh, please come in, |PLAYERNAME|. What sort of {goods} do you need?"/>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_buyable" value="
+            backpack, 1988, 20;
+            beach backpack, 5949, 20;
+            blue backpack, 2002, 20;
+			brocade backpack, 9774, 20;
+			camouflage backpack, 3940, 20;
+			crowbar, 2416, 260;
+			demon backpack, 10518, 10000;
+			dragon backpack, 11243, 10000;
+			expedition backpack, 11241, 10000;
+			festive backpack, 32853, 10000;
+			fishing rod, 2580, 150;
+			fur backpack, 7342, 20;
+			glooth backpack, 23666, 10000;
+			golden backpack, 2004, 20;
+			green backpack, 1998, 20;
+			grey backpack, 2003, 20;
+			heart backpack, 11119, 10000;
+			jewelled backpack, 5801, 10000;
+			machete, 2420, 35;
+			minotaur backpack, 11244, 10000;
+			moon backpack, 10521, 10000;
+			mug, 2012, 4, 0;
+			mushroom backpack, 18393, 10000;
+			net, 34145, 50;
+			orange backpack, 10519, 20;
+			pick, 2553, 50;
+			pirate backpack, 5926, 20;
+			present, 1990, 10;
+			purple backpack, 2001, 20;
+			red backpack, 2000, 20;
+			rope, 2120, 50;
+			santa backpack, 11263, 10000;
+			scythe, 2550, 50;
+			shovel, 2554, 50;
+			torch, 2050, 2;
+			valentine's card, 6538, 30;
+			worm, 3976, 1;
+			yellow backpack, 1999, 20;"/>
+		<parameter key="shop_sellable" value="
+			green book, 1980, 15;
+			orange book, 1977, 30;
+			blue book, 1978, 20;
+			gemmed book, 1976, 100;
+			closed trap, 2578, 75;
+			crowbar, 2416, 50;
+			fishing rod, 2580, 40;
+			inkwell, 2600, 8;
+			machete, 2420, 6;
+			parchment, 7696, 5;
+			pick, 2553, 15;
+			rope, 2120, 15;
+			scythe, 2550, 10;
+			shovel, 2554,8;
+			watch, 2036, 6;
+			wooden hammer, 2556, 15;"/>
+	</parameters>
+</npc>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Edmund" walkinterval="2000" floorchange="0" script="default.lua">
+	<health now="100" max="100"/>
+	<look type="472" head="116" body="114" legs="95" feet="78" addons="0"/>
+	<voices>
+		<voice text="Shop Jewels, come to trade with me." interval2="90" margin="1" yell="no"/>
+	</voices>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_sellable" value="
+			amber with a bug, 35280, 41000;
+			amber with a dragonfly, 35281, 56000;
+			amber, 35282, 20000;
+			ancient coin, 27046, 350;
+			blue crystal shard, 18413, 1500;
+			brown crystal splinter, 18417, 400;
+			coral brooch, 27047, 750;
+			crunor idol, 32711, 30000;
+			cyan crystal fragment, 18419, 800;
+			dragon figurine, 32709, 45000;
+			gemmed figurine, 27048, 3500;
+			giant amethyst, 35278, 60000;
+			giant emerald, 32716, 90000;
+			giant ruby, 32715, 70000;
+			giant sapphire, 32717, 50000;
+			green giant shimmering pearl, 7632, 3000;
+			giant topaz, 35279, 80000;
+			gold ingot, 9971, 5000;
+			gold nugget, 2157, 850;
+			green crystal fragment, 18421, 800;
+			green crystal shard, 18415, 1500;
+			green crystal splinter, 18416, 400;
+			lion figurine, 36437, 10000;
+			onyx chip, 24849, 400;
+			opal, 24850, 500;
+			golden fafnar trophy, 10542, 10000;
+			marlin trophy, 7964, 5000;
+			unholy book, 6103, 30000;
+			silver rune emblem explosion, 12563, 5000;
+			silver rune emblem heavy magic missile, 12561, 5000;
+			silver rune emblem sudden death, 12565, 5000;
+			silver rune emblem ultimate healing, 12559, 5000;
+			sea serpent trophy, 10529, 10000;
+			ornate locket, 32712, 18000;
+			silver fafnar trophy, 10543, 1000;
+			prismatic quartz, 27618, 450;
+			statue of deathstrike, 18504, 3000;
+			statue of devovorga, 12663, 1500;
+			statue of gnomevil, 18508, 2000;
+			trophy of jaul, 15419, 4000;
+			souleater trophy, 12635, 7500;
+			statue of abyssador, 18500, 4000;
+			trophy of tanjis, 15417, 2000;
+			trophy of obujos, 15415, 3000;
+			red crystal fragment, 18420, 800;
+			skull coin, 35239, 12000;
+			small amethyst, 2150, 200;
+			small diamond, 2145, 300;
+			small emerald, 2149, 250;
+			small enchanted amethyst, 7762, 200;
+			small enchanted emerald, 7761, 250;
+			small enchanted ruby, 7760, 250;
+			small enchanted sapphire, 7759, 250;
+			small ruby, 2147, 250;
+			small sapphire, 2146, 250;
+			small topaz, 9970, 200;
+			tiger eye, 27617, 350;
+			unicorn figurine, 32710, 50000;
+			violet crystal shard, 18414, 1500;
+			watermelon tourmaline, 36435, 30000;
+			watermelon tourmaline, 36436, 230000;
+			wedding ring, 2121, 100;
+			white pearl, 2143, 320;
+			white silk flower, 36664, 9000;
+			bar of gold, 15515, 10000;
+			black pearl, 2144, 280;
+			blue crystal splinter, 18418, 400;
+			blue rose, 2745, 200;
+			brown giant shimmering pearl, 7633, 3000;
+			butterfly ring, 28354, 2000;
+			colourful snail shell, 28352, 250;
+			diamond, 35426, 15000;
+			golden figurine, 5799, 3000;
+			hexagonal ruby, 32836, 30000;
+			moonstone, 35427, 13000;
+			rainbow quartz, 28393, 500;
+			red rose, 2744, 10;
+			shimmering beetles, 28349, 150;
+			purple tome, 1982, 2000;
+			red tome, 1986, 2000;
+			white gem, 35425, 12000;"/>
+		<parameter key="shop_buyable" value="
+			black pearl, 2144, 560;
+			bronze goblet, 5807, 2000;
+			golden amulet, 2130, 6600;
+			golden goblet, 5805, 5000;
+			ruby necklace, 2133, 3560;
+			silver goblet, 5806, 3000;
+			small amethyst, 2150, 400;
+			small diamond, 2145, 600;
+			small emerald, 2149, 500;
+			small ruby, 2147, 500;
+			small sapphire, 2146, 500;
+			wedding ring, 2121, 990;
+			white pearl, 2143, 320;"/>
+	</parameters>
+</npc>
