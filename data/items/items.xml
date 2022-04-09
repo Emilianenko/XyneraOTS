@@ -35579,13 +35579,11 @@
 	</item>
 	<item id="38180" article="a" name="jungle quiver">
 		<attribute key="weaponType" value="quiver"/>
-		<attribute key="slotType" value="right-hand"/>
 		<attribute key="containersize" value="8"/>
 		<attribute key="weight" value="1800"/>
 	</item>
 	<item id="38218" article="a" name="quiver">
 		<attribute key="weaponType" value="quiver"/>
-		<attribute key="slotType" value="right-hand"/>
 		<attribute key="containersize" value="6"/>
 		<attribute key="weight" value="1700"/>
 	</item>
@@ -35639,13 +35637,11 @@
 	</item>
 	<item id="38504" article="a" name="blue quiver">
 		<attribute key="weaponType" value="quiver"/>
-		<attribute key="slotType" value="right-hand"/>
 		<attribute key="containersize" value="6"/>
 		<attribute key="weight" value="1700"/>
 	</item>
 	<item id="38505" article="a" name="red quiver">
 		<attribute key="weaponType" value="quiver"/>
-		<attribute key="slotType" value="right-hand"/>
 		<attribute key="containersize" value="6"/>
 		<attribute key="weight" value="1700"/>
 	</item>
@@ -35760,7 +35756,6 @@
 	</item>
 	<item id="39322" article="a" name="eldritch quiver">
 		<attribute key="weaponType" value="quiver"/>
-		<attribute key="slotType" value="right-hand"/>
 		<attribute key="containersize" value="8"/>
 		<attribute key="weight" value="2200"/>
 	</item>

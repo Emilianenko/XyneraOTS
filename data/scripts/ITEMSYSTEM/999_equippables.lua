@@ -573,11 +573,11 @@ local ammo = {
 }
 
 local quivers = {
-	[38180] = {}, -- jungle quiver
-	[38218] = {}, -- quiver
-	[38504] = {}, -- blue quiver
-	[38505] = {}, -- red quiver
-	[39322] = {}, -- eldritch quiver
+	[38180] = { level = 150, vocs = {3} }, -- jungle quiver
+	[38218] = { vocs = {3} }, -- quiver
+	[38504] = { vocs = {3} }, -- blue quiver
+	[38505] = { vocs = {3} }, -- red quiver
+	[39322] = { level = 250, vocs = {3} }, -- eldritch quiver
 }
 
 local weapons = {
@@ -1715,7 +1715,7 @@ local slotTypes = {
 	throwables = "hand",
 	weapons_distance = "hand",
 	ammo = "ammo",
-	quivers = "ammo",
+	quivers = "shield",
 	weapons = "hand",
 	helmets = "head",
 	armors = "armor",
@@ -1730,12 +1730,12 @@ for slotType, slotItems in pairs(Equippables) do
 		eq:type("equip")
 		eq:slot(slotTypes[slotType])
 		eq:id(itemId)
-		
+				
 		-- required level
 		if itemData.level then
 			eq:level(itemData.level)
 		end
-		
+
 		-- required voc + autogenerate promos
 		if itemData.vocs then
 			local vocM = {}
@@ -1753,7 +1753,7 @@ for slotType, slotItems in pairs(Equippables) do
 		
 			for vocId, showDesc in pairs(vocM) do
 				eq:vocation(Vocation(vocId):getName(), showDesc, vocId == lastVocId)
-			end	
+			end
 		end
 		
 		eq:register()

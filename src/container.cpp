@@ -255,6 +255,11 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 	}
 
+	// quiver: allow ammo only
+	if (getWeaponType() == WEAPON_QUIVER && item->getWeaponType() != WEAPON_AMMO) {
+		return RETURNVALUE_QUIVERAMMOONLY;
+	}
+
 	const Cylinder* cylinder = getParent();
 
 	// don't allow moving items into container that is store item and is in store inbox

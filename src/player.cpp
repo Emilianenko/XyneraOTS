@@ -2667,8 +2667,12 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					} else {
 						const Item* leftItem = inventory[CONST_SLOT_LEFT];
 						if (leftItem) {
-							if (leftItem->getWeaponType() != WEAPON_DISTANCE && (leftItem->getSlotPosition() | slotPosition) & SLOTP_TWO_HAND) {
-								ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+							if ((leftItem->getSlotPosition() | slotPosition) & SLOTP_TWO_HAND) {
+								if (leftItem->getWeaponType() != WEAPON_DISTANCE || item->getWeaponType() != WEAPON_QUIVER) {
+									ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+								} else {
+									ret = RETURNVALUE_NOERROR;
+								}
 							} else {
 								ret = RETURNVALUE_NOERROR;
 							}
@@ -2678,7 +2682,7 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					}
 				} else if (slotPosition & SLOTP_TWO_HAND) {
 					const Item* leftItem = inventory[CONST_SLOT_LEFT];
-					if (leftItem && leftItem != item && leftItem->getWeaponType() != WEAPON_DISTANCE && item->getWeaponType() != WEAPON_QUIVER) {
+					if (leftItem && leftItem != item) {
 						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
 					} else {
 						ret = RETURNVALUE_NOERROR;
@@ -2687,8 +2691,12 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					const Item* leftItem = inventory[CONST_SLOT_LEFT];
 					WeaponType_t type = item->getWeaponType(), leftType = leftItem->getWeaponType();
 
-					if (leftItem->getSlotPosition() & SLOTP_TWO_HAND && type != WEAPON_QUIVER) {
-						ret = RETURNVALUE_DROPTWOHANDEDITEM;
+					if (leftItem->getSlotPosition() & SLOTP_TWO_HAND) {
+						if (leftItem->getWeaponType() != WEAPON_DISTANCE || type != WEAPON_QUIVER) {
+							ret = RETURNVALUE_DROPTWOHANDEDITEM;
+						} else {
+							ret = RETURNVALUE_NOERROR;
+						}
 					} else if (item == leftItem && count == item->getItemCount()) {
 						ret = RETURNVALUE_NOERROR;
 					} else if (leftType == WEAPON_SHIELD && type == WEAPON_SHIELD) {
@@ -2715,17 +2723,25 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					WeaponType_t type = item->getWeaponType();
 					const Item* rightItem = inventory[CONST_SLOT_RIGHT];
 
-					if (type == WEAPON_NONE || type == WEAPON_SHIELD || type == WEAPON_AMMO) {
+					if (type == WEAPON_NONE || type == WEAPON_SHIELD || type == WEAPON_AMMO || type == WEAPON_QUIVER) {
 						ret = RETURNVALUE_CANNOTBEDRESSED;
-					} else if (rightItem && (slotPosition & SLOTP_TWO_HAND) && type != WEAPON_DISTANCE && rightItem->getWeaponType() != WEAPON_QUIVER) {
-						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+					} else if (rightItem && (slotPosition & SLOTP_TWO_HAND)) {
+						if (type != WEAPON_DISTANCE || rightItem->getWeaponType() != WEAPON_QUIVER) {
+							ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+						} else {
+							ret = RETURNVALUE_NOERROR;
+						}
 					} else {
 						ret = RETURNVALUE_NOERROR;
 					}
 				} else if (slotPosition & SLOTP_TWO_HAND) {
 					const Item* rightItem = inventory[CONST_SLOT_RIGHT];
-					if (rightItem && rightItem != item && item->getWeaponType() != WEAPON_DISTANCE && rightItem->getWeaponType() != WEAPON_QUIVER) {
-						ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+					if (rightItem && rightItem != item) {
+						if (item->getWeaponType() != WEAPON_DISTANCE || rightItem->getWeaponType() != WEAPON_QUIVER) {
+							ret = RETURNVALUE_BOTHHANDSNEEDTOBEFREE;
+						} else {
+							ret = RETURNVALUE_NOERROR;
+						}
 					} else {
 						ret = RETURNVALUE_NOERROR;
 					}
@@ -2734,7 +2750,11 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 					WeaponType_t type = item->getWeaponType(), rightType = rightItem->getWeaponType();
 
 					if (rightItem->getSlotPosition() & SLOTP_TWO_HAND) {
-						ret = RETURNVALUE_DROPTWOHANDEDITEM;
+						if (type != WEAPON_DISTANCE || rightItem->getWeaponType() != WEAPON_QUIVER) {
+							ret = RETURNVALUE_DROPTWOHANDEDITEM;
+						} else {
+							ret = RETURNVALUE_NOERROR;
+						}
 					} else if (item == rightItem && count == item->getItemCount()) {
 						ret = RETURNVALUE_NOERROR;
 					} else if (rightType == WEAPON_SHIELD && type == WEAPON_SHIELD) {

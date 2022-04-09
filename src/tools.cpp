@@ -1320,6 +1320,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUCANONLYUNWRAPINOWNHOUSE:
 			return "You can only wrap and unwrap this item in your own house.";
 
+		case RETURNVALUE_QUIVERAMMOONLY:
+			return "This quiver only holds arrows and bolts.\nYou cannot put any other items in it.";
+
 		case RETURNVALUE_SCRIPT: // action blocked by lua script
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";

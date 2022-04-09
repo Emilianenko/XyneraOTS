@@ -103,7 +103,8 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 		
 	end
 	
-	if item:getTopParent() == self and bit.band(toPosition.y, 0x40) == 0 then
+	-- equipping items
+	if bit.band(toPosition.y, 0x40) == 0 then
 		local itemType, moveItem = ItemType(item:getId())
 		if bit.band(itemType:getSlotPosition(), SLOTP_TWO_HAND) ~= 0 and toPosition.y == CONST_SLOT_LEFT then
 			moveItem = self:getSlotItem(CONST_SLOT_RIGHT)
@@ -119,9 +120,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			if parent:isContainer() and parent:getSize() == parent:getCapacity() then
 				return RETURNVALUE_CONTAINERNOTENOUGHROOM
 			else
-				if not (item:getType():isBow() and moveItem:getType():isQuiver()) then
-					return moveItem:moveTo(parent)
-				end
+				return moveItem:moveTo(parent)
 			end
 		end
 	end
