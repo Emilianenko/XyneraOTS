@@ -156,6 +156,8 @@ function ItemType:getWeaponString()
 		weaponString = "wand/rod"
 	elseif weaponType == WEAPON_FIST then
 		weaponString = "punching weapon"
+	elseif weaponType == WEAPON_QUIVER then
+		weaponString = "quiver"	
 	end
 	
 	if self:isTwoHanded() then
