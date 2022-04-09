@@ -38953,7 +38953,32 @@
 	</item>
 	<item id="30183" article="a" name="polarized crystal" />
 	<item fromid="30184" toid="30185" article="a" name="depolarized crystal" />
-	<item fromid="30190" toid="30193" name="remains of a stonerefiner" />
+	<item id="30190" article="a" name="dead stonerefiner">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="30191" article="a" name="dead stonerefiner">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="30190"/>
+		<attribute key="containersize" value="14"/>
+	</item>
+	<item id="30192" article="a" name="dead stonerefiner">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="30191"/>
+		<attribute key="containersize" value="28"/>
+	</item>
+	<item id="30193" article="a" name="dead stonerefiner">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="30192"/>
+		<attribute key="containersize" value="28"/>
+	</item>
 	<item fromid="30198" toid="30201" name="remains of a deepworm" />
 	<item id="30203" article="an" name="opticorder rectifier" />
 	<item fromid="30208" toid="30211" name="remains of a tunnel tyrant" />
