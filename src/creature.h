@@ -134,6 +134,9 @@ class Creature : virtual public Thing
 		virtual bool canSee(const Position& pos) const;
 		virtual bool canSeeCreature(const Creature* creature) const;
 
+		void refreshInClient() const;
+		void refreshCreatureIcons() const;
+
 		virtual RaceType_t getRace() const {
 			return RACE_NONE;
 		}
@@ -235,6 +238,44 @@ class Creature : virtual public Thing
 		bool isInvisible() const;
 		ZoneType_t getZone() const {
 			return getTile()->getZone();
+		}
+
+		// creature icons
+		auto& getCreatureIcons() const {
+			return creatureIcons;
+		}
+
+		size_t getCreatureIconCount() const {
+			return creatureIcons.size();
+		}
+
+		bool hasCreatureIcon(CreatureIcon_t iconId) {
+			return creatureIcons.find(iconId) != creatureIcons.end();
+		}
+
+		uint16_t getCreatureIconValue(CreatureIcon_t iconId) {
+			return hasCreatureIcon(iconId) ? creatureIcons[iconId] : 0;
+		}
+
+		bool setCreatureIconValue(CreatureIcon_t iconId, uint16_t value) {
+			if (iconId < CREATURE_ICON_LAST) {
+				creatureIcons[iconId] = value;
+				refreshCreatureIcons();
+				return true;
+			}
+
+			return false;
+		}
+
+		bool removeCreatureIcon(CreatureIcon_t iconId) {
+			auto iter = creatureIcons.find(iconId);
+			if (iter == creatureIcons.end()) {
+				return false;
+			}
+
+			creatureIcons.erase(iter);
+			refreshCreatureIcons();
+			return true;
 		}
 
 		//walk functions
@@ -488,6 +529,7 @@ class Creature : virtual public Thing
 		ConditionList conditions;
 
 		std::vector<Direction> listWalkDir;
+		std::map<CreatureIcon_t, uint16_t> creatureIcons;
 
 		Tile* tile = nullptr;
 		Creature* attackedCreature = nullptr;

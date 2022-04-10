@@ -87,6 +87,24 @@ bool Creature::canSeeCreature(const Creature* creature) const
 	return true;
 }
 
+void Creature::refreshInClient() const
+{
+	SpectatorVec spectators;
+	g_game.map.getSpectators(spectators, this->getPosition(), true, true);
+	for (Creature* spectator : spectators) {
+		spectator->getPlayer()->sendUpdateTileCreature(this);
+	}
+}
+
+void Creature::refreshCreatureIcons() const
+{
+	SpectatorVec spectators;
+	g_game.map.getSpectators(spectators, this->getPosition(), true, true);
+	for (Creature* spectator : spectators) {
+		spectator->getPlayer()->sendUpdateCreatureIcons(this);
+	}
+}
+
 void Creature::setSkull(Skulls_t newSkull)
 {
 	skull = newSkull;

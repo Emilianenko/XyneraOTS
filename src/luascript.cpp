@@ -1585,6 +1585,36 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ANI_ROYALSTAR)
 	registerEnum(CONST_ANI_WEAPONTYPE)
 
+	registerEnum(CREATURE_ICON_NONE)
+	registerEnum(CREATURE_ICON_CROSS_WHITE)
+	registerEnum(CREATURE_ICON_CROSS_WHITE_RED)
+	registerEnum(CREATURE_ICON_ORB_RED)
+	registerEnum(CREATURE_ICON_ORB_GREEN)
+	registerEnum(CREATURE_ICON_ORB_RED_GREEN)
+	registerEnum(CREATURE_ICON_GEM_GREEN)
+	registerEnum(CREATURE_ICON_GEM_YELLOW)
+	registerEnum(CREATURE_ICON_GEM_BLUE)
+	registerEnum(CREATURE_ICON_GEM_PURPLE)
+	registerEnum(CREATURE_ICON_GEM_RED)
+	registerEnum(CREATURE_ICON_PIGEON)
+	registerEnum(CREATURE_ICON_ENERGY)
+	registerEnum(CREATURE_ICON_POISON)
+	registerEnum(CREATURE_ICON_WATER)
+	registerEnum(CREATURE_ICON_FIRE)
+	registerEnum(CREATURE_ICON_ICE)
+	registerEnum(CREATURE_ICON_ARROW_UP)
+	registerEnum(CREATURE_ICON_ARROW_DOWN)
+	registerEnum(CREATURE_ICON_WARNING)
+	registerEnum(CREATURE_ICON_QUESTION)
+	registerEnum(CREATURE_ICON_CROSS_RED)
+
+	registerEnum(MONSTER_ICON_NONE)
+	registerEnum(MONSTER_ICON_VULNERABLE)
+	registerEnum(MONSTER_ICON_WEAKENED)
+	registerEnum(MONSTER_ICON_MELEE)
+	registerEnum(MONSTER_ICON_INFLUENCED)
+	registerEnum(MONSTER_ICON_FIENDISH)
+
 	registerEnum(CONST_PROP_BLOCKSOLID)
 	registerEnum(CONST_PROP_HASHEIGHT)
 	registerEnum(CONST_PROP_BLOCKPROJECTILE)
@@ -2709,6 +2739,11 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Creature", "getZone", LuaScriptInterface::luaCreatureGetZone);
 
+	registerMethod("Creature", "hasIcon", LuaScriptInterface::luaCreatureHasIcon);
+	registerMethod("Creature", "getIconValue", LuaScriptInterface::luaCreatureGetIconValue);
+	registerMethod("Creature", "setIconValue", LuaScriptInterface::luaCreatureSetIconValue);
+	registerMethod("Creature", "removeIcon", LuaScriptInterface::luaCreatureRemoveIcon);
+
 	// Player
 	registerClass("Player", "Creature", LuaScriptInterface::luaPlayerCreate);
 	registerMetaMethod("Player", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -2939,6 +2974,11 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Monster", "isWalkingToSpawn", LuaScriptInterface::luaMonsterIsWalkingToSpawn);
 	registerMethod("Monster", "walkToSpawn", LuaScriptInterface::luaMonsterWalkToSpawn);
+
+	registerMethod("Monster", "hasMonsterIcon", LuaScriptInterface::luaMonsterHasIcon);
+	registerMethod("Monster", "getMonsterIconValue", LuaScriptInterface::luaMonsterGetIconValue);
+	registerMethod("Monster", "setMonsterIconValue", LuaScriptInterface::luaMonsterSetIconValue);
+	registerMethod("Monster", "removeMonsterIcon", LuaScriptInterface::luaMonsterRemoveIcon);
 
 	// Npc
 	registerClass("Npc", "Creature", LuaScriptInterface::luaNpcCreate);
@@ -8255,11 +8295,7 @@ int LuaScriptInterface::luaCreatureSetMaster(lua_State* L)
 	pushBoolean(L, creature->setMaster(getCreature(L, 2)));
 
 	// update summon icon
-	SpectatorVec spectators;
-	g_game.map.getSpectators(spectators, creature->getPosition(), true, true);
-	for (Creature* spectator : spectators) {
-		spectator->getPlayer()->sendUpdateTileCreature(creature);
-	}
+	creature->refreshInClient();
 
 	return 1;
 }
@@ -8916,6 +8952,71 @@ int LuaScriptInterface::luaCreatureGetZone(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureHasIcon(lua_State* L)
+{
+	// creature:hasIcon(iconId)
+	Creature* monster = getUserdata<Creature>(L, 1);
+	if (monster) {
+		CreatureIcon_t iconId = getNumber<CreatureIcon_t>(L, 2);
+		if (iconId < CREATURE_ICON_LAST) {
+			pushBoolean(L, monster->hasCreatureIcon(iconId));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureGetIconValue(lua_State* L)
+{
+	// creature:getIconValue(iconId)
+	Creature* monster = getUserdata<Creature>(L, 1);
+	if (monster) {
+		CreatureIcon_t iconId = getNumber<CreatureIcon_t>(L, 2);
+		if (iconId < CREATURE_ICON_LAST) {
+			lua_pushnumber(L, monster->getCreatureIconValue(iconId));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureSetIconValue(lua_State* L)
+{
+	// creature:setIconValue(iconId, value)
+	Creature* monster = getUserdata<Creature>(L, 1);
+	if (monster) {
+		CreatureIcon_t iconId = getNumber<CreatureIcon_t>(L, 2);
+		if (iconId < CREATURE_ICON_LAST) {
+			uint16_t value = getNumber<uint16_t>(L, 3);
+			lua_pushnumber(L, monster->setCreatureIconValue(iconId, value));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureRemoveIcon(lua_State* L)
+{
+	// creature:removeIcon(iconId)
+	Creature* monster = getUserdata<Creature>(L, 1);
+	if (monster) {
+		CreatureIcon_t iconId = getNumber<CreatureIcon_t>(L, 2);
+		if (iconId < CREATURE_ICON_LAST) {
+			pushBoolean(L, monster->removeCreatureIcon(iconId));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
 	return 1;
 }
 
@@ -11747,6 +11848,71 @@ int LuaScriptInterface::luaMonsterWalkToSpawn(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaMonsterHasIcon(lua_State* L)
+{
+	// monster:hasMonsterIcon(iconId)
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (monster) {
+		MonsterIcon_t iconId = getNumber<MonsterIcon_t>(L, 2);
+		if (iconId < MONSTER_ICON_LAST) {
+			pushBoolean(L, monster->hasMonsterIcon(iconId));
+			return 1;
+		}		
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterGetIconValue(lua_State* L)
+{
+	// monster:getMonsterIconValue(iconId)
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (monster) {
+		MonsterIcon_t iconId = getNumber<MonsterIcon_t>(L, 2);
+		if (iconId < MONSTER_ICON_LAST) {
+			lua_pushnumber(L, monster->getMonsterIconValue(iconId));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterSetIconValue(lua_State* L)
+{
+	// monster:setMonsterIconValue(iconId, value)
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (monster) {
+		MonsterIcon_t iconId = getNumber<MonsterIcon_t>(L, 2);
+		if (iconId < MONSTER_ICON_LAST) {
+			uint16_t value = getNumber<uint16_t>(L, 3);
+			lua_pushnumber(L, monster->setMonsterIconValue(iconId, value));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterRemoveIcon(lua_State* L)
+{
+	// monster:removeMonsterIcon(iconId)
+	Monster* monster = getUserdata<Monster>(L, 1);
+	if (monster) {
+		MonsterIcon_t iconId = getNumber<MonsterIcon_t>(L, 2);
+		if (iconId < MONSTER_ICON_LAST) {
+			pushBoolean(L, monster->removeMonsterIcon(iconId));
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
 // Npc
 int LuaScriptInterface::luaNpcCreate(lua_State* L)
 {
@@ -11834,11 +12000,7 @@ int LuaScriptInterface::luaNpcSetSpeechBubble(lua_State* L)
 		npc->setSpeechBubble(speechBubble);
 
 		// refresh npc bubble
-		SpectatorVec spectators;
-		g_game.map.getSpectators(spectators, npc->getPosition(), true, true);
-		for (Creature* spectator : spectators) {
-			spectator->getPlayer()->sendUpdateTileCreature(npc);
-		}
+		npc->refreshInClient();
 	}
 
 	pushBoolean(L, success);
