@@ -2385,6 +2385,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "getSpectators", LuaScriptInterface::luaGameGetSpectators);
 	registerMethod("Game", "getPlayers", LuaScriptInterface::luaGameGetPlayers);
+	registerMethod("Game", "getMonsterIds", LuaScriptInterface::luaGameGetMonsterIds);
 	registerMethod("Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
 
 	registerMethod("Game", "getExperienceStage", LuaScriptInterface::luaGameGetExperienceStage);
@@ -2729,6 +2730,11 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "say", LuaScriptInterface::luaCreatureSay);
 
 	registerMethod("Creature", "getDamageMap", LuaScriptInterface::luaCreatureGetDamageMap);
+	registerMethod("Creature", "getAssistMap", LuaScriptInterface::luaCreatureGetAssistMap);
+
+	registerMethod("Creature", "addAssist", LuaScriptInterface::luaCreatureAddAssist);
+	registerMethod("Creature", "removeAssist", LuaScriptInterface::luaCreatureRemoveAssist);
+	registerMethod("Creature", "resetAssistMap", LuaScriptInterface::luaCreatureResetAssistMap);
 
 	registerMethod("Creature", "getSummons", LuaScriptInterface::luaCreatureGetSummons);
 
@@ -3361,6 +3367,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Party", "setLeader", LuaScriptInterface::luaPartySetLeader);
 
 	registerMethod("Party", "getMembers", LuaScriptInterface::luaPartyGetMembers);
+	registerMethod("Party", "getActiveMembers", LuaScriptInterface::luaPartyGetActiveMembers);
 	registerMethod("Party", "getMemberCount", LuaScriptInterface::luaPartyGetMemberCount);
 
 	registerMethod("Party", "getInvitees", LuaScriptInterface::luaPartyGetInvitees);
@@ -4704,6 +4711,19 @@ int LuaScriptInterface::luaGameGetPlayers(lua_State* L)
 	for (const auto& playerEntry : g_game.getPlayers()) {
 		pushUserdata<Player>(L, playerEntry.second);
 		setMetatable(L, -1, "Player");
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetMonsterIds(lua_State* L)
+{
+	// Game.getMonsterIds()
+	lua_createtable(L, g_game.getMonstersOnline(), 0);
+
+	int index = 0;
+	for (const auto& monsterEntry : g_game.getMonsters()) {
+		lua_pushnumber(L, monsterEntry.second->getID());
 		lua_rawseti(L, -2, ++index);
 	}
 	return 1;
@@ -8846,6 +8866,69 @@ int LuaScriptInterface::luaCreatureGetDamageMap(lua_State* L)
 		setField(L, "ticks", damageEntry.second.ticks);
 		lua_rawseti(L, -2, damageEntry.first);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureGetAssistMap(lua_State* L)
+{
+	// creature:getAssistMap()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_createtable(L, creature->assistMap.size(), 0);
+
+	for (const auto& assist : creature->assistMap) {
+		lua_pushnumber(L, assist.second);
+		lua_rawseti(L, -2, assist.first);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureAddAssist(lua_State* L)
+{
+	// creature:addAssist(creatureId)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t creatureId = getNumber<uint32_t>(L, 2);
+	creature->addAssist(creatureId);
+	lua_pushboolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureRemoveAssist(lua_State* L)
+{
+	// creature:removeAssist(creatureId)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t creatureId = getNumber<uint32_t>(L, 2);
+	creature->removeAssist(creatureId);
+	lua_pushboolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureResetAssistMap(lua_State* L)
+{
+	// creature:resetAssistMap()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	creature->resetAssists();
+	lua_pushboolean(L, true);
 	return 1;
 }
 
@@ -16151,6 +16234,25 @@ int LuaScriptInterface::luaPartyGetMembers(lua_State* L)
 	int index = 0;
 	lua_createtable(L, party->getMemberCount(), 0);
 	for (Player* player : party->getMembers()) {
+		pushUserdata<Player>(L, player);
+		setMetatable(L, -1, "Player");
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPartyGetActiveMembers(lua_State* L)
+{
+	// party:getActiveMembers()
+	Party* party = getUserdata<Party>(L, 1);
+	if (!party) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	int index = 0;
+	lua_createtable(L, party->getMemberCount(), 0);
+	for (Player* player : party->getActiveMembers()) {
 		pushUserdata<Player>(L, player);
 		setMetatable(L, -1, "Player");
 		lua_rawseti(L, -2, ++index);

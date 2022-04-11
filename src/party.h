@@ -33,6 +33,7 @@ class Party
 		PlayerVector& getMembers() {
 			return memberList;
 		}
+		PlayerVector getActiveMembers();
 		const PlayerVector& getInvitees() const {
 			return inviteList;
 		}

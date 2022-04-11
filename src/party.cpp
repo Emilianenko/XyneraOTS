@@ -279,6 +279,42 @@ bool Party::isPlayerInvited(const Player* player) const
 	return std::find(inviteList.begin(), inviteList.end(), player) != inviteList.end();
 }
 
+PlayerVector Party::getActiveMembers()
+{
+	PlayerVector activeMembers;
+
+	// check party members
+	for (Player* member : memberList) {
+		if (!member->hasFlag(PlayerFlag_NotGainInFight)) {
+			//check if the player has healed/attacked anything recently
+			auto it = ticksMap.find(member->getID());
+			if (it == ticksMap.end()) {
+				continue;
+			}
+
+			uint64_t timeDiff = OTSYS_TIME() - it->second;
+			if (timeDiff > static_cast<uint64_t>(g_config.getNumber(ConfigManager::PZ_LOCKED))) {
+				continue;
+			}
+		}
+
+		activeMembers.push_back(member);
+	}
+
+	// check party leader
+	if (!leader->hasFlag(PlayerFlag_NotGainInFight)) {
+		auto it = ticksMap.find(leader->getID());
+		if (it != ticksMap.end()) {
+			uint64_t timeDiff = OTSYS_TIME() - it->second;
+			if (timeDiff <= static_cast<uint64_t>(g_config.getNumber(ConfigManager::PZ_LOCKED))) {
+				activeMembers.push_back(leader);
+			}
+		}
+	}
+
+	return activeMembers;
+}
+
 void Party::updateAllPartyIcons()
 {
 	for (Player* member : memberList) {

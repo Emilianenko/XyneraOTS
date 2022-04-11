@@ -4299,6 +4299,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			message.primary.value = realHealthChange;
 			message.primary.color = TEXTCOLOR_PASTELRED;
 
+			if (target && attacker && target->getID() != attacker->getID()) {
+				target->addAssist(attacker->getID());
+			}
+
 			SpectatorVec spectators;
 			map.getSpectators(spectators, targetPos, false, true);
 			for (Creature* spectator : spectators) {

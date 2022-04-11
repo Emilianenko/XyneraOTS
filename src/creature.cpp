@@ -198,6 +198,7 @@ void Creature::onIdleStatus()
 {
 	if (getHealth() > 0) {
 		damageMap.clear();
+		assistMap.clear();
 		lastHitCreatureId = 0;
 	}
 }
@@ -682,6 +683,20 @@ CreatureVector Creature::getKillers()
 		}
 	}
 	return killers;
+}
+
+CreatureVector Creature::getSupporters()
+{
+	CreatureVector assists;
+	const int64_t timeNow = OTSYS_TIME();
+	const uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+	for (const auto& it : assistMap) {
+		Creature* supporter = g_game.getCreatureByID(it.first);
+		if (supporter && supporter != this && timeNow - it.second <= inFightTicks) {
+			assists.push_back(supporter);
+		}
+	}
+	return assists;
 }
 
 void Creature::onDeath()
