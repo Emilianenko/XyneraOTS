@@ -570,6 +570,13 @@ bool Items::loadFromOtb(const std::string& file, bool isReload)
 		iType.wareId = wareId;
 		iType.classification = classification;
 		iType.alwaysOnTopOrder = alwaysOnTopOrder;
+
+		if (!name.empty()) {
+			std::string lowerCaseName = asLowerCaseString(name);
+			if (nameToItems.find(lowerCaseName) == nameToItems.end()) {
+				nameToItems.emplace(std::move(lowerCaseName), serverId);
+			}
+		}
 	}
 
 	items.shrink_to_fit();

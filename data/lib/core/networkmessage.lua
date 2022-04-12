@@ -32,11 +32,14 @@ function NetworkMessage:addItemType(itemType)
 	end
 	
 	self:addU16(itemType:getClientId())
+
+	local itemCategory = itemType:getType()
+
 	if itemType:isStackable() then
 		self:addByte(1) -- count
 	elseif itemType:isSplash() or itemType:isFluidContainer() then
 		self:addByte(0) -- splash color (fluid client id)
-	elseif itemType:isContainer() then
+	elseif itemCategory == ITEM_TYPE_CONTAINER or itemCategory == ITEM_TYPE_DEPOT then
 		self:addByte(0x00) -- has loot container icon (bool), requires u32 id? if true
 		self:addByte(0x00) -- is quiver (bool), requires u32 ammo count if true
 	elseif itemType:isPodium() then
