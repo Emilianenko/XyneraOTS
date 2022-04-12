@@ -595,19 +595,21 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xAC: parseChannelExclude(msg); break;
 		//case 0xB1: break; // request highscores
 		case 0xBE: addGameTask([playerID = player->getID()]() { g_game.playerCancelAttackAndFollow(playerID); }); break;
+		//case 0xBF: break; // exaltation fuse / transfer / convert
 		//case 0xC7: break; // request tournament leaderboard
 		case 0xC9: /* update tile */ break;
 		case 0xCA: parseUpdateContainer(msg); break;
 		case 0xCB: parseBrowseField(msg); break;
 		case 0xCC: parseSeekInContainer(msg); break;
 		case 0xCD: parseInspectItem(msg); break;
+		//case 0xC0: break; //request forge history
 		case 0xD0: parseQuestTracker(msg); break;
 		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;
 		case 0xD3: parseSetOutfit(msg); break;
 		case 0xD4: parseToggleMount(msg); break;
-		//case 0xD5: break; // apply imbuement
-		//case 0xD6: break; // clear imbuement
-		//case 0xD7: break; // close imbuing window
+		//case 0xD5: break; // inspect character feature: client preferences
+		//case 0xD6: break; // imbuing(?)
+		//case 0xD7: break; // imbuing(?)
 		case 0xDC: parseAddVip(msg); break;
 		case 0xDD: parseRemoveVip(msg); break;
 		case 0xDE: parseEditVip(msg); break;

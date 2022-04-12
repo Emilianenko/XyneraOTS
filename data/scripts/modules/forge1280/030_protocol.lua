@@ -337,6 +337,8 @@ function Player:closeForgeUI()
 end
 
 function Player:sendForgeHistory(page)
+	self:sendForgeResources()
+	
 	page = page + 1 -- client starts index at 0
 	
 	local history = getForgeHistory(self:getId())
