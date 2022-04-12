@@ -26,6 +26,7 @@
 			stealth ring, 2165, 200;
 			sword ring, 2207, 100;
 			dwarven ring, 2213, 100;
+			gearwheel chain, 23541, 5000;
 			energy ring, 2167, 100;
 			life ring, 2168, 50;
 			might ring, 2164, 250;
@@ -50,7 +51,6 @@
 			ring of green plasma, 26187, 8000;
 			ring of red plasma, 26189, 8000;"/>
 		<parameter key="shop_buyable" value="
-			spike sword, 2383, 8000;
 			axe ring, 2208, 500;
 			bronze amulet, 2172, 100;
 			club ring, 2209, 500;
