@@ -28,6 +28,34 @@ function Creature:getClosestFreePosition(position, maxRadius, mustBeReachable)
 	return Position()
 end
 
+function Creature:walkback(position, fromPosition)
+	-- creature got placed on the walkback flagged tile
+	if position == fromPosition then
+		if self:isPlayer() then
+			-- player should be moved to temple
+			local temple = self:getTown():getTemplePosition()
+			if temple.x == 0 and temple.y == 0 then
+				-- invalid temple, try closest position instead
+				temple = self:getClosestFreePosition(position)
+				if temple.x == 0 and temple.y == 0 then
+					-- no safe tile was found, let the player spawn on top of the flagged tile instead
+					return
+				end
+			end
+
+			-- valid temple, teleport out
+			self:teleportTo(temple, false)
+			return
+		else
+			-- any close position should do the trick really
+			self:teleportTo(self:getClosestFreePosition(position), false)
+			return
+		end
+	end
+
+	self:teleportTo(fromPosition, false)
+end
+
 function Creature:getPlayer()
 	return self:isPlayer() and self or nil
 end
