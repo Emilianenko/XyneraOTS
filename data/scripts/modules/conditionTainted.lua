@@ -313,7 +313,7 @@ do
 	local creatureevent = CreatureEvent("deathTaint")
 	function creatureevent.onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
 		-- reset taints (condition will be cleared automatically)
-		self:setStorageValue(TAINT_STORAGE, -1)
+		creature:setStorageValue(TAINT_STORAGE, -1)
 		return true
 	end
 	creatureevent:register()
