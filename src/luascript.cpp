@@ -6994,6 +6994,7 @@ int LuaScriptInterface::luaItemSetActionId(lua_State* L)
 	Item* item = getUserdata<Item>(L, 1);
 	if (item) {
 		item->setActionId(actionId);
+		item->update();
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -7208,21 +7209,28 @@ int LuaScriptInterface::luaItemSetAttribute(lua_State* L)
 		attribute = ITEM_ATTRIBUTE_NONE;
 	}
 
+	bool success = true;
 	if (ItemAttributes::isIntAttrType(attribute)) {
 		if (attribute == ITEM_ATTRIBUTE_UNIQUEID) {
 			reportErrorFunc(L, "Attempt to set protected key \"uid\"");
-			pushBoolean(L, false);
+			success = false;
+			pushBoolean(L, success);
 			return 1;
 		}
 
 		item->setIntAttr(attribute, getNumber<int32_t>(L, 3));
-		pushBoolean(L, true);
+		pushBoolean(L, success);
 	} else if (ItemAttributes::isStrAttrType(attribute)) {
 		item->setStrAttr(attribute, getString(L, 3));
-		pushBoolean(L, true);
+		pushBoolean(L, success);
 	} else {
 		lua_pushnil(L);
 	}
+
+	if (success) {
+		item->update();
+	}
+
 	return 1;
 }
 
@@ -7249,6 +7257,10 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 		item->removeAttribute(attribute);
 	} else {
 		reportErrorFunc(L, "Attempt to erase protected key \"uid\"");
+	}
+
+	if (ret) {
+		item->update();
 	}
 	pushBoolean(L, ret);
 	return 1;
@@ -7316,6 +7328,7 @@ int LuaScriptInterface::luaItemSetCustomAttribute(lua_State* L) {
 	}
 
 	item->setCustomAttribute(key, val);
+	item->update();
 	pushBoolean(L, true);
 	return 1;
 }
@@ -7328,13 +7341,21 @@ int LuaScriptInterface::luaItemRemoveCustomAttribute(lua_State* L) {
 		return 1;
 	}
 
+	bool success = false;
 	if (isNumber(L, 2)) {
-		pushBoolean(L, item->removeCustomAttribute(getNumber<int64_t>(L, 2)));
+		success = item->removeCustomAttribute(getNumber<int64_t>(L, 2));
+		pushBoolean(L, success);
 	} else if (isString(L, 2)) {
-		pushBoolean(L, item->removeCustomAttribute(getString(L, 2)));
+		success = item->removeCustomAttribute(getString(L, 2));
+		pushBoolean(L, success);
 	} else {
 		lua_pushnil(L);
 	}
+
+	if (success) {
+		item->update();
+	}
+
 	return 1;
 }
 
@@ -7530,6 +7551,7 @@ int LuaScriptInterface::luaItemSetStoreItem(lua_State* L)
 	}
 
 	item->setStoreItem(getBoolean(L, 2, false));
+	item->update();
 	return 1;
 }
 
@@ -7555,6 +7577,7 @@ int LuaScriptInterface::luaItemSetReflect(lua_State* L)
 	}
 
 	item->setReflect(getNumber<CombatType_t>(L, 2), getReflect(L, 3));
+	item->update();
 	pushBoolean(L, true);
 	return 1;
 }
@@ -7581,6 +7604,7 @@ int LuaScriptInterface::luaItemSetBoostPercent(lua_State* L)
 	}
 
 	item->setBoostPercent(getNumber<CombatType_t>(L, 2), getNumber<uint16_t>(L, 3));
+	item->update();
 	pushBoolean(L, true);
 	return 1;
 }

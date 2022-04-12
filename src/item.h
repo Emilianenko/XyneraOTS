@@ -557,6 +557,13 @@ class Item : virtual public Thing
 
 		bool equals(const Item* otherItem) const;
 
+		void update() {
+			Cylinder* parent = getParent();
+			if (parent) {
+				parent->updateThing(this, getID(), getSubType());
+			}
+		}
+
 		Item* getItem() override final {
 			return this;
 		}
