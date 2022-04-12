@@ -198,7 +198,7 @@ do
 	local timerTaint2 = PlayerStorageKeys.taintB_cooldown
 	local onHit = CreatureEvent("onHitTaint")
 	function onHit.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
-		if attacker:isPlayer() and creature:isMonster() and not creature:isSummon() then
+		if attacker and attacker:isPlayer() and creature:isMonster() and not creature:isSummon() then
 			if not creature:getType():isHostile() then
 				return primaryDamage, primaryType, secondaryDamage, secondaryType
 			end
