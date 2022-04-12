@@ -178,6 +178,9 @@ class Monster final : public Creature
 		bool isIgnoringFieldDamage() const {
 			return ignoreFieldDamage;
 		}
+		void setIgnoreFieldDamage(bool newMode) {
+			ignoreFieldDamage = newMode;
+		}
 
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 		                     bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false) override;
@@ -259,7 +262,7 @@ class Monster final : public Creature
 
 		Position masterPos;
 
-		bool ignoreFieldDamage = false;
+		bool ignoreFieldDamage = true;
 		bool isIdle = true;
 		bool familiar = false;
 		bool isMasterInRange = false;

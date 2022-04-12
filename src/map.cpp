@@ -244,6 +244,10 @@ bool Map::placeCreature(const Position& centerPos, Creature* creature, bool exte
 		}
 	}
 
+	if (Monster* monster = creature->getMonster()) {
+		monster->setIgnoreFieldDamage(false);
+	}
+
 	int32_t index = 0;
 	uint32_t flags = 0;
 	Item* toItem = nullptr;

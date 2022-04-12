@@ -540,7 +540,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			}
 
 			MagicField* field = getFieldItem();
-			if (!field || field->isBlocking() || field->getDamage() == 0 || hasBitSet(FLAG_IGNOREFIELDDAMAGE, flags)) {
+			if (!field || field->isBlocking() || field->getDamage() == 0) {
 				return RETURNVALUE_NOERROR;
 			}
 
