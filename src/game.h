@@ -412,7 +412,8 @@ class Game
 		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
-		std::forward_list<Item*> getMarketItemList(uint16_t wareId, uint8_t tier, uint16_t sufficientCount, DepotChest* depotChest, Inbox* inbox);
+
+		std::vector<Item*> getMarketItemList(uint16_t wareId, uint8_t tier, uint16_t sufficientCount, const Player& player);
 
 		void cleanup();
 		void shutdown();

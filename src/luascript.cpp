@@ -1807,7 +1807,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_STORE_COIN)
 
 	registerEnum(ITEM_DEPOT)
-	registerEnum(ITEM_LOCKER1)
+	registerEnum(ITEM_LOCKER)
 	registerEnum(ITEM_INBOX)
 	registerEnum(ITEM_MARKET)
 	registerEnum(ITEM_STORE_INBOX)
@@ -9384,7 +9384,6 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	bool autoCreate = getBoolean(L, 3, false);
 	DepotChest* depotChest = player->getDepotChest(depotId, autoCreate);
 	if (depotChest) {
-		player->setLastDepotId(depotId); // FIXME: workaround for #2251
 		pushUserdata<Item>(L, depotChest);
 		setItemMetatable(L, -1, depotChest);
 	} else {

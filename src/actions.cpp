@@ -353,12 +353,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 	if (Container* container = item->getContainer()) {
 		Container* openContainer;
 
-		//depot container
+		// depot container
 		if (DepotLocker* depot = container->getDepotLocker()) {
-			DepotLocker* myDepotLocker = player->getDepotLocker(depot->getDepotId());
-			myDepotLocker->setParent(depot->getParent()->getTile());
-			openContainer = myDepotLocker;
-			player->setLastDepotId(depot->getDepotId());
+			DepotLocker& myDepotLocker = player->getDepotLocker();
+			myDepotLocker.setParent(depot->getParent()->getTile());
+			openContainer = &myDepotLocker;
 		} else {
 			openContainer = container;
 		}
@@ -368,7 +367,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			return RETURNVALUE_YOUARENOTTHEOWNER;
 		}
 
-		//open/close container
+		// open/close container
 		int32_t oldContainerId = player->getContainerID(openContainer);
 		if (oldContainerId == -1) {
 			player->addContainer(index, openContainer);
@@ -528,11 +527,7 @@ namespace {
 
 bool enterMarket(Player* player, Item*, const Position&, Thing*, const Position&, bool)
 {
-	if (player->getLastDepotId() == -1) {
-		return false;
-	}
-
-	player->sendMarketEnter(player->getLastDepotId());
+	player->sendMarketEnter();
 	return true;
 }
 
