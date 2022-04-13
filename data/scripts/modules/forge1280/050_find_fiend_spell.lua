@@ -7,13 +7,15 @@ local DISTANCE_CLOSE = 2
 local DISTANCE_FAR = 3
 local DISTANCE_VERYFAR = 4
 
+local searchResult = "%s %s. Be prepared to find a creature of difficulty level \"%s\".%s"
+
 local difficulties = {
-	[0] = "harmless",
-	[1] = "trivial",
-	[2] = "easy",
-	[3] = "medium",
-	[4] = "hard",
-	[5] = "challenging"
+	[0] = "Harmless",
+	[1] = "Trivial",
+	[2] = "Easy",
+	[3] = "Medium",
+	[4] = "Hard",
+	[5] = "Challenging"
 }
 
 local directions = {
@@ -107,25 +109,23 @@ spell.onCastSpell = function(player, variant)
 	end
 	
 	local minLeft = math.floor((expires - now)/60)
-	local minStr = minLeft > 1 and string.format("%d minute%s", minLeft, minLeft ~= 1 and "s" or "") or "less than one minute"
+	local minStr = minLeft > 1 and string.format("%d minute%s", minLeft, minLeft ~= 1 and "s" or "") or "one minute"
 	
+	if player:getGroup():getAccess() then
+		player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("%s %s.\nPosition: %d, %d, %d\nDuration: %s", target:getName(), description, targetPosition.x, targetPosition.y, targetPosition.z, minStr))
+		return true
+	end
+	
+	local difficulty = "Unknown"
 	local bestiaryEntry = GameBestiary[target:getBestiaryRaceName()]
 	if bestiaryEntry and bestiaryEntry.rarity == 1 then
-		if player:getGroup():getAccess() then
-			player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("%s %s.\nPosition: %d, %d, %d\nDuration: %s", target:getName(), description, targetPosition.x, targetPosition.y, targetPosition.z, minStr))
-			return true
-		end
-
-		local difficulty = "unknown"
 		if player:getBestiaryRaceProgress(bestiaryEntry.id) == 4 then
 			difficulty = difficulties[bestiaryEntry.difficulty] or difficulty
 		end
-
-		player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("The creature of difficulty level %s %s. You have %s left.", difficulty, description, minStr))
-	else
-		player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("The creature %s. You have %s left.", description, minStr))
 	end
-
+	
+	minStr = minLeft < 16 and string.format(" This monster will stay fiendish for less than %s.", minStr) or ""
+	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format(searchResult, target:getName(), description, difficulty, minStr))
 	creaturePosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 	return true
 end

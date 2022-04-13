@@ -3,6 +3,11 @@ if not FiendishMonsters then
 	FiendishMonsters = {}
 end
 
+-- global index of potentially fiendish creatures
+if not PotentialFiends then
+	PotentialFiends = {}
+end
+
 NoDustAreas = {
 	-- example: TFS rook
 	-- { from = Position(60, 30, 0), to = Position(135, 150, 15) },
@@ -82,12 +87,111 @@ function Monster:setFiendishLevel(level)
 	self:updateInfluencedHP()
 end
 
+-- checks for monster spawn
+function Monster:canSpawnInfluenced()
+	-- not common or no category
+	local bestiaryEntry = GameBestiary[self:getBestiaryRaceName()]
+	if not(bestiaryEntry and bestiaryEntry.rarity == 1) then
+		return false
+	end
+	
+	-- invalid, passive or boss
+	local mType = self:getType()
+	if not mType or mType:isBoss() or not mType:isHostile() then
+		return false
+	end
+	
+	-- area excluded from spawning
+	local monsterPos = self:getPosition()
+	for _, area in pairs(NoDustAreas) do
+		if monsterPos:isInRange(area.from, area.to) then
+			return false
+		end
+	end
+	
+	-- not lootable
+	local corpse = ItemType(mType:corpseId())
+	if not(corpse and corpse:isContainer()) then
+		return false
+	end
+
+	-- summon or busy
+	if self:isSummon() or not self:isIdle() then
+		return false
+	end
+	
+	-- already influenced
+	if self:getInfluenceLevel() > 0 then
+		return false
+	end
+	
+	return true
+end
+
 -- roll monster level
 function rollInfluence(monsterId)
 	local monster = Monster(monsterId)
 	if monster and not monster:isRemoved() then
-		if monster:canSpawnInfluenced() and math.random(10000) < spawnChance then
-			monster:setInfluenceLevel(math.random(levelMin, levelMax))
+		if monster:canSpawnInfluenced() then
+			if math.random(10000) < spawnChance then
+				monster:setInfluenceLevel(math.random(levelMin, levelMax))
+			else
+				PotentialFiends[#PotentialFiends + 1] = monster:getId()
+			end
+		end
+	end
+end
+
+-- pick random monster to become fiendish
+function rollFiend()
+	if not(PotentialFiends and #PotentialFiends > 0) then
+		return
+	end
+
+	local now = os.time()
+
+	local roll = math.random(#PotentialFiends)
+	local monsterId = PotentialFiends[roll]
+	table.remove(PotentialFiends, roll)
+	
+	local monster = Monster(monsterId)
+	if monster and not monster:isRemoved() then
+		monster:setFiendish(true)
+		FiendishMonsters[monsterId] = now + fiendishDuration
+		return true
+	end
+	
+	return false
+end
+
+-- generate fiendish monsters
+function checkFiendish()
+	local now = os.time()
+	local fiendCount = 0
+	
+	for monsterId, expires in pairs(FiendishMonsters) do
+		local creature = Creature(monsterId)
+		if not creature then
+			FiendishMonsters[monsterId] = nil
+		elseif now > expires then
+			FiendishMonsters[monsterId] = nil
+			creature:setFiendish(false)
+		else
+			fiendCount = fiendCount + 1
+		end
+	end
+
+	if fiendCount < fiendishLimit then
+		-- more fiendish monsters can spawn
+		-- make 20 attempts to populate the map with fiendish monsters
+		for i = 1, 20 do
+			if rollFiend() then
+				fiendCount = fiendCount + 1
+			end
+			
+			if fiendCount >= fiendishLimit then
+				return true
+			end
 		end
 	end
 end
@@ -123,7 +227,19 @@ do
 	local creatureevent = CreatureEvent("influencedDeath")
 	function creatureevent.onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
 		-- unregister
-		FiendishMonsters[creature:getId()] = nil
+		local creatureId = creature:getId()
+		
+		
+		if FiendishMonsters[creatureId] then
+			FiendishMonsters[creatureId] = nil
+		else
+			for searchIndex, searchId in ipairs(PotentialFiends) do
+				if creatureId == searchId then
+					table.remove(PotentialFiends, searchIndex)
+					break
+				end
+			end
+		end
 		
 		local monsterLevel = creature:getInfluenceLevel()
 		if monsterLevel > 0 then
@@ -183,89 +299,7 @@ do
 	creatureevent:register()
 end
 
--- checks for monster spawn
-function Monster:canSpawnInfluenced()
-	-- already influenced
-	if self:getInfluenceLevel() > 0 then
-		return false
-	end
-
-	-- passive or invalid
-	local mType = self:getType()
-	if not(mType and mType:isHostile()) then
-		return false
-	end
-	
-	-- not lootable
-	local corpse = ItemType(mType:corpseId())
-	if not(corpse and corpse:isContainer()) then
-		return false
-	end
-	
-	-- busy or not eligible
-	if mType:isBoss() or self:isSummon() or not self:isIdle() then
-		return false
-	end
-	
-	-- not common or no category
-	local bestiaryEntry = GameBestiary[self:getBestiaryRaceName()]
-	if not(bestiaryEntry and bestiaryEntry.rarity == 1) then
-		return false
-	end
-	
-	-- area excluded from spawning
-	local monsterPos = self:getPosition()
-	for _, area in pairs(NoDustAreas) do
-		if monsterPos:isInRange(area.from, area.to) then
-			return false
-		end
-	end
-	
-	return true
-end
-
--- generate fiendish monsters
-function checkFiendish()
-	local now = os.time()
-	local fiendCount = 0
-	
-	for monsterId, expires in pairs(FiendishMonsters) do
-		local creature = Creature(monsterId)
-		if not creature then
-			FiendishMonsters[monsterId] = nil
-		elseif now > expires then
-			FiendishMonsters[monsterId] = nil
-			creature:setFiendish(false)
-		else
-			fiendCount = fiendCount + 1
-		end
-	end
-
-	if fiendCount < fiendishLimit then
-		local monIds = Game.getMonsterIds()
-		local monSize = #monIds
-		
-		-- make 20 attempts to populate the map with fiendish monsters
-		if monSize > 0 then
-			for i = 1, 20 do
-				local monsterId = monIds[math.random(monSize)]
-				local monster = Monster(monsterId)
-				if monster and not monster:isRemoved() then
-					if monster:canSpawnInfluenced() then
-						monster:setFiendish(true)
-						fiendCount = fiendCount + 1
-						FiendishMonsters[monsterId] = now + fiendishDuration
-					end
-				end
-				
-				if fiendCount >= fiendishLimit then
-					return true
-				end
-			end
-		end
-	end
-end
-
+-- check fiendish monsters every cycle
 do
 	local globalEvent = GlobalEvent("fiendishLoop")
 	globalEvent:interval(fiendCheckInterval)
