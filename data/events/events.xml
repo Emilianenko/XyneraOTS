@@ -40,6 +40,8 @@
 	<event class="Player" method="onInspectNpcTradeItem" enabled="1" />
 	<event class="Player" method="onInspectCompendiumItem" enabled="1" />
 	<event class="Player" method="onMinimapQuery" enabled="1" />
+	
+	<event class="Player" method="onConnect" enabled="1" />
 	<event class="Player" method="onExtendedProtocol" enabled="1" />
 
 	<!-- Monster methods -->

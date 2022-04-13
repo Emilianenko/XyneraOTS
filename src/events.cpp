@@ -125,6 +125,8 @@ bool Events::load()
 				info.playerOnMinimapQuery = event;
 			} else if (methodName == "onInventoryUpdate") {
 				info.playerOnInventoryUpdate = event;
+			} else if (methodName == "onConnect") {
+				info.playerOnConnect = event;
 			} else if (methodName == "onExtendedProtocol") {
 				info.playerOnExtendedProtocol = event;
 			} else {
@@ -1272,6 +1274,31 @@ void Events::eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t sl
 	LuaScriptInterface::pushBoolean(L, equip);
 
 	scriptInterface.callVoidFunction(4);
+}
+
+void Events::eventPlayerOnConnect(Player* player, bool isLogin)
+{
+	// Player:onConnect(isLogin)
+	if (info.playerOnConnect == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnConnect");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnConnect, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnConnect);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushboolean(L, isLogin);
+	scriptInterface.callVoidFunction(2);
 }
 
 void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message)

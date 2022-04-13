@@ -5240,6 +5240,16 @@ void Game::sendGuildMotd(uint32_t playerId)
 	}
 }
 
+void Game::playerConnect(uint32_t playerId, bool isLogin)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnConnect(player, isLogin);
+}
+
 void Game::kickPlayer(uint32_t playerId, bool displayEffect)
 {
 	Player* player = getPlayerByID(playerId);

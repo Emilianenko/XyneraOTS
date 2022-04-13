@@ -129,7 +129,9 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 {
 	//dispatcher thread
 	Player* foundPlayer = g_game.getPlayerByName(name);
-	if (!foundPlayer || g_config.getBoolean(ConfigManager::ALLOW_CLONES)) {
+	bool isLogin = !foundPlayer || g_config.getBoolean(ConfigManager::ALLOW_CLONES);
+
+	if (isLogin) {
 		player = new Player(getThis());
 		player->setName(name);
 
@@ -230,6 +232,8 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			connect(foundPlayer->getID(), operatingSystem);
 		}
 	}
+
+	addGameTask([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	OutputMessagePool::getInstance().addProtocolToAutosend(shared_from_this());
 }
 

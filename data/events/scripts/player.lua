@@ -334,6 +334,33 @@ function Player:onMinimapQuery(position)
 	self:teleportTo(position)
 end
 
+-- begin onConnect
+local function sendForgeTypesAsync(cid)
+	local p = Player(cid)
+	if p and not p:isRemoved() then
+		p:sendItemClasses()
+	end
+end
+
+local function sendColorTypesAsync(cid)
+	local p = Player(cid)
+	if p and not p:isRemoved() then
+		p:sendMessageColorTypes()
+	end
+end
+
+function Player:onConnect(isLogin)
+	-- schedule sending less important data
+	local cid = self:getId()
+	addEvent(sendForgeTypesAsync, 100, cid) -- classification info for market and forge
+	addEvent(sendColorTypesAsync, 200, cid) -- message colors meta
+	
+	if EventCallback.onConnect then
+		EventCallback.onConnect(self, isLogin)
+	end
+end
+-- end onConnect
+
 -- begin extended protocol
 packetEvents = {}
 function getPacketEvent(recvbyte)
