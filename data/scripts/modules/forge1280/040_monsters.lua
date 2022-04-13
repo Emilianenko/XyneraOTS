@@ -68,23 +68,29 @@ function Monster:setInfluenceLevel(level)
 end
 
 -- enable/disable fiendish status
-function Monster:setFiendish(isFiendish)
+function Monster:setFiendish(isFiendish, duration)
 	if isFiendish then
 		self:setMonsterIconValue(MONSTER_ICON_FIENDISH, 0)
 	else
 		self:removeMonsterIcon(MONSTER_ICON_FIENDISH)
 	end
 	self:updateInfluencedHP()
+	
+	duration = duration or -1
+	FiendishMonsters[self:getId()] = duration == -1 and -1 or os.time() + duration
 end
 
 -- set more severe fiendish level (-1 to disable)
-function Monster:setFiendishLevel(level)
+function Monster:setFiendishLevel(level, duration)
 	if level > -1 then
 		self:setMonsterIconValue(MONSTER_ICON_FIENDISH, level)
 	else
 		self:removeMonsterIcon(MONSTER_ICON_FIENDISH)
 	end
 	self:updateInfluencedHP()
+	
+	duration = duration or -1
+	FiendishMonsters[self:getId()] = duration == -1 and -1 or os.time() + duration
 end
 
 -- checks for monster spawn
@@ -148,16 +154,13 @@ function rollFiend()
 		return
 	end
 
-	local now = os.time()
-
 	local roll = math.random(#PotentialFiends)
 	local monsterId = PotentialFiends[roll]
 	table.remove(PotentialFiends, roll)
 	
 	local monster = Monster(monsterId)
-	if monster and not monster:isRemoved() then
-		monster:setFiendish(true)
-		FiendishMonsters[monsterId] = now + fiendishDuration
+	if monster and not monster:isRemoved() and not monster:isFiendish() then
+		monster:setFiendish(true, fiendishDuration)
 		return true
 	end
 	
@@ -173,7 +176,7 @@ function checkFiendish()
 		local creature = Creature(monsterId)
 		if not creature then
 			FiendishMonsters[monsterId] = nil
-		elseif now > expires then
+		elseif now > expires and expires ~= -1 then
 			FiendishMonsters[monsterId] = nil
 			creature:setFiendish(false)
 		else
