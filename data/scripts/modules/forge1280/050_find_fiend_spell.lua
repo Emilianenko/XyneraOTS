@@ -116,13 +116,8 @@ spell.onCastSpell = function(player, variant)
 		return true
 	end
 	
-	local difficulty = "Unknown"
 	local bestiaryEntry = GameBestiary[target:getBestiaryRaceName()]
-	if bestiaryEntry and bestiaryEntry.rarity == 1 then
-		if player:getBestiaryRaceProgress(bestiaryEntry.id) == 4 then
-			difficulty = difficulties[bestiaryEntry.difficulty] or difficulty
-		end
-	end
+	local difficulty = bestiaryEntry and difficulties[bestiaryEntry.difficulty] or "Unknown"
 	
 	minStr = minLeft < 16 and string.format(" This monster will stay fiendish for less than %s.", minStr) or ""
 	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format(searchResult, target:getName(), description, difficulty, minStr))
