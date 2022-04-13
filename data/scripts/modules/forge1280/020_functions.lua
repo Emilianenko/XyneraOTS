@@ -651,7 +651,7 @@ do
 			if self:addForgeCores(1) then
 				self:removeSlivers(cost)
 				self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, slivers - cost)
-				self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores() + 1)
+				self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores())
 			end
 			
 			-- info for action logging
