@@ -111,10 +111,9 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		local baseML = creature:getBaseMagicLevel()
 		local voc = creature:getVocation()
-		local manaCost = voc:getRequiredManaSpent(baseML + 1) - voc:getRequiredManaSpent(baseML)		
+		local manaCost = voc:getRequiredManaSpent(baseML + 1)
 		local manaSpent = creature:getManaSpent()
 		local progress = manaSpent * 10000 / manaCost
-		
 		response:addByte(COMPENDIUM_SKILL_MAGIC)
 		response:addU16(creature:getMagicLevel())
 		response:addU16(baseML)
