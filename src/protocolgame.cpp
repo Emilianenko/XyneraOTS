@@ -2484,6 +2484,20 @@ void ProtocolGame::sendPrivateMessage(const Player* speaker, SpeakClasses type, 
 	writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendNamedPrivateMessage(const std::string& speaker, SpeakClasses type, const std::string& text)
+{
+	NetworkMessage msg;
+	msg.addByte(0xAA);
+	static uint32_t statementId = 0;
+	msg.add<uint32_t>(++statementId);
+	msg.addString(speaker);
+	msg.addByte(0x00); // "(Traded)" suffix after player name
+	msg.add<uint16_t>(0);
+	msg.addByte(type);
+	msg.addString(text);
+	writeToOutputBuffer(msg);
+}
+
 void ProtocolGame::sendCancelTarget()
 {
 	NetworkMessage msg;
@@ -3376,7 +3390,7 @@ void ProtocolGame::sendSessionEnd(SessionEndTypes_t reason)
 ////////////// Add common messages
 void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove)
 {
-	CreatureType_t creatureType = creature->getType();
+	CreatureType_t creatureType = creature->isHealthHidden() ? CREATURETYPE_HIDDEN : creature->getType();
 	const Player* otherPlayer = creature->getPlayer();
 	const Player* masterPlayer = nullptr;
 	uint32_t masterId = 0;
@@ -3399,7 +3413,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		msg.add<uint16_t>(0x61);
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
-		msg.addByte(creature->isHealthHidden() ? CREATURETYPE_HIDDEN : creatureType);
+		msg.addByte(creatureType);
 
 		if (creatureType == CREATURETYPE_SUMMON_OWN) {
 			msg.add<uint32_t>(masterId);
@@ -3440,7 +3454,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	}
 
 	// Creature type and summon emblem
-	msg.addByte(creature->isHealthHidden() ? CREATURETYPE_HIDDEN : creatureType);
+	msg.addByte(creatureType);
 	if (creatureType == CREATURETYPE_SUMMON_OWN) {
 		msg.add<uint32_t>(masterId);
 	}

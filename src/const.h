@@ -296,6 +296,8 @@ enum SpeakClasses : uint8_t {
 };
 
 enum MessageClasses : uint8_t {
+	MESSAGE_STATUS_CONSOLE_BLUE = 4, // deprecated, compatibility mode
+
 	// sendChannelMessage(...)
 	MESSAGE_CHANNEL_MANAGEMENT = 6, // Green, in channel
 

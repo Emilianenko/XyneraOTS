@@ -81,13 +81,13 @@ local outfits = {
 	{1288, "Dragon Slayer F"},
 	{1289, "Dragon Slayer M"},
 	{1298, "Phantom"},
-	{1300, "Furry (hyaena)"},
-	{1301, "Furry (lion)"},
+	{1300, "Werehyaena"},
+	{1301, "Werelion"},
 	{1316, "Usurper A"},
 	{1317, "Usurper B"},
 	{1346, "Corym Pirat"},
 	{1363, "Krakoloss (mount)"},
-	{1378, "Furry (raccoon)"},
+	{1378, "Raccoon"},
 	{1396, "Tunnel Tyrant"},
 	{1406, "Cave Chimera"},
 	{1407, "Girtablilu"},
@@ -95,8 +95,8 @@ local outfits = {
 	{1418, "Carnisylvan"},
 	{1430, "Shellodon (mount)"},
 }
-function sendCraftedOutfitWindow(player)
-	if not player:getGroup():getAccess() then
+function sendCraftedOutfitWindow(player, param)
+	if not player:isAdmin() then
 		return true
 	end
 	
@@ -123,13 +123,22 @@ function sendCraftedOutfitWindow(player)
 	-- current familiar
 	m:addU16(0)
 	
-	-- outfits block
-	m:addU16(#outfits)
-	for i = 1, #outfits do
-		m:addU16(outfits[i][1])
-		m:addString(outfits[i][2])
+	local lookType = tonumber(param)
+	if lookType then
+		m:addU16(1)
+		m:addU16(lookType)
+		m:addString("Selected outfit")
 		m:addByte(3)
 		m:addByte(0)
+	else
+		-- outfits block
+		m:addU16(#outfits)
+		for i = 1, #outfits do
+			m:addU16(outfits[i][1])
+			m:addString(outfits[i][2])
+			m:addByte(3)
+			m:addByte(0)
+		end
 	end
 	
 	-- mounts block
@@ -147,8 +156,9 @@ function sendCraftedOutfitWindow(player)
 	m:sendToPlayer(player)
 end
 
-local t = TalkAction("/secretmenu")
+local t = TalkAction("/secretmenu", "/looktype")
 t.onSay = function(player, words, param)
-	sendCraftedOutfitWindow(player)
+	sendCraftedOutfitWindow(player, param)
 end
+t:separator(" ")
 t:register()

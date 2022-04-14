@@ -360,6 +360,11 @@ float ConfigManager::getExperienceStage(uint32_t level) const
 	return std::get<2>(*it);
 }
 
+ExperienceStages ConfigManager::getExperienceStages() const
+{
+	return expStages;
+}
+
 bool ConfigManager::setString(string_config_t what, const std::string& value)
 {
 	if (what >= LAST_STRING_CONFIG) {

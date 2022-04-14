@@ -1,12 +1,10 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
-	if player:getAccountType() < ACCOUNT_TYPE_GOD then
-		return false
-	end
-
-	player:setHiddenHealth(not player:isHealthHidden())
+	local status = player:isHealthHidden()
+	player:setHiddenHealth(not status)
+	player:sendColorMessage(string.format("Your name and health are now %s.", status and "visible" or "hidden"), MESSAGE_COLOR_PURPLE)
 	return false
 end

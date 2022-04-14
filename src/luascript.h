@@ -536,6 +536,7 @@ class LuaScriptInterface
 		static int luaGameLoadMap(lua_State* L);
 
 		static int luaGameGetExperienceStage(lua_State* L);
+		static int luaGameGetExperienceStages(lua_State* L);
 		static int luaGameGetExperienceForLevel(lua_State* L);
 		static int luaGameGetMonsterCount(lua_State* L);
 		static int luaGameGetPlayerCount(lua_State* L);

@@ -1,5 +1,5 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
@@ -7,7 +7,7 @@ function onSay(player, words, param)
 	if target then
 		player:teleportTo(target:getPosition())
 	else
-		player:sendCancelMessage("Creature not found.")
+		player:sendColorMessage("Creature not found.", MESSAGE_COLOR_PURPLE)
 	end
 	return false
 end

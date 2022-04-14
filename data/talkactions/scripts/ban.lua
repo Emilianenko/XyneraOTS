@@ -1,7 +1,7 @@
 local banDays = 7
 
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
@@ -16,12 +16,14 @@ function onSay(player, words, param)
 
 	local accountId = getAccountNumberByPlayerName(name)
 	if accountId == 0 then
+		player:sendColorMessage("Player not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
 	local resultId = db.storeQuery("SELECT 1 FROM `account_bans` WHERE `account_id` = " .. accountId)
 	if resultId ~= false then
 		result.free(resultId)
+		player:sendColorMessage("Player not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
@@ -32,11 +34,11 @@ function onSay(player, words, param)
 
 	local target = Player(name)
 	if target then
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, target:getName() .. " has been banned.")
+		player:sendColorMessage(target:getName() .. " has been banned for " .. banDays .. " days.", MESSAGE_COLOR_PURPLE)
 		
 		local outputReason = reason:len() > 0 and string.format("\n\nReason: %s", reason) or ""
 		target:remove(string.format("Your account has been banned until %s.%s", os.date("%d %b %Y %X", banEndsAt), outputReason))
 	else
-		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, name .. " has been banned.")
+		player:sendColorMessage(name .. " has been banned for " .. banDays .. " days.", MESSAGE_COLOR_PURPLE)
 	end
 end

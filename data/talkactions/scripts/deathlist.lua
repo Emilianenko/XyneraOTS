@@ -56,7 +56,7 @@ function onSay(player, words, param)
 		end
 		player:popupFYI("Deathlist for player, " .. targetName .. ".\n\n" .. str)
 	else
-		player:sendCancelMessage("A player with that name does not exist.")
+		player:sendColorMessage("A player with that name does not exist.", MESSAGE_COLOR_PURPLE)
 	end
 	return false
 end

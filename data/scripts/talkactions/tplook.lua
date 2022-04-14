@@ -8,7 +8,7 @@ t.onSay = function(player, words, param)
 	
 	local newValue = player:getStorageValue(storage) < 1 and 1 or 0
 	player:setStorageValue(storage, newValue)
-	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("onLook teleport %s.", newValue == 1 and "enabled" or "disabled"))
+	player:sendCommandResponse(string.format("onLook teleport %s.", newValue == 1 and "enabled" or "disabled"))
 end
 t:register()
 
@@ -20,7 +20,9 @@ ec.onLook = function(self, thing, position, distance, description)
 			Game.createTile(position)
 		end
 	
-		self:teleportTo(position)
+		if position.x ~= CONTAINER_POSITION then
+			self:teleportTo(position)
+		end
 	end
 	
 	return description

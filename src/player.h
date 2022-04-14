@@ -792,6 +792,11 @@ class Player final : public Creature, public Cylinder
 				client->sendPrivateMessage(speaker, type, text);
 			}
 		}
+		void sendNamedPrivateMessage(const std::string& speaker, SpeakClasses type, const std::string& text) {
+			if (client) {
+				client->sendNamedPrivateMessage(speaker, type, text);
+			}
+		}
 		void sendResourceBalance(ResourceTypes_t resourceType, uint64_t amount) {
 			if (client) {
 				client->sendResourceBalance(resourceType, amount);

@@ -1,19 +1,15 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
-	end
-
-	if player:getAccountType() < ACCOUNT_TYPE_GAMEMASTER then
-		return false
 	end
 
 	logCommand(player, words, param)
 
 	local returnValue = Game.startRaid(param)
 	if returnValue ~= RETURNVALUE_NOERROR then
-		player:sendTextMessage(MESSAGE_INFO_DESCR, Game.getReturnMessage(returnValue))
+		player:sendColorMessage(Game.getReturnMessage(returnValue), MESSAGE_COLOR_PURPLE)
 	else
-		player:sendTextMessage(MESSAGE_INFO_DESCR, "Raid started.")
+		player:sendColorMessage("Raid started.", MESSAGE_COLOR_PURPLE)
 	end
 
 	return false

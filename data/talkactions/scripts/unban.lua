@@ -1,5 +1,5 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
@@ -11,6 +11,7 @@ function onSay(player, words, param)
 	db.asyncQuery("DELETE FROM `account_bans` WHERE `account_id` = " .. result.getNumber(resultId, "account_id"))
 	db.asyncQuery("DELETE FROM `ip_bans` WHERE `ip` = " .. result.getNumber(resultId, "lastip"))
 	result.free(resultId)
-	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, param .. " has been unbanned.")
+	
+	player:sendColorMessage(param .. " has been unbanned.", MESSAGE_COLOR_PURPLE)
 	return false
 end

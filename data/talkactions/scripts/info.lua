@@ -1,27 +1,28 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
 	local target = Player(param)
 	if not target then
-		player:sendCancelMessage("Player not found.")
+		player:sendColorMessage("Player not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
 	if target:getAccountType() > player:getAccountType() then
-		player:sendCancelMessage("You can not get info about this player.")
+		player:sendColorMessage("You can not get info about this player.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
 	local targetIp = target:getIp()
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Name: " .. target:getName())
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Access: " .. (target:getGroup():getAccess() and "1" or "0"))
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Level: " .. target:getLevel())
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Magic Level: " .. target:getMagicLevel())
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Speed: " .. target:getSpeed())
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "Position: " .. string.format("(%0.5d / %0.5d / %0.3d)", target:getPosition().x, target:getPosition().y, target:getPosition().z))
-	player:sendTextMessage(MESSAGE_INFO_DESCR, "IP: " .. Game.convertIpToString(targetIp))
+	local response = {}
+	response[#response + 1] = "Name: " .. target:getName()
+	response[#response + 1] = "Access: " .. (target:getGroup():getAccess() and "1" or "0")
+	response[#response + 1] = "Level: " .. target:getLevel()
+	response[#response + 1] = "Magic Level: " .. target:getMagicLevel()
+	response[#response + 1] = "Speed: " .. target:getSpeed()
+	response[#response + 1] = "Position: " .. string.format("(%d / %d / %d)", target:getPosition().x, target:getPosition().y, target:getPosition().z)
+	response[#response + 1] = "IP: " .. Game.convertIpToString(targetIp)
 
 	local players = {}
 	for _, targetPlayer in ipairs(Game.getPlayers()) do
@@ -31,7 +32,9 @@ function onSay(player, words, param)
 	end
 
 	if #players > 0 then
-		player:sendTextMessage(MESSAGE_INFO_DESCR, "Other players on same IP: " .. table.concat(players, ", ") .. ".")
+		response[#response + 1] = "Other players on same IP: " .. table.concat(players, ", ") .. "."
 	end
+	
+	player:sendTextMessage(MESSAGE_INFO_DESCR, table.concat(response, "\n"))
 	return false
 end

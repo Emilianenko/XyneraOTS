@@ -1,14 +1,6 @@
-local invalidIds = {
-	1, 2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15, 19, 21, 26, 27, 28, 35, 43
-}
-
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
-	end
-
-	if player:getAccountType() < ACCOUNT_TYPE_GOD then
-		return false
 	end
 
 	local split = param:splitTrimmed(",")
@@ -17,12 +9,12 @@ function onSay(player, words, param)
 	if itemType:getId() == 0 then
 		itemType = ItemType(tonumber(split[1]))
 		if not tonumber(split[1]) or itemType:getId() == 0 then
-			player:sendCancelMessage("There is no item with that id or name.")
+			player:sendColorMessage("There is no item with that id or name.", MESSAGE_COLOR_PURPLE)
 			return false
 		end
 	end
 
-	if table.contains(invalidIds, itemType:getId()) then
+	if itemType:getId() < 100 then
 		return false
 	end
 

@@ -8,26 +8,28 @@ function onSay(player, words, param)
 
 	local tile = Tile(position)
 	if not tile then
-		player:sendCancelMessage("Object not found.")
+		player:sendColorMessage("Object not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
 	local thing = tile:getTopVisibleThing(player)
 	if not thing then
-		player:sendCancelMessage("Thing not found.")
+		player:sendColorMessage("Thing not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
-	if thing:isCreature() then
-		thing:remove()
-	elseif thing:isItem() then
-		if thing == tile:getGround() then
-			player:sendCancelMessage("You may not remove a ground tile.")
-			return false
-		end
-		thing:remove(tonumber(param) or -1)
+	local value
+	if thing:isItem() then
+		value = tonumber(param) or -1
 	end
+	
+	local res = thing:remove(value)
 
-	position:sendMagicEffect(CONST_ME_MAGIC_RED)
+	if res then
+		position:sendMagicEffect(CONST_ME_MAGIC_RED)
+	else
+		player:sendColorMessage("Failed to remove item.", MESSAGE_COLOR_PURPLE)
+	end
+	
 	return false
 end

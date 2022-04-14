@@ -23,7 +23,7 @@ local function getSkillId(skillName)
 end
 
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
@@ -33,13 +33,13 @@ function onSay(player, words, param)
 
 	local split = param:splitTrimmed(",")
 	if not split[2] then
-		player:sendCancelMessage("Insufficient parameters.")
+		player:sendColorMessage("Insufficient parameters.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
 	local target = Player(split[1])
 	if not target then
-		player:sendCancelMessage("A player with that name is not online.")
+		player:sendColorMessage("A player with that name is not online.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
@@ -50,10 +50,11 @@ function onSay(player, words, param)
 
 	local skillId = getSkillId(split[2])
 	if not skillId then
-		player:sendCancelMessage("Unknown skill.")
+		player:sendColorMessage("Unknown skill.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
+	player:sendColorMessage(string.format("Added %sx %s skill to %s.", split[3], split[2], split[1]), MESSAGE_COLOR_PURPLE)
 	target:addSkill(skillId, count)
 	return false
 end

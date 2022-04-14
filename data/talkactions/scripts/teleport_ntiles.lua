@@ -1,5 +1,5 @@
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
 	end
 
@@ -16,11 +16,6 @@ function onSay(player, words, param)
 		Game.createTile(position)
 	end
 	
-	if position.x == 0 then
-		player:sendCancelMessage("You cannot teleport there.")
-		return false
-	end
-
 	player:teleportTo(position)
 	return false
 end

@@ -1667,6 +1667,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(GAME_STATE_CLOSING)
 	registerEnum(GAME_STATE_MAINTAIN)
 
+	registerEnum(MESSAGE_STATUS_CONSOLE_BLUE)
 	registerEnum(MESSAGE_CHANNEL_MANAGEMENT)
 	registerEnum(MESSAGE_STATUS_DEFAULT)
 	registerEnum(MESSAGE_STATUS_WARNING)
@@ -2389,6 +2390,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "loadMap", LuaScriptInterface::luaGameLoadMap);
 
 	registerMethod("Game", "getExperienceStage", LuaScriptInterface::luaGameGetExperienceStage);
+	registerMethod("Game", "getExperienceStages", LuaScriptInterface::luaGameGetExperienceStages);
 	registerMethod("Game", "getExperienceForLevel", LuaScriptInterface::luaGameGetExperienceForLevel);
 	registerMethod("Game", "getMonsterCount", LuaScriptInterface::luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", LuaScriptInterface::luaGameGetPlayerCount);
@@ -4754,6 +4756,25 @@ int LuaScriptInterface::luaGameGetExperienceStage(lua_State* L)
 	// Game.getExperienceStage(level)
 	uint32_t level = getNumber<uint32_t>(L, 1);
 	lua_pushnumber(L, g_config.getExperienceStage(level));
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetExperienceStages(lua_State* L)
+{
+	// Game.getExperienceStages()
+	const ExperienceStages expStages = g_config.getExperienceStages();
+
+	int index = 0;
+	lua_createtable(L, expStages.size(), 0);
+	for (auto const& value : expStages) {
+		lua_createtable(L, 0, 3);
+
+		setField(L, "minlevel", std::get<0>(value));
+		setField(L, "maxlevel", std::get<1>(value));
+		setField(L, "multiplier", std::get<2>(value));
+		lua_rawseti(L, -2, ++index);
+	}
+
 	return 1;
 }
 
@@ -8593,7 +8614,7 @@ int LuaScriptInterface::luaCreatureSetHiddenHealth(lua_State* L)
 	Creature* creature = getUserdata<Creature>(L, 1);
 	if (creature) {
 		creature->setHiddenHealth(getBoolean(L, 2));
-		g_game.addCreatureHealth(creature);
+		creature->refreshInClient();
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);
@@ -10607,7 +10628,11 @@ int LuaScriptInterface::luaPlayerSendTextMessage(lua_State* L)
 		}
 	}
 
-	player->sendTextMessage(message);
+	if (message.type != MESSAGE_STATUS_CONSOLE_BLUE) {
+		player->sendTextMessage(message);
+	} else {
+		player->sendNamedPrivateMessage(std::string(""), TALKTYPE_PRIVATE_FROM, message.text);
+	}
 	pushBoolean(L, true);
 
 	return 1;
@@ -10640,9 +10665,17 @@ int LuaScriptInterface::luaPlayerSendPrivateMessage(lua_State* L)
 		return 1;
 	}
 
-	const Player* speaker = getUserdata<const Player>(L, 2);
 	const std::string& text = getString(L, 3);
 	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE_FROM);
+
+	const Player* speaker = getUserdata<const Player>(L, 2);
+	if (!speaker) {
+		const std::string& speakerStr = getString(L, 2);
+		player->sendNamedPrivateMessage(speakerStr, type, text);
+		pushBoolean(L, true);
+		return 1;
+	}
+
 	player->sendPrivateMessage(speaker, type, text);
 	pushBoolean(L, true);
 	return 1;

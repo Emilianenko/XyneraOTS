@@ -57,19 +57,15 @@ local reloadTypes = {
 }
 
 function onSay(player, words, param)
-	if not player:getGroup():getAccess() then
+	if not player:isAdmin() then
 		return true
-	end
-
-	if player:getAccountType() < ACCOUNT_TYPE_GOD then
-		return false
 	end
 
 	logCommand(player, words, param)
 
 	local reloadType = reloadTypes[param:lower()]
 	if not reloadType then
-		player:sendTextMessage(MESSAGE_INFO_DESCR, "Reload type not found.")
+		player:sendColorMessage("Reload type not found.", MESSAGE_COLOR_PURPLE)
 		return false
 	end
 
@@ -87,7 +83,7 @@ function onSay(player, words, param)
 		Game.reload(RELOAD_TYPE_SCRIPTS)
 	end
 	
-	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("Reloaded %s.", param:lower()))
+	player:sendColorMessage(string.format("Reloaded %s.", param:lower()), MESSAGE_COLOR_PURPLE)
 	Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_INFO, string.format("Reloaded %s.", param:lower()))
 	return false
 end

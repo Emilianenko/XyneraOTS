@@ -1,4 +1,14 @@
 do
+	-- admin check for various server actions
+	-- set this option to true if you wish to use admin commands as a player (god account only)
+	local enablePlayerCheats = false
+	
+	function Player:isAdmin()
+		return self:getGroup():getAccess() or enablePlayerCheats and self:getAccountType() >= ACCOUNT_TYPE_GOD
+	end
+end
+
+do
 	local foodCondition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
 	function Player:feed(food)
 		local condition = self:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
