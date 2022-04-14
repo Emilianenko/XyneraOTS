@@ -619,11 +619,11 @@ local weapons = {
 	[2413] = { vocs = {4}, sockets = 3 }, -- broadsword
 	[2414] = { level = 60, sockets = 3 }, -- dragon lance
 	[2415] = { level = 95, vocs = {4}, sockets = 2 }, -- great axe
-	[2416] = {}, -- crowbar
+	[2416] = { alreadyScripted = true }, -- crowbar
 	[2417] = {}, -- battle hammer
 	[2418] = {}, -- golden sickle
 	[2419] = {}, -- scimitar
-	[2420] = {}, -- machete
+	[2420] = { alreadyScripted = true }, -- machete
 	[2421] = { level = 85, sockets = 2 }, -- thunder hammer
 	[2422] = {}, -- iron hammer
 	[2423] = { level = 20, sockets = 2 }, -- clerical mace
@@ -645,7 +645,7 @@ local weapons = {
 	[2439] = {}, -- daramian mace
 	[2440] = { level = 25, vocs = {4} }, -- daramian waraxe
 	[2441] = {}, -- daramian axe
-	[2442] = {}, -- heavy machete
+	[2442] = { alreadyScripted = true }, -- heavy machete
 	[2443] = { level = 70, vocs = {4}, sockets = 3 }, -- ravager's axe
 	[2444] = { level = 65, vocs = {4}, sockets = 3 }, -- hammer of wrath
 	[2445] = { level = 35, sockets = 2 }, -- crystal mace
@@ -658,7 +658,7 @@ local weapons = {
 	[2452] = { level = 70, vocs = {4}, sockets = 3 }, -- heavy mace
 	[2453] = { level = 75, sockets = 2 }, -- arcane staff
 	[2454] = { level = 65, vocs = {4}, sockets = 3 }, -- war axe
-	[2550] = {}, -- scythe
+	[2550] = { alreadyScripted = true }, -- scythe
 	[3961] = { level = 40 }, -- lich staff
 	[3962] = { level = 30, sockets = 2 }, -- beastslayer axe
 	[3963] = {}, -- templar scytheblade
@@ -871,7 +871,7 @@ local weapons = {
 	[25415] = { level = 150 }, -- plague bite
 	[25416] = { level = 150 }, -- impaler of the igniter
 	[25418] = { level = 150, sockets = 1 }, -- maimer
-	[25420] = { level = 100 }, -- Ferumbras' staff
+	[25420] = { level = 100, alreadyScripted = true }, -- Ferumbras' staff
 	[25421] = { level = 65, vocs = {1} }, -- Ferumbras' staff
 	[25422] = { level = 100, vocs = {1} }, -- Ferumbras' staff
 	
@@ -1724,8 +1724,13 @@ local slotTypes = {
 	shields = "shield"
 }
 
+local weaponAction = Action()
 for slotType, slotItems in pairs(Equippables) do
 	for itemId, itemData in pairs(slotItems) do
+		if slotType == "weapons" and not itemData.alreadyScripted then
+			weaponAction:id(itemId)
+		end
+	
 		local eq = MoveEvent()
 		eq:type("equip")
 		eq:slot(slotTypes[slotType])
@@ -1768,6 +1773,11 @@ for slotType, slotItems in pairs(Equippables) do
 		de:register()
 	end
 end
+		
+weaponAction.onUse = function(player, item, fromPosition, target, toPosition, isHotkey)
+	return destroyItem(player, target, toPosition)
+end
+weaponAction:register()
 
 ---- REGISTER AMMO SCRIPTS
 for itemId, itemData in pairs(Equippables.ammo) do
