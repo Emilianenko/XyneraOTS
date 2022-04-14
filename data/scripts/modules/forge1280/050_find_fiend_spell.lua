@@ -63,7 +63,7 @@ spell.onCastSpell = function(player, variant)
 	
 	for creatureId, expiresAt in pairs(FiendishMonsters) do
 		local newTarget = Monster(creatureId)
-		if newTarget then
+		if newTarget and newTarget:isFiendish() then
 			local targetPos = newTarget:getPosition()
 			local newDistance = targetPos.x + targetPos.y + targetPos.z
 			if newDistance < distance then
