@@ -1,3 +1,6 @@
+-- retroMode changes level and quest doors behaviour to ones from 7.6
+local retroMode = false
+
 local positionOffsets = {
 	{x = 1, y = 0}, -- east
 	{x = 0, y = 1}, -- south
@@ -53,24 +56,58 @@ local function findPushPosition(creature, round)
 	end
 end
 
+local function passDoorRetro(player, item)
+	local pos = player:getPosition()
+	local topos = item:getPosition()
+	
+	if pos.x == topos.x then
+		if pos.y < topos.y then
+			pos.y = topos.y + 1
+		else
+			pos.y = topos.y - 1
+		end
+	elseif pos.y == topos.y then
+		if pos.x < topos.x then
+			pos.x = topos.x + 1
+		else
+			pos.x = topos.x - 1
+		end
+	else
+		player:sendTextMessage(MESSAGE_INFO_DESCR, "Stand in front of the door.")
+		return
+	end
+
+	player:teleportTo(pos)
+	topos:sendMagicEffect(CONST_ME_MAGIC_RED)
+end
+
+
 local door = Action()
 
 function door.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local itemId = item:getId()
 	if table.contains(closedQuestDoors, itemId) then
 		if player:getStorageValue(item.actionid) ~= -1 or player:getGroup():getAccess() then
-			item:transform(itemId + 1)
-			player:teleportTo(toPosition, true)
+			if retroMode then
+				passDoorRetro(player, item)
+			else
+				item:transform(itemId + 1)
+				player:teleportTo(toPosition, true)
+			end
 		else
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "The door seems to be sealed against unwanted intruders.")
 		end
 		return true
 	elseif table.contains(closedLevelDoors, itemId) then
 		if item.actionid > 0 and player:getLevel() >= item.actionid - actionIds.levelDoor or player:getGroup():getAccess() then
-			item:transform(itemId + 1)
-			player:teleportTo(toPosition, true)
+			if retroMode then
+				passDoorRetro(player, item)
+			else
+				item:transform(itemId + 1)
+				player:teleportTo(toPosition, true)
+			end
 		else
-			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "Only the worthy may pass.")
 		end
 		return true
 	elseif table.contains(keys, itemId) then
