@@ -733,7 +733,7 @@ class Player final : public Creature, public Cylinder
 				client->sendRemoveTileThing(pos, stackpos);
 			}
 		}
-		void sendUpdateTileCreature(const Creature* creature) {
+		void sendUpdateTileCreature(const Creature* creature) const {
 			if (client) {
 				client->sendUpdateTileCreature(creature->getPosition(), creature->getTile()->getClientIndexOfCreature(this, creature), creature);
 			}

@@ -214,6 +214,8 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 		player->lastIP = player->getIP();
 		player->lastLoginSaved = std::max<time_t>(time(nullptr), player->lastLoginSaved + 1);
 		acceptPackets = true;
+
+		addGameTask([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	} else {
 		if (eventConnect != 0 || !g_config.getBoolean(ConfigManager::REPLACE_KICK_ON_LOGIN)) {
 			//Already trying to connect
@@ -231,9 +233,10 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 		} else {
 			connect(foundPlayer->getID(), operatingSystem);
 		}
+
+		addGameTask([=, playerID = foundPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	}
 
-	addGameTask([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	OutputMessagePool::getInstance().addProtocolToAutosend(shared_from_this());
 }
 
@@ -3391,6 +3394,14 @@ void ProtocolGame::sendSessionEnd(SessionEndTypes_t reason)
 void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove)
 {
 	CreatureType_t creatureType = creature->isHealthHidden() ? CREATURETYPE_HIDDEN : creature->getType();
+
+	// fix monster skull display in QT client
+	if (player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX) {
+		if (creatureType != CREATURETYPE_HIDDEN && creature->getSkullClient(creature) != SKULL_NONE) {
+			creatureType = CREATURETYPE_PLAYER;
+		}
+	}
+
 	const Player* otherPlayer = creature->getPlayer();
 	const Player* masterPlayer = nullptr;
 	uint32_t masterId = 0;

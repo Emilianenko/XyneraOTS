@@ -5020,15 +5020,20 @@ void Game::updateCreatureWalkthrough(const Creature* creature)
 
 void Game::updateCreatureSkull(const Creature* creature)
 {
-	if (getWorldType() != WORLD_TYPE_PVP) {
+	// creature is player, just send a new skull
+	if (creature->getPlayer()) {
+		if (getWorldType() == WORLD_TYPE_PVP) {
+			SpectatorVec spectators;
+			map.getSpectators(spectators, creature->getPosition(), true, true);
+			for (Creature* spectator : spectators) {
+				spectator->getPlayer()->sendCreatureSkull(creature);
+			}
+		}
 		return;
 	}
 
-	SpectatorVec spectators;
-	map.getSpectators(spectators, creature->getPosition(), true, true);
-	for (Creature* spectator : spectators) {
-		spectator->getPlayer()->sendCreatureSkull(creature);
-	}
+	// creature is not a player, re-send creature
+	creature->refreshInClient();
 }
 
 void Game::updatePlayerShield(Player* player)
