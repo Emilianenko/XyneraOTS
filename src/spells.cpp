@@ -796,7 +796,7 @@ void Spell::postCastSpell(Player* player, bool finishedCast /*= true*/, bool pay
 		}
 
 		if (aggressive) {
-			player->addInFightTicks();
+			player->addInFightTicks(pzLock);
 		}
 	}
 

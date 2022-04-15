@@ -8,6 +8,21 @@ do
 	end
 end
 
+function Player:talkactionCooldownCheck()
+	if self:isAdmin() then
+		return true
+	end
+	
+	local now = os.time()
+	if now > self:getStorageValue(PlayerStorageKeys.commandsCooldown) then
+		self:setStorageValue(PlayerStorageKeys.commandsCooldown, now + 5)
+		return true
+	else
+		self:sendColorMessage("You cannot execute this command that fast.", MESSAGE_COLOR_PURPLE)
+		return false
+	end
+end
+
 do
 	local foodCondition = Condition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
 	function Player:feed(food)

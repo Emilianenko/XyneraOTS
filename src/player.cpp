@@ -2422,12 +2422,14 @@ void Player::addInFightTicks(bool pzlock /*= false*/)
 		return;
 	}
 
+	// set infight
+	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_INFIGHT, g_config.getNumber(ConfigManager::PZ_LOCKED), 0);
+	addCondition(condition);
+
+	// turn swords into redswords
 	if (pzlock) {
 		pzLocked = true;
 	}
-
-	Condition* condition = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_INFIGHT, g_config.getNumber(ConfigManager::PZ_LOCKED), 0);
-	addCondition(condition);
 }
 
 void Player::removeList()

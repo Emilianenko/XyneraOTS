@@ -115,21 +115,29 @@ bool ChatChannel::hasUser(const Player& player) {
 	return users.find(player.getID()) != users.end();
 }
 
-void ChatChannel::sendToAll(const std::string& message, SpeakClasses type) const
+void ChatChannel::sendToAll(const std::string& message, MessageClasses type) const
 {
 	for (const auto& it : users) {
 		it.second->sendChannelMessage("", message, type, id);
 	}
 }
 
-bool ChatChannel::talk(const Player& fromPlayer, SpeakClasses type, const std::string& text)
+bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std::string& text)
 {
 	if (users.find(fromPlayer.getID()) == users.end()) {
 		return false;
 	}
 
 	for (const auto& it : users) {
-		it.second->sendToChannel(&fromPlayer, type, text, id);
+		uint16_t clientChannelId = id;
+		if (id == CHANNEL_GUILD) {
+			Player* player = it.second;
+			if (player && !player->isRemoved() && player->isGuildLeader()) {
+				clientChannelId = CHANNEL_GUILD_LEADER;
+			}
+		}
+
+		it.second->sendToChannel(&fromPlayer, type, text, clientChannelId);
 	}
 	return true;
 }
@@ -209,7 +217,7 @@ bool ChatChannel::executeOnLeaveEvent(const Player& player)
 	return scriptInterface->callFunction(1);
 }
 
-bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, const std::string& message)
+bool ChatChannel::executeOnSpeakEvent(const Player& player, MessageClasses& type, const std::string& message)
 {
 	if (onSpeakEvent == -1) {
 		return true;
@@ -244,7 +252,7 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, SpeakClasses& type, 
 			result = LuaScriptInterface::getBoolean(L, -1);
 		} else if (lua_isnumber(L, -1)) {
 			result = true;
-			type = LuaScriptInterface::getNumber<SpeakClasses>(L, -1);
+			type = LuaScriptInterface::getNumber<MessageClasses>(L, -1);
 		}
 		lua_pop(L, 1);
 	}
@@ -468,7 +476,7 @@ void Chat::removeUserFromAllChannels(const Player& player)
 	}
 }
 
-bool Chat::talkToChannel(const Player& player, SpeakClasses type, const std::string& text, uint16_t channelId)
+bool Chat::talkToChannel(const Player& player, MessageClasses type, const std::string& text, uint16_t channelId)
 {
 	ChatChannel* channel = getChannel(player, channelId);
 	if (!channel) {

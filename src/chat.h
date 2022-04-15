@@ -26,8 +26,8 @@ class ChatChannel
 		bool removeUser(const Player& player);
 		bool hasUser(const Player& player);
 
-		bool talk(const Player& fromPlayer, SpeakClasses type, const std::string& text);
-		void sendToAll(const std::string& message, SpeakClasses type) const;
+		bool talk(const Player& fromPlayer, MessageClasses type, const std::string& text);
+		void sendToAll(const std::string& message, MessageClasses type) const;
 
 		const std::string& getName() const {
 			return name;
@@ -51,7 +51,7 @@ class ChatChannel
 		bool executeOnJoinEvent(const Player& player);
 		bool executeCanJoinEvent(const Player& player);
 		bool executeOnLeaveEvent(const Player& player);
-		bool executeOnSpeakEvent(const Player& player, SpeakClasses& type, const std::string& message);
+		bool executeOnSpeakEvent(const Player& player, MessageClasses& type, const std::string& message);
 
 	protected:
 		UsersMap users;
@@ -121,7 +121,7 @@ class Chat
 		bool removeUserFromChannel(const Player& player, uint16_t channelId);
 		void removeUserFromAllChannels(const Player& player);
 
-		bool talkToChannel(const Player& player, SpeakClasses type, const std::string& text, uint16_t channelId);
+		bool talkToChannel(const Player& player, MessageClasses type, const std::string& text, uint16_t channelId);
 
 		ChannelList getChannelList(const Player& player);
 

@@ -3014,6 +3014,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Guild", "addRank", LuaScriptInterface::luaGuildAddRank);
 	registerMethod("Guild", "getRankById", LuaScriptInterface::luaGuildGetRankById);
 	registerMethod("Guild", "getRankByLevel", LuaScriptInterface::luaGuildGetRankByLevel);
+	registerMethod("Guild", "getLeaderRankLevel", LuaScriptInterface::luaGuildGetLeaderRankLevel);
 
 	registerMethod("Guild", "getMotd", LuaScriptInterface::luaGuildGetMotd);
 	registerMethod("Guild", "setMotd", LuaScriptInterface::luaGuildSetMotd);
@@ -4288,7 +4289,7 @@ int LuaScriptInterface::luaSendChannelMessage(lua_State* L)
 		return 1;
 	}
 
-	SpeakClasses type = getNumber<SpeakClasses>(L, 2);
+	MessageClasses type = getNumber<MessageClasses>(L, 2);
 	std::string message = getString(L, 3);
 	channel->sendToAll(message, type);
 	pushBoolean(L, true);
@@ -4305,7 +4306,7 @@ int LuaScriptInterface::luaSendGuildChannelMessage(lua_State* L)
 		return 1;
 	}
 
-	SpeakClasses type = getNumber<SpeakClasses>(L, 2);
+	MessageClasses type = getNumber<MessageClasses>(L, 2);
 	std::string message = getString(L, 3);
 	channel->sendToAll(message, type);
 	pushBoolean(L, true);
@@ -8875,7 +8876,7 @@ int LuaScriptInterface::luaCreatureSay(lua_State* L)
 
 	bool ghost = getBoolean(L, 4, false);
 
-	SpeakClasses type = getNumber<SpeakClasses>(L, 3, TALKTYPE_MONSTER_SAY);
+	MessageClasses type = getNumber<MessageClasses>(L, 3, TALKTYPE_MONSTER_SAY);
 	const std::string& text = getString(L, 2);
 	Creature* creature = getUserdata<Creature>(L, 1);
 	if (!creature) {
@@ -10648,7 +10649,7 @@ int LuaScriptInterface::luaPlayerSendChannelMessage(lua_State* L)
 	}
 
 	uint16_t channelId = getNumber<uint16_t>(L, 5);
-	SpeakClasses type = getNumber<SpeakClasses>(L, 4);
+	MessageClasses type = getNumber<MessageClasses>(L, 4);
 	const std::string& text = getString(L, 3);
 	const std::string& author = getString(L, 2);
 	player->sendChannelMessage(author, text, type, channelId);
@@ -10666,7 +10667,7 @@ int LuaScriptInterface::luaPlayerSendPrivateMessage(lua_State* L)
 	}
 
 	const std::string& text = getString(L, 3);
-	SpeakClasses type = getNumber<SpeakClasses>(L, 4, TALKTYPE_PRIVATE_FROM);
+	MessageClasses type = getNumber<MessageClasses>(L, 4, TALKTYPE_PRIVATE_FROM);
 
 	const Player* speaker = getUserdata<const Player>(L, 2);
 	if (!speaker) {
@@ -10691,7 +10692,7 @@ int LuaScriptInterface::luaPlayerChannelSay(lua_State* L)
 	}
 
 	Creature* speaker = getCreature(L, 2);
-	SpeakClasses type = getNumber<SpeakClasses>(L, 3);
+	MessageClasses type = getNumber<MessageClasses>(L, 3);
 	const std::string& text = getString(L, 4);
 	uint16_t channelId = getNumber<uint16_t>(L, 5);
 	player->sendToChannel(speaker, type, text, channelId);
@@ -12244,7 +12245,7 @@ int LuaScriptInterface::luaGuildAddRank(lua_State* L)
 	if (guild) {
 		uint32_t id = getNumber<uint32_t>(L, 2);
 		const std::string& name = getString(L, 3);
-		uint8_t level = getNumber<uint8_t>(L, 4);
+		uint16_t level = getNumber<uint16_t>(L, 4);
 		guild->addRank(id, name, level);
 		pushBoolean(L, true);
 	} else {
@@ -12284,13 +12285,25 @@ int LuaScriptInterface::luaGuildGetRankByLevel(lua_State* L)
 		return 1;
 	}
 
-	uint8_t level = getNumber<uint8_t>(L, 2);
+	uint16_t level = getNumber<uint16_t>(L, 2);
 	GuildRank_ptr rank = guild->getRankByLevel(level);
 	if (rank) {
 		lua_createtable(L, 0, 3);
 		setField(L, "id", rank->id);
 		setField(L, "name", rank->name);
 		setField(L, "level", rank->level);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGuildGetLeaderRankLevel(lua_State* L)
+{
+	// guild:getLeaderRankLevel()
+	Guild* guild = getUserdata<Guild>(L, 1);
+	if (guild) {
+		lua_pushnumber(L, guild->getLeaderRankLevel());
 	} else {
 		lua_pushnil(L);
 	}

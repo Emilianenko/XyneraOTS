@@ -163,16 +163,15 @@ class ProtocolGame final : public Protocol
 		void parseCloseChannel(NetworkMessage& msg);
 
 		//Send functions
-		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel);
+		void sendChannelMessage(const std::string& author, const std::string& text, MessageClasses type, uint16_t channel);
 		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);
-		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName);
 		void sendChannelsDialog();
-		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers);
+		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers, bool ownChannel);
 		void sendOpenPrivateChannel(const std::string& receiver);
-		void sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId);
-		void sendPrivateMessage(const Player* speaker, SpeakClasses type, const std::string& text);
-		void sendNamedPrivateMessage(const std::string& speaker, SpeakClasses type, const std::string& text);
+		void sendToChannel(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId);
+		void sendPrivateMessage(const Player* speaker, MessageClasses type, const std::string& text);
+		void sendNamedPrivateMessage(const std::string& speaker, MessageClasses type, const std::string& text);
 		void sendIcons(uint32_t icons);
 		void sendFYIBox(const std::string& message);
 
@@ -183,7 +182,7 @@ class ProtocolGame final : public Protocol
 		void sendPing();
 		void sendPingBack();
 		void sendCreatureTurn(const Creature* creature, uint32_t stackPos);
-		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr);
+		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, const Position* pos = nullptr);
 
 		void sendQuestLog();
 		void sendQuestLine(const Quest* quest);

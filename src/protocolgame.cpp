@@ -529,6 +529,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		}
 	}
 
+	// cases commented as "(scripted)" are being handled by lua scripts
 	switch (recvbyte) {
 		case 0x0F: break; // login
 		case 0x14: addGameTask([thisPtr = getThis()]() { thisPtr->logout(true, false); }); break;
@@ -587,6 +588,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x98: parseOpenChannel(msg); break;
 		case 0x99: parseCloseChannel(msg); break;
 		case 0x9A: parseOpenPrivateChannel(msg); break;
+		//case 0x9B: break; // request edit guild motd (scripted)
+		//case 0x9C: breal; // set new guild motd (scripted)
 		case 0x9E: addGameTask([playerID = player->getID()]() { g_game.playerCloseNpcChannel(playerID); }); break;
 		case 0xA0: parseFightModes(msg); break;
 		case 0xA1: parseAttack(msg); break;
@@ -602,14 +605,14 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xAC: parseChannelExclude(msg); break;
 		//case 0xB1: break; // request highscores
 		case 0xBE: addGameTask([playerID = player->getID()]() { g_game.playerCancelAttackAndFollow(playerID); }); break;
-		//case 0xBF: break; // exaltation fuse / transfer / convert
+		//case 0xBF: break; // exaltation forge (scripted)
 		//case 0xC7: break; // request tournament leaderboard
 		case 0xC9: /* update tile */ break;
 		case 0xCA: parseUpdateContainer(msg); break;
 		case 0xCB: parseBrowseField(msg); break;
 		case 0xCC: parseSeekInContainer(msg); break;
 		case 0xCD: parseInspectItem(msg); break;
-		//case 0xC0: break; //request forge history
+		//case 0xC0: break; //request forge history (scripted)
 		case 0xD0: parseQuestTracker(msg); break;
 		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;
 		case 0xD3: parseSetOutfit(msg); break;
@@ -622,11 +625,11 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xDE: parseEditVip(msg); break;
 		//case 0xDF: break; // premium shop (?)
 		//case 0xE0: break; // premium shop (?)
-		//case 0xE1: break; // bestiary 1
-		//case 0xE2: break; // bestiary 2
-		//case 0xE3: break; // bestiary 3
+		//case 0xE1: break; // bestiary 1 (scripted)
+		//case 0xE2: break; // bestiary 2 (scripted)
+		//case 0xE3: break; // bestiary 3 (scripted)
 		//case 0xE4: break; // buy charm rune
-		//case 0xE5: break; // request character info (in-game knowledge base)
+		//case 0xE5: break; // request character info (in-game knowledge base) (scripted)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
@@ -863,6 +866,9 @@ void ProtocolGame::parseOpenChannel(NetworkMessage& msg)
 void ProtocolGame::parseCloseChannel(NetworkMessage& msg)
 {
 	uint16_t channelID = msg.get<uint16_t>();
+	if (channelID == CHANNEL_GUILD_LEADER) {
+		channelID = CHANNEL_GUILD;
+	}
 	addGameTask([=, playerID = player->getID()]() { g_game.playerCloseChannel(playerID, channelID); });
 }
 
@@ -1069,8 +1075,8 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 {
 	std::string receiver;
 	uint16_t channelId;
-
-	SpeakClasses type = static_cast<SpeakClasses>(msg.getByte());
+	
+	MessageClasses type = static_cast<MessageClasses>(msg.getByte());
 	switch (type) {
 		case TALKTYPE_PRIVATE_TO:
 		case TALKTYPE_PRIVATE_RED_TO:
@@ -1091,6 +1097,10 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 	std::string text = msg.getString();
 	if (text.length() > 255) {
 		return;
+	}
+
+	if (channelId == CHANNEL_GUILD_LEADER) {
+		channelId = CHANNEL_GUILD;
 	}
 
 	addGameTask([=, playerID = player->getID(), receiver = std::move(receiver), text = std::move(text)]() {
@@ -1716,18 +1726,6 @@ void ProtocolGame::sendClosePrivate(uint16_t channelId)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName)
-{
-	NetworkMessage msg;
-	msg.addByte(0xB2);
-	msg.add<uint16_t>(channelId);
-	msg.addString(channelName);
-	msg.add<uint16_t>(0x01);
-	msg.addString(player->getName());
-	msg.add<uint16_t>(0x00);
-	writeToOutputBuffer(msg);
-}
-
 void ProtocolGame::sendChannelsDialog()
 {
 	NetworkMessage msg;
@@ -1743,10 +1741,14 @@ void ProtocolGame::sendChannelsDialog()
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers)
+void ProtocolGame::sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers, bool ownChannel)
 {
 	NetworkMessage msg;
-	msg.addByte(0xAC);
+	if (ownChannel) {
+		msg.addByte(0xB2);
+	} else {
+		msg.addByte(0xAC);
+	}
 
 	msg.add<uint16_t>(channelId);
 	msg.addString(channelName);
@@ -1771,7 +1773,7 @@ void ProtocolGame::sendChannel(uint16_t channelId, const std::string& channelNam
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel)
+void ProtocolGame::sendChannelMessage(const std::string& author, const std::string& text, MessageClasses type, uint16_t channel)
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
@@ -2411,7 +2413,7 @@ void ProtocolGame::sendCreatureTurn(const Creature* creature, uint32_t stackPos)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos/* = nullptr*/)
+void ProtocolGame::sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, const Position* pos/* = nullptr*/)
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
@@ -2440,7 +2442,7 @@ void ProtocolGame::sendCreatureSay(const Creature* creature, SpeakClasses type, 
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId)
+void ProtocolGame::sendToChannel(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId)
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
@@ -2468,7 +2470,7 @@ void ProtocolGame::sendToChannel(const Creature* creature, SpeakClasses type, co
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendPrivateMessage(const Player* speaker, SpeakClasses type, const std::string& text)
+void ProtocolGame::sendPrivateMessage(const Player* speaker, MessageClasses type, const std::string& text)
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);
@@ -2487,7 +2489,7 @@ void ProtocolGame::sendPrivateMessage(const Player* speaker, SpeakClasses type, 
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendNamedPrivateMessage(const std::string& speaker, SpeakClasses type, const std::string& text)
+void ProtocolGame::sendNamedPrivateMessage(const std::string& speaker, MessageClasses type, const std::string& text)
 {
 	NetworkMessage msg;
 	msg.addByte(0xAA);

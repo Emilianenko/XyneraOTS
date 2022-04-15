@@ -429,7 +429,7 @@ class Creature : virtual public Thing
 		virtual void onAttackedCreatureDisappear(bool) {}
 		virtual void onFollowCreatureDisappear(bool) {}
 
-		virtual void onCreatureSay(Creature*, SpeakClasses, const std::string&) {}
+		virtual void onCreatureSay(Creature*, MessageClasses, const std::string&) {}
 
 		virtual void onPlacedCreature() {}
 

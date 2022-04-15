@@ -44,7 +44,7 @@ GuildRank_ptr Guild::getRankByName(const std::string& name) const
 	return nullptr;
 }
 
-GuildRank_ptr Guild::getRankByLevel(uint8_t level) const
+GuildRank_ptr Guild::getRankByLevel(uint16_t level) const
 {
 	for (auto rank : ranks) {
 		if (rank->level == level) {
@@ -54,16 +54,24 @@ GuildRank_ptr Guild::getRankByLevel(uint8_t level) const
 	return nullptr;
 }
 
-void Guild::addRank(uint32_t rankId, const std::string& rankName, uint8_t level)
+void Guild::addRank(uint32_t rankId, const std::string& rankName, uint16_t level)
 {
+	if (level > leaderRankLevel) {
+		leaderRankLevel = level;
+	}
+
 	ranks.emplace_back(std::make_shared<GuildRank>(rankId, rankName, level));
 }
 
 Guild* IOGuild::loadGuild(uint32_t guildId)
 {
 	Database& db = Database::getInstance();
-	if (DBResult_ptr result = db.storeQuery(fmt::format("SELECT `name` FROM `guilds` WHERE `id` = {:d}", guildId))) {
+	if (DBResult_ptr result = db.storeQuery(fmt::format("SELECT `name`, `motd` FROM `guilds` WHERE `id` = {:d}", guildId))) {
 		Guild* guild = new Guild(guildId, result->getString("name"));
+		const std::string& motd = result->getString("motd");
+		if (!motd.empty()) {
+			guild->setMotd(motd);
+		}
 
 		if ((result = db.storeQuery(fmt::format("SELECT `id`, `name`, `level` FROM `guild_ranks` WHERE `guild_id` = {:d}", guildId)))) {
 			do {

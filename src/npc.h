@@ -61,7 +61,7 @@ class NpcEventsHandler
 		void onCreatureAppear(Creature* creature);
 		void onCreatureDisappear(Creature* creature);
 		void onCreatureMove(Creature* creature, const Position& oldPos, const Position& newPos);
-		void onCreatureSay(Creature* creature, SpeakClasses, const std::string& text);
+		void onCreatureSay(Creature* creature, MessageClasses, const std::string& text);
 		void onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count, uint8_t amount, bool ignore = false, bool inBackpacks = false);
 		void onPlayerCloseChannel(Player* player);
 		void onPlayerEndTrade(Player* player);
@@ -176,7 +176,7 @@ class Npc final : public Creature
 		void onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
 		                            const Tile* oldTile, const Position& oldPos, bool teleport) override;
 
-		void onCreatureSay(Creature* creature, SpeakClasses type, const std::string& text) override;
+		void onCreatureSay(Creature* creature, MessageClasses type, const std::string& text) override;
 		void onThink(uint32_t interval) override;
 		std::string getDescription(int32_t lookDistance) const override;
 

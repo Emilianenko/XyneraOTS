@@ -321,7 +321,7 @@ void Npc::onCreatureMove(Creature* creature, const Tile* newTile, const Position
 	}
 }
 
-void Npc::onCreatureSay(Creature* creature, SpeakClasses type, const std::string& text)
+void Npc::onCreatureSay(Creature* creature, MessageClasses type, const std::string& text)
 {
 	if (creature == this) {
 		return;
@@ -1205,7 +1205,7 @@ void NpcEventsHandler::onCreatureMove(Creature* creature, const Position& oldPos
 	scriptInterface->callFunction(3);
 }
 
-void NpcEventsHandler::onCreatureSay(Creature* creature, SpeakClasses type, const std::string& text)
+void NpcEventsHandler::onCreatureSay(Creature* creature, MessageClasses type, const std::string& text)
 {
 	if (creatureSayEvent == -1) {
 		return;

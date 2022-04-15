@@ -9,9 +9,9 @@ class Player;
 struct GuildRank {
 	uint32_t id;
 	std::string name;
-	uint8_t level;
+	uint16_t level;
 
-	GuildRank(uint32_t id, std::string name, uint8_t level) :
+	GuildRank(uint32_t id, std::string name, uint16_t level) :
 		id(id), name(std::move(name)), level(level) {}
 };
 
@@ -46,8 +46,8 @@ class Guild
 		}
 		GuildRank_ptr getRankById(uint32_t rankId);
 		GuildRank_ptr getRankByName(const std::string& name) const;
-		GuildRank_ptr getRankByLevel(uint8_t level) const;
-		void addRank(uint32_t rankId, const std::string& rankName, uint8_t level);
+		GuildRank_ptr getRankByLevel(uint16_t level) const;
+		void addRank(uint32_t rankId, const std::string& rankName, uint16_t level);
 
 		const std::string& getMotd() const {
 			return motd;
@@ -55,14 +55,19 @@ class Guild
 		void setMotd(const std::string& motd) {
 			this->motd = motd;
 		}
+		uint16_t getLeaderRankLevel() {
+			return leaderRankLevel;
+		}
 
 	private:
 		std::list<Player*> membersOnline;
 		std::vector<GuildRank_ptr> ranks;
 		std::string name;
 		std::string motd;
+
 		uint32_t id;
 		uint32_t memberCount = 0;
+		uint16_t leaderRankLevel = 0;
 };
 
 using GuildWarVector = std::vector<uint32_t>;

@@ -273,7 +273,7 @@ enum MonsterIcon_t : uint8_t {
 	MONSTER_ICON_LAST
 };
 
-enum SpeakClasses : uint8_t {
+enum MessageClasses : uint8_t {
 	// creature:say(...)
 	TALKTYPE_SAY = 1,
 	TALKTYPE_WHISPER = 2,
@@ -293,10 +293,8 @@ enum SpeakClasses : uint8_t {
 	TALKTYPE_MONSTER_SAY = 36,
 	TALKTYPE_MONSTER_YELL = 37,
 	TALKTYPE_POTION = 52, // Like MONSTER_SAY but can be disabled in client settings
-};
 
-enum MessageClasses : uint8_t {
-	MESSAGE_STATUS_CONSOLE_BLUE = 4, // deprecated, compatibility mode
+	MESSAGE_STATUS_CONSOLE_BLUE = TALKTYPE_PRIVATE_FROM, // deprecated, compatibility mode
 
 	// sendChannelMessage(...)
 	MESSAGE_CHANNEL_MANAGEMENT = 6, // Green, in channel
@@ -783,6 +781,7 @@ enum ReloadTypes_t : uint8_t {
 
 static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
+static constexpr int32_t CHANNEL_GUILD_LEADER = 0x2710; // 10000
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
 
 // Reserved account storage key ranges;

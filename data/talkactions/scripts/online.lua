@@ -3,7 +3,18 @@ local highlightAdmin = true
 local highlightAdminPlayer = false
 local highlightTutor = true
 
+function sendOnlinePage(cid, msg)
+	local player = Player(cid)
+	if player then
+		player:sendTextMessage(MESSAGE_LOOT, msg)
+	end
+end
+
 function onSay(player, words, param)
+	if not player:talkactionCooldownCheck() then
+		return
+	end
+	
 	local players = Game.getPlayers()
 	local onlineList = {}
 
@@ -32,11 +43,20 @@ function onSay(player, words, param)
 	local playersOnline = #onlineList
 	local pagesCount = math.ceil(playersOnline / maxPlayersPerMessage)
 	local pageId = 1
+	local cid = player:getId()
+	
 	for i = 1, playersOnline, maxPlayersPerMessage do
 		local j = math.min(i + maxPlayersPerMessage - 1, playersOnline)
 		local msg = table.concat(onlineList, ", ", i, j)
 		local page = pagesCount > 1 and string.format(" (page %d/%d)", pageId, math.max(1, pagesCount)) or ""
-		player:sendTextMessage(MESSAGE_LOOT, string.format("%d player%s online%s:\n%s", playersOnline, playersOnline ~= 1 and "s" or "", page, msg))
+		msg = string.format("%d player%s online%s:\n%s", playersOnline, playersOnline ~= 1 and "s" or "", page, msg)
+
+		if pageId ~= 1 then
+			addEvent(sendOnlinePage, 3000 * pageId, player:getId(), msg)
+		else
+			sendOnlinePage(cid, msg)
+		end
+		
 		pageId = pageId + 1
 	end
 	return false

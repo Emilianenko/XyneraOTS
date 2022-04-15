@@ -207,6 +207,9 @@ class Player final : public Creature, public Cylinder
 		}
 
 		bool isGuildMate(const Player* player) const;
+		bool isGuildLeader() const {
+			return guild && guild->getLeaderRankLevel() == guildRank->level;
+		}
 
 		const std::string& getGuildNick() const {
 			return guildNick;
@@ -754,7 +757,7 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		void sendChannelMessage(const std::string& author, const std::string& text, SpeakClasses type, uint16_t channel) {
+		void sendChannelMessage(const std::string& author, const std::string& text, MessageClasses type, uint16_t channel) {
 			if (client) {
 				client->sendChannelMessage(author, text, type, channel);
 			}
@@ -782,17 +785,17 @@ class Player final : public Creature, public Cylinder
 				}
 			}
 		}
-		void sendCreatureSay(const Creature* creature, SpeakClasses type, const std::string& text, const Position* pos = nullptr) {
+		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, const Position* pos = nullptr) {
 			if (client) {
 				client->sendCreatureSay(creature, type, text, pos);
 			}
 		}
-		void sendPrivateMessage(const Player* speaker, SpeakClasses type, const std::string& text) {
+		void sendPrivateMessage(const Player* speaker, MessageClasses type, const std::string& text) {
 			if (client) {
 				client->sendPrivateMessage(speaker, type, text);
 			}
 		}
-		void sendNamedPrivateMessage(const std::string& speaker, SpeakClasses type, const std::string& text) {
+		void sendNamedPrivateMessage(const std::string& speaker, MessageClasses type, const std::string& text) {
 			if (client) {
 				client->sendNamedPrivateMessage(speaker, type, text);
 			}
@@ -982,11 +985,6 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 		void sendHouseWindow(House* house, uint32_t listId) const;
-		void sendCreatePrivateChannel(uint16_t channelId, const std::string& channelName) {
-			if (client) {
-				client->sendCreatePrivateChannel(channelId, channelName);
-			}
-		}
 		void sendClosePrivate(uint16_t channelId);
 		void sendIcons() const {
 			if (client) {
@@ -1045,7 +1043,7 @@ class Player final : public Creature, public Cylinder
 				client->sendTextWindow(windowTextId, itemId, text);
 			}
 		}
-		void sendToChannel(const Creature* creature, SpeakClasses type, const std::string& text, uint16_t channelId) const {
+		void sendToChannel(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId) const {
 			if (client) {
 				client->sendToChannel(creature, type, text, channelId);
 			}
@@ -1147,9 +1145,9 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 
-		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers) {
+		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers, bool ownChannel) {
 			if (client) {
-				client->sendChannel(channelId, channelName, channelUsers, invitedUsers);
+				client->sendChannel(channelId, channelName, channelUsers, invitedUsers, ownChannel);
 			}
 		}
 		void sendTutorial(uint8_t tutorialId) {

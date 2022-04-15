@@ -19,6 +19,10 @@ local function getMonthString(m)
 end
 
 function onSay(player, words, param)
+	if not player:talkactionCooldownCheck() then
+		return
+	end
+	
 	local resultId = db.storeQuery("SELECT `id`, `name` FROM `players` WHERE `name` = " .. db.escapeString(param))
 	if resultId ~= false then
 		local targetGUID = result.getNumber(resultId, "id")

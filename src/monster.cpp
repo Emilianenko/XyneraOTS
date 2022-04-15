@@ -288,7 +288,7 @@ void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Posi
 	}
 }
 
-void Monster::onCreatureSay(Creature* creature, SpeakClasses type, const std::string& text)
+void Monster::onCreatureSay(Creature* creature, MessageClasses type, const std::string& text)
 {
 	Creature::onCreatureSay(creature, type, text);
 

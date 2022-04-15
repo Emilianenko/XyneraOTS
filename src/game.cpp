@@ -1898,8 +1898,7 @@ void Game::playerCreatePrivateChannel(uint32_t playerId)
 	if (!channel || !channel->addUser(*player)) {
 		return;
 	}
-
-	player->sendCreatePrivateChannel(channel->getId(), channel->getName());
+	player->sendChannel(channel->getId(), channel->getName(), nullptr, nullptr, true);
 }
 
 void Game::playerChannelInvite(uint32_t playerId, const std::string& name)
@@ -1980,7 +1979,17 @@ void Game::playerOpenChannel(uint32_t playerId, uint16_t channelId)
 		users = nullptr;
 	}
 
-	player->sendChannel(channel->getId(), channel->getName(), users, invitedUsers);
+	uint16_t outputChannelId = channel->getId();
+
+	bool ownChannel = false;
+	if (channelId == 0 && player->isGuildLeader()) {
+		outputChannelId = CHANNEL_GUILD_LEADER;
+		ownChannel = true;
+	} else if (channelId >= 100 && channelId < 10000) {
+		ownChannel = playerId != 0 && channel->getOwner() == playerId;
+	}
+
+	player->sendChannel(outputChannelId, channel->getName(), users, invitedUsers, ownChannel);
 }
 
 void Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
@@ -3663,7 +3672,7 @@ void Game::playerResetQuestTracker(uint32_t playerId, const std::vector<uint16_t
 	player->resetQuestTracker(missionIds);
 }
 
-void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
+void Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
                      const std::string& receiver, const std::string& text)
 {
 	Player* player = getPlayerByID(playerId);
@@ -3727,7 +3736,7 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 	}
 }
 
-bool Game::playerSaySpell(Player* player, SpeakClasses type, const std::string& text)
+bool Game::playerSaySpell(Player* player, MessageClasses type, const std::string& text)
 {
 	std::string words = text;
 
@@ -3804,7 +3813,7 @@ bool Game::playerYell(Player* player, const std::string& text)
 	return true;
 }
 
-bool Game::playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver,
+bool Game::playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver,
                          const std::string& text)
 {
 	Player* toPlayer = getPlayerByName(receiver);
@@ -3885,7 +3894,7 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	return true;
 }
 
-bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
+bool Game::internalCreatureSay(Creature* creature, MessageClasses type, const std::string& text,
                                bool ghostMode, SpectatorVec* spectatorsPtr/* = nullptr*/, const Position* pos/* = nullptr*/, bool echo/* = false*/)
 {
 	if (text.empty()) {
@@ -5241,7 +5250,12 @@ void Game::sendGuildMotd(uint32_t playerId)
 
 	Guild* guild = player->getGuild();
 	if (guild) {
-		player->sendChannelMessage("Message of the Day", guild->getMotd(), TALKTYPE_CHANNEL_R1, CHANNEL_GUILD);
+		const std::string& motd = guild->getMotd();
+		if (!motd.empty()) {
+			TextMessage message(MESSAGE_GUILD, "Message of the Day: " + motd);
+			message.channelId = player->isGuildLeader() ? CHANNEL_GUILD_LEADER : CHANNEL_GUILD;
+			player->sendTextMessage(message);
+		}
 	}
 }
 

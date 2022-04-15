@@ -305,7 +305,7 @@ class Game
 		  * \param type Type of message
 		  * \param text The text to say
 		  */
-		bool internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
+		bool internalCreatureSay(Creature* creature, MessageClasses type, const std::string& text,
 		                         bool ghostMode, SpectatorVec* spectatorsPtr = nullptr, const Position* pos = nullptr, bool echo = false);
 
 		void loadPlayersRecord();
@@ -390,7 +390,7 @@ class Game
 		void playerShowQuestLog(uint32_t playerId);
 		void playerShowQuestLine(uint32_t playerId, uint16_t questId);
 		void playerResetQuestTracker(uint32_t playerId, const std::vector<uint16_t>& missionIds);
-		void playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
+		void playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		               const std::string& receiver, const std::string& text);
 		void playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRandomized);
 		void playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar);
@@ -535,10 +535,10 @@ class Game
 		}
 
 	private:
-		bool playerSaySpell(Player* player, SpeakClasses type, const std::string& text);
+		bool playerSaySpell(Player* player, MessageClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
 		bool playerYell(Player* player, const std::string& text);
-		bool playerSpeakTo(Player* player, SpeakClasses type, const std::string& receiver, const std::string& text);
+		bool playerSpeakTo(Player* player, MessageClasses type, const std::string& receiver, const std::string& text);
 		void playerSpeakToNpc(Player* player, const std::string& text);
 
 		void checkDecay();

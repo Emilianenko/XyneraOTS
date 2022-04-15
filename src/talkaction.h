@@ -42,7 +42,7 @@ class TalkAction : public Event
 		}
 
 		//scripting
-		bool executeSay(Player* player, const std::string& words, const std::string& param, SpeakClasses type) const;
+		bool executeSay(Player* player, const std::string& words, const std::string& param, MessageClasses type) const;
 
 		AccountType_t getRequiredAccountType() const {
 			return requiredAccountType;
@@ -80,7 +80,7 @@ class TalkActions final : public BaseEvents
 		TalkActions(const TalkActions&) = delete;
 		TalkActions& operator=(const TalkActions&) = delete;
 
-		TalkActionResult_t playerSaySpell(Player* player, SpeakClasses type, const std::string& words) const;
+		TalkActionResult_t playerSaySpell(Player* player, MessageClasses type, const std::string& words) const;
 
 		bool registerLuaEvent(TalkAction* event);
 		void clear(bool fromLua) override final;
