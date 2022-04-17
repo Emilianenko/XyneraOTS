@@ -8,7 +8,7 @@ t.onSay = function(player, words, param)
 	
 	local newValue = player:getStorageValue(storage) < 1 and 1 or 0
 	player:setStorageValue(storage, newValue)
-	player:sendCommandResponse(string.format("onLook teleport %s.", newValue == 1 and "enabled" or "disabled"))
+	player:sendColorMessage(string.format("onLook teleport %s.", newValue == 1 and "enabled" or "disabled"), MESSAGE_COLOR_PURPLE)
 end
 t:register()
 
