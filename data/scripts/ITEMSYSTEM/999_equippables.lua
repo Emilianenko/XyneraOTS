@@ -288,33 +288,33 @@ local necklaces = {
 }
 
 local weapons_magic = {
-	[2181] = { level = 26, vocs = {2} }, -- terra rod
-	[2182] = { level = 7, vocs = {2} }, -- snakebite rod
-	[2183] = { level = 33, vocs = {2} }, -- hailstorm rod
-	[2185] = { level = 19, vocs = {2} }, -- necrotic rod
-	[2186] = { level = 13, vocs = {2} }, -- moonlight rod
-	[2187] = { level = 33, vocs = {1} }, -- wand of inferno
-	[2188] = { level = 19, vocs = {1} }, -- wand of decay
-	[2189] = { level = 26, vocs = {1} }, -- wand of cosmic energy
-	[2190] = { level = 7, vocs = {1} }, -- wand of vortex
-	[2191] = { level = 13, vocs = {1}, sockets = 2 }, -- wand of dragonbreath
-	[8910] = { level = 42, vocs = {2}, sockets = 2 }, -- underworld rod
-	[8911] = { level = 22, vocs = {2}, sockets = 2 }, -- northwind rod
-	[8912] = { level = 37, vocs = {2} }, -- springsprout rod
-	[8920] = { level = 37, vocs = {1} }, -- wand of starstorm
-	[8921] = { level = 22, vocs = {1}, sockets = 2 }, -- wand of draconia
-	[8922] = { level = 42, vocs = {1}, sockets = 2 }, -- wand of voodoo
-	[13760] = { level = 37, vocs = {1} }, -- wand of dimensions
-	[13872] = { level = 40, vocs = {2} }, -- shimmer rod
-	[13880] = { level = 40, vocs = {1} }, -- shimmer wand
-	[18390] = { level = 65, vocs = {1} }, -- wand of defiance
-	[18409] = { level = 65, vocs = {1} }, -- wand of everblazing
-	[18411] = { level = 65, vocs = {2} }, -- muck rod
-	[18412] = { level = 65, vocs = {2} }, -- glacial rod
-	[19391] = { level = 1 }, -- sorcerer and druid staff
-	[23719] = { level = 1, vocs = {1} }, -- scorcher
-	[23721] = { level = 1, vocs = {2} }, -- chiller
-	[24839] = { level = 37, vocs = {2}, sockets = 2 }, -- ogre scepta
+	[2181] = { level = 26, vocs = {2}, mana = 8, damage = {37, 53}, element = "earth" }, -- terra rod
+	[2182] = { level = 6, vocs = {2}, mana = 2, damage = {8, 18}, element = "earth" }, -- snakebite rod
+	[2183] = { level = 33, vocs = {2}, mana = 13, damage = {56, 74}, element = "ice" }, -- hailstorm rod
+	[2185] = { level = 19, vocs = {2}, mana = 5, damage = {23, 37}, element = "death" }, -- necrotic rod
+	[2186] = { level = 13, vocs = {2}, mana = 3, damage = {13, 25}, element = "ice" }, -- moonlight rod
+	[2187] = { level = 33, vocs = {1}, mana = 8, damage = {56, 74}, element = "fire" }, -- wand of inferno
+	[2188] = { level = 19, vocs = {1}, mana = 5, damage = {23, 37}, element = "death" }, -- wand of decay
+	[2189] = { level = 26, vocs = {1}, mana = 8, damage = {37, 53}, element = "energy" }, -- wand of cosmic energy
+	[2190] = { level = 6, vocs = {1}, mana = 1, damage = {8, 18}, element = "energy" }, -- wand of vortex
+	[2191] = { level = 13, vocs = {1}, mana = 3, damage = {13, 25}, element = "fire", sockets = 2 }, -- wand of dragonbreath
+	[8910] = { level = 42, vocs = {2}, mana = 13, damage = {56, 74}, element = "death", sockets = 2 }, -- underworld rod
+	[8911] = { level = 22, vocs = {2}, mana = 5, damage = {23, 37}, element = "ice", sockets = 2 }, -- northwind rod
+	[8912] = { level = 37, vocs = {2}, mana = 13, damage = {56, 74}, element = "earth" }, -- springsprout rod
+	[8920] = { level = 37, vocs = {1}, mana = 13, damage = {56, 74}, element = "energy" }, -- wand of starstorm
+	[8921] = { level = 22, vocs = {1}, mana = 5, damage = {23, 37}, element = "fire", sockets = 2 }, -- wand of draconia
+	[8922] = { level = 42, vocs = {1}, mana = 13, damage = {56, 74}, element = "death", sockets = 2 }, -- wand of voodoo
+	[13760] = { level = 37, vocs = {1}, mana = 9, damage = {44, 62}, element = "death" }, -- wand of dimensions
+	[13872] = { level = 40, vocs = {2}, mana = 13, damage = {56, 74}, element = "ice" }, -- shimmer rod
+	[13880] = { level = 40, vocs = {1}, mana = 13, damage = {56, 74}, element = "energy" }, -- shimmer wand
+	[18390] = { level = 65, vocs = {1}, mana = 17, damage = {75, 95}, element = "energy" }, -- wand of defiance
+	[18409] = { level = 65, vocs = {1}, mana = 17, damage = {75, 95}, element = "fire" }, -- wand of everblazing
+	[18411] = { level = 65, vocs = {2}, mana = 17, damage = {75, 95}, element = "earth" }, -- muck rod
+	[18412] = { level = 65, vocs = {2}, mana = 17, damage = {75, 95}, element = "ice" }, -- glacial rod
+	[19391] = { level = 1, vocs = {0}, mana = 2, damage = {8, 18}, element = "energy" }, -- sorcerer and druid staff
+	[23719] = { level = 1, vocs = {1}, mana = 1, damage = {3, 7}, element = "fire" }, -- scorcher
+	[23721] = { level = 1, vocs = {2}, mana = 1, damage = {3, 7}, element = "ice" }, -- chiller
+	[24839] = { level = 37, vocs = {2}, mana = 13, damage = {56, 74}, element = "earth", sockets = 2 }, -- ogre scepta
 	
 	--[[
 	[25887] = {}, -- wand of mayhem
@@ -361,7 +361,7 @@ local weapons_magic = {
 	[26323] = {}, -- rod of mayhem
 	]]
 	
-	[28356] = { sockets = 2 }, -- dream blossom staff
+	[28356] = { level = 80, vocs = {1, 2}, mana = 18, damage = {63, 77}, element = "energy", sockets = 2 }, -- dream blossom staff
 	[28416] = {}, -- wand of darkness
 	
 	--[[
@@ -386,26 +386,26 @@ local weapons_magic = {
 	[28729] = {}, -- ornate carving rod
 	]]
 	
-	[30113] = { level = 200, vocs = {1}, sockets = 2 }, -- wand of destruction
-	[30114] = { level = 200, vocs = {2}, sockets = 2 }, -- rod of destruction
+	[30113] = { level = 200, vocs = {1}, mana = 20, damage = {80, 110}, element = "energy", sockets = 2 }, -- wand of destruction
+	[30114] = { level = 200, vocs = {2}, mana = 20, damage = {80, 110}, element = "ice", sockets = 2 }, -- rod of destruction
 	-- [31122] = {}, -- sorcerer test weapon TEST
 	-- [31135] = {}, -- wand of destruction TEST
-	[31372] = { level = 300, vocs = {2}, sockets = 2 }, -- falcon rod
-	[31373] = { level = 300, vocs = {1}, sockets = 2 }, -- falcon wand
-	[31482] = { level = 230, vocs = {1, 2}, sockets = 2 }, -- deepling fork
-	[33055] = { level = 270, vocs = {1}, sockets = 2 }, -- cobra wand
-	[33056] = { level = 220, vocs = {2}, sockets = 2 }, -- cobra rod
-	[32081] = { level = 180, vocs = {1, 2}, sockets = 2 }, -- energized limb
-	[36746] = { level = 400, vocs = {1}, sockets = 2 }, -- soultainter
-	[36747] = { level = 400, vocs = {2}, sockets = 2 }, -- soulhexer
-	[36807] = { level = 270, vocs = {2}, sockets = 2 }, -- lion rod
-	[36808] = { level = 220, vocs = {1}, sockets = 2 }, -- lion wand
-	[38177] = { level = 150, vocs = {2}, sockets = 2 }, -- jungle rod
-	[38178] = { level = 150, vocs = {1}, sockets = 2 }, -- jungle wand
-	[39324] = { level = 250, vocs = {1}, sockets = 2 }, -- eldritch wand
-	[39325] = { level = 250, vocs = {1}, sockets = 2 }, -- gilded eldritch wand
-	[39330] = { level = 250, vocs = {2}, sockets = 2 }, -- eldritch rod
-	[39331] = { level = 250, vocs = {2}, sockets = 2 }, -- gilded eldritch rod
+	[31372] = { level = 300, vocs = {2}, mana = 20, damage = {87, 101}, element = "earth", sockets = 2 }, -- falcon rod
+	[31373] = { level = 300, vocs = {1}, mana = 21, damage = {86, 102}, element = "energy", sockets = 2 }, -- falcon wand
+	[31482] = { level = 230, vocs = {1, 2}, mana = 23, damage = {80, 120}, element = "ice", sockets = 2 }, -- deepling fork
+	[33055] = { level = 270, vocs = {1}, mana = 22, damage = {94, 100}, element = "energy", sockets = 2 }, -- cobra wand
+	[33056] = { level = 220, vocs = {2}, mana = 21, damage = {70, 110}, element = "earth", sockets = 2 }, -- cobra rod
+	[32081] = { level = 180, vocs = {1, 2}, mana = 24, damage = {88, 108}, element = "fire", sockets = 2 }, -- energized limb
+	[36746] = { level = 400, vocs = {1}, mana = 21, damage = {100, 120}, element = "death", sockets = 2 }, -- soultainter
+	[36747] = { level = 400, vocs = {2}, mana = 21, damage = {98, 118}, element = "ice", sockets = 2 }, -- soulhexer
+	[36807] = { level = 270, vocs = {2}, mana = 20, damage = {85, 105}, element = "ice", sockets = 2 }, -- lion rod
+	[36808] = { level = 220, vocs = {1}, mana = 21, damage = {89, 109}, element = "ice", sockets = 2 }, -- lion wand
+	[38177] = { level = 150, vocs = {2}, mana = 19, damage = {80, 100}, element = "ice", sockets = 2 }, -- jungle rod
+	[38178] = { level = 150, vocs = {1}, mana = 19, damage = {80, 100}, element = "earth", sockets = 2 }, -- jungle wand
+	[39324] = { level = 250, vocs = {1}, mana = 22, damage = {87, 101}, element = "fire", sockets = 2 }, -- eldritch wand
+	[39325] = { level = 250, vocs = {1}, mana = 22, damage = {87, 101}, element = "fire", sockets = 2 }, -- gilded eldritch wand
+	[39330] = { level = 250, vocs = {2}, mana = 22, damage = {87, 101}, element = "ice", sockets = 2 }, -- eldritch rod
+	[39331] = { level = 250, vocs = {2}, mana = 22, damage = {87, 101}, element = "ice", sockets = 2 }, -- gilded eldritch rod
 }
 
 local throwables = {
@@ -601,7 +601,7 @@ local weapons = {
 	[2393] = { level = 55, vocs = {4}, sockets = 3 }, -- giant sword
 	[2394] = {}, -- morning star
 	[2395] = {}, -- carlin sword
-	[2396] = {}, -- ice rapier
+	[2396] = {removecharges=true}, -- ice rapier
 	[2397] = {}, -- longsword
 	[2398] = {}, -- mace
 	[2400] = { level = 80, sockets = 2 }, -- magic sword
@@ -725,66 +725,66 @@ local weapons = {
 	[7454] = { level = 30, vocs = {4} }, -- glorious axe
 	[7455] = { level = 80, sockets = 2 }, -- mythril axe
 	[7456] = { level = 35, sockets = 2 }, -- noble axe
-	[7744] = {}, -- fiery spike sword
-	[7745] = { level = 50 }, -- fiery relic sword
-	[7746] = { level = 60 }, -- fiery mystic blade
-	[7747] = { level = 35, vocs = {4} }, -- fiery blacksteel sword
-	[7748] = { level = 45, vocs = {4} }, -- fiery dragon slayer
-	[7749] = { level = 20 }, -- fiery barbarian axe
-	[7750] = { level = 25 }, -- fiery knight axe
-	[7751] = { level = 60 }, -- fiery heroic axe
-	[7752] = { level = 35, vocs = {4} }, -- fiery headchopper
-	[7753] = { level = 65, vocs = {4} }, -- fiery war axe
-	[7754] = { level = 20 }, -- fiery clerical mace
-	[7755] = { level = 35 }, -- fiery crystal mace
-	[7756] = { level = 60 }, -- fiery cranial basher
-	[7757] = { level = 35 }, -- fiery orcish maul
-	[7758] = { level = 50, vocs = {4} }, -- fiery war hammer
-	[7763] = {}, -- icy spike sword
-	[7764] = { level = 50 }, -- icy relic sword
-	[7765] = { level = 60 }, -- icy mystic blade
-	[7766] = { level = 35, vocs = {4} }, -- icy blacksteel sword
-	[7767] = { level = 45, vocs = {4} }, -- icy dragon slayer
-	[7768] = { level = 20 }, -- icy barbarian axe
-	[7769] = { level = 25 }, -- icy knight axe
-	[7770] = { level = 60 }, -- icy heroic axe
-	[7771] = { level = 35, vocs = {4} }, -- icy headchopper
-	[7772] = { level = 65, vocs = {4} }, -- icy war axe
-	[7773] = { level = 20 }, -- icy clerical mace
-	[7774] = { level = 35 }, -- icy crystal mace
-	[7775] = { level = 60 }, -- icy cranial basher
-	[7776] = { level = 35 }, -- icy orcish maul
-	[7777] = { level = 50, vocs = {4} }, -- icy war hammer
-	[7854] = {}, -- earth spike sword
-	[7855] = { level = 50 }, -- earth relic sword
-	[7856] = { level = 60 }, -- earth mystic blade
-	[7857] = { level = 35, vocs = {4} }, -- earth blacksteel sword
-	[7858] = { level = 45, vocs = {4} }, -- earth dragon slayer
-	[7859] = { level = 20 }, -- earth barbarian axe
-	[7860] = { level = 25 }, -- earth knight axe
-	[7861] = { level = 60 }, -- earth heroic axe
-	[7862] = { level = 35, vocs = {4} }, -- earth headchopper
-	[7863] = { level = 65, vocs = {4} }, -- earth war axe
-	[7864] = { level = 20 }, -- earth clerical mace
-	[7865] = { level = 35 }, -- earth crystal mace
-	[7866] = { level = 60 }, -- earth cranial basher
-	[7867] = { level = 35 }, -- earth orcish maul
-	[7868] = { level = 50, vocs = {4} }, -- earth war hammer
-	[7869] = {}, -- energy spike sword
-	[7870] = { level = 50 }, -- energy relic sword
-	[7871] = { level = 60 }, -- energy mystic blade
-	[7872] = { level = 35, vocs = {4} }, -- energy blacksteel sword
-	[7873] = { level = 45, vocs = {4} }, -- energy dragon slayer
-	[7874] = { level = 20 }, -- energy barbarian axe
-	[7875] = { level = 25 }, -- energy knight axe
-	[7876] = { level = 60 }, -- energy heroic axe
-	[7877] = { level = 35, vocs = {4} }, -- energy headchopper
-	[7878] = { level = 65, vocs = {4} }, -- energy war axe
-	[7879] = { level = 20 }, -- energy clerical mace
-	[7880] = { level = 35 }, -- energy crystal mace
-	[7881] = { level = 60 }, -- energy cranial basher
-	[7882] = { level = 35 }, -- energy orcish maul
-	[7883] = { level = 50, vocs = {4} }, -- energy war hammer
+	[7744] = {removecharges=true}, -- fiery spike sword
+	[7745] = { level = 50, removecharges=true }, -- fiery relic sword
+	[7746] = { level = 60, removecharges=true }, -- fiery mystic blade
+	[7747] = { level = 35, vocs = {4}, removecharges=true }, -- fiery blacksteel sword
+	[7748] = { level = 45, vocs = {4}, removecharges=true }, -- fiery dragon slayer
+	[7749] = { level = 20, removecharges=true }, -- fiery barbarian axe
+	[7750] = { level = 25, removecharges=true }, -- fiery knight axe
+	[7751] = { level = 60, removecharges=true }, -- fiery heroic axe
+	[7752] = { level = 35, vocs = {4}, removecharges=true }, -- fiery headchopper
+	[7753] = { level = 65, vocs = {4}, removecharges=true }, -- fiery war axe
+	[7754] = { level = 20, removecharges=true }, -- fiery clerical mace
+	[7755] = { level = 35, removecharges=true }, -- fiery crystal mace
+	[7756] = { level = 60, removecharges=true }, -- fiery cranial basher
+	[7757] = { level = 35, removecharges=true }, -- fiery orcish maul
+	[7758] = { level = 50, vocs = {4}, removecharges=true }, -- fiery war hammer
+	[7763] = {removecharges=true}, -- icy spike sword
+	[7764] = { level = 50, removecharges=true }, -- icy relic sword
+	[7765] = { level = 60, removecharges=true }, -- icy mystic blade
+	[7766] = { level = 35, vocs = {4}, removecharges=true }, -- icy blacksteel sword
+	[7767] = { level = 45, vocs = {4}, removecharges=true }, -- icy dragon slayer
+	[7768] = { level = 20, removecharges=true }, -- icy barbarian axe
+	[7769] = { level = 25, removecharges=true }, -- icy knight axe
+	[7770] = { level = 60, removecharges=true }, -- icy heroic axe
+	[7771] = { level = 35, vocs = {4}, removecharges=true }, -- icy headchopper
+	[7772] = { level = 65, vocs = {4}, removecharges=true }, -- icy war axe
+	[7773] = { level = 20, removecharges=true }, -- icy clerical mace
+	[7774] = { level = 35, removecharges=true }, -- icy crystal mace
+	[7775] = { level = 60, removecharges=true }, -- icy cranial basher
+	[7776] = { level = 35, removecharges=true }, -- icy orcish maul
+	[7777] = { level = 50, vocs = {4}, removecharges=true }, -- icy war hammer
+	[7854] = {removecharges=true}, -- earth spike sword
+	[7855] = { level = 50, removecharges=true }, -- earth relic sword
+	[7856] = { level = 60, removecharges=true }, -- earth mystic blade
+	[7857] = { level = 35, vocs = {4}, removecharges=true }, -- earth blacksteel sword
+	[7858] = { level = 45, vocs = {4}, removecharges=true }, -- earth dragon slayer
+	[7859] = { level = 20, removecharges=true }, -- earth barbarian axe
+	[7860] = { level = 25, removecharges=true }, -- earth knight axe
+	[7861] = { level = 60, removecharges=true }, -- earth heroic axe
+	[7862] = { level = 35, vocs = {4}, removecharges=true }, -- earth headchopper
+	[7863] = { level = 65, vocs = {4}, removecharges=true }, -- earth war axe
+	[7864] = { level = 20, removecharges=true }, -- earth clerical mace
+	[7865] = { level = 35, removecharges=true }, -- earth crystal mace
+	[7866] = { level = 60, removecharges=true }, -- earth cranial basher
+	[7867] = { level = 35, removecharges=true }, -- earth orcish maul
+	[7868] = { level = 50, vocs = {4}, removecharges=true }, -- earth war hammer
+	[7869] = {removecharges=true}, -- energy spike sword
+	[7870] = { level = 50, removecharges=true }, -- energy relic sword
+	[7871] = { level = 60, removecharges=true }, -- energy mystic blade
+	[7872] = { level = 35, vocs = {4}, removecharges=true }, -- energy blacksteel sword
+	[7873] = { level = 45, vocs = {4}, removecharges=true }, -- energy dragon slayer
+	[7874] = { level = 20, removecharges=true }, -- energy barbarian axe
+	[7875] = { level = 25, removecharges=true }, -- energy knight axe
+	[7876] = { level = 60, removecharges=true }, -- energy heroic axe
+	[7877] = { level = 35, vocs = {4}, removecharges=true }, -- energy headchopper
+	[7878] = { level = 65, vocs = {4}, removecharges=true }, -- energy war axe
+	[7879] = { level = 20, removecharges=true }, -- energy clerical mace
+	[7880] = { level = 35, removecharges=true }, -- energy crystal mace
+	[7881] = { level = 60, removecharges=true }, -- energy cranial basher
+	[7882] = { level = 35, removecharges=true }, -- energy orcish maul
+	[7883] = { level = 50, vocs = {4}, removecharges=true }, -- energy war hammer
 	[8209] = {}, -- crimson sword
 	[8601] = {}, -- steel axe
 	[8602] = {}, -- jagged sword
@@ -872,8 +872,8 @@ local weapons = {
 	[25416] = { level = 150 }, -- impaler of the igniter
 	[25418] = { level = 150, sockets = 1 }, -- maimer
 	[25420] = { level = 100, alreadyScripted = true }, -- Ferumbras' staff
-	[25421] = { level = 65, vocs = {1} }, -- Ferumbras' staff
-	[25422] = { level = 100, vocs = {1} }, -- Ferumbras' staff
+	[25421] = { level = 65, vocs = {1}, mana = 17, damage = {65, 95}, element = "energy" }, -- Ferumbras' staff
+	[25422] = { level = 100, vocs = {1}, mana = 19, damage = {80, 110}, element = "energy" }, -- Ferumbras' staff
 	
 	--[[
 	[25879] = {}, -- blade of mayhem
