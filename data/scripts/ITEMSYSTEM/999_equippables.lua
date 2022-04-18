@@ -188,12 +188,12 @@ local rings = {
 	[26188] = {}, -- ring of green plasma
 	[26189] = { level = 100, vocs = {4} }, -- ring of red plasma
 	[26190] = {}, -- ring of red plasma
-	[28354] = {}, -- butterfly ring
-	[34272] = {}, -- blister ring 
-	[34277] = {}, -- blister ring
-	[35277] = {}, -- ring of souls
-	[35291] = {}, -- ring of souls
-	[35292] = {}, -- ring of souls
+	[28354] = {level = 50}, -- butterfly ring
+	[34272] = {level = 220}, -- blister ring 
+	[34277] = {level = 220}, -- blister ring
+	[35277] = {level = 200}, -- ring of souls
+	[35291] = {level = 200}, -- ring of souls
+	[35292] = {level = 200}, -- ring of souls
 	[34248] = {}, -- signet ring
 	[36736] = {}, -- lion ring
 }
@@ -248,7 +248,7 @@ local necklaces = {
 	[23750] = {}, -- strange amulet
 	[24716] = {}, -- werewolf amulet
 	[24717] = {}, -- enchanted werewolf amulet
-	[24718] = {}, -- werewolf helmet
+	[24718] = {level = 100}, -- werewolf helmet
 	[24790] = {}, -- enchanted werewolf amulet
 	[24851] = { level = 60 }, -- onyx pendant
 	[25402] = {}, -- ancient amulet
@@ -260,23 +260,23 @@ local necklaces = {
 	[26198] = { level = 150, vocs = {3} }, -- collar of blue plasma
 	[26199] = { level = 150, vocs = {1, 2} }, -- collar of green plasma
 	[26200] = { level = 150, vocs = {4} }, -- collar of red plasma
-	[30221] = {}, -- foxtail amulet
-	[32084] = {}, -- sleep shawl
-	[32085] = {}, -- pendulet
-	[32979] = {}, -- rainbow necklace
-	[32998] = {}, -- enchanted sleep shawl
-	[32999] = {}, -- enchanted sleep shawl
-	[33000] = {}, -- enchanted pendulet
-	[33001] = {}, -- enchanted pendulet
-	[33057] = {}, -- amulet of theurgy
-	[33058] = {}, -- enchanted theurgic amulet
-	[33059] = {}, -- enchanted theurgic amulet
+	[30221] = { level = 100}, -- foxtail amulet
+	[32084] = { level = 180, vocs = {3}}, -- sleep shawl
+	[32085] = { level = 180, vocs = {3}}, -- pendulet
+	[32979] = {level = 220}, -- rainbow necklace
+	[32998] = { level = 180, vocs = {3}}, -- enchanted sleep shawl
+	[32999] = { level = 180, vocs = {3}}, -- enchanted sleep shawl
+	[33000] = { level = 180, vocs = {3}}, -- enchanted pendulet
+	[33001] = { level = 180, vocs = {3}}, -- enchanted pendulet
+	[33057] = { level = 220, vocs = {1, 2}}, -- amulet of theurgy
+	[33058] = { level = 220, vocs = {1, 2}}, -- enchanted theurgic amulet
+	[33059] = { level = 220, vocs = {1, 2}}, -- enchanted theurgic amulet
 	[33924] = {}, -- jade amulet
 	[34251] = {}, -- noble amulet
-	[34287] = {}, -- the cobra amulet
+	[34287] = {level = 250}, -- the cobra amulet
 	[34757] = {}, -- traditional neckerchief
-	[36814] = {}, -- lion amulet
-	[38179] = {}, -- exotic amulet
+	[36814] = {level = 230}, -- lion amulet
+	[38179] = {level = 180}, -- exotic amulet
 	[38260] = {}, -- sapphire necklace
 	[38261] = {}, -- emerald necklace
 	[38262] = {}, -- garnet necklace
@@ -526,16 +526,16 @@ local weapons_distance = {
 	[30112] = { level = 200, vocs = {3}, sockets = 3 }, -- crossbow of destruction
 	--[31121] = {}, -- bow of destruction TEST
 	--[31134] = {}, -- umbral master bow TEST
-	[31374] = { sockets = 3 }, -- falcon bow
-	[32073] = { sockets = 3 }, -- living vine bow
-	[33049] = { sockets = 2 }, -- cobra crossbow
-	[34237] = { sockets = 3 }, -- bow of cataclysm
-	[36744] = { sockets = 3 }, -- soulbleeder
-	[36745] = { sockets = 3 }, -- soulpiercer
-	[36806] = { sockets = 3 }, -- lion longbow
-	[38174] = { sockets = 2 }, -- jungle bow
-	[39320] = { sockets = 3 }, -- eldritch bow
-	[39321] = { sockets = 3 }, -- gilded eldritch bow
+	[31374] = { level = 300, vocs = {3}, sockets = 3 }, -- falcon bow
+	[32073] = { level = 220, vocs = {3}, sockets = 3 }, -- living vine bow
+	[33049] = { level = 220, vocs = {3}, sockets = 2 }, -- cobra crossbow
+	[34237] = { level = 250, vocs = {3}, sockets = 3 }, -- bow of cataclysm
+	[36744] = { level = 400, vocs = {3}, sockets = 3 }, -- soulbleeder
+	[36745] = { level = 400, vocs = {3}, sockets = 3 }, -- soulpiercer
+	[36806] = { level = 270, vocs = {3}, sockets = 3 }, -- lion longbow
+	[38174] = { level = 150, vocs = {3}, sockets = 2 }, -- jungle bow
+	[39320] = { level = 250, vocs = {3}, sockets = 3 }, -- eldritch bow
+	[39321] = { level = 250, vocs = {3}, sockets = 3 }, -- gilded eldritch bow
 
 }
 
@@ -1126,52 +1126,52 @@ local weapons = {
 	[30110] = { level = 200, vocs = {4}, sockets = 3 }, -- hammer of destruction
 	[30179] = {}, -- strange mallet
 	[30181] = {}, -- mallet handle
-	[30307] = { sockets = 2 }, -- gnome sword
+	[30307] = { level = 250, vocs = {4}, sockets = 2 }, -- gnome sword
 	[31120] = {}, -- test weapon for knights 
-	[31379] = { sockets = 2 }, -- falcon longsword
-	[31380] = { sockets = 2 }, -- falcon battleaxe
-	[31381] = { sockets = 2 }, -- falcon mace
+	[31379] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon longsword
+	[31380] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon battleaxe
+	[31381] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon mace
 	[31402] = {}, -- zathroth' redeemer
 	[31403] = {}, -- zathroth' redeemer
 	[31404] = {}, -- zathroth' redeemer
 	[31405] = {}, -- zathroth' redeemer
-	[31481] = { sockets = 2 }, -- deepling ceremonial dagger
-	[31485] = { sockets = 2 }, -- rotten demonbone
-	[31486] = { sockets = 2 }, -- energized demonbone
-	[31487] = { sockets = 2 }, -- unliving demonbone
-	[31488] = { sockets = 2 }, -- sulphurous demonbone
+	[31481] = { level = 180, vocs = {1, 2}, sockets = 2 }, -- deepling ceremonial dagger
+	[31485] = { level = 80, sockets = 2 }, -- rotten demonbone
+	[31486] = { level = 80, sockets = 2 }, -- energized demonbone
+	[31487] = { level = 80, sockets = 2 }, -- unliving demonbone
+	[31488] = { level = 80, sockets = 2 }, -- sulphurous demonbone
 	[31942] = {}, -- golden axe
-	[32075] = { sockets = 2 }, -- resizer
-	[32077] = { sockets = 2 }, -- summerblade
-	[32078] = { sockets = 2 }, -- winterblade
-	[33051] = { sockets = 2 }, -- cobra club
-	[33052] = { sockets = 2 }, -- cobra axe
-	[33054] = { sockets = 2 }, -- cobra sword
-	[34236] = { sockets = 2 }, -- mortal mace
-	[34270] = { sockets = 2 }, -- tagralt blade
+	[32075] = { level = 230, vocs = {4}, sockets = 2 }, -- resizer
+	[32077] = { level = 200, vocs = {4}, sockets = 2 }, -- summerblade
+	[32078] = { level = 200, vocs = {4}, sockets = 2 }, -- winterblade
+	[33051] = { level = 220, vocs = {4}, sockets = 2 }, -- cobra club
+	[33052] = { level = 220, vocs = {4}, sockets = 2 }, -- cobra axe
+	[33054] = { level = 220, vocs = {4}, sockets = 2 }, -- cobra sword
+	[34236] = { level = 220, vocs = {4}, sockets = 2 }, -- mortal mace
+	[34270] = { level = 250, vocs = {4}, sockets = 2 }, -- tagralt blade
 	[34666] = {}, -- meat hammer
 	[34669] = {}, -- orc hammer
 	[34749] = {}, -- schnitzel meat grinder
-	[35272] = { sockets = 2 }, -- phantasmal axe
-	[36738] = { sockets = 2 }, -- soulcutter
-	[36739] = { sockets = 3 }, -- soulshredder
-	[36740] = { sockets = 2 }, -- soulbiter
-	[36741] = { sockets = 3 }, -- souleater
-	[36742] = {}, -- soulcrusher
-	[36743] = { sockets = 3 }, -- soulmaimer
-	[36811] = { sockets = 2 }, -- lion longsword
-	[36909] = { sockets = 2 }, -- lion axe
-	[36910] = { sockets = 2 }, -- lion hammer
+	[35272] = { level = 180, vocs = {4}, sockets = 2 }, -- phantasmal axe
+	[36738] = { level = 400, vocs = {4}, sockets = 2 }, -- soulcutter
+	[36739] = { level = 400, vocs = {4}, sockets = 3 }, -- soulshredder
+	[36740] = { level = 400, vocs = {4}, sockets = 2 }, -- soulbiter
+	[36741] = { level = 400, vocs = {4}, sockets = 3 }, -- souleater
+	[36742] = { level = 400, vocs = {4}, sockets = 2 }, -- soulcrusher
+	[36743] = { level = 400, vocs = {4}, sockets = 3 }, -- soulmaimer
+	[36811] = { level = 270, vocs = {4}, sockets = 2 }, -- lion longsword
+	[36909] = { level = 270, vocs = {4}, sockets = 2 }, -- lion axe
+	[36910] = { level = 270, vocs = {4}, sockets = 2 }, -- lion hammer
 	[36987] = {}, -- golden magic longsword
 	[37882] = {}, -- rascoohan rat revealer
-	[38170] = { sockets = 2 }, -- jungle flail
-	[38171] = { sockets = 1 }, -- throwing axe
-	[39313] = { sockets = 2 }, -- eldritch claymore
-	[39314] = { sockets = 2 }, -- gilded eldritch claymore
-	[39315] = { sockets = 2 }, -- eldritch warmace
-	[39316] = { sockets = 2 }, -- gilded eldritch warmace
-	[39317] = { sockets = 2 }, -- eldritch greataxe
-	[39318] = { sockets = 2 }, -- gilded eldritch greataxe
+	[38170] = { level = 150, vocs = {4}, sockets = 2 }, -- jungle flail
+	[38171] = { level = 150, vocs = {4}, sockets = 1 }, -- throwing axe
+	[39313] = { level = 270, vocs = {4}, sockets = 2 }, -- eldritch claymore
+	[39314] = { level = 270, vocs = {4}, sockets = 2 }, -- gilded eldritch claymore
+	[39315] = { level = 270, vocs = {4}, sockets = 2 }, -- eldritch warmace
+	[39316] = { level = 270, vocs = {4}, sockets = 2 }, -- gilded eldritch warmace
+	[39317] = { level = 270, vocs = {4}, sockets = 2 }, -- eldritch greataxe
+	[39318] = { level = 270, vocs = {4}, sockets = 2 }, -- gilded eldritch greataxe
 }
 
 local helmets = {
@@ -1259,23 +1259,23 @@ local helmets = {
 	[20132] = { sockets = 2 }, -- helmet of the lost
 	[23536] = { level = 70, vocs = {1, 2} }, -- rubber cap
 	[24261] = { level = 80 }, -- crest of the deep seas
-	[24744] = {}, -- enchanted werewolf helmet
-	[24769] = {}, -- enchanted werewolf helmet
-	[24770] = {}, -- enchanted werewolf helmet
-	[24771] = {}, -- enchanted werewolf helmet
-	[24772] = {}, -- enchanted werewolf helmet
-	[24783] = {}, -- enchanted werewolf helmet
-	[24784] = {}, -- enchanted werewolf helmet
-	[24785] = {}, -- enchanted werewolf helmet
-	[24786] = {}, -- enchanted werewolf helmet
-	[24788] = {}, -- enchanted werewolf helmet
+	[24744] = {level = 100}, -- enchanted werewolf helmet
+	[24769] = {level = 100}, -- enchanted werewolf helmet
+	[24770] = {level = 100}, -- enchanted werewolf helmet
+	[24771] = {level = 100}, -- enchanted werewolf helmet
+	[24772] = {level = 100}, -- enchanted werewolf helmet
+	[24783] = {level = 100}, -- enchanted werewolf helmet
+	[24784] = {level = 100}, -- enchanted werewolf helmet
+	[24785] = {level = 100}, -- enchanted werewolf helmet
+	[24786] = {level = 100}, -- enchanted werewolf helmet
+	[24788] = {level = 100}, -- enchanted werewolf helmet
 	[24809] = {}, -- dark wizard's crown
 	[24810] = {}, -- dark wizard's crown
 	[24848] = { sockets = 2 }, -- shamanic mask
 	[25410] = { sockets = 2 }, -- visage of the end days
 	[25413] = { level = 150 }, -- shroud of despair
-	[26130] = { vocs = {1, 2} }, -- tiara of power
-	[26131] = {}, -- tiara of power
+	[26130] = {level = 100, vocs = {1, 2}}, -- tiara of power
+	[26131] = {level = 100, vocs = {1, 2}}, -- tiara of power
 	[27053] = {}, -- Ferumbras' Candy Hat
 	[27061] = {}, -- rusty winged helmet
 	[27744] = {}, -- porcelain mask
@@ -1284,23 +1284,23 @@ local helmets = {
 	[28845] = {}, -- incandescent crown
 	[28846] = {}, -- reflecting crown
 	[30178] = {}, -- blue spectacles
-	[30303] = { sockets = 2 }, -- gnome helmet
-	[31370] = { sockets = 2 }, -- falcon circlet
-	[31371] = { sockets = 2 }, -- falcon coif
+	[30303] = { level = 200, vocs = {1, 2}, sockets = 2 }, -- gnome helmet
+	[31370] = { level = 300, vocs = {1, 2}, sockets = 2 }, -- falcon circlet
+	[31371] = { level = 300, vocs = {3, 4}, sockets = 2 }, -- falcon coif
 	[32931] = {}, -- the crown of the percht queen
 	[32932] = {}, -- the crown of the percht queen
-	[33053] = { sockets = 2 }, -- cobra hood
+	[33053] = { level = 270, vocs = {4}, sockets = 2 }, -- cobra hood
 	[34025] = {}, -- gryphon mask
 	[34026] = {}, -- silver mask
 	[34027] = {}, -- ivory mask
 	[34028] = {}, -- mirror mask
-	[34233] = { sockets = 1 }, -- terra helmet
-	[34238] = { sockets = 2 }, -- galea mortis -- helmet
+	[34233] = { level = 230, vocs = {4}, sockets = 1 }, -- terra helmet
+	[34238] = { level = 220, vocs = {1}, sockets = 2 }, -- galea mortis -- helmet
 	[34756] = {}, -- traditional gamsbart hat
 	[35581] = {}, -- golden crown
-	[36812] = { sockets = 2 }, -- lion spangenhelm
-	[39326] = { sockets = 2 }, -- eldritch cowl
-	[39327] = { sockets = 2 }, -- eldritch hood
+	[36812] = { level = 230, vocs = {3}, sockets = 2 }, -- lion spangenhelm
+	[39326] = { level = 250, vocs = {1}, sockets = 2 }, -- eldritch cowl
+	[39327] = { level = 250, vocs = {2}, sockets = 2 }, -- eldritch hood
 	[39634] = {}, -- magic hat
 	[39635] = {}, -- magic hat
 	[39820] = {}, -- golden horned helmet
@@ -1423,22 +1423,22 @@ local armors = {
 	[25192] = { level = 200, vocs = {1, 2} }, -- thundermind raiment
 	[25193] = { level = 200, vocs = {1, 2} }, -- frostmind raiment
 	[28435] = {}, -- swan feather cloak
-	[30304] = { sockets = 2 }, -- gnome armor
+	[30304] = { level = 200, vocs = {3}, sockets = 2 }, -- gnome armor
 	[31131] = {}, -- ornate testtplate
-	[31375] = { sockets = 2 }, -- falcon plate
-	[32074] = { sockets = 1 }, -- living armor
-	[32079] = { sockets = 1 }, -- dream shroud
-	[34234] = { sockets = 1 }, -- bear skin
-	[34235] = { sockets = 1 }, -- embrace of nature
-	[34239] = { sockets = 1 }, -- toga mortis
+	[31375] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon plate
+	[32074] = { level = 180, vocs = {1, 2}, sockets = 1 }, -- living armor
+	[32079] = { level = 180, vocs = {1, 2}, sockets = 1 }, -- dream shroud
+	[34234] = { level = 230, vocs = {2}, sockets = 1 }, -- bear skin
+	[34235] = { level = 220, vocs = {3}, sockets = 1 }, -- embrace of nature
+	[34239] = { level = 220, vocs = {1}, sockets = 1 }, -- toga mortis
 	[34755] = {}, -- traditional shirt
 	[35241] = {}, -- burial shroud
-	[35284] = { sockets = 2 }, -- ghost chestplate
-	[36750] = { sockets = 2 }, -- soulshell
-	[36751] = { sockets = 2 }, -- soulmantle
-	[36752] = { sockets = 2 }, -- soulshroud
-	[36813] = { sockets = 2 }, -- lion plate
-	[39319] = { sockets = 2 }, -- eldritch cuirass
+	[35284] = { level = 230, vocs = {3}, sockets = 2 }, -- ghost chestplate
+	[36750] = { level = 400, vocs = {3}, sockets = 2 }, -- soulshell
+	[36751] = { level = 400, vocs = {1}, sockets = 2 }, -- soulmantle
+	[36752] = { level = 400, vocs = {2}, sockets = 2 }, -- soulshroud
+	[36813] = { level = 270, vocs = {4}, sockets = 2 }, -- lion plate
+	[39319] = { level = 250, vocs = {4}, sockets = 2 }, -- eldritch cuirass
 	[40757] = { sockets = 2 }, -- green demon armor
 }
 
@@ -1478,17 +1478,17 @@ local legs = {
 	[24743] = {}, -- wereboar loincloth
 	[27058] = {}, -- chocolatey dragon scale legs
 	[27060] = {}, -- tatty dragon scale legs
-	[30305] = {}, -- gnome legs
-	[31376] = {}, -- falcon greaves
-	[32083] = { sockets = 2 }, -- dark whispers
+	[30305] = { level = 200, vocs = {1, 2}}, -- gnome legs
+	[31376] = { level = 300, vocs = {3, 4}}, -- falcon greaves
+	[32083] = { level = 180, vocs = {3}, sockets = 2 }, -- dark whispers
 	[34753] = {}, -- lederhosen -- legs
-	[35273] = {}, -- fabulous legs
-	[35274] = {}, -- soulful legs
-	[36748] = {}, -- soulshanks
-	[36749] = {}, -- soulstrider
-	[38172] = {}, -- exotic legs
-	[38173] = {}, -- bast legs
-	[39323] = {}, -- eldritch breeches
+	[35273] = { level = 225, vocs = {3, 4}}, -- fabulous legs
+	[35274] = { level = 180, vocs = {1, 2}}, -- soulful legs
+	[36748] = { level = 400, vocs = {1}}, -- soulshanks
+	[36749] = { level = 400, vocs = {2}}, -- soulstrider
+	[38172] = { level = 130, vocs = {4}}, -- exotic legs
+	[38173] = { level = 150, vocs = {3}}, -- bast legs
+	[39323] = { level = 250, vocs = {3}}, -- eldritch breeches
 	[40756] = {}, -- green demon legs
 }
 
@@ -1533,20 +1533,20 @@ local boots = {
 	[24742] = { level = 60, sockets = 1 }, -- badger boots
 	[25412] = { sockets = 1 }, -- treader of torment
 	[25429] = { level = 100 }, -- boots of homecoming
-	[25430] = {}, -- boots of homecoming
+	[25430] = {level = 100}, -- boots of homecoming
 	[26132] = { level = 150 }, -- void boots
-	[26133] = {}, -- void boots
+	[26133] = {level = 150}, -- void boots
 	[27065] = {}, -- filthy bunnyslippers
-	[32080] = { sockets = 1 }, -- pair of dreamwalkers
+	[32080] = { level = 180, vocs = {1, 2}, sockets = 1 }, -- pair of dreamwalkers
 	[32852] = {}, -- yetislippers
-	[33050] = { sockets = 1 }, -- cobra boots
+	[33050] = { level = 220, vocs = {4}, sockets = 1 }, -- cobra boots
 	[34273] = { sockets = 1 }, -- winged boots
 	[34754] = {}, -- traditional leather shoes
-	[35275] = { sockets = 1 }, -- pair of nightmare boots
-	[36753] = { sockets = 1 }, -- pair of soulwalkers
-	[36754] = { sockets = 1 }, -- pair of soulstalkers
-	[38175] = { sockets = 1 }, -- makeshift boots
-	[38176] = { sockets = 1 }, -- make-do boots
+	[35275] = { level = 140, vocs = {1, 2}, sockets = 1 }, -- pair of nightmare boots
+	[36753] = { level = 400, vocs = {4}, sockets = 1 }, -- pair of soulwalkers
+	[36754] = { level = 400, vocs = {3}, sockets = 1 }, -- pair of soulstalkers
+	[38175] = { level = 150, vocs = {1}, sockets = 1 }, -- makeshift boots
+	[38176] = { level = 150, vocs = {2}, sockets = 1 }, -- make-do boots
 	[40759] = { sockets = 1 }, -- green demon slippers
 }
 
@@ -1638,31 +1638,31 @@ local shields = {
 	[25414] = { level = 200, sockets = 1 }, -- death gaze
 	[25545] = {}, -- shield of destiny
 	[25546] = {}, -- shield of destiny
-	[28355] = { sockets = 1 }, -- wooden spellbook
+	[28355] = { level = 80, vocs = {1, 2}, sockets = 1 }, -- wooden spellbook
 	[28638] = {}, -- mathmaster shield
-	[30306] = { sockets = 1 }, -- gnome shield
-	[31377] = { sockets = 1 }, -- falcon shield
-	[31378] = { sockets = 1 }, -- falcon escutcheon
+	[30306] = { level = 200, vocs = {3, 4}, sockets = 1 }, -- gnome shield
+	[31377] = { level = 300, vocs = {3, 4}, sockets = 1 }, -- falcon shield
+	[31378] = { level = 300, vocs = {3, 4}, sockets = 1 }, -- falcon escutcheon
 	[31571] = {}, -- adamant shield
 	[31572] = {}, -- adamant shield
 	[31573] = {}, -- adamant shield
 	[31574] = {}, -- adamant shield
-	[32076] = {sockets = 1}, -- shoulder plate
-	[32082] = { sockets = 1 }, -- brain in a jar
-	[32086] = { sockets = 1 }, -- ectoplasmic shield
-	[32087] = { sockets = 1 }, -- spirit guide
+	[32076] = { level = 180, vocs = {1, 2}, sockets = 1}, -- shoulder plate
+	[32082] = { level = 180, vocs = {1, 2}, sockets = 1 }, -- brain in a jar
+	[32086] = { level = 180, vocs = {4}, sockets = 1 }, -- ectoplasmic shield
+	[32087] = { level = 180, vocs = {1, 2}, sockets = 1 }, -- spirit guide
 	[32837] = {}, -- shield of endless search
 	[32838] = {}, -- shield of endless search
-	[36755] = { sockets = 1 }, -- soulbastion
-	[36809] = { sockets = 1 }, -- lion spellbook
-	[36810] = { sockets = 1 }, -- lion shield
+	[36755] = { level = 400, vocs = {4}, sockets = 1 }, -- soulbastion
+	[36809] = { level = 220, vocs = {1, 2}, sockets = 1 }, -- lion spellbook
+	[36810] = { level = 250, vocs = {4}, sockets = 1 }, -- lion shield
 	[36920] = {}, -- Encyclopedia
 	[36921] = {}, -- Encyclopedia
 	[36922] = {}, -- Encyclopedia
 	[36923] = {}, -- Encyclopedia
-	[39312] = { sockets = 1 }, -- eldritch shield
-	[39328] = { sockets = 1 }, -- eldritch folio
-	[39329] = { sockets = 1 }, -- eldritch tome
+	[39312] = { level = 270, vocs = {4}, sockets = 1 }, -- eldritch shield
+	[39328] = { level = 300, vocs = {1}, sockets = 1 }, -- eldritch folio
+	[39329] = { level = 300, vocs = {2}, sockets = 1 }, -- eldritch tome
 	[39650] = {}, -- golden blessed shield
 	[39708] = {}, -- bonelord tome
 	[39709] = {}, -- bonelord tome
