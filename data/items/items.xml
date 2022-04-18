@@ -34672,11 +34672,16 @@
 	</item>
 	<item id="33059" name="enchanted theurgic amulet">
 		<attribute key="slotType" value="necklace"/>
+		<attribute key="absorbpercentphysical" value="3"/>
+		<attribute key="absorbpercentpoison" value="14"/>
+		<attribute key="transformEquipTo" value="33058" />
+		<attribute key="magicpoints" value="3"/>
+		<attribute key="showduration" value="1" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="duration" value="7200"/>
+		<attribute key="decayTo" value="33057"/>
 		<attribute key="armor" value="2"/>
 		<attribute key="weight" value="500"/>
-		<attribute key="transformEquipTo" value="33058" />
-		<attribute key="stopduration" value="1" />
-		<attribute key="showduration" value="1" />
 	</item>
 	<item id="33924" article="a" name="jade amulet">
 		<attribute key="description" value="Souvenir from Thais Museum."/>
