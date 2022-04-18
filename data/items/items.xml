@@ -34549,9 +34549,10 @@
 		<attribute key="showAttributes" value="1"/>
 		<attribute key="absorbpercentphysical" value="7"/>
 		<attribute key="absorbpercentpoison" value="24"/>
+		<attribute key="transformDeEquipTo" value="32999" />
 		<attribute key="skilldist" value="3"/>
 		<attribute key="duration" value="3600"/>
-		<attribute key="decayTo" value="32999"/>
+		<attribute key="decayTo" value="32084"/>
 		<attribute key="armor" value="3"/>
 		<attribute key="weight" value="430"/>
 	</item>
@@ -34559,6 +34560,9 @@
 		<attribute key="slotType" value="necklace"/>
 		<attribute key="armor" value="3"/>
 		<attribute key="weight" value="430"/>
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="transformEquipTo" value="32998" />
 	</item>
 	<item id="33000" article="an" name="enchanted pendulet">
 		<attribute key="slotType" value="necklace"/>
@@ -34568,7 +34572,8 @@
 		<attribute key="absorbpercentenergy" value="18"/>
 		<attribute key="skilldist" value="3"/>
 		<attribute key="duration" value="7200"/>
-		<attribute key="decayTo" value="33001"/>
+		<attribute key="decayTo" value="32085"/>
+		<attribute key="transformDeEquipTo" value="33001" />
 		<attribute key="armor" value="2"/>
 		<attribute key="weight" value="650"/>
 	</item>
@@ -34576,6 +34581,9 @@
 		<attribute key="slotType" value="necklace"/>
 		<attribute key="armor" value="2"/>
 		<attribute key="weight" value="650"/>
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="transformEquipTo" value="33000" />
 	</item>
 	<item id="33049" article="a" name="cobra crossbow">
 		<attribute key="weaponType" value="distance"/>
@@ -34596,6 +34604,7 @@
 		<attribute key="weight" value="900"/>
 	</item>
 	<item id="33051" name="cobra club">
+	    <attribute key="weaponType" value="club"/>
 		<attribute key="elementfire" value="44"/>
 		<attribute key="skillclub" value="2"/>
 		<attribute key="attack" value="8"/>
@@ -34604,6 +34613,7 @@
 		<attribute key="weight" value="2500"/>
 	</item>
 	<item id="33052" name="cobra axe">
+	    <attribute key="weaponType" value="axe"/>
 		<attribute key="elementice" value="44"/>
 		<attribute key="skillaxe" value="2"/>
 		<attribute key="attack" value="8"/>
