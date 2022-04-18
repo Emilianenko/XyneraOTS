@@ -190,9 +190,24 @@ registerMonsterType.loot = function(mtype, mask)
 		local lootError = false
 		for _, loot in pairs(mask.loot) do
 			local parent = Loot()
-			if not parent:setId(loot.id) then
+			if loot.id then
+				if not parent:setId(loot.id) then
+					lootError = true
+				end
+			elseif loot.name then
+				local itemType = ItemType(loot.name)
+				if itemType then
+					local itemId = itemType:getId()
+					if itemId == 0 or not parent:setId(itemId) then
+						lootError = true
+					end
+				else
+					lootError = true
+				end
+			else
 				lootError = true
 			end
+			
 			if loot.chance then
 				parent:setChance(loot.chance)
 			end
@@ -235,7 +250,7 @@ registerMonsterType.loot = function(mtype, mask)
 			mtype:addLoot(parent)
 		end
 		if lootError then
-			print("[Warning - end] Monster: \"".. mtype:name() .. "\" loot could not correctly be load.")
+			print("[Warning - registerMonsterType.loot] Monster: \"".. mtype:name() .. "\" loot could not correctly be loaded.")
 		end
 	end
 end
