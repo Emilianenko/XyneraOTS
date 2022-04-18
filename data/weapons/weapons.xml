@@ -96,6 +96,9 @@
 	<wand id="30113" level="200" mana="18" min="80" max="110" type="energy"> <!-- Wand of Destruction -->
 		<vocation name="Sorcerer" />
 	</wand>
+	<wand id="36746" level="400" mana="21" min="100" max="120" type="death"> <!-- soultainter -->
+		<vocation name="Sorcerer" />
+	</wand>
 	
 	<!-- Swords -->
 	<melee id="2396" action="removecharge" />

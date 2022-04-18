@@ -390,22 +390,22 @@ local weapons_magic = {
 	[30114] = { level = 200, vocs = {2}, sockets = 2 }, -- rod of destruction
 	-- [31122] = {}, -- sorcerer test weapon TEST
 	-- [31135] = {}, -- wand of destruction TEST
-	[31372] = { sockets = 2 }, -- falcon rod
-	[31373] = { sockets = 2 }, -- falcon wand
-	[31482] = { sockets = 2 }, -- deepling fork
-	[33055] = { sockets = 2 }, -- cobra wand
-	[33056] = { sockets = 2 }, -- cobra rod
-	[32081] = { sockets = 2 }, -- energized limb
-	[36746] = { sockets = 2 }, -- soultainter
-	[36747] = { sockets = 2 }, -- soulhexer
-	[36807] = { sockets = 2 }, -- lion rod
-	[36808] = { sockets = 2 }, -- lion wand
-	[38177] = { sockets = 2 }, -- jungle rod
-	[38178] = { sockets = 2 }, -- jungle wand
-	[39324] = { sockets = 2 }, -- eldritch wand
-	[39325] = { sockets = 2 }, -- gilded eldritch wand
-	[39330] = { sockets = 2 }, -- eldritch rod
-	[39331] = { sockets = 2 }, -- gilded eldritch rod
+	[31372] = { level = 300, vocs = {2}, sockets = 2 }, -- falcon rod
+	[31373] = { level = 300, vocs = {1}, sockets = 2 }, -- falcon wand
+	[31482] = { level = 230, vocs = {1, 2}, sockets = 2 }, -- deepling fork
+	[33055] = { level = 270, vocs = {1}, sockets = 2 }, -- cobra wand
+	[33056] = { level = 220, vocs = {2}, sockets = 2 }, -- cobra rod
+	[32081] = { level = 180, vocs = {1, 2}, sockets = 2 }, -- energized limb
+	[36746] = { level = 400, vocs = {1}, sockets = 2 }, -- soultainter
+	[36747] = { level = 400, vocs = {2}, sockets = 2 }, -- soulhexer
+	[36807] = { level = 270, vocs = {2}, sockets = 2 }, -- lion rod
+	[36808] = { level = 220, vocs = {1}, sockets = 2 }, -- lion wand
+	[38177] = { level = 150, vocs = {2}, sockets = 2 }, -- jungle rod
+	[38178] = { level = 150, vocs = {1}, sockets = 2 }, -- jungle wand
+	[39324] = { level = 250, vocs = {1}, sockets = 2 }, -- eldritch wand
+	[39325] = { level = 250, vocs = {1}, sockets = 2 }, -- gilded eldritch wand
+	[39330] = { level = 250, vocs = {2}, sockets = 2 }, -- eldritch rod
+	[39331] = { level = 250, vocs = {2}, sockets = 2 }, -- gilded eldritch rod
 }
 
 local throwables = {
