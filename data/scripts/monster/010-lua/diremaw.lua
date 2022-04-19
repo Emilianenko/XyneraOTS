@@ -91,11 +91,12 @@ monster.attacks = {
 		interval = 2000,
 		condition = {
 			type = CONDITION_POISON,
-			startDamage = 30,
 			minDamage = -200,
 			maxDamage = -310,
 			interval = 3000,
 		},
+		minDamage = -0,
+		maxDamage = -0,
 		chance = 100,
 		radius = 4,
 		effect = CONST_ME_GREEN_RINGS,
