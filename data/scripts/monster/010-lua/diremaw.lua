@@ -83,25 +83,12 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name ="combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = false},
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300},
+	{name ="combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = true},
 	{name ="combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -250, range = 7, radius = 4, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POFF, target = true},
-	-- poison (chance 21)
-	{
-		name ="combat",
-		interval = 2000,
-		condition = {
-			type = CONDITION_POISON,
-			minDamage = -200,
-			maxDamage = -310,
-			interval = 3000,
-		},
-		minDamage = -0,
-		maxDamage = -0,
-		chance = 100,
-		radius = 4,
-		effect = CONST_ME_GREEN_RINGS,
-		target = false
-	}
+	{name ="combat", type = CONDITION_POISON, interval = 2000, chance = 21, minDamage = -200, maxDamage = -300, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false}
+
+
 }
 
 monster.defenses = {
