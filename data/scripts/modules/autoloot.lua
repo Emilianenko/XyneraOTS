@@ -176,12 +176,12 @@ end
 
 function ItemType:isPotion()
 	local itemId = self:getId()
-	return table.contains(Potions, itemId) or table.contains(AutoLootMeta[LOOT_TYPE_POTION], itemId)
+	return Potions[itemId] or table.contains(AutoLootMeta[LOOT_TYPE_POTION], itemId)
 end
 
 function ItemType:isFood()
 	local itemId = self:getId()
-	return table.contains(Foods, itemId) or table.contains(AutoLootMeta[LOOT_TYPE_FOOD], itemId)
+	return Foods[itemId] or table.contains(AutoLootMeta[LOOT_TYPE_FOOD], itemId)
 end
 
 function ItemType:isDecoration()
