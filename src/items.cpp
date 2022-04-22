@@ -12,6 +12,9 @@
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
 
+uint64_t Items::lastSavedLootContainerAutoId = 0;
+uint64_t Items::lootContainerAutoId = 0;
+
 const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributesMap = {
 	{"type", ITEM_PARSE_TYPE},
 	{"description", ITEM_PARSE_DESCRIPTION},

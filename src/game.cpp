@@ -10,6 +10,7 @@
 #include "configmanager.h"
 #include "creature.h"
 #include "creatureevent.h"
+#include "databasemanager.h"
 #include "databasetasks.h"
 #include "depotchest.h"
 #include "events.h"
@@ -5112,6 +5113,29 @@ void Game::loadPlayersRecord()
 		playersRecord = result->getNumber<uint32_t>("value");
 	} else {
 		db.executeQuery("INSERT INTO `server_config` (`config`, `value`) VALUES ('players_record', '0')");
+	}
+}
+
+void Game::loadLatestLootContainerId()
+{
+	Database& db = Database::getInstance();
+
+	DBResult_ptr result = db.storeQuery(fmt::format("SELECT `value` FROM `server_config` WHERE `config` = {:s}", db.escapeString("loot_containers")));
+	if (!result) {
+		saveLatestLootContainerId();
+		return;
+	}
+
+	Items::lootContainerAutoId = result->getNumber<uint64_t>("value");
+}
+
+void Game::saveLatestLootContainerId()
+{
+	uint64_t lootContainerId = Items::lootContainerAutoId;
+	if (Items::lastSavedLootContainerAutoId != lootContainerId) {
+		Items::lastSavedLootContainerAutoId = lootContainerId;
+		Database& db = Database::getInstance();
+		db.executeQuery(fmt::format("INSERT INTO `server_config` (config, value) VALUES('loot_containers', '{:d}') ON DUPLICATE KEY UPDATE config = 'loot_containers', value = '{:d}'", lootContainerId, lootContainerId));
 	}
 }
 

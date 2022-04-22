@@ -76,6 +76,9 @@ function onSay(player, words, param)
 
 	Game.reload(reloadType)
 	
+	-- fix for reload wiping io.write output file
+	io.output(io.stdout)
+	
 	-- prevent unhooking eventCallbacks registered in data/scripts folder
 	-- in "/reload events" situation
 	if reloadType == RELOAD_TYPE_EVENTS then

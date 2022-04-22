@@ -15,7 +15,7 @@ bullseye:setParameter(CONDITION_PARAM_SKILL_DISTANCE, 5)
 bullseye:setParameter(CONDITION_PARAM_SKILL_SHIELD, -10)
 bullseye:setParameter(CONDITION_PARAM_BUFF_SPELL, true)
 
-local potions = {
+Potions = {
 	[6558] = { -- concentrated demonic blood
 		transform = {7588, 7589},
 		effect = CONST_ME_DRAWBLOOD
@@ -124,14 +124,14 @@ local potions = {
 }
 
 -- register as supplies
-registerSupplies(potions)
+registerSupplies(Potions)
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if type(target) == "userdata" and not target:isPlayer() then
 		return false
 	end
 
-	local potion = potions[item:getId()]
+	local potion = Potions[item:getId()]
 	if potion.level and player:getLevel() < potion.level or potion.vocations and not table.contains(potion.vocations, player:getVocation():getId()) then
 		player:say(potion.description, TALKTYPE_POTION)
 		return true

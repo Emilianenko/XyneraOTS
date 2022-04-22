@@ -1,4 +1,4 @@
-local foods = {
+Foods = {
 	[2362] = {5, "Crunch."}, -- carrot
 	[2666] = {15, "Munch."}, -- meat
 	[2667] = {12, "Munch."}, -- fish
@@ -118,10 +118,10 @@ local foods = {
 }
 
 -- register as supplies
-registerSupplies(foods)
+registerSupplies(Foods)
 
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
-	local food = foods[item.itemid]
+	local food = Foods[item.itemid]
 	if not food then
 		return false
 	end

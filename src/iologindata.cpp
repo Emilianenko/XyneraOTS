@@ -576,6 +576,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	player->updateBaseSpeed();
 	player->updateInventoryWeight();
 	player->updateItemsLight(true);
+	player->registerLootContainers();
 	return true;
 }
 
@@ -670,6 +671,8 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 
 bool IOLoginData::savePlayer(Player* player)
 {
+	g_game.saveLatestLootContainerId();
+
 	if (player->getHealth() <= 0) {
 		player->changeHealth(1);
 	}

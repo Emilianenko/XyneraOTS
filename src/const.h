@@ -779,6 +779,43 @@ enum ReloadTypes_t : uint8_t {
 	RELOAD_TYPE_WEAPONS,
 };
 
+enum LootTypes_t : uint8_t {
+	LOOT_TYPE_NONE = 0,
+	LOOT_TYPE_ARMOR = 1,
+	LOOT_TYPE_AMULET = 2,
+	LOOT_TYPE_BOOTS = 3,
+	LOOT_TYPE_CONTAINER = 4,
+	LOOT_TYPE_DECORATION = 5,
+	LOOT_TYPE_FOOD = 6,
+	LOOT_TYPE_HELMET = 7,
+	LOOT_TYPE_LEGS = 8,
+	LOOT_TYPE_OTHER = 9,
+	LOOT_TYPE_POTION = 10,
+	LOOT_TYPE_RING = 11,
+	LOOT_TYPE_RUNE = 12,
+	LOOT_TYPE_SHIELD = 13,
+	LOOT_TYPE_TOOL = 14,
+	LOOT_TYPE_VALUABLE = 15,
+	LOOT_TYPE_AMMO = 16,
+	LOOT_TYPE_AXE = 17,
+	LOOT_TYPE_CLUB = 18,
+	LOOT_TYPE_DISTANCE = 19,
+	LOOT_TYPE_SWORD = 20,
+	LOOT_TYPE_WAND = 21,
+	// 22 premium scrolls (not selectable)
+	// 23 store coins (not selectable)
+	LOOT_TYPE_CREATURE_PRODUCT = 24,
+	LOOT_TYPE_QUIVER = 25,
+	// 26 "(unknown)" (not selectable)
+	LOOT_TYPE_STASH = 27,
+	// 28 unsorted (not selectable)
+	// 29 weapons: all (not selectable)
+	LOOT_TYPE_GOLD = 30,
+	LOOT_TYPE_UNASSIGNED = 31,
+
+	LOOT_TYPE_LAST = LOOT_TYPE_UNASSIGNED
+};
+
 static constexpr int32_t CHANNEL_GUILD = 0x00;
 static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_GUILD_LEADER = 0x2710; // 10000
@@ -803,6 +840,10 @@ static constexpr int32_t PSTRG_MOUNTS_CURRENTMOUNT = (PSTRG_MOUNTS_RANGE_START +
 static constexpr int32_t PSTRG_FAMILIARS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 3001);
 static constexpr int32_t PSTRG_FAMILIARS_RANGE_SIZE = 10;
 static constexpr int32_t PSTRG_FAMILIARS_CURRENTFAMILIAR = (PSTRG_FAMILIARS_RANGE_START + 10);
+
+// [4000 - 4031];
+static constexpr int32_t PSTRG_AUTOLOOT_RANGE_START = (PSTRG_RESERVED_RANGE_START + 4000);
+static constexpr int32_t PSTRG_AUTOLOOT_RANGE_SIZE = 32;
 
 #define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) <= PSTRG_##range##_SIZE))
 

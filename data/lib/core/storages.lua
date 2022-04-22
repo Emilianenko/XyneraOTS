@@ -39,19 +39,29 @@ PlayerStorageKeys = {
 	randomizeMount = 70036,
 	commandsCooldown = 70037,
 	
+	-- auto loot
+	autoLootMode = 70038,
+	autoLootFallback = 70040,
+	
 	-- condition taint storages
 	taints = 70041,
 	taintB_cooldown = 70047,
 	taintD_cooldown = 70049,
 	
+	-- total range: 300000-319999
 	achievementsBase = 300000,
 	achievementsCounter = 310000,
+	
+	-- total range: 320000-320255
 	resourcesBase = 320000,
+
 	forgeDustLevel = 320256,
+
+	-- total range: 329999-359999
 	bestiaryInitCharmSystem = 329999,
 	bestiaryKillCountBase = 330000,
 	bestiaryRaceProgressBase = 340000,
-	bestiaryCategoryProgressBase = 350000,
+	bestiaryCategoryProgressBase = 350000
 }
 
 GlobalStorageKeys = {

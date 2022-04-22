@@ -2230,6 +2230,35 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(RELOAD_TYPE_TALKACTIONS)
 	registerEnum(RELOAD_TYPE_WEAPONS)
 
+	registerEnum(LOOT_TYPE_NONE)
+	registerEnum(LOOT_TYPE_ARMOR)
+	registerEnum(LOOT_TYPE_AMULET)
+	registerEnum(LOOT_TYPE_BOOTS)
+	registerEnum(LOOT_TYPE_CONTAINER)
+	registerEnum(LOOT_TYPE_DECORATION)
+	registerEnum(LOOT_TYPE_FOOD)
+	registerEnum(LOOT_TYPE_HELMET)
+	registerEnum(LOOT_TYPE_LEGS)
+	registerEnum(LOOT_TYPE_OTHER)
+	registerEnum(LOOT_TYPE_POTION)
+	registerEnum(LOOT_TYPE_RING)
+	registerEnum(LOOT_TYPE_RUNE)
+	registerEnum(LOOT_TYPE_SHIELD)
+	registerEnum(LOOT_TYPE_TOOL)
+	registerEnum(LOOT_TYPE_VALUABLE)
+	registerEnum(LOOT_TYPE_AMMO)
+	registerEnum(LOOT_TYPE_AXE)
+	registerEnum(LOOT_TYPE_CLUB)
+	registerEnum(LOOT_TYPE_DISTANCE)
+	registerEnum(LOOT_TYPE_SWORD)
+	registerEnum(LOOT_TYPE_WAND)
+	registerEnum(LOOT_TYPE_CREATURE_PRODUCT)
+	registerEnum(LOOT_TYPE_QUIVER)
+	registerEnum(LOOT_TYPE_STASH)
+	registerEnum(LOOT_TYPE_GOLD)
+	registerEnum(LOOT_TYPE_UNASSIGNED)
+	registerEnum(LOOT_TYPE_LAST)
+
 	registerEnum(ACCOUNTRESOURCE_STORE_COINS)
 	registerEnum(ACCOUNTRESOURCE_STORE_COINS_NONTRANSFERABLE)
 	registerEnum(ACCOUNTRESOURCE_STORE_COINS_RESERVED)
@@ -2576,6 +2605,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "clone", LuaScriptInterface::luaItemClone);
 	registerMethod("Item", "split", LuaScriptInterface::luaItemSplit);
 	registerMethod("Item", "remove", LuaScriptInterface::luaItemRemove);
+	registerMethod("Item", "refresh", LuaScriptInterface::luaItemRefresh);
 
 	registerMethod("Item", "getUniqueId", LuaScriptInterface::luaItemGetUniqueId);
 	registerMethod("Item", "getActionId", LuaScriptInterface::luaItemGetActionId);
@@ -2640,6 +2670,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Container", "addItem", LuaScriptInterface::luaContainerAddItem);
 	registerMethod("Container", "addItemEx", LuaScriptInterface::luaContainerAddItemEx);
 	registerMethod("Container", "getCorpseOwner", LuaScriptInterface::luaContainerGetCorpseOwner);
+
+	registerMethod("Container", "isLootContainer", LuaScriptInterface::luaContainerIsLootContainer);
+	registerMethod("Container", "getLootContainerId", LuaScriptInterface::luaContainerGetLootContainerId);
 
 	// Teleport
 	registerClass("Teleport", "Item", LuaScriptInterface::luaTeleportCreate);
@@ -2915,6 +2948,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "forgetSpell", LuaScriptInterface::luaPlayerForgetSpell);
 	registerMethod("Player", "hasLearnedSpell", LuaScriptInterface::luaPlayerHasLearnedSpell);
 
+	registerMethod("Player", "setLootContainer", LuaScriptInterface::luaPlayerSetLootContainer);
+	registerMethod("Player", "getLootContainer", LuaScriptInterface::luaPlayerGetLootContainer);
+	registerMethod("Player", "getLootContainerFlags", LuaScriptInterface::luaPlayerGetLootContainerFlags);
+
 	registerMethod("Player", "sendTutorial", LuaScriptInterface::luaPlayerSendTutorial);
 	registerMethod("Player", "addMapMark", LuaScriptInterface::luaPlayerAddMapMark);
 
@@ -2934,7 +2971,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getContainerId", LuaScriptInterface::luaPlayerGetContainerId);
 	registerMethod("Player", "getContainerById", LuaScriptInterface::luaPlayerGetContainerById);
 	registerMethod("Player", "getContainerIndex", LuaScriptInterface::luaPlayerGetContainerIndex);
-
+	registerMethod("Player", "getOpenContainers", LuaScriptInterface::luaPlayerGetOpenContainers);
+	
 	registerMethod("Player", "getInstantSpells", LuaScriptInterface::luaPlayerGetInstantSpells);
 	registerMethod("Player", "canCast", LuaScriptInterface::luaPlayerCanCast);
 
@@ -6985,6 +7023,20 @@ int LuaScriptInterface::luaItemRemove(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaItemRefresh(lua_State* L)
+{
+	// updates the item icons in player inventory
+	// item:refresh()
+	Item* item = getUserdata<Item>(L, 1);
+	if (item) {
+		item->update();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaItemGetUniqueId(lua_State* L)
 {
 	// item:getUniqueId()
@@ -7840,6 +7892,37 @@ int LuaScriptInterface::luaContainerGetCorpseOwner(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaContainerIsLootContainer(lua_State* L)
+{
+	// container:isLootContainer()
+	Container* container = getUserdata<Container>(L, 1);
+	if (container) {
+		Item* item = container->getItem();
+		if (item) {
+			pushBoolean(L, item->isLootContainer());
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaContainerGetLootContainerId(lua_State* L)
+{
+	// container:getLootContainerId()
+	Container* container = getUserdata<Container>(L, 1);
+	if (container) {
+		Item* item = container->getItem();
+		if (item) {
+			lua_pushnumber(L, item->getLootContainerId());
+			return 1;
+		}
+	}
+	lua_pushnil(L);
 	return 1;
 }
 
@@ -11241,6 +11324,65 @@ int LuaScriptInterface::luaPlayerHasLearnedSpell(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerSetLootContainer(lua_State* L)
+{
+	// player:setLootContainer(category, lootContainerId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	LootTypes_t lootCategory = getNumber<LootTypes_t>(L, 2);
+	int32_t lootContainerId = getNumber<int32_t>(L, 3);
+	if (lootCategory > LOOT_TYPE_NONE && lootCategory <= LOOT_TYPE_LAST) {
+		player->setLootContainer(lootCategory, lootContainerId);
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
+	
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetLootContainer(lua_State* L)
+{
+	// player:getLootContainer(category)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	LootTypes_t lootCategory = getNumber<LootTypes_t>(L, 2);
+	if (lootCategory > LOOT_TYPE_NONE && lootCategory <= LOOT_TYPE_LAST) {
+		lua_pushnumber(L, player->getLootContainer(lootCategory));
+	} else {
+		lua_pushnil(L);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetLootContainerFlags(lua_State* L)
+{
+	// player:getLootContainerFlags(lootContainerId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	int32_t lootContainerId = getNumber<int32_t>(L, 2);
+	if (lootContainerId == 0) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnumber(L, player->getLootContainerFlags(lootContainerId));
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerSendTutorial(lua_State* L)
 {
 	// player:sendTutorial(tutorialId)
@@ -11494,6 +11636,27 @@ int LuaScriptInterface::luaPlayerGetContainerIndex(lua_State* L)
 	}
 	return 1;
 }
+
+int LuaScriptInterface::luaPlayerGetOpenContainers(lua_State* L)
+{
+	// player:getOpenContainers()
+	// returns windowId and userdata of opened containers
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		const auto& openContainers = player->getOpenContainers();
+
+		lua_createtable(L, openContainers.size(), 0);
+		for (auto const& containerInfo : openContainers) {
+			pushUserdata<Container>(L, containerInfo.second.container);
+			setMetatable(L, -1, "Container");
+			lua_rawseti(L, -2, containerInfo.first);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 
 int LuaScriptInterface::luaPlayerGetInstantSpells(lua_State* L)
 {

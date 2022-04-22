@@ -90,6 +90,7 @@ enum AttrTypes_t {
 	ATTR_TIER = 41, // item tier (12.80)
 	ATTR_REFLECT = 42,
 	ATTR_BOOST = 43,
+	ATTR_LOOTCONTAINER = 44,
 };
 
 enum Attr_ReadValue {
@@ -409,6 +410,7 @@ class ItemAttributes
 
 		std::vector<Attribute> attributes;
 		uint32_t attributeBits = 0;
+		int32_t lootContainerId = 0;
 
 		std::map<CombatType_t, Reflect> reflect;
 		std::map<CombatType_t, uint16_t> boostPercent;
@@ -829,6 +831,33 @@ class Item : virtual public Thing
 		std::string getDescription(int32_t lookDistance) const override final;
 		std::string getNameDescription() const;
 		std::string getWeightDescription() const;
+
+		bool isLootContainer() const {
+			if (!attributes) {
+				return false;
+			}
+
+			return attributes->lootContainerId != 0;
+		}
+		int32_t internalGetLootContainerId() const {
+			if (!attributes) {
+				return 0;
+			}
+
+			return attributes->lootContainerId;
+		}
+		int32_t getLootContainerId() {
+			if (!attributes) {
+				attributes.reset(new ItemAttributes());
+			}
+
+			int32_t tmpLootId = attributes->lootContainerId;
+			if (tmpLootId == 0) {
+				tmpLootId = ++Items::lootContainerAutoId;
+				attributes->lootContainerId = tmpLootId;
+			}
+			return tmpLootId;
+		}
 
 		//serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);

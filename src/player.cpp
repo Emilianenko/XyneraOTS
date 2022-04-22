@@ -704,7 +704,7 @@ void Player::addStorageValue(const uint32_t key, const int32_t value, const bool
 				value & 0xFF
 			);
 			return;
-		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE) || IS_IN_KEYRANGE(key, FAMILIARS_RANGE)) {
+		} else if (IS_IN_KEYRANGE(key, MOUNTS_RANGE) || IS_IN_KEYRANGE(key, FAMILIARS_RANGE) || IS_IN_KEYRANGE(key, AUTOLOOT_RANGE)) {
 			// do nothing
 		} else {
 			console::reportWarning("Player::addStorageValue", fmt::format("Storage belongs to reserved range of unknown type! storage: {:d}, player: {:s})", key, getName()));

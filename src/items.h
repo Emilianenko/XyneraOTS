@@ -489,6 +489,8 @@ class Items
 		NameMap nameToItems;
 		CurrencyMap currencyItems;
 
+		static uint64_t lastSavedLootContainerAutoId;
+		static uint64_t lootContainerAutoId;
 	private:
 		std::vector<ItemType> items;
 		InventoryVector inventory;

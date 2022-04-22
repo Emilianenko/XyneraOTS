@@ -258,6 +258,9 @@ void mainLoader(int, char*[], ServiceManager* services)
 	// Checking database migrations...
 	DatabaseManager::updateDatabase();
 
+	// load autonumering for loot containers
+	g_game.loadLatestLootContainerId();
+
 	// optimize tables
 	if (g_config.getBoolean(ConfigManager::OPTIMIZE_DATABASE)) {
 		console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Optimizing database tables ... ", false);

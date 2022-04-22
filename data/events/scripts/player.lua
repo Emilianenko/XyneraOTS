@@ -387,7 +387,6 @@ end
 function Player:onExtendedProtocol(recvbyte, networkMessage)
 	-- unhnadled login packets:
 	-- 0xCE -- allow everyone to inspect me(?)
-	-- 0x91 -- quick loot settings
 	-- 0xD0 -- quest tracker
 	callPacketEvent(self, recvbyte, networkMessage)
 end

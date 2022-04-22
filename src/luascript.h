@@ -716,6 +716,7 @@ class LuaScriptInterface
 		static int luaItemClone(lua_State* L);
 		static int luaItemSplit(lua_State* L);
 		static int luaItemRemove(lua_State* L);
+		static int luaItemRefresh(lua_State* L);
 
 		static int luaItemGetUniqueId(lua_State* L);
 		static int luaItemGetActionId(lua_State* L);
@@ -779,6 +780,9 @@ class LuaScriptInterface
 		static int luaContainerAddItem(lua_State* L);
 		static int luaContainerAddItemEx(lua_State* L);
 		static int luaContainerGetCorpseOwner(lua_State* L);
+
+		static int luaContainerIsLootContainer(lua_State* L);
+		static int luaContainerGetLootContainerId(lua_State* L);
 
 		// Teleport
 		static int luaTeleportCreate(lua_State* L);
@@ -1050,6 +1054,10 @@ class LuaScriptInterface
 		static int luaPlayerForgetSpell(lua_State* L);
 		static int luaPlayerHasLearnedSpell(lua_State* L);
 
+		static int luaPlayerSetLootContainer(lua_State* L);
+		static int luaPlayerGetLootContainer(lua_State* L);
+		static int luaPlayerGetLootContainerFlags(lua_State* L);
+
 		static int luaPlayerSendTutorial(lua_State* L);
 		static int luaPlayerAddMapMark(lua_State* L);
 
@@ -1069,6 +1077,7 @@ class LuaScriptInterface
 		static int luaPlayerGetContainerId(lua_State* L);
 		static int luaPlayerGetContainerById(lua_State* L);
 		static int luaPlayerGetContainerIndex(lua_State* L);
+		static int luaPlayerGetOpenContainers(lua_State* L);
 
 		static int luaPlayerGetInstantSpells(lua_State* L);
 		static int luaPlayerCanCast(lua_State* L);

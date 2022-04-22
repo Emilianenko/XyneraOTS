@@ -1,6 +1,7 @@
 local config = {
 	[5908] = {
 		-- Minotaurs
+		[2830] = {chance = 7000, newItem = 5878, after = 2831}, -- minotaur
 		[3090] = {chance = 7000, newItem = 5878, after = 2831}, -- minotaur
 		[5969] = {chance = 7000, newItem = 5878, after = 2831}, -- minotaur, after being killed
 		[2871] = {chance = 7000, newItem = 5878, after = 2872}, -- minotaur archer
@@ -41,8 +42,9 @@ local config = {
 		[11284] = {chance = 10000, newItem = 5876, after = 11282}, -- lizard zaogun, after being killed
 
 		-- Dragon
-		[3104] = {chance = 5000, newItem = 5877, after = 3105},
-		[5973] = {chance = 5000, newItem = 5877, after = 3105}, -- after being killed
+		[2844] = {chance = 5000, newItem = 5877, after = 2845},
+		[3104] = {chance = 5000, newItem = 5877, after = 2845},
+		[5973] = {chance = 5000, newItem = 5877, after = 2845}, -- after being killed
 
 		-- Dragon Lord
 		[2881] = {chance = 5000, newItem = 5948, after = 2882},

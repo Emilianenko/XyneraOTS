@@ -2,6 +2,10 @@ function Item:getType()
 	return ItemType(self:getId())
 end
 
+function Item:getClientId()
+	return self:getType():getClientId()
+end
+
 function Item:getClassification()
 	return self:getType():getClassification()
 end
@@ -38,12 +42,20 @@ function Item:isTile()
 	return false
 end
 
+function Item:isCorpse()
+	return self:getType():isCorpse()
+end
+
 function Item:isItemType()
 	return false
 end
 
 function Item:isSupply()
 	return self:getType():isSupply()
+end
+
+function Item:isCurrency()
+	return self:getType():isCurrency()
 end
 
 function Item:pauseDecay()

@@ -713,6 +713,49 @@ class Player final : public Creature, public Cylinder
 		// helper for familiars
 		void cacheWaypoint(Position* pos, bool isTeleport);
 
+		// autoloot
+		int32_t getLootContainer(LootTypes_t lootType) {
+			return lootContainers[lootType];
+		};
+		void setLootContainer(LootTypes_t lootType, int32_t lootContainerId) {
+			lootContainers[lootType] = lootContainerId;
+			addStorageValue(PSTRG_AUTOLOOT_RANGE_START + static_cast<int32_t>(lootType), lootContainerId);
+		}
+		void resetLootContainer(LootTypes_t lootType) {
+			lootContainers[lootType] = 0;
+		}
+		uint32_t getLootContainerFlags(int32_t lootContainerId) const {
+			if (lootContainerId == 0) {
+				return 0;
+			}
+
+			uint32_t containerFlags = 0;
+			for (auto const& it : lootContainers) {
+				if (it.second == lootContainerId) {
+					containerFlags += (1 << it.first);
+				}
+			}
+
+			return containerFlags;
+		}
+		uint32_t getContainerFlags(const Container* container) const {
+			if (!container->isLootContainer()) {
+				return 0;
+			}
+
+			return getLootContainerFlags(container->internalGetLootContainerId());
+		}
+		void registerLootContainers() {
+			for (uint8_t lootType = LOOT_TYPE_ARMOR; lootType <= LOOT_TYPE_LAST; ++lootType) {
+				int32_t lootContainerId;
+				getStorageValue(PSTRG_AUTOLOOT_RANGE_START + static_cast<uint32_t>(lootType), lootContainerId);
+
+				if (lootContainerId > 0) {
+					setLootContainer(static_cast<LootTypes_t>(lootType), lootContainerId);
+				}
+			}
+		}
+
 		// tile
 		// send methods
 		void sendAddTileItem(const Tile* tile, const Position& pos, const Item* item) {
@@ -1284,6 +1327,7 @@ class Player final : public Creature, public Cylinder
 		std::map<uint8_t, OpenContainer> openContainers;
 		std::map<uint32_t, DepotChest*> depotChests;
 		std::map<uint32_t, int32_t> storageMap;
+		std::map<LootTypes_t, int32_t> lootContainers;
 
 		std::vector<OutfitEntry> outfits;
 		GuildWarVector guildWarVector;
