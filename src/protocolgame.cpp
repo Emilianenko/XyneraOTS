@@ -579,9 +579,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x8C: parseLookAt(msg); break;
 		case 0x8D: parseLookInBattleList(msg); break;
 		case 0x8E: /* join aggression */ break;
-		//case 0x8F: break; // quick loot
-		//case 0x90: break; // loot container
-		//case 0x91: break; // update loot whitelist
+		case 0x8F: parseQuickLoot(msg); break;
+		//case 0x90: break; // select loot container (scripted)
+		//case 0x91: break; // parse loot list (scripted)
 		//case 0x92: break; // request locker items
 		case 0x96: parseSay(msg); break;
 		case 0x97: addGameTask([playerID = player->getID()]() { g_game.playerRequestChannels(playerID); }); break;
@@ -1179,6 +1179,15 @@ void ProtocolGame::parseWrapItem(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	uint8_t stackpos = msg.getByte();
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerWrapItem(playerID, pos, stackpos, spriteId); });
+}
+
+void ProtocolGame::parseQuickLoot(NetworkMessage& msg)
+{
+	Position pos = msg.getPosition();
+	uint8_t stackpos = msg.getByte();
+	uint16_t spriteId = msg.get<uint16_t>();
+
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerQuickLoot(playerID, pos, stackpos, spriteId); });
 }
 
 void ProtocolGame::parseLookInShop(NetworkMessage& msg)

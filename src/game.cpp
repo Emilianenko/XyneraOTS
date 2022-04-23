@@ -2757,6 +2757,28 @@ void Game::playerWrapItem(uint32_t playerId, const Position& position, uint8_t s
 	g_events->eventPlayerOnWrapItem(player, item);
 }
 
+void Game::playerQuickLoot(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	if (position.x != 0xFFFF && !Position::areInRange<1, 1, 0>(position, player->getPosition())) {
+		std::vector<Direction> listDir;
+		if (player->getPathTo(position, listDir, 0, 1, true, true)) {
+			g_dispatcher.addTask(createTask([=, playerID = player->getID(), listDir = std::move(listDir)]() { playerAutoWalk(playerID, listDir); }));
+			SchedulerTask* task = createSchedulerTask(RANGE_LOOT_ITEM_INTERVAL, [=]() { playerQuickLoot(playerId, position, stackPos, spriteId); });
+			player->setNextWalkActionTask(task);
+		} else {
+			player->sendCancelMessage(RETURNVALUE_THEREISNOWAY);
+		}
+		return;
+	}
+
+	g_events->eventPlayerOnQuickLoot(player, position, stackPos, spriteId);
+}
+
 void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
                               uint32_t tradePlayerId, uint16_t spriteId)
 {

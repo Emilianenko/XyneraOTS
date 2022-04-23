@@ -113,6 +113,7 @@ class ProtocolGame final : public Protocol
 		void parseTextWindow(NetworkMessage& msg);
 		void parseHouseWindow(NetworkMessage& msg);
 		void parseWrapItem(NetworkMessage& msg);
+		void parseQuickLoot(NetworkMessage& msg);
 
 		void parseLookInShop(NetworkMessage& msg);
 		void parsePlayerPurchase(NetworkMessage& msg);

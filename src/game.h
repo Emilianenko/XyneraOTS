@@ -58,6 +58,7 @@ static constexpr int32_t RANGE_USE_WITH_CREATURE_INTERVAL = 400;
 static constexpr int32_t RANGE_ROTATE_ITEM_INTERVAL = 400;
 static constexpr int32_t RANGE_BROWSE_FIELD_INTERVAL = 400;
 static constexpr int32_t RANGE_WRAP_ITEM_INTERVAL = 400;
+static constexpr int32_t RANGE_LOOT_ITEM_INTERVAL = 400;
 static constexpr int32_t RANGE_REQUEST_TRADE_INTERVAL = 400;
 static constexpr int32_t RANGE_INSPECT_ITEM_INTERVAL = 400;
 
@@ -366,6 +367,8 @@ class Game
 		void playerMinimapQuery(uint32_t playerId, const Position& position);
 		void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		void playerWrapItem(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
+		void playerQuickLoot(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
+
 		void playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
 		                        uint32_t tradePlayerId, uint16_t spriteId);
 		void playerAcceptTrade(uint32_t playerId);

@@ -7845,6 +7845,10 @@ int LuaScriptInterface::luaContainerAddItem(lua_State* L)
 	if (ret == RETURNVALUE_NOERROR) {
 		pushUserdata<Item>(L, item);
 		setItemMetatable(L, -1, item);
+		if (container->getWeaponType() == WEAPON_QUIVER) {
+			// update ammo count
+			container->update();
+		}
 	} else {
 		delete item;
 		lua_pushnil(L);
@@ -7878,6 +7882,10 @@ int LuaScriptInterface::luaContainerAddItemEx(lua_State* L)
 	ReturnValue ret = g_game.internalAddItem(container, item, index, flags);
 	if (ret == RETURNVALUE_NOERROR) {
 		ScriptEnvironment::removeTempItem(item);
+		if (container->getWeaponType() == WEAPON_QUIVER) {
+			// update ammo count
+			container->update();
+		}
 	}
 	lua_pushnumber(L, ret);
 	return 1;

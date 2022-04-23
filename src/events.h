@@ -54,6 +54,7 @@ class Events
 		int32_t playerOnLoseExperience = -1;
 		int32_t playerOnGainSkillTries = -1;
 		int32_t playerOnWrapItem = -1;
+		int32_t playerOnQuickLoot = -1;
 		int32_t playerOnInspectItem = -1;
 		int32_t playerOnInspectTradeItem = -1;
 		int32_t playerOnInspectNpcTradeItem = -1;
@@ -108,6 +109,7 @@ class Events
 		void eventPlayerOnLoseExperience(Player* player, uint64_t& exp);
 		void eventPlayerOnGainSkillTries(Player* player, skills_t skill, uint64_t& tries);
 		void eventPlayerOnWrapItem(Player* player, Item* item);
+		void eventPlayerOnQuickLoot(Player* player, const Position& position, uint8_t stackPos, uint16_t spriteId);
 		void eventPlayerOnInspectItem(Player* player, Item* item);
 		void eventPlayerOnInspectTradeItem(Player* player, Player* tradePartner, Item* item);
 		void eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t itemId);

@@ -125,7 +125,7 @@ AutoLootMeta = {
 }
 
 -- protocol
-AUTOLOOT_REQUEST_QUICKLOOT = 0x8F -- 143 - loot corpse/tile
+-- AUTOLOOT_REQUEST_QUICKLOOT = 0x8F -- 143 - loot corpse/tile (handled in sources)
 AUTOLOOT_REQUEST_SELECT_CONTAINER = 0x90 -- 144 - select loot container
 AUTOLOOT_REQUEST_SETSETTINGS = 0x91 -- 145 - add/remove loot item
 
@@ -198,6 +198,10 @@ end
 
 function ItemType:isCreatureProduct()
 	return table.contains(AutoLootMeta[LOOT_TYPE_CREATURE_PRODUCT], self:getId())
+end
+
+function ItemType:isContainerOrVessel()
+	return self:isContainer() or self:isFluidContainer()
 end
 
 function Player:getLootContainers()
@@ -311,7 +315,7 @@ local lootSorting = {
 	[2^LOOT_TYPE_ARMOR] = ItemType.isArmor,
 	[2^LOOT_TYPE_AMULET] = ItemType.isNecklace,
 	[2^LOOT_TYPE_BOOTS] = ItemType.isBoots,
-	[2^LOOT_TYPE_CONTAINER] = ItemType.isContainer,
+	[2^LOOT_TYPE_CONTAINER] = ItemType.isContainerOrVessel,
 	[2^LOOT_TYPE_DECORATION] = ItemType.isDecoration,
 	[2^LOOT_TYPE_FOOD] = ItemType.isFood,
 	[2^LOOT_TYPE_HELMET] = ItemType.isHelmet,
@@ -341,11 +345,11 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	local found = false
 	local isSkipMode = player:getStorageValue(PlayerStorageKeys.autoLootMode) ~= 1
 	local isItemListed = table.contains(AutoLoot[player:getId()], item:getClientId())
-	
+
 	if isSkipMode and isItemListed then
-		return
+		return RETURNVALUE_NOTPOSSIBLE
 	elseif not isSkipMode and not isItemListed then
-		return
+		return RETURNVALUE_NOTPOSSIBLE
 	end
 	
 	-- query type-specific backpacks
@@ -357,6 +361,25 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 			if ret == RETURNVALUE_NOERROR then
 				return ret
 			elseif ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+				for _, child in pairs(container:getItems(true)) do
+					if child:isContainer() then
+						local search = true
+						if child:isLootContainer() then
+							if player:getLootContainerFlags(child:getLootContainerId()) ~= 0 then
+								-- skip containers flagged as other category
+								search = false
+							end
+						end
+					
+						if search then
+							ret = child:addItemEx(lootedItem)
+							if ret == RETURNVALUE_NOERROR then
+								return ret
+							end
+						end
+					end
+				end
+				
 				player:sendTextMessage(MESSAGE_STATUS_WARNING, config.categoryFull)
 			end
 			
@@ -372,6 +395,25 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 		if ret == RETURNVALUE_NOERROR then
 			return ret
 		elseif ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+			for _, child in pairs(lootContainers[unassigned]:getItems(true)) do
+				if child:isContainer() then
+					local search = true
+					if child:isLootContainer() then
+						if player:getLootContainerFlags(child:getLootContainerId()) ~= 0 then
+							-- skip containers flagged as other category
+							search = false
+						end
+					end
+				
+					if search then
+						ret = child:addItemEx(lootedItem)
+						if ret == RETURNVALUE_NOERROR then
+							return ret
+						end
+					end
+				end
+			end
+			
 			player:sendTextMessage(MESSAGE_STATUS_WARNING, config.unassignedFull)
 		end
 	end
@@ -410,10 +452,10 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 end
 
 function internalLootCorpse(player, corpse, lootedItems, lootedGold, lootContainers)
-	if not corpse:isContainer() then
+	if not corpse:isContainer() or corpse:hasAttribute(ITEM_ATTRIBUTE_UNIQUEID) then
 		return LOOTED_RESOURCE_ABSENT, LOOTED_RESOURCE_ABSENT, 0, 0
 	end
-	
+		
 	local corpseItems = 0
 	local retrievedItems = 0
 	local corpseGold = 0
@@ -464,140 +506,137 @@ function Player:canOpenCorpse(corpse)
 	return playerParty and ownerParty and playerParty == ownerParty
 end
 
-function parseRequestQuickLoot(player, recvbyte, msg)
-	local position = Position(msg:getU16(), msg:getU16(), msg:getByte())
-	
-	local stackpos = msg:getByte()
-	local spriteId = msg:getU16()
-	local containerPos = msg:getByte()
-	local isGround = msg:getByte() == 1
-
-	local lootedItems = LOOTED_RESOURCE_ABSENT
-	local lootedGold = LOOTED_RESOURCE_ABSENT
-	local itemCount = 0
-	local goldCount = 0
-	local corpseCount = 0
-	local lootContainers = player:getLootContainers()
-	
-	if position.x ~= CONTAINER_POSITION then
-		-- shift + right click on the floor
-	
-		-- distance check
-		if position:getDistance(player:getPosition()) > 1 then
-			player:sendTextMessage(MESSAGE_LOOT, config.messageErrorPosition)
-			return
-		end
-
-		-- tile check
-		local tile = Tile(position)
-		if not tile then
-			player:sendTextMessage(MESSAGE_LOOT, config.messageErrorPosition)
-			return
-		end
+do
+	local ec = EventCallback
+	function ec.onQuickLoot(player, position, stackPos, spriteId)
+		local lootedItems = LOOTED_RESOURCE_ABSENT
+		local lootedGold = LOOTED_RESOURCE_ABSENT
+		local itemCount = 0
+		local goldCount = 0
+		local corpseCount = 0
+		local lootContainers = player:getLootContainers()
 		
-		if tile:getHouse() then
-			-- no looting inside houses
-			return
-		end
+		if position.x ~= CONTAINER_POSITION then
+			-- shift + right click on the floor
 		
-		local hasBodies = false
-		local looted = false
-
-		local items = tile:getItems()
-		for _, corpse in ipairs(items) do
-			if corpse:isCorpse() and corpse:isContainer() then
-				hasBodies = true
-				
-				if player:canOpenCorpse(corpse) and corpseCount < config.maxCorpsesLimit then
-					local tmpLootedItems = LOOTED_RESOURCE_ABSENT
-					local tmpLootedGold = LOOTED_RESOURCE_ABSENT
-					local tmpItemCount = 0
-					local tmpGoldCount = 0
-					
-					tmpLootedItems, tmpLootedGold, tmpItemCount, tmpGoldCount = internalLootCorpse(player, corpse, tmpLootedItems, tmpLootedGold, lootContainers)
-					corpseCount = corpseCount + 1
-					lootedItems = getNextLootedStatus(lootedItems, tmpLootedItems)
-					lootedGold = getNextLootedStatus(lootedGold, tmpLootedGold)
-					itemCount = itemCount + tmpItemCount
-					goldCount = goldCount + tmpGoldCount
-					looted = true
-				end
-			end
-		end
-		
-		if hasBodies and not looted then
-			player:sendTextMessage(MESSAGE_LOOT, config.messageErrorOwner)
-			return
-		end
-	else
-		-- shift + right click in container ui
-		-- this way of looting does not show amount of corpses looted
-		if bit.band(position.y, 0x40) ~= 0 then
-			local openedContainer = player:getContainerById(position.y - 0x40)
-			if not openedContainer then
-				-- user is lagging and the the container is no longer there
+			-- distance check
+			if position:getDistance(player:getPosition()) > 1 then
+				-- player tried to loot but got pushed
+				player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 				return
 			end
 
-			local corpseTile = Tile(openedContainer:getPosition())
-			if corpseTile and corpseTile:getHouse() then
+			-- tile check
+			local tile = Tile(position)
+			if not tile then
+				player:sendTextMessage(MESSAGE_LOOT, config.messageErrorPosition)
+				return
+			end
+			
+			if tile:getHouse() then
 				-- no looting inside houses
 				return
 			end
 			
-			if not player:canOpenCorpse(openedContainer) then
-				-- container is open but the player has lost rights to it
-				-- (eg by leaving party)
+			local hasBodies = false
+			local looted = false
+
+			local items = tile:getItems()
+			for _, corpse in ipairs(items) do
+				if corpse:isCorpse() and corpse:isContainer() then
+					hasBodies = true
+					
+					if player:canOpenCorpse(corpse) and corpseCount < config.maxCorpsesLimit then
+						local tmpLootedItems = LOOTED_RESOURCE_ABSENT
+						local tmpLootedGold = LOOTED_RESOURCE_ABSENT
+						local tmpItemCount = 0
+						local tmpGoldCount = 0
+						
+						tmpLootedItems, tmpLootedGold, tmpItemCount, tmpGoldCount = internalLootCorpse(player, corpse, tmpLootedItems, tmpLootedGold, lootContainers)
+						corpseCount = corpseCount + 1
+						lootedItems = getNextLootedStatus(lootedItems, tmpLootedItems)
+						lootedGold = getNextLootedStatus(lootedGold, tmpLootedGold)
+						itemCount = itemCount + tmpItemCount
+						goldCount = goldCount + tmpGoldCount
+						looted = true
+					end
+				end
+			end
+			
+			if hasBodies and not looted then
 				player:sendTextMessage(MESSAGE_LOOT, config.messageErrorOwner)
 				return
 			end
-			
-			local clickedItem = openedContainer:getItems()[position.z + 1]
-			if not clickedItem then
-				-- user is lagging and the clicked item is no longer there
-				return
-			end
-			
-			if clickedItem:isCorpse() or clickedItem:isContainer() and not clickedItem:isPickupable() then
-				-- clicked a corpse in browse field
-				if not player:canOpenCorpse(clickedItem) then
-					-- corpse click in browse field, owner check failed
+		else
+			-- shift + right click in container ui
+			-- this way of looting does not show amount of corpses looted
+			if bit.band(position.y, 0x40) ~= 0 then
+				local openedContainer = player:getContainerById(position.y - 0x40)
+				if not openedContainer then
+					-- user is lagging and the the container is no longer there
+					return
+				end
+
+				local corpseTile = Tile(openedContainer:getPosition())
+				if corpseTile and corpseTile:getHouse() then
+					-- no looting inside houses
+					return
+				end
+				
+				if not player:canOpenCorpse(openedContainer) then
+					-- container is open but the player has lost rights to it
+					-- (eg by leaving party)
 					player:sendTextMessage(MESSAGE_LOOT, config.messageErrorOwner)
 					return
 				end
 				
-				lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, lootContainers)
-			else
-				-- clicked an item inside the corpse
-				local isCurrency = clickedItem:isCurrency()
+				local clickedItem = openedContainer:getItems()[position.z + 1]
+				if not clickedItem then
+					-- user is lagging and the clicked item is no longer there
+					return
+				end
 				
-				local ret = internalLootItem(player, clickedItem, lootContainers, player:getStorageValue(PlayerStorageKeys.autoLootFallback) == 1, player:getSlotItem(CONST_SLOT_BACKPACK))
-				if ret == RETURNVALUE_NOERROR then
-					local itemCount = clickedItem:getCount()
-					clickedItem:remove()
-					
-					if isCurrency then
-						lootedGold = LOOTED_RESOURCE_ALL
-						goldCount = goldCount + itemCount
-					else
-						lootedItems = LOOTED_RESOURCE_ALL
-						itemCount = itemCount + itemCount
+				if clickedItem:isCorpse() or clickedItem:isContainer() and not clickedItem:isPickupable() then
+					-- clicked a corpse in browse field
+					if not player:canOpenCorpse(clickedItem) then
+						-- corpse click in browse field, owner check failed
+						player:sendTextMessage(MESSAGE_LOOT, config.messageErrorOwner)
+						return
 					end
+					
+					lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, lootContainers)
 				else
-					if isCurrency then
-						lootedGold = LOOTED_RESOURCE_NONE
+					-- clicked an item inside the corpse
+					local isCurrency = clickedItem:isCurrency()
+					
+					local ret = internalLootItem(player, clickedItem, lootContainers, player:getStorageValue(PlayerStorageKeys.autoLootFallback) == 1, player:getSlotItem(CONST_SLOT_BACKPACK))
+					if ret == RETURNVALUE_NOERROR then
+						local itemCount = clickedItem:getCount()
+						clickedItem:remove()
+						
+						if isCurrency then
+							lootedGold = LOOTED_RESOURCE_ALL
+							goldCount = goldCount + itemCount
+						else
+							lootedItems = LOOTED_RESOURCE_ALL
+							itemCount = itemCount + itemCount
+						end
 					else
-						lootedItems = LOOTED_RESOURCE_NONE
+						if isCurrency then
+							lootedGold = LOOTED_RESOURCE_NONE
+						else
+							lootedItems = LOOTED_RESOURCE_NONE
+						end
 					end
 				end
 			end
 		end
+		
+		-- response
+		player:sendTextMessage(MESSAGE_LOOT, getLootResponse(lootedItems, lootedGold, itemCount, goldCount, corpseCount))
 	end
-	
-	-- response
-	player:sendTextMessage(MESSAGE_LOOT, getLootResponse(lootedItems, lootedGold, itemCount, goldCount, corpseCount))
+	ec:register()
 end
-setPacketEvent(AUTOLOOT_REQUEST_QUICKLOOT, parseRequestQuickLoot)
 
 -- auto loot update
 function parseRequestUpdateAutoloot(player, recvbyte, msg)		
@@ -694,7 +733,7 @@ function parseSelectLootContainer(player, recvbyte, msg)
 		local position = Position(msg:getU16(), msg:getU16(), msg:getByte())
 		local spriteId = msg:getU16()
 		local containerPos = msg:getByte() + 1 -- client first index is 0, container:getItems() first index is 1
-				
+		
 		local isPlayerInventory = position.x == CONTAINER_POSITION
 		if not isPlayerInventory then
 			return
@@ -750,14 +789,8 @@ local function addPlayerLootContainer(player, container)
 	end
 end
 
--- add player to autoloot lists
-function Player:registerAutoLoot()
-	local cid = self:getId()
-	if LootContainersCache[cid] then
-		return
-	end
-	
-	LootContainersCache[cid] = {}
+function Player:updateAutoLoot()
+	LootContainersCache[self:getId()] = {}
 	
 	for slot = CONST_SLOT_FIRST, CONST_SLOT_STORE_INBOX do
 		local slotItem = self:getSlotItem(slot)
@@ -775,6 +808,15 @@ function Player:registerAutoLoot()
 			end
 		end
 	end
+end
+
+-- add player to autoloot lists
+function Player:registerAutoLoot()
+	if LootContainersCache[self:getId()] then
+		return
+	end
+	
+	self:updateAutoLoot()
 end
 
 -- remove player from autoloot lists
@@ -795,7 +837,6 @@ do
 		player:registerEvent("AutoLootLogout")
 		player:registerEvent("AutoLootDeath")
 		player:registerAutoLoot()
-		player:sendLootContainers()
 		return true
 	end
 	creatureEvent:register()
@@ -840,4 +881,34 @@ function Player:sendLootContainers()
 	end
 	
 	msg:sendToPlayer(self)
+end
+
+-- send loot containers on (re)connect
+do
+	local ec = EventCallback
+	function ec.onConnect(player, isLogin)
+		player:sendLootContainers()
+	end
+	ec:register()
+end
+
+-- refresh lists on equip/deequip container (onItemMoved)
+do
+	local ec = EventCallback
+	function ec.onItemMoved(player, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+		if fromPosition.x == CONTAINER_POSITION and fromPosition.y < CONST_SLOT_STORE_INBOX then
+			if not item or item:isContainer() then
+				-- inventory item was thrown away (could be backpack), update loot lists
+				player:updateAutoLoot()
+				player:sendLootContainers()
+			end
+		elseif toPosition.x == CONTAINER_POSITION and toPosition.y < CONST_SLOT_STORE_INBOX then
+			if item and item:isContainer() then
+				-- some item was equipped. If container, update loot lists
+				player:updateAutoLoot()
+				player:sendLootContainers()
+			end
+		end
+	end
+	ec:register()
 end

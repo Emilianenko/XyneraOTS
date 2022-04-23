@@ -283,6 +283,12 @@ function Player:onWrapItem(item)
 	end
 end
 
+function Player:onQuickLoot(position, stackPos, spriteId)
+	if EventCallback.onQuickLoot then
+		EventCallback.onQuickLoot(self, position, stackPos, spriteId)
+	end
+end
+
 function Player:onInventoryUpdate(item, slot, equip)
 	if EventCallback.onInventoryUpdate then
 		EventCallback.onInventoryUpdate(self, item, slot, equip)

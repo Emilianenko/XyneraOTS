@@ -113,6 +113,8 @@ bool Events::load()
 				info.playerOnGainSkillTries = event;
 			} else if (methodName == "onWrapItem") {
 				info.playerOnWrapItem = event;
+			} else if (methodName == "onQuickLoot") {
+				info.playerOnQuickLoot = event;
 			} else if (methodName == "onInspectItem") {
 				info.playerOnInspectItem = event;
 			} else if (methodName == "onInspectTradeItem") {
@@ -1106,6 +1108,34 @@ void Events::eventPlayerOnWrapItem(Player* player, Item* item)
 	LuaScriptInterface::setItemMetatable(L, -1, item);
 
 	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnQuickLoot(Player* player, const Position& position, uint8_t stackPos, uint16_t spriteId)
+{
+	// Player:onQuickLoot(position, stackPos, spriteId)
+	if (info.playerOnQuickLoot == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnQuickLoot");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnQuickLoot, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnQuickLoot);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	LuaScriptInterface::pushPosition(L, position);
+	lua_pushnumber(L, stackPos);
+	lua_pushnumber(L, spriteId);
+
+	scriptInterface.callVoidFunction(4);
 }
 
 void Events::eventPlayerOnInspectItem(Player* player, Item* item)
