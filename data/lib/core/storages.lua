@@ -41,6 +41,7 @@ PlayerStorageKeys = {
 	
 	-- auto loot
 	autoLootMode = 70038,
+	autoLootMove = 70039,
 	autoLootFallback = 70040,
 	
 	-- condition taint storages

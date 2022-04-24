@@ -363,19 +363,9 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 			elseif ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
 				for _, child in pairs(container:getItems(true)) do
 					if child:isContainer() then
-						local search = true
-						if child:isLootContainer() then
-							if player:getLootContainerFlags(child:getLootContainerId()) ~= 0 then
-								-- skip containers flagged as other category
-								search = false
-							end
-						end
-					
-						if search then
-							ret = child:addItemEx(lootedItem)
-							if ret == RETURNVALUE_NOERROR then
-								return ret
-							end
+						ret = child:addItemEx(lootedItem)
+						if ret == RETURNVALUE_NOERROR then
+							return ret
 						end
 					end
 				end
@@ -397,19 +387,9 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 		elseif ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
 			for _, child in pairs(lootContainers[unassigned]:getItems(true)) do
 				if child:isContainer() then
-					local search = true
-					if child:isLootContainer() then
-						if player:getLootContainerFlags(child:getLootContainerId()) ~= 0 then
-							-- skip containers flagged as other category
-							search = false
-						end
-					end
-				
-					if search then
-						ret = child:addItemEx(lootedItem)
-						if ret == RETURNVALUE_NOERROR then
-							return ret
-						end
+					ret = child:addItemEx(lootedItem)
+					if ret == RETURNVALUE_NOERROR then
+						return ret
 					end
 				end
 			end
@@ -892,22 +872,66 @@ do
 	ec:register()
 end
 
+-- refresh lists after successful trade
+do
+	local ec = EventCallback
+	function ec.onTradeCompleted(player, target, item, targetItem, isSuccess)
+		player:updateAutoLoot()
+		player:sendLootContainers()
+		return true
+	end
+	ec:register()
+end
+
 -- refresh lists on equip/deequip container (onItemMoved)
 do
 	local ec = EventCallback
+	function ec.onMoveItem(player, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+		-- reset previously moved item info
+		player:setStorageValue(PlayerStorageKeys.autoLootMove, -1)
+		
+		if not item:isContainer() then
+			-- the moving item is not a container
+			return RETURNVALUE_NOERROR
+		end
+	
+		if fromCylinder then
+			if toCylinder then
+				-- try to find dominant userdata
+				local fromTop = fromCylinder
+				if fromTop:isItem() then
+					fromTop = fromTop:getTopParent()
+				end
+				
+				-- try to find dominant userdata
+				local toTop = toCylinder
+				if toTop:isItem() then
+					toTop = toTop:getTopParent()
+				end
+				
+				if fromTop == toTop and fromTop == player then
+					-- player is moving things in his inventory
+					return RETURNVALUE_NOERROR
+				end
+				
+				-- player picked up/dropped something
+				player:setStorageValue(PlayerStorageKeys.autoLootMove, 1)
+			else
+				player:setStorageValue(PlayerStorageKeys.autoLootMove, 1)
+			end
+		end
+	
+		return RETURNVALUE_NOERROR
+	end
+	ec:register()
+end
+
+do
+	local ec = EventCallback
 	function ec.onItemMoved(player, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-		if fromPosition.x == CONTAINER_POSITION and fromPosition.y < CONST_SLOT_STORE_INBOX then
-			if not item or item:isContainer() then
-				-- inventory item was thrown away (could be backpack), update loot lists
-				player:updateAutoLoot()
-				player:sendLootContainers()
-			end
-		elseif toPosition.x == CONTAINER_POSITION and toPosition.y < CONST_SLOT_STORE_INBOX then
-			if item and item:isContainer() then
-				-- some item was equipped. If container, update loot lists
-				player:updateAutoLoot()
-				player:sendLootContainers()
-			end
+		if player:getStorageValue(PlayerStorageKeys.autoLootMove) == 1 then
+			player:updateAutoLoot()
+			player:sendLootContainers()
 		end
 	end
 	ec:register()
