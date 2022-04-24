@@ -124,10 +124,10 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			if parent:isContainer() and parent:getSize() == parent:getCapacity() then
 				return RETURNVALUE_CONTAINERNOTENOUGHROOM
 			else
-				if topParent:isPlayer() then
+				if Player(topParent) then
 					return moveItem:moveTo(parent)
 				else
-					return RETURNVALUE_CONTAINERNOTENOUGHROOM
+					return RETURNVALUE_BOTHHANDSNEEDTOBEFREE
 				end
 			end
 		end
