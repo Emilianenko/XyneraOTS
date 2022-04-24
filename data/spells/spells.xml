@@ -140,7 +140,7 @@
 	<instant group="attack" spellid="167" name="Practice Fire Wave" words="exevo dis flam hur" aggressive="1" level="1" mana="5" direction="1" cooldown="4000" groupcooldown="2000" needlearn="0" script="attack/practice_fire_wave.lua">
 		<vocation name="None" />
 	</instant>
-	<instant group="attack" secondarygroup="focus" spellid="119" name="Rage of the Skies" words="exevo gran mas vis" aggressive="1" level="55" mana="600" selftarget="1" premium="1" cooldown="40000" groupcooldown="4000" secondarygroupcooldown="40000" needlearn="0" script="attack/rage_of_the_skies.lua">
+	<instant group="attack" secondarygroup="focus" spellid="119" name="Rage of the Skies" words="exevo gran mas vis" aggressive="1" level="55" mana="600" selftarget="1" premium="1" cooldown="2000" groupcooldown="2000" secondarygroupcooldown="2000" needlearn="0" script="attack/rage_of_the_skies.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 	</instant>
