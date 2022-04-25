@@ -456,7 +456,7 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	if found then
 		if not usesFallback then
 			lootedItem:remove()
-			player:sendAutoLootWarning(config.unassignedFull, -ret)
+			player:sendAutoLootWarning(config.unassignedFull, -RETURNVALUE_CONTAINERNOTENOUGHROOM)
 			return RETURNVALUE_CONTAINERNOTENOUGHROOM
 		end
 	end
@@ -489,7 +489,7 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	
 	-- no free slots found
 	lootedItem:remove()
-	player:sendAutoLootWarning(config.noCapacity, -ret)
+	player:sendAutoLootWarning(config.noCapacity, -RETURNVALUE_CONTAINERNOTENOUGHROOM)
 	return RETURNVALUE_CONTAINERNOTENOUGHROOM
 end
 
