@@ -157,7 +157,7 @@ local config = {
 		[LOOTED_RESOURCE_ALL] = "complete %d gold",
 	},
 	
-	categoryFull = "Attention! One of assigned loot containers is full!",
+	categoryFull = "Attention! Container assigned for \"%s\" is full!",
 	unassignedFull = "Attention! Container for unassigned loot is full!",
 	mainFull = "Attention! All your containers are full!",
 	noCapacity = "Attention! You cannot take any more items!",
@@ -166,6 +166,7 @@ local config = {
 -- global autoloot cache
 if not AutoLoot then
 	AutoLoot = {}
+	AutoLootWarnings = {}
 	LootContainersCache = {}
 end
 
@@ -311,6 +312,49 @@ local function getLootResponse(lootedItems, lootedGold, itemCount, goldCount, co
 	return string.format("%s %s.%s", config.lootStart, table.concat(lootInfo, " and "), corpses)
 end
 
+local categoryNames = {
+	[2^LOOT_TYPE_ARMOR] = "armors",
+	[2^LOOT_TYPE_AMULET] = "necklaces",
+	[2^LOOT_TYPE_BOOTS] = "boots",
+	[2^LOOT_TYPE_CONTAINER] = "containers",
+	[2^LOOT_TYPE_DECORATION] = "decoration",
+	[2^LOOT_TYPE_FOOD] = "food",
+	[2^LOOT_TYPE_HELMET] = "helmets",
+	[2^LOOT_TYPE_LEGS] = "legs",
+	[2^LOOT_TYPE_OTHER] = "others",
+	[2^LOOT_TYPE_POTION] = "potions",
+	[2^LOOT_TYPE_RING] = "rings",
+	[2^LOOT_TYPE_RUNE] = "runes",
+	[2^LOOT_TYPE_SHIELD] = "shields",
+	[2^LOOT_TYPE_TOOL] = "tools",
+	[2^LOOT_TYPE_VALUABLE] = "valuables",
+	[2^LOOT_TYPE_AMMO] = "ammo",
+	[2^LOOT_TYPE_AXE] = "weapons: axes",
+	[2^LOOT_TYPE_CLUB] = "weapons: clubs",
+	[2^LOOT_TYPE_DISTANCE] = "weapons: distance",
+	[2^LOOT_TYPE_SWORD] = "weapons: swords",
+	[2^LOOT_TYPE_WAND] = "weapons: wands",
+	[2^LOOT_TYPE_CREATURE_PRODUCT] = "creature products",
+	[2^LOOT_TYPE_QUIVER] = "quivers",
+	[2^LOOT_TYPE_GOLD] = "gold"
+}
+
+function Player:sendAutoLootWarning(message, category)
+	local cid = self:getId()
+	local msgType = MESSAGE_STATUS_WARNING
+	if AutoLootWarnings[cid] and AutoLootWarnings[cid][category] and os.time() < AutoLootWarnings[cid][category] then
+		-- warning already "known" to the player, send console message instead
+		msgType = MESSAGE_ATTENTION
+	end
+
+	if category >= 0 then
+		message = string.format(message, categoryNames[category] or "unknown")
+	end
+	
+	AutoLootWarnings[cid][category] = os.time() + 10 * 60
+	self:sendTextMessage(msgType, message)
+end
+
 local lootSorting = {
 	[2^LOOT_TYPE_ARMOR] = ItemType.isArmor,
 	[2^LOOT_TYPE_AMULET] = ItemType.isNecklace,
@@ -370,7 +414,11 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 					end
 				end
 				
-				player:sendTextMessage(MESSAGE_STATUS_WARNING, config.categoryFull)
+				player:sendAutoLootWarning(config.categoryFull, category)
+			elseif ret == RETURNVALUE_NOTENOUGHCAPACITY then
+				lootedItem:remove()
+				player:sendAutoLootWarning(config.noCapacity, -ret)
+				return ret
 			end
 			
 			break
@@ -394,7 +442,11 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 				end
 			end
 			
-			player:sendTextMessage(MESSAGE_STATUS_WARNING, config.unassignedFull)
+			player:sendAutoLootWarning(config.unassignedFull, -ret)
+		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY then
+			lootedItem:remove()
+			player:sendAutoLootWarning(config.noCapacity, -ret)
+			return ret
 		end
 	end
 
@@ -404,7 +456,7 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	if found then
 		if not usesFallback then
 			lootedItem:remove()
-			player:sendTextMessage(MESSAGE_STATUS_WARNING, config.unassignedFull)
+			player:sendAutoLootWarning(config.unassignedFull, -ret)
 			return RETURNVALUE_CONTAINERNOTENOUGHROOM
 		end
 	end
@@ -412,22 +464,32 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	-- query main backpack
 	if mainContainer then
 		local ret = mainContainer:addItemEx(lootedItem)
-		if ret ~= RETURNVALUE_NOERROR then
-			lootedItem:remove()
-		end
-		
-		if ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
-			player:sendTextMessage(MESSAGE_STATUS_WARNING, config.mainFull)
+		if ret == RETURNVALUE_NOERROR then
+			return ret
+		elseif ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+			for _, child in pairs(mainContainer:getItems(true)) do
+				if child:isContainer() then
+					ret = child:addItemEx(lootedItem)
+					if ret == RETURNVALUE_NOERROR then
+						return ret
+					end
+				end
+			end
+
+			if ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+				player:sendAutoLootWarning(config.mainFull, -ret)
+			end			
 		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY then
-			player:sendTextMessage(MESSAGE_STATUS_WARNING, config.noCapacity)
+			player:sendAutoLootWarning(config.noCapacity, -ret)
 		end
 		
+		lootedItem:remove()
 		return ret
 	end
 	
 	-- no free slots found
 	lootedItem:remove()
-	player:sendTextMessage(MESSAGE_STATUS_WARNING, config.noCapacity)
+	player:sendAutoLootWarning(config.noCapacity, -ret)
 	return RETURNVALUE_CONTAINERNOTENOUGHROOM
 end
 
@@ -453,7 +515,8 @@ function internalLootCorpse(player, corpse, lootedItems, lootedGold, lootContain
 			corpseItems = corpseItems + 1
 		end
 		
-		if internalLootItem(player, corpseItem, lootContainers, usesFallback, mainContainer) == RETURNVALUE_NOERROR then
+		local ret = internalLootItem(player, corpseItem, lootContainers, usesFallback, mainContainer)
+		if ret == RETURNVALUE_NOERROR then
 			corpseItem:remove()
 			
 			if isCurrency then
@@ -462,6 +525,10 @@ function internalLootCorpse(player, corpse, lootedItems, lootedGold, lootContain
 			else
 				retrievedItems = retrievedItems + 1
 			end
+		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY or usesFallback and ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+			-- player is unable to carry more items
+			-- might as well stop searching
+			break
 		end
 	end
 	
@@ -826,6 +893,7 @@ end
 do
 	local creatureEvent = CreatureEvent("AutoLootLogout")
 	function creatureEvent.onLogout(player)
+		AutoLootWarnings[player:getId()] = nil
 		player:unregisterAutoLoot()
 		return true
 	end
@@ -867,6 +935,7 @@ end
 do
 	local ec = EventCallback
 	function ec.onConnect(player, isLogin)
+		AutoLootWarnings[player:getId()] = {}
 		player:sendLootContainers()
 	end
 	ec:register()
