@@ -185,3 +185,4 @@ pip-log.txt
 #############
 config.lua
 /data/world/*
+vscode_functions.lua
