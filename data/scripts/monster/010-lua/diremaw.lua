@@ -76,7 +76,7 @@ monster.loot = {
 	{name = "Small Enchanted Emerald", chance = 2940, maxCount = 2},
 	{name = "Small Emerald", chance = 5080, maxCount = 2},
 	{name = "Gold Ingot", chance = 2970},
-	{id = 281, chance = 3100},
+	{id = 7632, chance = 3100},
 	{name = "Suspicious Device", chance = 600},
 	{name = "Mycological Bow", chance = 1200},
 	{name = "Mushroom Backpack", chance = 1500}
