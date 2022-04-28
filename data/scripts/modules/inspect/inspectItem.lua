@@ -407,6 +407,12 @@ function getItemDetails(item)
 		else
 			if duration == 0 then
 				local transferType = itemType:getTransformEquipId()
+				
+				-- magic light wand (exception)
+				if itemType:getId() == 2162 then
+					transferType = 2163
+				end
+			
 				if transferType ~= 0 then
 					transferType = ItemType(transferType)
 					duration = transferType and transferType:getDuration() * 1000 or duration

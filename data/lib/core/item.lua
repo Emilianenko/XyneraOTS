@@ -699,28 +699,35 @@ do
 			end
 		
 			-- duration
-			if itemType:hasShowDuration() then
+			local transferId = itemType:getTransformEquipId()
+
+			-- magic light wand (exception)
+			if item:getId() == 2162 then
+				transferId = 2163
+			end
+
+			local transferType = transferId ~= 0 and ItemType(transferId) or itemType
+			local hasShowDuration = transferType:hasShowDuration()
+
+			if hasShowDuration then
 				local currentDuration = item:getDuration()
 				if isVirtual then
 					currentDuration = currentDuration * 1000
 				end
 				
-				local maxDuration = itemType:getDuration() * 1000
-				if maxDuration == 0 then
-					local transferType = itemType:getTransformEquipId()
-					if transferType ~= 0 then
-						transferType = ItemType(transferType)
-						maxDuration = transferType and transferType:getDuration() * 1000 or maxDuration
-					end
+				local maxDuration = transferType:getDuration() * 1000
+				if currentDuration == 0 then
+					currentDuration = maxDuration
 				end
 				
-				if currentDuration == maxDuration then
+				if currentDuration == maxDuration and itemType ~= transferType then
 					expireInfo[#expireInfo + 1] = "is brand-new"
 				elseif currentDuration ~= 0 then
 					expireInfo[#expireInfo + 1] = string.format("will expire in %s", Game.getCountdownString(math.floor(currentDuration/1000), true, true))
 				end
 			end
-			
+
+			-- response
 			if #expireInfo > 0 then
 				response[#response + 1] = string.format(" that %s", table.concat(expireInfo, " and "))
 			end
