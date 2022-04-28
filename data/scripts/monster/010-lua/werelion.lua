@@ -83,8 +83,8 @@ monster.loot = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350},
 	{name ="werelion wave", interval = 2000, chance = 20, minDamage = -150, maxDamage = -250, target = false, duration = true}, 
-	{name ="combat", type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, radius = 5, interval = 2000, chance = 15, minDamage = -250, maxDamage = -370, range = 4, target = false},
-	{name ="combat", interval = 2000, chance = 10, type = COMBAT_HOLYDAMAGE, minDamage = -350, maxDamage = -450, range = 3, shootEffect = CONST_ANI_HOLY, target = true}
+	{name ="combat", type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, radius = 5, interval = 2000, chance = 18, minDamage = -250, maxDamage = -370, range = 4, target = false},
+	{name ="combat", interval = 2000, chance = 13, type = COMBAT_HOLYDAMAGE, minDamage = -350, maxDamage = -450, range = 3, shootEffect = CONST_ANI_HOLY, target = true}
 }
 
 monster.defenses = {
