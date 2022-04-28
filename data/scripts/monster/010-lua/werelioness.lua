@@ -20,6 +20,7 @@ monster.race = "blood"
 monster.corpse = 36841
 monster.speed = 210
 monster.manaCost = 0
+monster.runHealth = 5
 
 monster.changeTarget = {
 	interval = 2000,
@@ -30,6 +31,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	convinceable = false,
 	pushable = false,
 	illusionable = false,
@@ -37,9 +39,8 @@ monster.flags = {
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 5,
 	healthHidden = false,
-	isBlockable = false,
+	ignoreSpawnBlock = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
@@ -80,10 +81,9 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300},
-	{name ="combat", interval = 2000, chance = 17, type = COMBAT_HOLYDAMAGE, minDamage = -300, maxDamage = -410, range = 3, effect = CONST_ME_HOLYAREA, shootEffect = CONST_ANI_SMALLHOLY, target = true},
-	{name ="combat", interval = 2000, chance = 12, type = COMBAT_HOLYDAMAGE, minDamage = -170, maxDamage = -350, range = 3, shootEffect = CONST_ANI_HOLY, target = true},
-	{name ="combat", interval = 2000, chance = 15, type = COMBAT_FIREDAMAGE, minDamage = -250, maxDamage = -350, length = 4, spread = 1, effect = CONST_ME_FIREAREA, target = false}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350},
+	{name ="combat", interval = 2000, chance = 17, type = COMBAT_HOLYDAMAGE, minDamage = -300, maxDamage = -350, range = 5, effect = CONST_ME_HOLYAREA, shootEffect = CONST_ANI_SMALLHOLY, target = true},
+	{name ="combat", interval = 2000, chance = 100, type = COMBAT_FIREDAMAGE, minDamage = -250, maxDamage = -350, length = 4, spread = 2, effect = CONST_ME_FIREAREA}
 }
 
 monster.defenses = {

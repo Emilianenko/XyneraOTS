@@ -37,6 +37,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	convinceable = false,
 	pushable = false,
 	illusionable = false,
@@ -44,9 +45,8 @@ monster.flags = {
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 0,
 	healthHidden = false,
-	isBlockable = false,
+	ignoreSpawnBlock = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
@@ -83,10 +83,11 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300},
-	{name ="combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -200, range = 7, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POISONAREA, target = true},
-	{name ="combat", interval = 2000, chance = 25, type = COMBAT_EARTHDAMAGE, minDamage = -150, maxDamage = -250, range = 7, radius = 4, shootEffect = CONST_ANI_POISON, effect = CONST_ME_POFF, target = true},
-	{name ="combat", type = CONDITION_POISON, interval = 2000, chance = 21, minDamage = -200, maxDamage = -300, radius = 4, effect = CONST_ME_GREEN_RINGS, target = false}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -340},
+	{name ="combat", interval = 2000, chance = 23, minDamage = -150, maxDamage = -220, range = 5, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POISONAREA, shootEffect = CONST_ANI_POISON, target = true},
+	{name ="combat", interval = 2000, chance = 15, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON},
+	{name ="combat", interval = 2000, chance = 19, minDamage = -170, maxDamage = -250, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POFF, shootEffect = CONST_ANI_POISON, target = true},
+
 
 
 }

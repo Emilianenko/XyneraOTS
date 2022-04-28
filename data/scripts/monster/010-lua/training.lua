@@ -34,6 +34,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	challengeable = true,
 	convinceable = false,
 	ignoreSpawnBlock = false,

@@ -37,6 +37,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	convinceable = false,
 	pushable = false,
 	illusionable = true,
@@ -44,9 +45,8 @@ monster.flags = {
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 0,
 	healthHidden = false,
-	isBlockable = false,
+	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
@@ -98,16 +98,16 @@ monster.loot = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, skill = 85, attack = 165},
-	{name ="combat", interval = 2000, chance = 13, minDamage = -800, maxDamage = -1250, length = 3, spread = 0, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, target = false, direction = true},
-	{name ="combat", interval = 2000, chance = 15, minDamage = -460, maxDamage = -630, range = 4, type = COMBAT_FIREDAMAGE, shootEffect = CONST_ANI_FLAMMINGARROW, target = true},
-	{name ="combat", interval = 2000, chance = 18, minDamage = -380, maxDamage = -520, radius = 4, range = 4, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONHIT, shootEffect = CONST_ANI_EXPLOSION, target = true},
-	{name ="combat", interval = 2000, chance = 24, minDamage = -260, maxDamage = -450, radius = 3, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER, target = false},
+	{name ="combat", interval = 2000, chance = 13, minDamage = -800, maxDamage = -1250, length = 3, spread = 0, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, direction = true},
+	{name ="combat", interval = 2000, chance = 15, minDamage = -460, maxDamage = -630, type = COMBAT_FIREDAMAGE, shootEffect = CONST_ANI_FLAMMINGARROW, target = true},
+	{name ="combat", interval = 2000, chance = 18, minDamage = -380, maxDamage = -520, radius = 4, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONHIT, shootEffect = CONST_ANI_EXPLOSION, target = true},
+	{name ="combat", interval = 2000, chance = 24, minDamage = -260, maxDamage = -450, radius = 3, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER},
 }
 
 monster.defenses = {
 	defense = 20,
 	armor = 55,
-	{name ="combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 300, maxDamage = 580, effect = CONST_ME_MAGIC_BLUE, target = false}
+	{name ="combat", interval = 2000, chance = 10, type = COMBAT_HEALING, minDamage = 300, maxDamage = 580, effect = CONST_ME_MAGIC_BLUE}
 }
 
 monster.elements = {

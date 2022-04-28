@@ -37,10 +37,10 @@ monster.strategiesTarget = {
 monster.flags = {
 	attackable = true,
 	hostile = true,
+	boss = false,
 	summonable = false,
 	convinceable = false,
 	illusionable = false,
-	boss = true,
 	ignoreSpawnBlock = false,
 	pushable = false,
 	canPushItems = true,
@@ -76,10 +76,9 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -100},
-	{name ="combat", type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_STONES, radius = 4, interval = 2000, chance = 18, minDamage = -50, maxDamage = -80, range = 4, target = false},
-	{name ="combat", type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_HITAREA, radius = 3, interval = 2000, chance = 21, minDamage = -50, maxDamage = -80, range = 2, target = false},
-	-- {name ="combat", type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICESTRIKE, shootEffect = CONST_ANI_ICE, interval = 2000, chance = 100, minDamage = -300, maxDamage = -350, range = 5, target = true}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -130},
+	{name ="combat", interval = 2000, chance = 35, minDamage = -50, maxDamage = -100, radius = 4, range = 5, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_STONES, shootEffect = CONST_ANI_SMALLSTONE, target = true},
+	{name ="combat", interval = 2000, chance = 15, minDamage = -60, maxDamage = -90, radius = 3, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITAREA},
 }
 
 monster.defenses = {

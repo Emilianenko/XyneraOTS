@@ -20,6 +20,7 @@ monster.race = "blood"
 monster.corpse = 36481
 monster.speed = 210
 monster.manaCost = 0
+monster.runHealth = 5
 
 monster.changeTarget = {
 	interval = 2000,
@@ -30,6 +31,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	convinceable = false,
 	pushable = false,
 	illusionable = false,
@@ -37,9 +39,8 @@ monster.flags = {
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 5,
 	healthHidden = false,
-	isBlockable = false,
+	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
@@ -82,9 +83,9 @@ monster.loot = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350},
-	{name ="werelion wave", interval = 2000, chance = 20, minDamage = -150, maxDamage = -250, target = false, duration = true}, 
-	{name ="combat", type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, radius = 5, interval = 2000, chance = 18, minDamage = -250, maxDamage = -370, range = 4, target = false},
-	{name ="combat", interval = 2000, chance = 13, type = COMBAT_HOLYDAMAGE, minDamage = -350, maxDamage = -450, range = 3, shootEffect = CONST_ANI_HOLY, target = true}
+	{name ="werelion wave", interval = 2000, chance = 16, minDamage = -230, maxDamage = -300, direction = true}, 
+	{name ="combat", type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, radius = 5, interval = 2000, chance = 20, minDamage = -250, maxDamage = -370},
+	{name ="combat", interval = 2000, chance = 13, type = COMBAT_HOLYDAMAGE, minDamage = -350, maxDamage = -450, range = 5, shootEffect = CONST_ANI_HOLY, target = true}
 }
 
 monster.defenses = {

@@ -21,6 +21,7 @@ monster.corpse = 36845
 monster.speed = 110
 monster.manaCost = 0
 monster.maxSummons = 0
+monster.runHealth = 30
 
 monster.changeTarget = {
 	interval = 5*1000,
@@ -35,6 +36,7 @@ monster.flags = {
 	summonable = false,
 	attackable = true,
 	hostile = true,
+	boss = false,
 	convinceable = false,
 	pushable = false,
 	illusionable = false,
@@ -42,7 +44,6 @@ monster.flags = {
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 30,
 	healthHidden = false,
 	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
@@ -80,11 +81,11 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name = "melee", type = COMBAT_PHYSICALDAMAGE, interval = 2*1000, minDamage = 0, maxDamage = -260},
+	{name = "melee", type = COMBAT_PHYSICALDAMAGE, interval = 2*1000, minDamage = 0, maxDamage = -250},
     {name = "combat", type = COMBAT_DEATHDAMAGE, interval = 2*1000, chance = 10, minDamage = -200, maxDamage = -350, radius = 3, effect = CONST_ME_HITBYPOISON},
-    {name = "combat", type = COMBAT_EARTHDAMAGE, interval = 2*1000, chance = 17, minDamage = -250, maxDamage = -350, range = 5, radius = 4, target = true, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_GREEN_RINGS},
-    {name = "combat", type = COMBAT_DEATHDAMAGE, interval = 2*1000, chance = 15, minDamage = -300, maxDamage = -450, range = 5, radius = 1, target = true, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA},
-    {name = "combat", type = COMBAT_DEATHDAMAGE, interval = 2*1000, chance = 13, minDamage = -280, maxDamage = -325, length = 3, spread = 0, effect = CONST_ME_MORTAREA}
+    {name = "combat", type = COMBAT_EARTHDAMAGE, interval = 2*1000, chance = 17, minDamage = -250, maxDamage = -350, radius = 4, target = true, shootEffect = CONST_ANI_EARTH, effect = CONST_ME_GREEN_RINGS},
+    {name = "combat", type = COMBAT_DEATHDAMAGE, interval = 2*1000, chance = 15, minDamage = -300, maxDamage = -450, radius = 1, range = 5, target = true, shootEffect = CONST_ANI_DEATH, effect = CONST_ME_MORTAREA},
+    {name = "combat", type = COMBAT_DEATHDAMAGE, interval = 2*1000, chance = 13, minDamage = -280, maxDamage = -325, length = 3, spread = 0, effect = CONST_ME_MORTAREA, direction = true}
 }
 
 monster.defenses = {

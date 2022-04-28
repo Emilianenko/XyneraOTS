@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <monster name="Grimeleech" nameDescription="a grimeleech" experience="7216" speed="340" manacost="0">
 	<health now="9500" max="9500" />
-	<look type="855" head="0" body="0" legs="0" feet="0" addons="1" mount="0" corpse="0" />
+	<look type="855" head="0" body="0" legs="0" feet="0" addons="1" mount="0" corpse="25436" />
 	<targetchange interval="2000" chance="0" />
 	<flags>
 		<flag attackable="1" />
