@@ -64,6 +64,7 @@
 	<monster name="Bloodpaw" file="monsters/bloodpaw.xml" />
 	<monster name="Blue Butterfly" file="monsters/blue_butterfly.xml" />
 	<monster name="Blue Djinn" file="monsters/blue_djinn.xml" />
+	<monster name="Grimeleech" file="monsters/grimeleech.xml" />
 	<monster name="Boar" file="monsters/boar.xml" />
 	<monster name="Bog Frog" file="monsters/bog_frog.xml" />
 	<monster name="Bog Raider" file="monsters/bog_raider.xml" />
