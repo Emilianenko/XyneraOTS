@@ -608,23 +608,8 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			combat->setArea(area);
 		}
 
-		if (spell->conditionType != CONDITION_NONE) {
-			ConditionType_t conditionType = spell->conditionType;
-
-			uint32_t tickInterval = 2000;
-			if (spell->tickInterval != 0) {
-				tickInterval = spell->tickInterval;
-			}
-
-			int32_t conMinDamage = std::abs(spell->conditionMinDamage);
-			int32_t conMaxDamage = std::abs(spell->conditionMaxDamage);
-			int32_t startDamage = std::abs(spell->conditionStartDamage);
-
-			Condition* condition = getDamageCondition(conditionType, conMaxDamage, conMinDamage, startDamage, tickInterval);
-			combat->addCondition(condition);
-		}
-
 		std::string tmpName = asLowerCaseString(spell->name);
+		bool conditionDeclared = false;
 
 		if (tmpName == "melee") {
 			sb.isMelee = true;
@@ -691,6 +676,7 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			ConditionSpeed* condition = static_cast<ConditionSpeed*>(Condition::createCondition(CONDITIONID_COMBAT, conditionType, duration, 0));
 			condition->setFormulaVars(minSpeedChange / 1000.0, 0, maxSpeedChange / 1000.0, 0);
 			combat->addCondition(condition);
+			conditionDeclared = true;
 		} else if (tmpName == "outfit") {
 			int32_t duration = 10000;
 
@@ -702,6 +688,7 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			condition->setOutfit(spell->outfit);
 			combat->setParam(COMBAT_PARAM_AGGRESSIVE, 0);
 			combat->addCondition(condition);
+			conditionDeclared = true;
 		} else if (tmpName == "invisible") {
 			int32_t duration = 10000;
 
@@ -712,6 +699,7 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			Condition* condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_INVISIBLE, duration, 0);
 			combat->setParam(COMBAT_PARAM_AGGRESSIVE, 0);
 			combat->addCondition(condition);
+			conditionDeclared = true;
 		} else if (tmpName == "drunk") {
 			int32_t duration = 10000;
 			uint8_t drunkenness = 25;
@@ -726,6 +714,7 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 
 			Condition* condition = Condition::createCondition(CONDITIONID_COMBAT, CONDITION_DRUNK, duration, drunkenness);
 			combat->addCondition(condition);
+			conditionDeclared = true;
 		} else if (tmpName == "firefield") {
 			combat->setParam(COMBAT_PARAM_CREATEITEM, ITEM_FIREFIELD_PVP_FULL);
 		} else if (tmpName == "poisonfield") {
@@ -742,6 +731,22 @@ bool Monsters::deserializeSpell(MonsterSpell* spell, spellBlock_t& sb, const std
 			//
 		} else {
 			console::reportError(location, description + " - Unknown spell name \"" + spell->name + "\"!");
+		}
+
+		if (!conditionDeclared && spell->conditionType != CONDITION_NONE) {
+			ConditionType_t conditionType = spell->conditionType;
+
+			uint32_t tickInterval = 2000;
+			if (spell->tickInterval != 0) {
+				tickInterval = spell->tickInterval;
+			}
+
+			int32_t conMinDamage = std::abs(spell->conditionMinDamage);
+			int32_t conMaxDamage = std::abs(spell->conditionMaxDamage);
+			int32_t startDamage = std::abs(spell->conditionStartDamage);
+
+			Condition* condition = getDamageCondition(conditionType, conMaxDamage, conMinDamage, startDamage, tickInterval);
+			combat->addCondition(condition);
 		}
 
 		if (spell->needTarget) {
