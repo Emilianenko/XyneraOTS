@@ -34,7 +34,7 @@ end
 
 combat:setCallback(CALLBACK_PARAM_TARGETTILE, "onTargetTile")
 
-local spell = Spell("instant")
+local spell = Spell(SPELL_INSTANT)
 
 function spell.onCastSpell(creature, var)
 	return combat:execute(creature, var)
@@ -42,8 +42,7 @@ end
 
 spell:name("ravennousLavaLurkerTarget")
 spell:words("###466")
-spell:blockWalls(true)
+spell:isAggressive(true)
 spell:needTarget(true)
 spell:needLearn(true)
-spell:cooldown("2000")
 spell:register()

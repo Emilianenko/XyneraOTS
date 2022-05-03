@@ -12,7 +12,7 @@ local area = createCombatArea(arr)
 	combat:setArea(area)
 
 
-local spell = Spell("instant")
+	local spell = Spell(SPELL_INSTANT)
 
 function spell.onCastSpell(creature, var)
 	return combat:execute(creature, var)
@@ -20,7 +20,8 @@ end
 
 spell:name("werelion wave")
 spell:words("###473")
+spell:isAggressive(true)
 spell:needLearn(true)
 spell:needDirection(true)
-spell:cooldown("2000")
+spell:needTarget(false)
 spell:register()

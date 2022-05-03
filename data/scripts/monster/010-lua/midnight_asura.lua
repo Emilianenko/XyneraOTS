@@ -18,7 +18,7 @@ monster.health = 3100
 monster.maxHealth = 3100
 monster.runHealth = 0
 monster.race = "blood"
-monster.corpse = 24651
+monster.corpse = 24644
 monster.speed = 240
 monster.summonCost = 0
 
@@ -69,25 +69,32 @@ monster.immunities = {
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = -10},
+	{type = COMBAT_EARTHDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = 10},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_ICEDAMAGE, percent = 10},
+	{type = COMBAT_HOLYDAMAGE , percent = 30},
+	{type = COMBAT_DEATHDAMAGE , percent = 100}
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -387}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -387},
+	{name ="combat", interval = 2000, chance = 19, minDamage = -30, maxDamage = -150, length = 4, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_PURPLEENERGY, direction = true},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -40, maxDamage = -230, range = 5, radius = 1, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, shootEffect = CONST_ANI_SUDDENDEATH, target = true},
+	{name ="drunk", interval = 2000, chance = 14, range = 7, radius = 4, effect = CONST_ME_STUN, shootEffect = CONST_ANI_REDSTAR, target = true},
+	{name ="combat", interval = 2000, chance = 16, minDamage = -50, maxDamage = -240, length = 8, spread = 0, type = COMBAT_LIFEDRAIN, effect = CONST_ME_BLACKSMOKE, direction = true},
+	
+
 }
 
 monster.defenses = {
 	defense = 55,
 	armor = 55,
-	{name ="combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 120, maxDamage = 170}
+	{name ="combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 120, maxDamage = 170, effect = CONST_ME_HITAREA},
+	{name ="invisible", interval = 2000, chance = 8, duration = 8000, effect = CONST_ME_MAGIC_BLUE}
 }
 
 monster.loot = {

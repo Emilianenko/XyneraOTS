@@ -20,6 +20,7 @@ monster.race = "fire"
 monster.corpse = 25432
 monster.speed = 270
 monster.manaCost = 0
+monster.runHealth = 0
 
 monster.changeTarget = {
 	interval = 4000,
@@ -100,12 +101,11 @@ monster.loot = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, skill = 75, attack = 130},
-	{name ="combat", interval = 2000, chance = 30, minDamage = -350, maxDamage = -480, radius = 4, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREAREA, shootEffect = CONST_ANI_BURSTARROW, target = true},
-	{name ="combat", interval = 2000, chance = 25, minDamage = -260, maxDamage = -450, radius = 6, range = 6, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER, shootEffect = CONST_ANI_BURSTARROW, target = true},
-	{name ="combat", interval = 2000, chance = 17, minDamage = -400, maxDamage = -500, radius = 6, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_ENERGYHIT},
-	{name ="combat", interval = 2000, chance = 16, minDamage = -100, maxDamage = -170, length = 5, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_ICEATTACK, direction = true},
-	{name ="firefield", interval = 2000, chance = 10, radius = 1, range = 5, shootEffect = CONST_ANI_FIRE, target = true},
-	{name ="wexclaw wave", interval = 2000, chance = 13, minDamage = -530, maxDamage = -600, direction = true},
+	{name ="combat", interval = 2000, chance = 30, minDamage = -350, maxDamage = -480, radius = 4, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREAREA, shootEffect = CONST_ANI_BURSTARROW, target = true}, -- fire ball
+	{name ="combat", interval = 2000, chance = 25, minDamage = -260, maxDamage = -450, radius = 6, range = 7, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER, shootEffect = CONST_ANI_BURSTARROW, target = true}, --greater groundshaker ball
+	{name ="combat", interval = 2000, chance = 17, minDamage = -400, maxDamage = -500, radius = 6, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_ENERGYHIT}, --greater energy ball
+	{name ="combat", interval = 2000, chance = 16, minDamage = -100, maxDamage = -170, length = 6, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_ICEATTACK, direction = true}, -- ice beam
+	{name ="wexclaw wave", interval = 2000, chance = 13, minDamage = -530, maxDamage = -600, direction = true} -- T wave manadrain
 
 }
 monster.defenses = {

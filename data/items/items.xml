@@ -31096,13 +31096,13 @@
 		<attribute key="duration" value="300" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	<item id="24643" article="the" name="remains of an asura">
+	<item id="24643" article="the" name="dead dawnfire asura">
 		<attribute key="containerSize" value="24" />
 		<attribute key="decayTo" value="24645" />
 		<attribute key="duration" value="10" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	<item id="24644" article="the" name="remains of an asura">
+	<item id="24644" article="the" name="dead midnight asura">
 		<attribute key="containerSize" value="24" />
 		<attribute key="decayTo" value="24648" />
 		<attribute key="duration" value="10" />
