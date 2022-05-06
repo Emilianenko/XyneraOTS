@@ -214,14 +214,18 @@ ec.onLookInMarket = function(self, itemType, tier)
 		-- stats (hp/mp/soul/ml)
 		for stat, value in pairs(abilities.stats) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
+				if stat ~= STAT_CAPACITY+1 then
+					skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
+				else
+					skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value/100)			
+				end
 			end
 		end
 		
 		-- stats but in %
 		for stat, value in pairs(abilities.statsPercent) do
 			if value ~= 0 then
-				skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value)
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value - 100)
 			end
 		end
 			
@@ -328,8 +332,14 @@ ec.onLookInMarket = function(self, itemType, tier)
 	-- weight
 	response:addString(string.format("%0.2f", itemType:getWeight()/100))
 	
+	-- Imbuement Slots
+	if ImbuingSystem then
+		response:addString(itemType:getSocketCount())
+	else
+		response:addU16(0)
+	end
+		
 	-- to do
-	response:addU16(0) -- Imbuement Slots
 	response:addU16(0) -- Magic Shield Capacity
 	response:addU16(0) -- Cleave
 	

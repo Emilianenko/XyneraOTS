@@ -7,6 +7,7 @@
 
 #include "combat.h"
 #include "configmanager.h"
+#include "events.h"
 #include "game.h"
 #include "monster.h"
 #include "party.h"
@@ -20,6 +21,7 @@ double Creature::speedC = -4795.01;
 extern Game g_game;
 extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
+extern Events* g_events;
 
 Creature::Creature()
 {
@@ -1262,6 +1264,11 @@ bool Creature::addCondition(Condition* condition, bool force/* = false*/)
 	if (!condition) {
 		return false;
 	}
+
+	if (g_events->eventCreatureOnAddCondition(this, condition->clone(), force) != RETURNVALUE_NOERROR) {
+		delete condition;
+		return false;
+	};
 
 	if (!force && condition->getType() == CONDITION_HASTE && hasCondition(CONDITION_PARALYZE)) {
 		int64_t walkDelay = getWalkDelay();

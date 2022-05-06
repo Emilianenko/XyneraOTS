@@ -1331,11 +1331,13 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_SKILL_SHIELD)
 	registerEnum(CONDITION_PARAM_SKILL_FISHING)
 	registerEnum(CONDITION_PARAM_STAT_MAXHITPOINTS)
-	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTS)
-	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT)
+	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAXMANAPOINTSPERCENT)
+	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTS)
 	registerEnum(CONDITION_PARAM_STAT_MAGICPOINTSPERCENT)
+	registerEnum(CONDITION_PARAM_STAT_CAPACITY)
+	registerEnum(CONDITION_PARAM_STAT_CAPACITYPERCENT)
 	registerEnum(CONDITION_PARAM_PERIODICDAMAGE)
 	registerEnum(CONDITION_PARAM_SKILL_MELEEPERCENT)
 	registerEnum(CONDITION_PARAM_SKILL_FISTPERCENT)
@@ -1951,6 +1953,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(STAT_MAXMANAPOINTS)
 	registerEnum(STAT_SOULPOINTS)
 	registerEnum(STAT_MAGICPOINTS)
+	registerEnum(STAT_CAPACITY)
 
 	registerEnum(SKULL_NONE)
 	registerEnum(SKULL_YELLOW)
@@ -2808,6 +2811,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getCapacity", LuaScriptInterface::luaPlayerGetCapacity);
 	registerMethod("Player", "setCapacity", LuaScriptInterface::luaPlayerSetCapacity);
 
+	registerMethod("Player", "getBaseCapacity", LuaScriptInterface::luaPlayerGetBaseCapacity);
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
@@ -9470,6 +9474,18 @@ int LuaScriptInterface::luaPlayerSetCapacity(lua_State* L)
 		player->capacity = getNumber<uint32_t>(L, 2);
 		player->sendStats();
 		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetBaseCapacity(lua_State* L)
+{
+	// player:getBaseCapacity()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getBaseCapacity());
 	} else {
 		lua_pushnil(L);
 	}

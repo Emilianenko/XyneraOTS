@@ -1521,7 +1521,8 @@ do
 		[STAT_MAXHITPOINTS] = 'hitpoints',
 		[STAT_MAXMANAPOINTS] = 'mana',
 		[STAT_SOULPOINTS] = 'soul points',
-		[STAT_MAGICPOINTS] = 'magic level'
+		[STAT_MAGICPOINTS] = 'magic level',
+		[STAT_CAPACITY] = 'capacity'
 	}
 	
 	function getStatName(stat)

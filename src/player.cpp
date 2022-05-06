@@ -194,7 +194,9 @@ std::string Player::getDescription(int32_t lookDistance) const
 
 Item* Player::getInventoryItem(slots_t slot) const
 {
-	if (slot < CONST_SLOT_FIRST || slot > CONST_SLOT_LAST + 1) {
+	if (slot == CONST_SLOT_STORE_INBOX) {
+		return storeInbox;
+	} else if (slot < CONST_SLOT_FIRST || slot > CONST_SLOT_LAST) {
 		return nullptr;
 	}
 	return inventory[slot];
@@ -597,6 +599,7 @@ int32_t Player::getDefaultStats(stats_t stat) const
 		case STAT_MAXHITPOINTS: return healthMax;
 		case STAT_MAXMANAPOINTS: return manaMax;
 		case STAT_MAGICPOINTS: return getBaseMagicLevel();
+		case STAT_CAPACITY: return capacity;
 		default: return 0;
 	}
 }
@@ -1132,7 +1135,7 @@ void Player::openSavedContainers()
 {
 	std::map<uint8_t, Container*> openContainersList;
 
-	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; i++) {
 		Item* item = inventory[i];
 		if (!item) {
 			continue;
@@ -3120,7 +3123,7 @@ void Player::updateThing(Thing* thing, uint16_t itemId, uint32_t count)
 
 void Player::replaceThing(uint32_t index, Thing* thing)
 {
-	if (index > CONST_SLOT_LAST + 1) {
+	if (index > CONST_SLOT_LAST) {
 		return /*RETURNVALUE_NOTPOSSIBLE*/;
 	}
 
@@ -3191,11 +3194,15 @@ void Player::removeThing(Thing* thing, uint32_t count)
 
 int32_t Player::getThingIndex(const Thing* thing) const
 {
-	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; ++i) {
+	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
 		if (inventory[i] == thing) {
 			return i;
 		}
 	}
+	if (thing == storeInbox) {
+		return CONST_SLOT_STORE_INBOX;
+	}
+
 	return -1;
 }
 
@@ -3212,8 +3219,8 @@ size_t Player::getLastIndex() const
 uint32_t Player::getItemTypeCount(uint16_t itemId, int32_t subType /*= -1*/, bool hasTier /* = false*/, uint8_t tier /* = 0*/) const
 {
 	uint32_t count = 0;
-	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
-		Item* item = inventory[i];
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_STORE_INBOX; i++) {
+		Item* item = getInventoryItem(static_cast<slots_t>(i));
 		if (!item) {
 			continue;
 		}
@@ -3246,8 +3253,8 @@ bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType,
 	std::vector<Item*> itemList;
 
 	uint32_t count = 0;
-	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
-		Item* item = inventory[i];
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_STORE_INBOX; i++) {
+		Item* item = getInventoryItem(static_cast<slots_t>(i));
 		if (!item) {
 			continue;
 		}
@@ -3294,8 +3301,8 @@ bool Player::removeItemOfType(uint16_t itemId, uint32_t amount, int32_t subType,
 
 TieredItemsCountMap& Player::getAllItemTypeCount(TieredItemsCountMap& countMap, bool skipTiered /* = false*/) const
 {
-	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; i++) {
-		Item* item = inventory[i];
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_STORE_INBOX; i++) {
+		Item* item = getInventoryItem(static_cast<slots_t>(i));
 		if (!item) {
 			continue;
 		}
@@ -3319,8 +3326,8 @@ TieredItemsCountMap& Player::getAllItemTypeCount(TieredItemsCountMap& countMap, 
 
 Thing* Player::getThing(size_t index) const
 {
-	if (index >= CONST_SLOT_FIRST && index <= CONST_SLOT_LAST + 1) {
-		return inventory[index];
+	if (index >= CONST_SLOT_FIRST && index <= CONST_SLOT_STORE_INBOX) {
+		return getInventoryItem(static_cast<slots_t>(index));
 	}
 	return nullptr;
 }
@@ -3506,7 +3513,7 @@ void Player::internalAddThing(uint32_t index, Thing* thing)
 	}
 
 	//index == 0 means we should equip this item at the most appropriate slot (no action required here)
-	if (index > CONST_SLOT_WHEREEVER && index <= CONST_SLOT_LAST + 1) {
+	if (index > CONST_SLOT_WHEREEVER && index <= CONST_SLOT_LAST) {
 		if (inventory[index]) {
 			return;
 		}
@@ -4997,9 +5004,8 @@ uint64_t Player::getMoney() const
 	std::vector<const Container*> containers;
 	uint64_t moneyCount = 0;
 
-	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST + 1; ++i) {
-		Item* item = inventory[i];
-		
+	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_STORE_INBOX; ++i) {
+		Item* item = getInventoryItem(static_cast<slots_t>(i));
 		if (!item) {
 			continue;
 		}

@@ -278,7 +278,11 @@ end
 -- make levelled monster deal more damage
 do
 	local creatureevent = CreatureEvent("influencedMonsterDamage")
-	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
+		if not isBeforeManaShield then
+			return primaryDamage, primaryType, secondaryDamage, secondaryType
+		end
+
 		if attacker and attacker:isMonster() then						
 			local monsterLevel = attacker:getInfluenceLevel()
 			if monsterLevel > 0 then

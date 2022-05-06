@@ -199,12 +199,7 @@ local soulCondition = Condition(CONDITION_SOUL, CONDITIONID_DEFAULT)
 soulCondition:setTicks(4 * 60 * 1000)
 soulCondition:setParameter(CONDITION_PARAM_SOULGAIN, 1)
 
-local function useStamina(player)
-	local staminaMinutes = player:getStamina()
-	if staminaMinutes == 0 then
-		return
-	end
-
+local function getSpentStaminaMinutes(player)
 	local playerId = player:getId()
 	if not nextUseStaminaTime[playerId] then
 		nextUseStaminaTime[playerId] = 0
@@ -213,20 +208,45 @@ local function useStamina(player)
 	local currentTime = os.time()
 	local timePassed = currentTime - nextUseStaminaTime[playerId]
 	if timePassed <= 0 then
+		return 0
+	end
+	
+	return timePassed > 60 and 2 or 1
+end
+
+function useStamina(player)
+	local staminaMinutes = player:getStamina()
+	if staminaMinutes == 0 then
+		if EventCallback.onUseStamina then
+			local spentMinutes = getSpentStaminaMinutes(player)
+			if spentMinutes > 0 then
+				staminaMinutes = EventCallback.onUseStamina(player, staminaMinutes, spentMinutes)
+				player:setStamina(staminaMinutes)
+			end
+		end
+		
 		return
 	end
 
-	if timePassed > 60 then
+	local spentMinutes = getSpentStaminaMinutes(player)
+	if spentMinutes == 0 then
+		return
+	elseif spentMinutes > 1 then
 		if staminaMinutes > 2 then
 			staminaMinutes = staminaMinutes - 2
 		else
 			staminaMinutes = 0
 		end
-		nextUseStaminaTime[playerId] = currentTime + 120
+		nextUseStaminaTime[player:getId()] = os.time() + 120
 	else
 		staminaMinutes = staminaMinutes - 1
-		nextUseStaminaTime[playerId] = currentTime + 60
+		nextUseStaminaTime[player:getId()] = os.time() + 60
 	end
+	
+	if EventCallback.onUseStamina then
+		staminaMinutes = EventCallback.onUseStamina(player, staminaMinutes, spentMinutes)
+	end
+	
 	player:setStamina(staminaMinutes)
 end
 

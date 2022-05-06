@@ -914,6 +914,7 @@ class LuaScriptInterface
 		static int luaPlayerGetCapacity(lua_State* L);
 		static int luaPlayerSetCapacity(lua_State* L);
 
+		static int luaPlayerGetBaseCapacity(lua_State* L);
 		static int luaPlayerGetFreeCapacity(lua_State* L);
 
 		static int luaPlayerGetDepotChest(lua_State* L);

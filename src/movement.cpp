@@ -800,7 +800,7 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 
 	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
 		if (it.abilities->stats[s]) {
-			if (s != STAT_MAGICPOINTS) {
+			if (s != STAT_MAGICPOINTS && s != STAT_CAPACITY) {
 				needUpdateStats = true;
 			} else {
 				needUpdateSkills = true;
@@ -809,7 +809,7 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 		}
 
 		if (it.abilities->statsPercent[s]) {
-			if (s != STAT_MAGICPOINTS) {
+			if (s != STAT_MAGICPOINTS && s != STAT_CAPACITY) {
 				needUpdateStats = true;
 			} else {
 				needUpdateSkills = true;
@@ -896,7 +896,7 @@ ReturnValue MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots
 
 	for (int32_t s = STAT_FIRST; s <= STAT_LAST; ++s) {
 		if (it.abilities->stats[s]) {
-			if (s != STAT_MAGICPOINTS) {
+			if (s != STAT_MAGICPOINTS && s != STAT_CAPACITY) {
 				needUpdateStats = true;
 			} else {
 				needUpdateSkills = true;
@@ -905,7 +905,7 @@ ReturnValue MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, slots
 		}
 
 		if (it.abilities->statsPercent[s]) {
-			if (s != STAT_MAGICPOINTS) {
+			if (s != STAT_MAGICPOINTS && s != STAT_CAPACITY) {
 				needUpdateStats = true;
 			} else {
 				needUpdateSkills = true;

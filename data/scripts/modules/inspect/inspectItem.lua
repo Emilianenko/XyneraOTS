@@ -1,4 +1,4 @@
-function Player:sendItemInspection(item, descriptions, openCompendium)
+function Player:sendItemInspection(item, descriptions, openCompendium, isVirtual)
 	local response = NetworkMessage()
 	response:addByte(0x76)
 	response:addByte(0x00) -- responseType 0x00 = ok
@@ -17,6 +17,7 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 		)
 		
 		response:addItemType(itemType)
+		item = itemType
 	else
 		response:addString(
 			string.format("%s", item:getNameDescription(item:getSubType(), true))
@@ -27,13 +28,16 @@ function Player:sendItemInspection(item, descriptions, openCompendium)
 
 	-- imbuements count (5 max, 6th gets cut in view window)
 	-- structure: u16 imbuement icon id
-	response:addByte(0)
+	if ImbuingSystem then
+		response:addImbuements(item, isVirtual)
+	else
+		response:addByte(0)
+	end
 
 	-- fields count
 	-- structure:
 	-- string key
 	-- string value
-
 	if descriptions and #descriptions > 0 then
 		response:addByte(#descriptions)
 		
@@ -197,17 +201,21 @@ function getItemDetails(item)
 		skillBoosts[#skillBoosts + 1] = "magic shield"
 	end
 	
-	-- stats (hp/mp/soul/ml)
+	-- stats (hp/mp/soul/ml/cap)
 	for stat, value in pairs(abilities.stats) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
+			if stat ~= STAT_CAPACITY+1 then
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value)
+			else
+				skillBoosts[#skillBoosts + 1] = string.format("%s %+d", getStatName(stat-1), value/100)			
+			end
 		end
 	end
 	
 	-- stats but in %
 	for stat, value in pairs(abilities.statsPercent) do
 		if value ~= 0 then
-			skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value)
+			skillBoosts[#skillBoosts + 1] = string.format("%s %+d%%", getStatName(stat-1), value - 100)
 		end
 	end
 	
@@ -373,9 +381,13 @@ function getItemDetails(item)
 		end
 	end
 
-	-- imbuement slot n: empty (new line for each n)
-	-- to do: implement together with imbuements system
-	
+	-- imbuements
+	if ImbuingSystem then
+		for _, imbuement in pairs(getInspectImbuements(item, isVirtual)) do
+			descriptions[#descriptions + 1] = imbuement
+		end
+	end
+		
 	-- spell
 	local spellName = itemType:getRuneSpellName()
 	if spellName then
@@ -528,7 +540,7 @@ local onInspectItem = function(self, item)
 		descriptions[#descriptions + 1] = {"Client ID", item:getType():getClientId()}
 	end
 	
-	self:sendItemInspection(item, descriptions, false)
+	self:sendItemInspection(item, descriptions, false, false)
 end
 
 local onInspectTradeItem = function(self, tradePartner, item)
@@ -539,7 +551,7 @@ local onInspectTradeItem = function(self, tradePartner, item)
 		descriptions[#descriptions + 1] = {"Client ID", item:getType():getClientId()}
 	end
 
-	self:sendItemInspection(item, descriptions, false)
+	self:sendItemInspection(item, descriptions, false, false)
 end
 
 local onInspectNpcTradeItem = function(self, npc, itemId)
@@ -550,7 +562,7 @@ local onInspectNpcTradeItem = function(self, npc, itemId)
 		descriptions[#descriptions + 1] = {"Client ID", ItemType(itemId):getClientId()}
 	end
 
-	self:sendItemInspection(itemId, descriptions, false)
+	self:sendItemInspection(itemId, descriptions, false, true)
 end
 
 local onInspectCompendiumItem = function(self, itemId)
@@ -561,7 +573,7 @@ local onInspectCompendiumItem = function(self, itemId)
 		descriptions[#descriptions + 1] = {"Client ID", ItemType(itemId):getClientId()}
 	end
 
-	self:sendItemInspection(itemId, descriptions, true)
+	self:sendItemInspection(itemId, descriptions, true, true)
 end
 
 local callbacks = {

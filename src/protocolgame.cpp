@@ -3436,7 +3436,6 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
 		msg.addByte(creatureType);
-
 		if (creatureType == CREATURETYPE_SUMMON_OWN) {
 			msg.add<uint32_t>(masterId);
 		}
@@ -3483,12 +3482,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 
 	// Player vocation info
 	if (creatureType == CREATURETYPE_PLAYER) {
-		const Player* otherCreature = creature->getPlayer();
-		if (otherCreature) {
-			msg.addByte(otherCreature->getVocation()->getClientId());
-		} else {
-			msg.addByte(0x00);
-		}
+		msg.addByte(otherPlayer ? otherPlayer->getVocation()->getClientId() : 0x00);
 	}
 
 	msg.addByte(creature->getSpeechBubble());
@@ -3582,6 +3576,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 	msg.add<uint16_t>(player->getBaseMagicLevel()); // base + loyalty bonus(?)
 	msg.add<uint16_t>(player->getMagicLevelPercent() * 100);
 
+	// skills
 	for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
 		msg.add<uint16_t>(std::min<int32_t>(player->getSkillLevel(i), std::numeric_limits<uint16_t>::max()));
 		msg.add<uint16_t>(player->getBaseSkill(i));
@@ -3589,15 +3584,20 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 		msg.add<uint16_t>(player->getSkillPercent(i) * 100);
 	}
 
+	// crit, leech, tier bonuses
 	for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; ++i) {
 		msg.add<uint16_t>(std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i])); // base + bonus special skill
 		msg.add<uint16_t>(0); // base special skill
 	}
 
-	// to do: bonus cap
-	uint32_t displayCap = player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getCapacity();
-	msg.add<uint32_t>(displayCap); // base + bonus capacity
-	msg.add<uint32_t>(displayCap); // base capacity
+	// cap
+	if (!player->hasFlag(PlayerFlag_HasInfiniteCapacity)) {
+		msg.add<uint32_t>(player->getCapacity());
+		msg.add<uint32_t>(player->getBaseCapacity());
+	} else {
+		msg.add<uint32_t>(1000000);
+		msg.add<uint32_t>(1000000);
+	}
 }
 
 void ProtocolGame::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)

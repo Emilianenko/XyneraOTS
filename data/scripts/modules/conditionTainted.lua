@@ -197,7 +197,7 @@ do
 	-- taint 2
 	local timerTaint2 = PlayerStorageKeys.taintB_cooldown
 	local onHit = CreatureEvent("onHitTaint")
-	function onHit.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	function onHit.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
 		if attacker and attacker:isPlayer() and creature:isMonster() and not creature:isSummon() then
 			if not creature:getType():isHostile() then
 				return primaryDamage, primaryType, secondaryDamage, secondaryType
@@ -283,7 +283,11 @@ end
 -- increased incoming damage
 do
 	local creatureevent = CreatureEvent("damageTaint")
-	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
+		if not isBeforeManaShield then
+			return primaryDamage, primaryType, secondaryDamage, secondaryType
+		end
+		
 		-- apply taint on-hit
 		if attacker and attacker:isMonster() then
 			local taintId = TaintGivers[attacker:getName():lower()]

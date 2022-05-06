@@ -23,6 +23,7 @@ ec.onChangeMount = {}
 ec.onAreaCombat = {returnValue=true}
 ec.onTargetCombat = {returnValue=true}
 ec.onHear = {}
+ec.onAddCondition = {returnValue=true}
 
 -- Party
 ec.onJoin = {}
@@ -40,7 +41,7 @@ ec.onLookInMarket = {}
 ec.onTradeRequest = {}
 ec.onTradeAccept = {}
 ec.onTradeCompleted = {}
-ec.onMoveItem = {}
+ec.onMoveItem = {returnValue=true}
 ec.onItemMoved = {}
 ec.onMoveCreature = {}
 ec.onReportRuleViolation = {}
@@ -60,6 +61,7 @@ ec.onInspectNpcTradeItem = {}
 ec.onInspectCompendiumItem = {}
 ec.onMinimapQuery = {}
 ec.onConnect = {}
+ec.onUseStamina = {[2]=1}
 
 -- Monster
 ec.onDropLoot = {}

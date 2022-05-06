@@ -475,6 +475,10 @@ void ConditionAttributes::updatePercentStats(Player* player)
 			case STAT_MAGICPOINTS:
 				stats[i] = static_cast<int32_t>(player->getBaseMagicLevel() * ((statsPercent[i] - 100) / 100.f));
 				break;
+
+			case STAT_CAPACITY:
+				stats[i] = static_cast<int32_t>(player->getCapacity() * ((statsPercent[i] - 100) / 100.f));
+				break;
 		}
 	}
 }
@@ -486,7 +490,7 @@ void ConditionAttributes::updateStats(Player* player)
 
 	for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 		if (stats[i]) {
-			if (i != STAT_MAGICPOINTS) {
+			if (i != STAT_MAGICPOINTS && i != STAT_CAPACITY) {
 				needUpdateStats = true;
 			} else {
 				needUpdateSkills = true;
@@ -568,7 +572,7 @@ void ConditionAttributes::endCondition(Creature* creature)
 
 		for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 			if (stats[i]) {
-				if (i != STAT_MAGICPOINTS) {
+				if (i != STAT_MAGICPOINTS && i != STAT_CAPACITY) {
 					needUpdateStats = true;
 				} else {
 					needUpdateSkills = true;
@@ -695,6 +699,11 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
+		case CONDITION_PARAM_STAT_CAPACITY: {
+			stats[STAT_CAPACITY] = value;
+			return true;
+		}
+
 		case CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT: {
 			statsPercent[STAT_MAXHITPOINTS] = std::max<int32_t>(0, value);
 			return true;
@@ -707,6 +716,11 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 
 		case CONDITION_PARAM_STAT_MAGICPOINTSPERCENT: {
 			statsPercent[STAT_MAGICPOINTS] = std::max<int32_t>(0, value);
+			return true;
+		}
+
+		case CONDITION_PARAM_STAT_CAPACITYPERCENT: {
+			statsPercent[STAT_CAPACITY] = std::max<int32_t>(0, value);
 			return true;
 		}
 
@@ -824,6 +838,9 @@ int32_t ConditionAttributes::getParam(ConditionParam_t param)
 		case CONDITION_PARAM_STAT_MAGICPOINTS:
 			return stats[STAT_MAGICPOINTS];
 
+		case CONDITION_PARAM_STAT_CAPACITY:
+			return stats[STAT_CAPACITY];
+
 		case CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT:
 			return statsPercent[STAT_MAXHITPOINTS];
 
@@ -832,6 +849,9 @@ int32_t ConditionAttributes::getParam(ConditionParam_t param)
 
 		case CONDITION_PARAM_STAT_MAGICPOINTSPERCENT:
 			return statsPercent[STAT_MAGICPOINTS];
+
+		case CONDITION_PARAM_STAT_CAPACITYPERCENT:
+			return statsPercent[STAT_CAPACITY];
 
 		case CONDITION_PARAM_DISABLE_DEFENSE:
 			return disableDefense ? 1 : 0;

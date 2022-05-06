@@ -65,7 +65,11 @@ end
 -- healing/damage debuff
 do
 	local creatureevent = CreatureEvent("HexStatus")
-	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	function creatureevent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
+		if not isBeforeManaShield then
+			return primaryDamage, primaryType, secondaryDamage, secondaryType
+		end
+
 		-- healing received debuff
 		local targetHex = creature:getHexLevel()
 		if targetHex > 0 then

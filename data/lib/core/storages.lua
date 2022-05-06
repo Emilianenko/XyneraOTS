@@ -49,6 +49,10 @@ PlayerStorageKeys = {
 	taintB_cooldown = 70047,
 	taintD_cooldown = 70049,
 	
+	-- imbuing (double equip fix)
+	imbuLastEquipItem = 70050,
+	imbuLastEquipSlot = 70051,
+	
 	-- total range: 300000-319999
 	achievementsBase = 300000,
 	achievementsCounter = 310000,

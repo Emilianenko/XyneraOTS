@@ -447,6 +447,15 @@ class Player final : public Creature, public Cylinder
 			} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 				return std::numeric_limits<uint32_t>::max();
 			}
+			return std::max<int32_t>(0, capacity + varStats[STAT_CAPACITY]);
+		}
+
+		uint32_t getBaseCapacity() const {
+			if (hasFlag(PlayerFlag_CannotPickupItem)) {
+				return 0;
+			} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
+				return std::numeric_limits<uint32_t>::max();
+			}
 			return capacity;
 		}
 
@@ -456,7 +465,14 @@ class Player final : public Creature, public Cylinder
 			} else if (hasFlag(PlayerFlag_HasInfiniteCapacity)) {
 				return std::numeric_limits<uint32_t>::max();
 			}
-			return std::max<int32_t>(0, capacity - inventoryWeight);
+
+			int32_t baseCap = static_cast<int32_t>(capacity) + varStats[STAT_CAPACITY];
+			if (baseCap <= 0) {
+				return 0;
+			}
+
+			uint32_t freeCap = static_cast<uint32_t>(baseCap);
+			return freeCap >= inventoryWeight ? freeCap - inventoryWeight : 0;
 		}
 
 		int32_t getMaxHealth() const override {

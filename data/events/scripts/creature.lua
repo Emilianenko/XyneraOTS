@@ -6,29 +6,37 @@ function Creature:onChangeOutfit(outfit)
 	end
 	if EventCallback.onChangeOutfit then
 		return EventCallback.onChangeOutfit(self, outfit)
-	else
-		return true
 	end
+	
+	return true
 end
 
 function Creature:onAreaCombat(tile, isAggressive)
 	if EventCallback.onAreaCombat then
 		return EventCallback.onAreaCombat(self, tile, isAggressive)
-	else
-		return RETURNVALUE_NOERROR
 	end
+	
+	return RETURNVALUE_NOERROR
 end
 
 function Creature:onTargetCombat(target)
 	if EventCallback.onTargetCombat then
 		return EventCallback.onTargetCombat(self, target)
-	else
-		return RETURNVALUE_NOERROR
 	end
+	
+	return RETURNVALUE_NOERROR
 end
 
 function Creature:onHear(speaker, words, type)
 	if EventCallback.onHear then
 		EventCallback.onHear(self, speaker, words, type)
 	end
+end
+
+function Creature:onAddCondition(condition, isForced)
+	if EventCallback.onAddCondition then
+		return EventCallback.onAddCondition(self, condition, isForced)
+	end
+	
+	return RETURNVALUE_NOERROR
 end

@@ -485,9 +485,9 @@ bool CreatureEvent::executeTextEdit(Player* player, Item* item, const std::strin
 	return scriptInterface->callFunction(3);
 }
 
-void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, CombatDamage& damage)
+void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, CombatDamage& damage, bool isBeforeManaShield)
 {
-	//onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
+	//onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
 	if (!scriptInterface->reserveScriptEnv()) {
 		console::reportOverflow("CreatureEvent::executeHealthChange");
 		return;
@@ -509,8 +509,9 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 	}
 
 	LuaScriptInterface::pushCombatDamage(L, damage);
+	lua_pushboolean(L, isBeforeManaShield);
 
-	if (scriptInterface->protectedCall(L, 7, 4) != 0) {
+	if (scriptInterface->protectedCall(L, 8, 4) != 0) {
 		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
 	} else {
 		damage.primary.value = std::abs(LuaScriptInterface::getNumber<int32_t>(L, -4));
@@ -519,10 +520,6 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 		damage.secondary.type = LuaScriptInterface::getNumber<CombatType_t>(L, -1);
 
 		lua_pop(L, 4);
-		if (damage.primary.type != COMBAT_HEALING) {
-			damage.primary.value = -damage.primary.value;
-			damage.secondary.value = -damage.secondary.value;
-		}
 	}
 
 	scriptInterface->resetScriptEnv();

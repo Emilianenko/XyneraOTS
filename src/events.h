@@ -25,6 +25,7 @@ class Events
 		int32_t creatureOnAreaCombat = -1;
 		int32_t creatureOnTargetCombat = -1;
 		int32_t creatureOnHear = -1;
+		int32_t creatureOnAddCondition = -1;
 
 		// Party
 		int32_t partyOnJoin = -1;
@@ -80,6 +81,7 @@ class Events
 		ReturnValue eventCreatureOnAreaCombat(Creature* creature, Tile* tile, bool aggressive);
 		ReturnValue eventCreatureOnTargetCombat(Creature* creature, Creature* target);
 		void eventCreatureOnHear(Creature* creature, Creature* speaker, const std::string& words, MessageClasses type);
+		ReturnValue eventCreatureOnAddCondition(Creature* creature, Condition* condition, bool isForced);
 
 		// Party
 		bool eventPartyOnJoin(Party* party, Player* player);

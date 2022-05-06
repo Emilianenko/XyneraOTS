@@ -5,6 +5,7 @@
 	<event class="Creature" method="onAreaCombat" enabled="0" />
 	<event class="Creature" method="onTargetCombat" enabled="0" />
 	<event class="Creature" method="onHear" enabled="0" />
+	<event class="Creature" method="onAddCondition" enabled="1" />
 
 	<!-- Party methods -->
 	<event class="Party" method="onJoin" enabled="0" />
@@ -13,7 +14,7 @@
 	<event class="Party" method="onShareExperience" enabled="1" />
 
 	<!-- Player methods -->
-	<event class="Player" method="onBrowseField" enabled="1" />
+	<event class="Player" method="onBrowseField" enabled="0" />
 	<event class="Player" method="onLook" enabled="1" />
 	<event class="Player" method="onLookInBattleList" enabled="1" />
 	<event class="Player" method="onLookInTrade" enabled="1" />
@@ -25,7 +26,7 @@
 	<event class="Player" method="onReportBug" enabled="1" />
 	<event class="Player" method="onReportRuleViolation" enabled="1" />
 	<event class="Player" method="onTurn" enabled="0" />
-	<event class="Player" method="onTradeRequest" enabled="1" />
+	<event class="Player" method="onTradeRequest" enabled="0" />
 	<event class="Player" method="onTradeAccept" enabled="1" />
 	<event class="Player" method="onTradeCompleted" enabled="1" />
 	<event class="Player" method="onPodiumRequest" enabled="1" />
