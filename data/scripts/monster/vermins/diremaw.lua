@@ -1,6 +1,7 @@
 local mType = Game.createMonsterType("Diremaw")
 local monster = {}
 
+monster.name = "Diremaw"
 monster.description = "a diremaw"
 monster.experience = 2500
 monster.outfit = {
@@ -13,41 +14,33 @@ monster.outfit = {
 	lookMount = 0
 }
 
-
-monster.health = 4500
-monster.maxHealth = 4500
+monster.health = 3600
+monster.maxHealth = 3600
 monster.runHealth = 0
 monster.race = "blood"
 monster.corpse = 30150
 monster.speed = 300
-monster.manaCost = 0
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 5000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
-	summonable = false,
 	attackable = true,
 	hostile = true,
-	boss = false,
+	summonable = false,
 	convinceable = false,
-	pushable = false,
 	illusionable = false,
+	boss = false,
+	ignoreSpawnBlock = false,
+	pushable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = true,
 	canWalkOnPoison = true
@@ -61,41 +54,14 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{text = "uuaarrrrrrr", yell = false},
-	{text = "clic clic clic", yell = false}
 }
 
-monster.loot = {
-	{name = "Ham", chance = 40080, maxCount = 4},
-	{name = "Diremaw Brainpan", chance = 24120},
-	{name = "Poisonous Slime", chance = 11930, maxCount = 5},
-	{name = "Blue Crystal Shard", chance = 9660},
-	{name = "Violet Crystal Shard", chance = 8180},
-	{name = "Green Crystal Shard", chance = 8030},
-	{name = "Onyx Chip", chance = 8560, maxCount = 4},
-	{name = "Diremaw Legs", chance = 9650, maxCount = 2},
-	{name = "Small Enchanted Emerald", chance = 2940, maxCount = 2},
-	{name = "Small Emerald", chance = 5080, maxCount = 2},
-	{name = "Gold Ingot", chance = 2970},
-	{id = 7632, chance = 3100},
-	{name = "Suspicious Device", chance = 600},
-	{name = "Mycological Bow", chance = 1200},
-	{name = "Mushroom Backpack", chance = 1500}
-}
-
-monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -340},
-	{name ="combat", interval = 2000, chance = 22, minDamage = -150, maxDamage = -220, range = 5, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POISONAREA, shootEffect = CONST_ANI_POISON, target = true},
-	{name ="combat", interval = 2000, chance = 15, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON},
-	{name ="combat", interval = 2000, chance = 19, minDamage = -170, maxDamage = -250, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POFF, shootEffect = CONST_ANI_POISON, target = true},
-
-
-
-}
-
-monster.defenses = {
-	defense = 5,
-	armor = 10
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
 }
 
 monster.elements = {
@@ -111,11 +77,34 @@ monster.elements = {
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
-monster.immunities = {
-	{type = "paralyze", condition = true},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = true},
-	{type = "bleed", condition = false}
+monster.attacks = {
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -340},
+	{name ="combat", interval = 2000, chance = 22, minDamage = -150, maxDamage = -220, range = 5, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POISONAREA, shootEffect = CONST_ANI_POISON, target = true},
+	{name ="combat", interval = 2000, chance = 15, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON},
+	{name ="combat", interval = 2000, chance = 19, minDamage = -170, maxDamage = -250, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POFF, shootEffect = CONST_ANI_POISON, target = true}
+}
+
+monster.defenses = {
+	defense = 71,
+	armor = 71
+}
+
+monster.loot = {
+	{id = 2671, chance = 40874},
+	{id = 30253, chance = 24628},
+	{id = 10557, chance = 11460},
+	{id = 30254, chance = 9691},
+	{id = 18413, chance = 9512},
+	{id = 24849, chance = 8442, maxCount = 3},
+	{id = 18414, chance = 8338},
+	{id = 18415, chance = 8086},
+	{id = 2149, chance = 4652, maxCount = 2},
+	{id = 7632, chance = 3151},
+	{id = 7761, chance = 3017, maxCount = 2},
+	{id = 9971, chance = 2988},
+	{id = 30309, chance = 1516},
+	{id = 18454, chance = 74},
+	{id = 18393, chance = 45}
 }
 
 mType:register(monster)

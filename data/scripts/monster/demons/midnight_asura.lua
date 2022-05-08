@@ -24,7 +24,7 @@ monster.summonCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
-	chance = 0
+	chance = 5
 }
 
 monster.flags = {

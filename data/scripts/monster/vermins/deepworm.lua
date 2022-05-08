@@ -1,8 +1,9 @@
 local mType = Game.createMonsterType("Deepworm")
 local monster = {}
 
+monster.name = "Deepworm"
 monster.description = "a deepworm"
-monster.experience = 230
+monster.experience = 2300
 monster.outfit = {
 	lookType = 1033,
 	lookHead = 0,
@@ -13,41 +14,33 @@ monster.outfit = {
 	lookMount = 0
 }
 
-
-monster.health = 4500
-monster.maxHealth = 4500
+monster.health = 3500
+monster.maxHealth = 3500
 monster.runHealth = 0
 monster.race = "blood"
 monster.corpse = 30201
 monster.speed = 204
-monster.manaCost = 0
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 5000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
-	summonable = false,
 	attackable = true,
 	hostile = true,
-	boss = false,
+	summonable = false,
 	convinceable = false,
-	pushable = false,
 	illusionable = false,
+	boss = false,
+	ignoreSpawnBlock = true,
+	pushable = false,
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = true,
 	canWalkOnFire = false,
 	canWalkOnPoison = true
@@ -61,46 +54,21 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{text = "*bluuuuuure*", yell = false},
-	{text = "*slurp slurp ... slurp*", yell = false}
 }
 
-monster.loot = {
-	{name = "Deepworm Jaws", chance = 24010},
-	{id = 2168, chance = 7320}, -- Life ring
-	{name = "Meat", chance = 19660, maxCount = 4},
-	{name = "Ham", chance = 19660, maxCount = 4},
-	{name = "Wood Mushroom", chance = 22280},
-	{name = "Dark Mushroom", chance = 14960},
-	{name = "Green Mushroom", chance = 18520},
-	{name = "Green Crystal Shard", chance = 5360},
-	{id = 30249, chance = 13210, maxCount = 2},
-	{name = "Deepworm Spikes", chance = 9880},
-	{name = "Small Enchanted Amethyst", chance = 3430, maxCount = 2},
-	{name = "Terra Amulet", chance = 5060},
-	{name = "Springsprout Rod", chance = 1120},
-	{name = "Sacred Tree Amulet", chance = 2390},
-	{id = 7632, chance = 860},
-	{name = "Suspicious Device", chance = 530}
-}
-
-monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300},
-	{name ="combat", interval = 2000, chance = 20, minDamage = -320, maxDamage = -390, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, shootEffect = CONST_ANI_POISON, target = true},
-	{name ="combat", interval = 2000, chance = 14, minDamage = -200, maxDamage = -300, length = 5, spread = 0, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, direction = true},
-	
-}
-
-monster.defenses = {
-	defense = 5,
-	armor = 10
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
 }
 
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
 	{type = COMBAT_EARTHDAMAGE, percent = 30},
-	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_FIREDAMAGE, percent = -20},
 	{type = COMBAT_LIFEDRAIN, percent = 0},
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
@@ -109,11 +77,34 @@ monster.elements = {
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
-monster.immunities = {
-	{type = "paralyze", condition = true},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = true},
-	{type = "bleed", condition = false}
+monster.attacks = {
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -300},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -320, maxDamage = -390, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, shootEffect = CONST_ANI_POISON, target = true},
+	{name ="combat", interval = 2000, chance = 14, minDamage = -200, maxDamage = -300, length = 5, spread = 0, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, direction = true},
+}
+
+monster.defenses = {
+	defense = 73,
+	armor = 73
+}
+
+monster.loot = {
+	{id = 30250, chance = 23762},
+	{id = 2791, chance = 22422},
+	{id = 2666, chance = 19407},
+	{id = 2671, chance = 19263},
+	{id = 2796, chance = 18569},
+	{id = 2792, chance = 14286},
+	{id = 30249, chance = 13161},
+	{id = 30248, chance = 10290},
+	{id = 2168, chance = 8519},
+	{id = 18415, chance = 5863},
+	{id = 7887, chance = 4762},
+	{id = 7762, chance = 3398, maxCount = 2},
+	{id = 10219, chance = 2201},
+	{id = 30309, chance = 1795},
+	{id = 8912, chance = 1268},
+	{id = 7633, chance = 718}
 }
 
 mType:register(monster)

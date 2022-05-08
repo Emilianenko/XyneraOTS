@@ -1,6 +1,7 @@
 local mType = Game.createMonsterType("Ravenous Lava Lurker")
 local monster = {}
 
+monster.name = "Ravenous Lava Lurker"
 monster.description = "a ravenous lava lurker"
 monster.experience = 4000
 monster.outfit = {
@@ -13,45 +14,36 @@ monster.outfit = {
 	lookMount = 0
 }
 
-
 monster.health = 5000
 monster.maxHealth = 5000
 monster.runHealth = 0
 monster.race = "fire"
 monster.corpse = 30238
-monster.speed = 58
-monster.manaCost = 0
-monster.maxSummons = 0
+monster.speed = 116
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 5000,
-	chance = 8
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 0
 }
 
 monster.flags = {
-	summonable = false,
 	attackable = true,
 	hostile = true,
-	boss = false,
+	summonable = false,
 	convinceable = false,
-	pushable = false,
 	illusionable = false,
+	boss = false,
+	ignoreSpawnBlock = true,
+	pushable = false,
 	canPushItems = false,
-	canPushCreatures = true,
+	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
-	canWalkOnPoison = false,
+	canWalkOnPoison = false
 }
 
 monster.light = {
@@ -64,20 +56,12 @@ monster.voices = {
 	chance = 10,
 }
 
-monster.loot = {
-	{name = "small enchanted ruby", chance = 14620}
-}
-
-monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150},
-	{name = "ravennousLavaLurkerWave", chance = 15, interval = 2000, minDamage = 0, maxDamage = -400, target = false, direction = true},
-	{name ="ravennouslavalurkertarget", interval = 2000, chance = 30, minDamage = 0, maxDamage = -400, target = true}
-
-}
-
-monster.defenses = {
-	defense = 33,
-	armor = 45
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
 }
 
 monster.elements = {
@@ -93,15 +77,18 @@ monster.elements = {
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
-monster.immunities = {
-	{type = "paralyze", condition = true},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = true},
-	{type = "bleed", condition = false}
+monster.attacks = {
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -90, maxDamage = -120, radius = 4, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE}, --fire ball
+	{name ="combat", interval = 2000, chance = 16, minDamage = -82, maxDamage = -95, radius = 5, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true}
 }
 
-monster.heals = {
-	{type = COMBAT_FIREDAMAGE, percent = 100},
+monster.defenses = {
+	defense = 45,
+	armor = 45
+}
+
+monster.loot = {
 }
 
 mType:register(monster)

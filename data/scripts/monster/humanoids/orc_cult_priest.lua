@@ -1,6 +1,7 @@
 local mType = Game.createMonsterType("Orc Cult Priest")
 local monster = {}
 
+monster.name = "Orc Cult Priest"
 monster.description = "an orc cult priest"
 monster.experience = 1000
 monster.outfit = {
@@ -15,39 +16,31 @@ monster.outfit = {
 
 monster.health = 1300
 monster.maxHealth = 1300
-monster.runHealth = 0
+monster.runHealth = 50
 monster.race = "blood"
 monster.corpse = 5978
-monster.speed = 70
-monster.manaCost = 0
-monster.maxSummons = 0
+monster.speed = 140
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
-	summonable = false,
 	attackable = true,
 	hostile = true,
-	boss = false,
+	summonable = false,
 	convinceable = false,
-	pushable = false,
 	illusionable = false,
-	canPushItems = true,
+	boss = false,
+	ignoreSpawnBlock = false,
+	pushable = false,
+	canPushItems = false,
 	canPushCreatures = false,
-	staticAttackChance = 95,
+	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false
@@ -61,28 +54,34 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{text = "We will crush all opposition!", yell = false}
+	{text = "We will crush all oposition!", yell = false}
 }
 
-monster.loot = {
-	{id = "gold coin", chance = 100000, maxCount = 176},
-	{id = "strong health potion", chance = 16340},
-	{id = "small ruby", chance = 12870, maxCount = 6},
-	{id = "black pearl", chance = 1980},
-	{id = "cultish robe", chance = 18870},
-	{id = "orc leather", chance = 8420, maxCount = 3},
-	{id = "orc tooth", chance = 5940, maxCount = 2},
-	{id = "green piece of cloth", chance = 12380},
-	{id = "mysterious fetish", chance = 8910},
-	{id = "shamanic hood", chance = 14360},
-	{id = "broken shamanic staff", chance = 5940},
-	{id = "heavy old tome", chance = 99}
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
+}
+
+monster.elements = {
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = 50},
+	{type = COMBAT_EARTHDAMAGE, percent = -10},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_LIFEDRAIN, percent = 0},
+	{type = COMBAT_MANADRAIN, percent = 0},
+	{type = COMBAT_DROWNDAMAGE, percent = 0},
+	{type = COMBAT_ICEDAMAGE, percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = 10},
+	{type = COMBAT_DEATHDAMAGE , percent = -5}
 }
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -200},
-	{name ="combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = -200, maxDamage = -310, range = 7, shootEffect = CONST_ANI_ENERGYBALL, target = false},
-	{name ="combat", interval = 2000, chance = 5, type = COMBAT_FIREDAMAGE, minDamage = -200, maxDamage = -250, range = 7, radius = 1, shootEffect = CONST_ANI_FIRE, target = true},
+	{name ="combat", interval = 2000, chance = 15, type = COMBAT_ENERGYDAMAGE, minDamage = 0, maxDamage = -210, range = 5, radius = 1, effect = CONST_ME_ENERGYHIT, shootEffect = CONST_ANI_ENERGYBALL, target = true},
+	{name ="combat", interval = 2000, chance = 5, type = COMBAT_FIREDAMAGE, minDamage = 0, maxDamage = -250, range = 5, radius = 1, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true},
 	{name ="outfit", interval = 4000, chance = 15, target = true, duration = 30000,  outfit = {lookType=2}},
 	{name ="outfit", interval = 4000, chance = 10, target = true, duration = 30000,  outfit = {lookType=6}},
 	{name ="outfit", interval = 4000, chance = 20, target = true, duration = 30000,  outfit = {lookType=5}}
@@ -90,28 +89,24 @@ monster.attacks = {
 
 monster.defenses = {
 	defense = 27,
-	armor = 27,
-	{name ="combat", type = COMBAT_HEALING, interval = 2000,  minDamage = 50, maxDamage = 130, chance = 20, effect = CONST_ME_MAGIC_BLUE, target = false}
+	armor = 27
 }
 
-monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 50},
-	{type = COMBAT_EARTHDAMAGE, percent = 0},
-	{type = COMBAT_FIREDAMAGE, percent = 0},
-	{type = COMBAT_LIFEDRAIN, percent = 0},
-	{type = COMBAT_MANADRAIN, percent = 0},
-	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
-}
-
-monster.immunities = {
-	{type = "paralyze", condition = false},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = true},
-	{type = "bleed", condition = false}
+monster.loot = {
+	{id = 2148, chance = 100000, maxCount = 181},
+	{id = 7588, chance = 15954},
+	{id = 12434, chance = 14104},
+	{id = 2147, chance = 12459, maxCount = 6},
+	{id = 5910, chance = 10855},
+	{id = 10556, chance = 10526},
+	{id = 2194, chance = 9252},
+	{id = 12408, chance = 8799},
+	{id = 12435, chance = 8553},
+	{id = 11113, chance = 5345},
+	{id = 2144, chance = 2796, maxCount = 2},
+	{id = 26642, chance = 1686},
+	{id = 2188, chance = 946},
+	{id = 7439, chance = 905}
 }
 
 mType:register(monster)

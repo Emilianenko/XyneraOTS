@@ -1,7 +1,8 @@
 local mType = Game.createMonsterType("Stonerefiner")
 local monster = {}
 
-monster.description = "a Stonerefiner"
+monster.name = "Stonerefiner"
+monster.description = "a stonerefiner"
 monster.experience = 500
 monster.outfit = {
 	lookType = 1032,
@@ -13,45 +14,36 @@ monster.outfit = {
 	lookMount = 0
 }
 
-
 monster.health = 800
 monster.maxHealth = 800
 monster.runHealth = 0
 monster.race = "blood"
-monster.corpse = 30193
+monster.corpse = 0
 monster.speed = 220
-monster.manaCost = 0
-monster.maxSummons = 0
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
 	attackable = true,
 	hostile = true,
-	boss = false,
 	summonable = false,
 	convinceable = false,
 	illusionable = false,
+	boss = false,
 	ignoreSpawnBlock = false,
 	pushable = false,
-	canPushItems = true,
-	canPushCreatures = true,
+	canPushItems = false,
+	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	canWalkOnEnergy = false,
+	canWalkOnEnergy = true,
 	canWalkOnFire = false,
-	canWalkOnPoison = false
+	canWalkOnPoison = true
 }
 
 monster.light = {
@@ -66,14 +58,25 @@ monster.voices = {
 	{text = "nomnomnom", yell = false}
 }
 
-monster.loot = {
-	{name = "platinum coin", chance = 50930, maxCount = 4},
-	{name = "rare earth", chance = 39750, maxCount = 2},
-	{id = 13757, chance = 27980, maxCount = 5},
-	{name = "glob of acid slime", chance = 23680},
-	{name = "stonerefiner's skull", chance = 20110},
-	{name = "poisonous slime", chance = 20040, maxCount = 3},
-	{name = "half-digested stones", chance = 15210, maxCount = 5}
+monster.immunities = {
+	{type = "paralyze", condition = true},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = false},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
+}
+
+monster.elements = {
+	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
+	{type = COMBAT_ENERGYDAMAGE, percent = 0},
+	{type = COMBAT_EARTHDAMAGE, percent = 0},
+	{type = COMBAT_FIREDAMAGE, percent = 0},
+	{type = COMBAT_LIFEDRAIN, percent = 0},
+	{type = COMBAT_MANADRAIN, percent = 0},
+	{type = COMBAT_DROWNDAMAGE, percent = 0},
+	{type = COMBAT_ICEDAMAGE, percent = 0},
+	{type = COMBAT_HOLYDAMAGE , percent = 0},
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
 monster.attacks = {
@@ -83,28 +86,18 @@ monster.attacks = {
 }
 
 monster.defenses = {
-	defense = 45,
+	defense = 20,
 	armor = 20
 }
 
-monster.elements = {
-	{type = COMBAT_PHYSICALDAMAGE, percent = 0},
-	{type = COMBAT_ENERGYDAMAGE, percent = 0},
-	{type = COMBAT_EARTHDAMAGE, percent = 100},
-	{type = COMBAT_FIREDAMAGE, percent = 1},
-	{type = COMBAT_LIFEDRAIN, percent = 0},
-	{type = COMBAT_MANADRAIN, percent = 0},
-	{type = COMBAT_DROWNDAMAGE, percent = 0},
-	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 90},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
-}
-
-monster.immunities = {
-	{type = "paralyze", condition = true},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = false},
-	{type = "bleed", condition = false}
+monster.loot = {
+	{id = 2152, chance = 50783, maxCount = 4},
+	{id = 29957, chance = 39831},
+	{id = 13757, chance = 29832},
+	{id = 9967, chance = 24959},
+	{id = 30262, chance = 20115},
+	{id = 10557, chance = 19463},
+	{id = 20101, chance = 10408}
 }
 
 mType:register(monster)

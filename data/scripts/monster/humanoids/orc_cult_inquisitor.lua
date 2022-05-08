@@ -1,6 +1,7 @@
 local mType = Game.createMonsterType("Orc Cult Inquisitor")
 local monster = {}
 
+monster.name = "Orc Cult Inquisitor"
 monster.description = "an orc cult inquisitor"
 monster.experience = 1150
 monster.outfit = {
@@ -13,42 +14,33 @@ monster.outfit = {
 	lookMount = 0
 }
 
-
 monster.health = 1500
 monster.maxHealth = 1500
 monster.runHealth = 0
 monster.race = "blood"
 monster.corpse = 5980
-monster.speed = 125
-monster.manaCost = 590
-monster.maxSummons = 0
+monster.speed = 250
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
-	summonable = true,
 	attackable = true,
 	hostile = true,
-	boss = false,
-	convinceable = true,
-	pushable = false,
+	summonable = false,
+	convinceable = false,
 	illusionable = false,
-	canPushItems = true,
-	canPushCreatures = true,
-	staticAttackChance = 95,
+	boss = false,
+	ignoreSpawnBlock = false,
+	pushable = false,
+	canPushItems = false,
+	canPushCreatures = false,
+	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false
@@ -62,35 +54,15 @@ monster.light = {
 monster.voices = {
 	interval = 5000,
 	chance = 10,
-	{text = "You unorcish scum will die!", yell = true}
+	{text = "You unorcish scum will die!", yell = false}
 }
 
-monster.loot = {
-	{id = "strong health potion", chance = 18390},
-	{id = "gold coin", chance = 100000, maxCount = 221},
-	{id = "black pearl", chance = 510, maxCount = 2},
-	{id = "berserk potion", chance = 2940},
-	{id = "small ruby", chance = 4020, maxCount = 5},
-	{id = "battle axe", chance = 6340},
-	{id = "bug meat", chance = 17160},
-	{id = "red mushroom", chance = 7730, maxCount = 3},
-	{id = "halberd", chance = 9890},
-	{id = "orcish axe", chance = 850},
-	{id = "cultish robe", chance = 9890},
-	{id = "ham", chance = 8960},
-	{id = "orc tooth", chance = 5410},
-	{id = "orcish gear", chance = 15460},
-	{id = "orc leather", chance = 7730}
-}
-
-monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500}
-}
-
-monster.defenses = {
-	defense = 40,
-	armor = 40,
-	{name ="speed", interval = 2000, chance = 30, speed = 290, effect = CONST_ME_MAGIC_RED, target = false, duration = 6000}
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
 }
 
 monster.elements = {
@@ -106,11 +78,32 @@ monster.elements = {
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
-monster.immunities = {
-	{type = "paralyze", condition = false},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = false},
-	{type = "bleed", condition = false}
+monster.attacks = {
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500}
+}
+
+monster.defenses = {
+	defense = 40,
+	armor = 40,
+	{name ="speed", interval = 2000, chance = 15, speed = {min = 300, max = 300}, duration = 7000, effect = CONST_ME_MAGIC_RED}
+}
+
+monster.loot = {
+	{id = 2148, chance = 100000, maxCount = 228},
+	{id = 27038, chance = 19862},
+	{id = 7588, chance = 17869},
+	{id = 12433, chance = 16799},
+	{id = 2381, chance = 11787},
+	{id = 2671, chance = 10319},
+	{id = 10556, chance = 9773},
+	{id = 12435, chance = 9354},
+	{id = 2428, chance = 8410},
+	{id = 2788, chance = 8221, maxCount = 3},
+	{id = 2378, chance = 6376},
+	{id = 11113, chance = 6250},
+	{id = 2144, chance = 6166, maxCount = 2},
+	{id = 2147, chance = 5222, maxCount = 5},
+	{id = 7439, chance = 3020}
 }
 
 mType:register(monster)

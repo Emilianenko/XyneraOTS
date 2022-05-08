@@ -1,6 +1,7 @@
 local mType = Game.createMonsterType("Orc Cult Minion")
 local monster = {}
 
+monster.name = "Orc Cult Minion"
 monster.description = "an orc cult minion"
 monster.experience = 850
 monster.outfit = {
@@ -15,39 +16,31 @@ monster.outfit = {
 
 monster.health = 1000
 monster.maxHealth = 1000
-monster.runHealth = 0
+monster.runHealth = 20
 monster.race = "blood"
 monster.corpse = 5996
-monster.speed = 105
-monster.manaCost = 310
-monster.maxSummons = 0
+monster.speed = 210
+monster.summonCost = 0
 
 monster.changeTarget = {
-	interval = 4000,
-	chance = 10
-}
-
-monster.strategiesTarget = {
-	nearest = 70,
-	health = 10,
-	damage = 10,
-	random = 10,
+	interval = 2000,
+	chance = 5
 }
 
 monster.flags = {
-	summonable = true,
 	attackable = true,
 	hostile = true,
-	boss = false,
-	convinceable = true,
-	pushable = false,
+	summonable = false,
+	convinceable = false,
 	illusionable = false,
-	canPushItems = true,
+	boss = false,
+	ignoreSpawnBlock = false,
+	pushable = false,
+	canPushItems = false,
 	canPushCreatures = false,
-	staticAttackChance = 95,
+	staticAttackChance = 90,
 	targetDistance = 1,
 	healthHidden = false,
-	ignoreSpawnBlock = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = false,
 	canWalkOnPoison = false
@@ -64,25 +57,12 @@ monster.voices = {
 	{text = "Orc powaaa!", yell = false}
 }
 
-monster.loot = {
-	{id = "gold coin", chance = 100000, maxCount = 166},
-	{id = "strong health potion", chance = 15930},
-	{id = "small topaz", chance = 1238, maxCount = 3},
-	{id = "orcish axe", chance = 9190},
-	{id = "cultish robe", chance = 19360},
-	{id = "red mushroom", chance = 6250, maxCount = 3},
-	{id = "berserk potion", chance = 860, maxCount = 2},
-	{id = "meat", chance = 4780}
-}
-
-monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -230},
-	{name ="combat", interval = 2000, chance = 20, type = COMBAT_PHYSICALDAMAGE, minDamage = -120, maxDamage = -170, range = 7, shootEffect = CONST_ANI_SPEAR, target = false}
-}
-
-monster.defenses = {
-	defense = 30,
-	armor = 30
+monster.immunities = {
+	{type = "paralyze", condition = false},
+	{type = "outfit", condition = false},
+	{type = "invisible", condition = true},
+	{type = "drunk", condition = true},
+	{type = "bleed", condition = false}
 }
 
 monster.elements = {
@@ -95,14 +75,28 @@ monster.elements = {
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 10}
+	{type = COMBAT_DEATHDAMAGE , percent = 0}
 }
 
-monster.immunities = {
-	{type = "paralyze", condition = false},
-	{type = "outfit", condition = false},
-	{type = "invisible", condition = true},
-	{type = "bleed", condition = false}
+monster.attacks = {
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -220},
+	{name ="combat", interval = 2000, chance = 15, type = COMBAT_PHYSICALDAMAGE, minDamage = 0, maxDamage = -180, range = 5, radius = 1, target = true, shootEffect = CONST_ANI_SPEAR}
+}
+
+monster.defenses = {
+	defense = 30,
+	armor = 30
+}
+
+monster.loot = {
+	{id = 2148, chance = 100000, maxCount = 195},
+	{id = 10556, chance = 20463},
+	{id = 7588, chance = 16303},
+	{id = 9970, chance = 13740, maxCount = 3},
+	{id = 2428, chance = 8455},
+	{id = 2788, chance = 7915, maxCount = 3},
+	{id = 2666, chance = 5195},
+	{id = 7439, chance = 1079, maxCount = 2}
 }
 
 mType:register(monster)
