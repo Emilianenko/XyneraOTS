@@ -154,6 +154,7 @@ local rings = {
 	[2212] = {}, -- club ring
 	[2213] = {}, -- dwarven ring
 	[2214] = {}, -- ring of healing
+	[2215] = {}, -- dwarven ring
 	[2216] = {}, -- ring of healing
 	[2357] = {}, -- ring of wishes
 	[6093] = {}, -- crystal ring
