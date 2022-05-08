@@ -25,6 +25,8 @@ end
 spell:name("white lion bleeding")
 spell:words("###1005")
 spell:isAggressive(true)
+spell:blockWalls(true)
+spell:needDirection(false)
 spell:needTarget(false)
 spell:needLearn(true)
 spell:register()

@@ -30,6 +30,7 @@ end
 spell:name("frost asura freezing beam")
 spell:words("###1007")
 spell:isAggressive(true)
+spell:blockWalls(true)
 spell:needTarget(false)
 spell:needLearn(true)
 spell:needDirection(true)

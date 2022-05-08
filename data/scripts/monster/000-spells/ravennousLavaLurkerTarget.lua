@@ -43,6 +43,8 @@ end
 spell:name("ravennousLavaLurkerTarget")
 spell:words("###466")
 spell:isAggressive(true)
+spell:blockWalls(true)
 spell:needTarget(true)
+spell:needDirection(false)
 spell:needLearn(true)
 spell:register()

@@ -31,6 +31,8 @@ end
 spell:name("asura skill reducer")
 spell:words("###1004")
 spell:isAggressive(true)
+spell:blockWalls(true)
+spell:needDirection(false)
 spell:needTarget(true)
 spell:needLearn(true)
 spell:register()

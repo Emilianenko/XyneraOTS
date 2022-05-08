@@ -26,6 +26,8 @@ end
 spell:name("asura soulfire")
 spell:words("###1003")
 spell:isAggressive(true)
+spell:blockWalls(true)
+spell:needDirection(false)
 spell:needTarget(true)
 spell:needLearn(true)
 spell:register()

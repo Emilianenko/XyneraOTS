@@ -25,6 +25,7 @@ end
 spell:name("wexclaw wave")
 spell:words("###1000")
 spell:isAggressive(true)
+spell:blockWalls(true)
 spell:needLearn(true)
 spell:needDirection(true)
 spell:needTarget(false)

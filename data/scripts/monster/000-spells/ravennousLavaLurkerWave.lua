@@ -39,6 +39,8 @@ end
 spell:name("ravennousLavaLurkerWave")
 spell:words("###465")
 spell:isAggressive(true)
+spell:blockWalls(true)
 spell:needLearn(true)
+spell:needDirection(false)
 spell:needTarget(false)
 spell:register()
