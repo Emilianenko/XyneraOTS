@@ -40964,4 +40964,56 @@
 		<attribute key="corpseType" value="blood" />
 		<attribute key="fluidSource" value="blood" />
 	</item>
+		<item id="27734" name="remains of an orclops doomhauler">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="27736"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="27736" name="remains of an orclops doomhauler">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="27737"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="27737" name="remains of an orclops doomhauler">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+		<item id="27730" name="remains of an orclops ravager">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="27731"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="27731" name="remains of an orclops ravager">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="27732"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="27732" name="remains of an orclops ravager">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+		<item id="27738" name="remains of a stone rhino">
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="27739"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="27739" name="remains of a stone rhino">
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="27740"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="27740" name="remains of a stone rhino">
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
 </items>
