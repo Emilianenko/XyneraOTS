@@ -7,7 +7,7 @@ local DISTANCE_CLOSE = 2
 local DISTANCE_FAR = 3
 local DISTANCE_VERYFAR = 4
 
-local searchResult = "The monster %s. Be prepared to find a creature of difficulty level \"%s\".%s"
+local searchResult = "%s %s. Be prepared to find a creature of difficulty level \"%s\".%s"
 
 local difficulties = {
 	[0] = "Harmless",
@@ -122,16 +122,11 @@ spell.onCastSpell = function(player, variant)
 		return true
 	end
 	
-	local difficulty = "Unknown"
 	local bestiaryEntry = GameBestiary[target:getBestiaryRaceName()]
-	if bestiaryEntry then
-		if player:getBestiaryRaceProgress(bestiaryEntry.id) == 4 then
-			difficulty = difficulties[bestiaryEntry.difficulty] or difficulty
-		end
-	end
+	local difficulty = bestiaryEntry and difficulties[bestiaryEntry.difficulty] or "Unknown"
 	
 	minStr = expires ~= -1 and minLeft < 16 and string.format(" This monster will stay fiendish for less than %s.", minStr) or ""
-	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format(searchResult, description, difficulty, minStr))
+	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format(searchResult, target:getName(), description, difficulty, minStr))
 	creaturePosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
 	return true
 end
