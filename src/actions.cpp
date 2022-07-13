@@ -368,13 +368,22 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		}
 
 		// open/close container
-		int32_t oldContainerId = player->getContainerID(openContainer);
-		if (oldContainerId == -1) {
+		int32_t containerId = player->getContainerID(openContainer);
+		if (containerId == -1) {
+			// replace the old container if limit reached
+			if (index == player->getOpenedContainersLimit() - 1) {
+				if (Container* oldContainer = player->getContainerByID(index)) {
+					player->onCloseContainer(oldContainer);
+					player->closeContainer(index);
+				}
+			}
+
+			// open a new container
 			player->addContainer(index, openContainer);
 			player->onSendContainer(openContainer);
 		} else {
 			player->onCloseContainer(openContainer);
-			player->closeContainer(oldContainerId);
+			player->closeContainer(containerId);
 		}
 
 		return RETURNVALUE_NOERROR;

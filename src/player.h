@@ -261,6 +261,14 @@ class Player final : public Creature, public Cylinder
 			return client->getVersion();
 		}
 
+		uint8_t getOpenedContainersLimit() const {
+			if (!client) {
+				return 32;
+			}
+
+			return getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX ? 32 : 254;
+		}
+
 		bool hasSecureMode() const {
 			return secureMode;
 		}
@@ -318,6 +326,7 @@ class Player final : public Creature, public Cylinder
 		}
 		uint32_t getIP() const;
 
+		uint8_t getNextContainerIndex();
 		void addContainer(uint8_t cid, Container* container);
 		void closeContainer(uint8_t cid);
 		void setContainerIndex(uint8_t cid, uint16_t index);

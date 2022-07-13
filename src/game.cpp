@@ -211,8 +211,8 @@ Cylinder* Game::internalGetCylinder(Player* player, const Position& pos) const
 	}
 
 	//container
-	if (pos.y & 0x40) {
-		uint8_t from_cid = pos.y & 0x0F;
+	if (pos.y >= 0x40) {
+		uint8_t from_cid = pos.y - 0x40;
 		return player->getContainerByID(from_cid);
 	}
 
@@ -286,8 +286,8 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 	}
 
 	//container
-	if (pos.y & 0x40) {
-		uint8_t fromCid = pos.y & 0x0F;
+	if (pos.y >= 0x40) {
+		uint8_t fromCid = pos.y - 0x40;
 
 		Container* parentContainer = player->getContainerByID(fromCid);
 		if (!parentContainer) {
@@ -2532,14 +2532,24 @@ void Game::playerBrowseField(uint32_t playerId, const Position& pos)
 		container = it->second;
 	}
 
-	uint8_t dummyContainerId = 0xF - ((pos.x % 3) * 3 + (pos.y % 3));
-	Container* openContainer = player->getContainerByID(dummyContainerId);
-	if (openContainer) {
-		player->onCloseContainer(openContainer);
-		player->closeContainer(dummyContainerId);
+	// open/close browse field
+	int32_t containerId = player->getContainerID(container);
+	if (containerId == -1) {
+		// replace the old container if limit reached
+		uint8_t index = player->getNextContainerIndex();
+		if (index == player->getOpenedContainersLimit() - 1) {
+			if (Container* oldContainer = player->getContainerByID(index)) {
+				player->onCloseContainer(oldContainer);
+				player->closeContainer(index);
+			}
+		}
+
+		// open a new container
+		player->addContainer(index, container);
+		player->onSendContainer(container);
 	} else {
-		player->addContainer(dummyContainerId, container);
-		player->sendContainer(dummyContainerId, container, false, 0);
+		player->onCloseContainer(container);
+		player->closeContainer(containerId);
 	}
 }
 

@@ -365,7 +365,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	}
 
 	// Change packet verifying mode for QT clients
-	if (version >= 1111 && operatingSystem >= CLIENTOS_QT_LINUX && operatingSystem <= CLIENTOS_QT_MAC) {
+	if (version >= 1111 && operatingSystem >= CLIENTOS_QT_LINUX && operatingSystem < CLIENTOS_OTCLIENT_LINUX) {
 		setChecksumMode(CHECKSUM_SEQUENCE);
 	}
 	
@@ -517,7 +517,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		return;
 	}
 
-	//a dead player can not performs actions
+	//a dead player can not perform actions
 	if (player->isRemoved() || player->getHealth() <= 0) {
 		if (recvbyte == 0x0F) {
 			disconnect();
@@ -612,6 +612,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xCB: parseBrowseField(msg); break;
 		case 0xCC: parseSeekInContainer(msg); break;
 		case 0xCD: parseInspectItem(msg); break;
+		//case 0xCE: break; // allow everyone to inspect me (to do)
 		//case 0xC0: break; //request forge history (scripted)
 		case 0xD0: parseQuestTracker(msg); break;
 		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;

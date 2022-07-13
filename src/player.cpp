@@ -604,12 +604,24 @@ int32_t Player::getDefaultStats(stats_t stat) const
 	}
 }
 
-void Player::addContainer(uint8_t cid, Container* container)
+uint8_t Player::getNextContainerIndex()
 {
-	if (cid > 0xF) {
-		return;
+	// generate window id for browse field
+	uint8_t cid = 0;
+	for (uint8_t i = 0; i < getOpenedContainersLimit(); ++i) {
+		cid = i;
+
+		auto it = openContainers.find(cid);
+		if (it == openContainers.end()) {
+			break;
+		}
 	}
 
+	return cid;
+}
+
+void Player::addContainer(uint8_t cid, Container* container)
+{
 	if (container->getID() == ITEM_BROWSEFIELD) {
 		container->incrementReferenceCounter();
 	}
@@ -618,6 +630,7 @@ void Player::addContainer(uint8_t cid, Container* container)
 	if (it != openContainers.end()) {
 		OpenContainer& openContainer = it->second;
 		Container* oldContainer = openContainer.container;
+
 		if (oldContainer->getID() == ITEM_BROWSEFIELD) {
 			oldContainer->decrementReferenceCounter();
 		}
@@ -1133,6 +1146,11 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 
 void Player::openSavedContainers()
 {
+	// skip if client lost connection
+	if (!client) {
+		return;
+	}
+
 	std::map<uint8_t, Container*> openContainersList;
 
 	for (int32_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; i++) {
@@ -1159,16 +1177,20 @@ void Player::openSavedContainers()
 		}
 	}
 
-	// fix broken containers when logged in from another location
-	for (uint8_t i = 0; i < 16; i++) {
-		client->sendEmptyContainer(i);
-		client->sendCloseContainer(i);
-	}
-
-	// send actual containers
+	// send saved containers
 	for (auto& it : openContainersList) {
 		addContainer(it.first - 1, it.second);
 		onSendContainer(it.second);
+	}
+
+	// fix missing containers for qt client
+	if (getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX) {
+		for (uint32_t i = 0; i < getOpenedContainersLimit(); ++i) {
+			if (!openContainersList[i + 1]) {
+				client->sendEmptyContainer(i);
+				client->sendCloseContainer(i);
+			}
+		}
 	}
 }
 
