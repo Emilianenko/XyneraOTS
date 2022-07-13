@@ -44,6 +44,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			end
 		end
 		
+		local tile = Tile(toPosition)
 		if (fromPosition.x ~= CONTAINER_POSITION and toPosition.x ~= CONTAINER_POSITION) or tile and not tile:getHouse() then
 			if tile then 
 				local house = tile:getHouse()

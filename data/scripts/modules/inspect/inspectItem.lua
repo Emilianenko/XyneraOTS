@@ -8,7 +8,7 @@ function Player:sendItemInspection(item, descriptions, openCompendium, isVirtual
 	if tonumber(item) then
 		local itemType = ItemType(item)
 		if not itemType then
-			player:sendCancelMessage("Sorry, not possible.")
+			self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 			return
 		end
 		

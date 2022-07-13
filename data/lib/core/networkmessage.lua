@@ -23,8 +23,8 @@ function NetworkMessage:addOutfit(outfit, addMount)
 end
 
 function NetworkMessage:addItemType(itemType)
-	if tonumber(item) then
-		itemType = ItemType(item)
+	if tonumber(itemType) then
+		itemType = ItemType(itemType)
 	end
 	
 	if not itemType then

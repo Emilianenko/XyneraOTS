@@ -974,8 +974,11 @@ end
 -- full reset creature
 function Player:resetBestiaryEntry(raceId)
 	local progessLevel = self:getStorageValue(PlayerStorageKeys.bestiaryRaceProgressBase + raceId)
+	local race = getBestiaryRaceDataById(raceId)
+	
 	-- reset category progress for this creature
-	if progessLevel == 4 then
+	if race and progessLevel == 4 then
+		local categoryId = race.class
 		self:setStorageValue(PlayerStorageKeys.bestiaryCategoryProgressBase + categoryId, self:getStorageValue(PlayerStorageKeys.bestiaryCategoryProgressBase + categoryId) - 1)
 	end
 	
@@ -984,7 +987,6 @@ function Player:resetBestiaryEntry(raceId)
 	self:setStorageValue(PlayerStorageKeys.bestiaryKillCountBase + raceId, -1)
 	
 	-- remove gained charm points (if applicable)
-	local race = getBestiaryRaceDataById(raceId)
 	if race and progessLevel == 4 then
 		self:addCharmPoints(-(not (race.rarity == 4) and GameBestiaryDifficulties[race.difficulty].charmPoints or GameBestiaryDifficulties[race.difficulty].rareCharmPoints))
 	end

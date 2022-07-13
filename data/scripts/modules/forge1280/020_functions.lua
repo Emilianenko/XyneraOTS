@@ -2,6 +2,9 @@
 local forgeMeta = getForgeMeta()
 local forgeData = getForgeData()
 
+-- last used forge cache
+LastForgePosCache = {}
+
 -- forge history manager
 do
 	local history = {}
@@ -92,6 +95,7 @@ do
 	-- enter forge on use
 	local forgeAction = Action()
 	function forgeAction.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+		LastForgePosCache[player:getId()] = item:getPosition()
 		player:addDispatcherTask(dispatcherSendForgeUI, DISPATCHER_FORGE_ENTER, player:getId())
 		return true
 	end
@@ -522,13 +526,6 @@ do
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCORES)
 			return
 		end
-
-		-- check if player is near the forge
-		if not self:isInForge() then
-			-- player is not close enough to the forge
-			self:sendDefaultForgeError(FORGE_ERROR_NOTINFORGE)
-			return
-		end
 		
 		-- iterate player containers to find items
 		local itemsForFusion, itemCount = playerBP:getItemsByQuery(2, fusionSearch, itemType:getId(), tier)
@@ -589,13 +586,6 @@ do
 		if self:getForgeCores() < 1 then -- transfer always costs 1 core
 			-- not enough cores
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCORES)
-			return
-		end
-
-		-- check if player is near the forge
-		if not self:isInForge() then
-			-- player is not close enough to the forge
-			self:sendDefaultForgeError(FORGE_ERROR_NOTINFORGE)
 			return
 		end
 		
@@ -694,23 +684,12 @@ end
 
 -- forge check
 function Player:isInForge()
-	local playerPos = self:getPosition()
-	for deltaX = -1, 1 do
-	for deltaY = -1, 1 do
-		local pos = Position(playerPos.x + deltaX, playerPos.y + deltaY, playerPos.z)
-		local tile = Tile(pos)
-		if tile then
-			for _, item in pairs(tile:getItems()) do
-				local itemId = item:getType():getId()
-				if itemId >= ITEM_FORGE_PLACE_FIRST and itemId <= ITEM_FORGE_PLACE_LAST then
-					return true
-				end
-			end
-		end
-	end
+	local forgePos = LastForgePosCache[self:getId()]
+	if not forgePos then
+		return false
 	end
 	
-	return false
+	return self:getPosition():getDistance(forgePos) < 3
 end
 
 -- cache forge ui to reduce about of operations during dust limit upgrades

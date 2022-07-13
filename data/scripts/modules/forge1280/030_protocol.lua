@@ -3,6 +3,13 @@ do
 	function parseForgeRequest(player, recvbyte, msg)
 		-- request forge action
 		if recvbyte == FORGE_REQUEST_USEFORGE then
+			-- check if player is near the forge
+			if not player:isInForge() then
+				-- player is not close enough to the forge
+				player:sendDefaultForgeError(FORGE_ERROR_NOTINFORGE)
+				return
+			end
+			
 			local forgeAction = msg:getByte()
 			
 			-- fusion
@@ -27,13 +34,7 @@ do
 
 			-- convert resources
 			elseif forgeAction <= FORGE_ACTION_INCREASELIMIT then
-				if player:isInForge() then
-					player:onResourceConversion(forgeAction)
-				else
-					player:sendDefaultForgeError(FORGE_ERROR_NOTINFORGE)
-					return
-				end
-
+				player:onResourceConversion(forgeAction)
 				return
 			end
 				
