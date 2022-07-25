@@ -19,7 +19,7 @@
 
 	<!-- Player methods -->
 	<!-- Player - uncategorized -->
-	<event class="Player" method="onBrowseField" enabled="0" />
+	<event class="Player" method="onBrowseField" enabled="1" />
 	<event class="Player" method="onTurn" enabled="0" />
 	<event class="Player" method="onWrapItem" enabled="1" />
 	<event class="Player" method="onMinimapQuery" enabled="1" />
@@ -44,7 +44,7 @@
 	<event class="Player" method="onGainSkillTries" enabled="1" />
 	
 	<!-- Player - trade -->
-	<event class="Player" method="onTradeRequest" enabled="0" />
+	<event class="Player" method="onTradeRequest" enabled="1" />
 	<event class="Player" method="onTradeAccept" enabled="1" />
 	<event class="Player" method="onTradeCompleted" enabled="1" />
 	
