@@ -121,7 +121,7 @@ class Events
 		void eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId);
 		void eventPlayerOnMinimapQuery(Player* player, const Position& position);
 		void eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t slot, bool equip);
-		const std::string Events::eventPlayerOnGuildMotdEdit(Player* player, const std::string& message);
+		const std::string eventPlayerOnGuildMotdEdit(Player* player, const std::string& message);
 		void eventPlayerOnSetLootList(Player* player, const std::vector<uint16_t>& lootList, bool isSkipMode);
 		void eventPlayerOnManageLootContainer(Player* player, Item* item, uint8_t modePrimary, uint8_t modeSecondary);
 
