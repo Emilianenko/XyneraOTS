@@ -644,12 +644,15 @@ MagicEffectNames magicEffectNames = {
 	{"fatal",			CONST_ME_FATAL},
 	{"dodge",			CONST_ME_DODGE},
 	{"hourglass",		CONST_ME_HOURGLASS},
-	{ "ferumbras1",		CONST_ME_FERUMBRAS_1 },
-	{ "gazharagoth",	CONST_ME_GAZHARAGOTH },
-	{ "madmage",		CONST_ME_MAD_MAGE },
-	{ "horestis",		CONST_ME_HORESTIS },
-	{ "devovorga",		CONST_ME_DEVOVORGA },
-	{ "ferumbras2",		CONST_ME_FERUMBRAS_2 },
+	{"fireworkstar",	CONST_ME_FIREWORK_STAR},
+	{"fireworkcircle",	CONST_ME_FIREWORK_CIRCLE},
+	{"ferumbras1",		CONST_ME_FERUMBRAS_1},
+	{"gazharagoth",	CONST_ME_GAZHARAGOTH},
+	{"madmage",		CONST_ME_MAD_MAGE},
+	{"horestis",		CONST_ME_HORESTIS},
+	{"devovorga",		CONST_ME_DEVOVORGA},
+	{"ferumbras2",		CONST_ME_FERUMBRAS_2},
+	{"foam", CONST_ME_FOAM},
 };
 
 ShootTypeNames shootTypeNames = {

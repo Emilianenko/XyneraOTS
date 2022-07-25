@@ -2008,6 +2008,79 @@ void Game::playerCloseChannel(uint32_t playerId, uint16_t channelId)
 	g_chat->removeUserFromChannel(*player, channelId);
 }
 
+void Game::playerEditGuildMotd(uint32_t playerId)
+{
+	// check if player object is still valid
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	// check guild permissions
+	Guild* guild = player->getGuild();
+	if (!(guild && player->isGuildLeader())) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+	// send motd edit form
+	player->editGuildMotd(guild->getMotd());
+}
+
+void Game::playerSaveGuildMotd(uint32_t playerId, const std::string& text)
+{
+	// check if player object is still valid
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// reset afk timer
+	player->resetIdleTime();
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	// check guild permissions (again)
+	Guild* guild = player->getGuild();
+	if (!(guild && player->isGuildLeader())) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+	// modify motd if player event is active
+	const std::string& motd = g_events->eventPlayerOnGuildMotdEdit(player, text);
+
+	// set guild motd
+	guild->setMotd(motd);
+	guild->saveMotd();
+
+	// broadcast new guild motd
+	ChatChannel* channel = g_chat->getChannel(*player, CHANNEL_GUILD);
+	if (channel) {
+		TextMessage messageLeader(MESSAGE_GUILD, "Message of the Day: " + motd);
+		messageLeader.channelId = CHANNEL_GUILD_LEADER;
+
+		TextMessage messageMember(MESSAGE_GUILD, "Message of the Day: " + motd);
+		messageMember.channelId = CHANNEL_GUILD;
+
+		for (const auto& channelUser : channel->getUsers()) {
+			channelUser.second->sendTextMessage(channelUser.second->isGuildLeader() ? messageLeader : messageMember);
+		}
+	}
+}
+
 void Game::playerOpenPrivateChannel(uint32_t playerId, std::string receiver)
 {
 	Player* player = getPlayerByID(playerId);
@@ -2779,6 +2852,15 @@ void Game::playerQuickLoot(uint32_t playerId, const Position& position, uint8_t 
 		return;
 	}
 
+	// prevent request spam
+	if (!g_config.getBoolean(ConfigManager::SPAMMABLE_QUICK_LOOT)) {
+		if (player->canDoAction()) {
+			player->setNextAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::ACTIONS_DELAY_INTERVAL));
+		} else {
+			return;
+		}
+	}
+
 	if (position.x != 0xFFFF && !Position::areInRange<1, 1, 0>(position, player->getPosition())) {
 		std::vector<Direction> listDir;
 		if (player->getPathTo(position, listDir, 0, 1, true, true)) {
@@ -2794,6 +2876,88 @@ void Game::playerQuickLoot(uint32_t playerId, const Position& position, uint8_t 
 	g_events->eventPlayerOnQuickLoot(player, position, stackPos, spriteId);
 }
 
+void Game::playerSetLootContainer(uint32_t playerId, const Position& position, uint8_t lootType)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	if (position.x != 0xFFFF) {
+		// clicked on the floor
+		return;
+	}
+
+	uint8_t fromIndex = 0;
+	if (position.y & 0x40) {
+		fromIndex = position.z;
+	} else {
+		fromIndex = static_cast<uint8_t>(position.y);
+	}
+
+	Thing* thing = internalGetThing(player, position, fromIndex, 0, STACKPOS_MOVE);
+	if (!thing) {
+		return;
+	}
+
+	Item* item = thing->getItem();
+	if (!item) {
+		return;
+	}
+
+	g_events->eventPlayerOnManageLootContainer(player, item, 0, lootType);
+}
+
+void Game::playerManageLootContainer(uint32_t playerId, uint8_t mode, uint8_t subMode)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnManageLootContainer(player, nullptr, mode, subMode);
+}
+
+void Game::playerConfigureQuickLoot(uint32_t playerId, const std::vector<uint16_t> clientLoot, bool isSkipMode)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	// process item list
+	std::vector<uint16_t> serverLoot;
+	for (uint16_t spriteId : clientLoot) {
+		const ItemType& it = Item::items.getItemIdByClientId(spriteId);
+		if (it.id != 0) {
+			serverLoot.push_back(it.id);
+		}
+	}
+
+	// send to lua script
+	g_events->eventPlayerOnSetLootList(player, serverLoot, isSkipMode);
+}
 void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
                               uint32_t tradePlayerId, uint16_t spriteId)
 {
@@ -3182,10 +3346,10 @@ void Game::internalCloseTrade(Player* player, bool sendCancel/* = true*/)
 	}
 }
 
-void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
+void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t subType, uint16_t amount,
                               bool ignoreCap/* = false*/, bool inBackpacks/* = false*/)
 {
-	if (amount == 0 || amount > 100) {
+	if (amount == 0 || amount > 10000) {
 		return;
 	}
 
@@ -3206,11 +3370,9 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 		return;
 	}
 
-	uint8_t subType;
+
 	if (it.isSplash() || it.isFluidContainer()) {
-		subType = clientFluidToServer(count);
-	} else {
-		subType = count;
+		subType = clientFluidToServer(subType);
 	}
 
 	if (!player->hasShopItemForSale(it.id, subType)) {
@@ -3220,9 +3382,9 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	merchant->onPlayerTrade(player, onBuy, it.id, subType, amount, ignoreCap, inBackpacks);
 }
 
-void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount, bool ignoreEquipped)
+void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t subType, uint16_t amount, bool ignoreEquipped)
 {
-	if (amount == 0 || amount > 100) {
+	if (amount == 0 || amount > 10000) {
 		return;
 	}
 
@@ -3243,11 +3405,8 @@ void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 		return;
 	}
 
-	uint8_t subType;
 	if (it.isSplash() || it.isFluidContainer()) {
-		subType = clientFluidToServer(count);
-	} else {
-		subType = count;
+		subType = clientFluidToServer(subType);
 	}
 
 	merchant->onPlayerTrade(player, onSell, it.id, subType, amount, ignoreEquipped);
@@ -3611,21 +3770,24 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRand
 		return;
 	}
 
+	// prevent setting a mount to unmountable looktypes
 	const Outfit* playerOutfit = Outfits::getInstance().getOutfitByLookType(player->getSex(), outfit.lookType);
 	if (!playerOutfit) {
 		outfit.lookMount = 0;
 	}
 
-	if (outfit.lookMount != 0) {
-		Mount* mount = mounts.getMountByClientID(outfit.lookMount);
-		if (!mount) {
-			return;
-		}
-
+	// check if the player has a mount
+	Mount* mount = mounts.getMountByClientID(outfit.lookMount);
+	if (mount) {
 		if (!player->hasMount(mount)) {
-			return;
+			outfit.lookMount = 0;
 		}
+	} else {
+		outfit.lookMount = 0;
+	}
 
+	// toggle mount
+	if (mount && outfit.lookMount != 0) {
 		int32_t speedChange = mount->speed;
 		if (player->isMounted()) {
 			Mount* prevMount = mounts.getMountByID(player->getCurrentMount());
@@ -3649,13 +3811,24 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRand
 
 	if (player->canWear(outfit.lookType, outfit.lookAddons)) {
 		player->defaultOutfit = outfit;
-
-		if (player->hasCondition(CONDITION_OUTFIT)) {
-			return;
+	} else {
+		// turn packet spoofers into unmounted noobs
+		uint16_t lookType = 128;
+		const auto& outfits = Outfits::getInstance().getOutfits(player->getSex());
+		if (outfits.size() > 0) {
+			lookType = outfits.front().lookType;
 		}
 
-		internalCreatureChangeOutfit(player, outfit);
+		outfit.lookType = lookType;
+		outfit.lookAddons = 0;
+		player->defaultOutfit = outfit;
 	}
+
+	if (player->hasCondition(CONDITION_OUTFIT)) {
+		return;
+	}
+
+	internalCreatureChangeOutfit(player, outfit);
 
 	if (player->isMounted()) {
 		player->onChangeZone(player->getZone());

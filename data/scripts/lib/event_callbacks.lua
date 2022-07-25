@@ -51,17 +51,19 @@ ec.onGainExperience = {[3]=1}
 ec.onLoseExperience = {[2]=1}
 ec.onGainSkillTries = {[3]=1}
 ec.onWrapItem = {}
-ec.onQuickLoot = {}
 ec.onInventoryUpdate = {}
 
 -- Player (tfs plus)
+ec.onUseStamina = {[2]=1}
 ec.onInspectItem = {}
 ec.onInspectTradeItem = {}
 ec.onInspectNpcTradeItem = {}
 ec.onInspectCompendiumItem = {}
 ec.onMinimapQuery = {}
+ec.onQuickLoot = {}
+ec.onSetLootList = {}
+ec.onManageLootContainer = {}
 ec.onConnect = {}
-ec.onUseStamina = {[2]=1}
 
 -- Monster
 ec.onDropLoot = {}

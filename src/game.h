@@ -344,6 +344,8 @@ class Game
 		void playerRequestChannels(uint32_t playerId);
 		void playerOpenChannel(uint32_t playerId, uint16_t channelId);
 		void playerCloseChannel(uint32_t playerId, uint16_t channelId);
+		void playerEditGuildMotd(uint32_t playerId);
+		void playerSaveGuildMotd(uint32_t playerId, const std::string& text);
 		void playerOpenPrivateChannel(uint32_t playerId, std::string receiver);
 		void playerCloseNpcChannel(uint32_t playerId);
 		void playerReceivePing(uint32_t playerId);
@@ -367,16 +369,20 @@ class Game
 		void playerMinimapQuery(uint32_t playerId, const Position& position);
 		void playerUpdateHouseWindow(uint32_t playerId, uint8_t listId, uint32_t windowTextId, const std::string& text);
 		void playerWrapItem(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
+
 		void playerQuickLoot(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
+		void playerSetLootContainer(uint32_t playerId, const Position& position, uint8_t lootType);
+		void playerManageLootContainer(uint32_t playerId, uint8_t mode, uint8_t subMode);
+		void playerConfigureQuickLoot(uint32_t playerId, const std::vector<uint16_t> clientLoot, bool isSkipMode);
 
 		void playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t stackPos,
 		                        uint32_t tradePlayerId, uint16_t spriteId);
 		void playerAcceptTrade(uint32_t playerId);
 		void playerLookInTrade(uint32_t playerId, bool lookAtCounterOffer, uint8_t index);
-		void playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
+		void playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t subType, uint16_t amount,
 		                        bool ignoreCap = false, bool inBackpacks = false);
-		void playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count,
-		                    uint8_t amount, bool ignoreEquipped = false);
+		void playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t subType,
+		                    uint16_t amount, bool ignoreEquipped = false);
 		void playerCloseShop(uint32_t playerId);
 		void playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count);
 		void playerCloseTrade(uint32_t playerId);
@@ -478,6 +484,7 @@ class Game
 
 		void loadMotdNum();
 		void saveMotdNum() const;
+		void saveGuildMotd(const Guild* guild) const;
 		const std::string& getMotdHash() const { return motdHash; }
 		uint32_t getMotdNum() const { return motdNum; }
 		void incrementMotdNum() { motdNum++; }

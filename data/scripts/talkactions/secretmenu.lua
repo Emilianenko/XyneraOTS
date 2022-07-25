@@ -94,6 +94,10 @@ local outfits = {
 	{1408, "Bashmu"},
 	{1418, "Carnisylvan"},
 	{1430, "Shellodon (mount)"},
+	{1537, "Naga 1"},
+	{1538, "Naga 2"},
+	{1539, "Naga 3"},
+	{1543, "Naga 4"},
 }
 function sendCraftedOutfitWindow(player, param)
 	if not player:isAdmin() then

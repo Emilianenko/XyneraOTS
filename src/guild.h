@@ -55,6 +55,7 @@ class Guild
 		void setMotd(const std::string& motd) {
 			this->motd = motd;
 		}
+		void saveMotd();
 		uint16_t getLeaderRankLevel() {
 			return leaderRankLevel;
 		}

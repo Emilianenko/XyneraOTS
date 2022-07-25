@@ -7,6 +7,10 @@
 	<event class="Creature" method="onHear" enabled="0" />
 	<event class="Creature" method="onAddCondition" enabled="1" />
 
+	<!-- Monster methods -->
+	<event class="Monster" method="onDropLoot" enabled="1" />
+	<event class="Monster" method="onSpawn" enabled="1" />
+	
 	<!-- Party methods -->
 	<event class="Party" method="onJoin" enabled="0" />
 	<event class="Party" method="onLeave" enabled="0" />
@@ -14,39 +18,68 @@
 	<event class="Party" method="onShareExperience" enabled="1" />
 
 	<!-- Player methods -->
-	<event class="Player" method="onBrowseField" enabled="1" />
+	<!-- Player - uncategorized -->
+	<event class="Player" method="onBrowseField" enabled="0" />
+	<event class="Player" method="onTurn" enabled="0" />
+	<event class="Player" method="onWrapItem" enabled="1" />
+	<event class="Player" method="onMinimapQuery" enabled="1" />
+	<event class="Player" method="onGuildMotdEdit" enabled="0" />
+	
+	<!-- Player - look -->
 	<event class="Player" method="onLook" enabled="1" />
 	<event class="Player" method="onLookInBattleList" enabled="1" />
 	<event class="Player" method="onLookInTrade" enabled="1" />
 	<event class="Player" method="onLookInShop" enabled="1" />
 	<event class="Player" method="onLookInMarket" enabled="1" />
+	
+	<!-- player - throw/push -->
 	<event class="Player" method="onMoveItem" enabled="1" />
 	<event class="Player" method="onItemMoved" enabled="1" />
 	<event class="Player" method="onMoveCreature" enabled="0" />
-	<event class="Player" method="onReportBug" enabled="1" />
-	<event class="Player" method="onReportRuleViolation" enabled="1" />
-	<event class="Player" method="onTurn" enabled="0" />
-	<event class="Player" method="onTradeRequest" enabled="1" />
-	<event class="Player" method="onTradeAccept" enabled="1" />
-	<event class="Player" method="onTradeCompleted" enabled="1" />
-	<event class="Player" method="onPodiumRequest" enabled="1" />
-	<event class="Player" method="onPodiumEdit" enabled="1" />
+	<event class="Player" method="onInventoryUpdate" enabled="1" />
+	
+	<!-- player - exp/skills -->
 	<event class="Player" method="onGainExperience" enabled="1" />
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
-	<event class="Player" method="onWrapItem" enabled="1" />
-	<event class="Player" method="onQuickLoot" enabled="1" />
-	<event class="Player" method="onInventoryUpdate" enabled="1" />
+	
+	<!-- Player - trade -->
+	<event class="Player" method="onTradeRequest" enabled="0" />
+	<event class="Player" method="onTradeAccept" enabled="1" />
+	<event class="Player" method="onTradeCompleted" enabled="1" />
+	
+	<!-- Player - inspect item -->
 	<event class="Player" method="onInspectItem" enabled="1" />
 	<event class="Player" method="onInspectTradeItem" enabled="1" />
 	<event class="Player" method="onInspectNpcTradeItem" enabled="1" />
 	<event class="Player" method="onInspectCompendiumItem" enabled="1" />
-	<event class="Player" method="onMinimapQuery" enabled="1" />
+
+	<!-- Player - report -->
+	<event class="Player" method="onReportBug" enabled="1" />
+	<event class="Player" method="onReportRuleViolation" enabled="1" />
+
+	<!-- Player - podium -->
+	<event class="Player" method="onPodiumRequest" enabled="1" />
+	<event class="Player" method="onPodiumEdit" enabled="1" />
 	
+	<!-- Player - quick loot -->
+	<event class="Player" method="onQuickLoot" enabled="1" />
+	<event class="Player" method="onSetLootList" enabled="1" />
+	<event class="Player" method="onManageLootContainer" enabled="1" />
+	
+<!-- to do (c++)
+	<!-- Player - cyclopedia - ->
+	<event class="Player" method="onRequestBestiaryAll" enabled="1" />
+	<event class="Player" method="onRequestBestiaryClass" enabled="1" />	
+	<event class="Player" method="onRequestBestiaryRace" enabled="1" />	
+	<event class="Player" method="onRequestPlayerData" enabled="1" />	
+	
+	<!-- Player - exaltation forge - ->
+	<event class="Player" method="onForgeUse" enabled="1" />	
+	<event class="Player" method="onForgeHistoryRequest" enabled="1" />		
+-->
+
+	<!-- Player - network -->
 	<event class="Player" method="onConnect" enabled="1" />
 	<event class="Player" method="onExtendedProtocol" enabled="1" />
-
-	<!-- Monster methods -->
-	<event class="Monster" method="onDropLoot" enabled="1" />
-	<event class="Monster" method="onSpawn" enabled="1" />
 </events>

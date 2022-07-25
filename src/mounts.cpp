@@ -96,6 +96,10 @@ Mount* Mounts::getMountByName(const std::string& name) {
 
 Mount* Mounts::getMountByClientID(uint16_t clientId)
 {
+	if (clientId == 0) {
+		return nullptr;
+	}
+
 	auto it = std::find_if(mounts.begin(), mounts.end(), [clientId](const Mount& mount) {
 		return mount.clientId == clientId;
 	});

@@ -129,6 +129,14 @@ bool Events::load()
 				info.playerOnMinimapQuery = event;
 			} else if (methodName == "onInventoryUpdate") {
 				info.playerOnInventoryUpdate = event;
+			} else if (methodName == "onGuildMotdEdit") {
+				info.playerOnGuildMotdEdit = event;
+			} else if (methodName == "onSetLootList") {
+				info.playerOnSetLootList = event;
+			} else if (methodName == "onManageLootContainer") {
+				info.playerOnManageLootContainer = event;
+
+			// network methods
 			} else if (methodName == "onConnect") {
 				info.playerOnConnect = event;
 			} else if (methodName == "onExtendedProtocol") {
@@ -1351,6 +1359,120 @@ void Events::eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t sl
 
 	lua_pushnumber(L, slot);
 	LuaScriptInterface::pushBoolean(L, equip);
+
+	scriptInterface.callVoidFunction(4);
+}
+
+const std::string Events::eventPlayerOnGuildMotdEdit(Player* player, const std::string& message)
+{
+	// Player:onGuildMotdEdit(message)
+	if (info.playerOnGuildMotdEdit == -1) {
+		return message;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnGuildMotdEdit");
+		return message;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnGuildMotdEdit, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnGuildMotdEdit);
+
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	LuaScriptInterface::pushString(L, message);
+
+	if (scriptInterface.protectedCall(L, 2, 1) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
+	} else {
+		const std::string motd = LuaScriptInterface::getString(L, 1);
+		lua_pop(L, 1);
+		return motd;
+	}
+
+	return message;
+}
+
+void Events::eventPlayerOnSetLootList(Player* player, const std::vector<uint16_t>& lootList, bool isSkipMode)
+{
+	// Player:onSetLootList(lootList, isSkipMode)
+	if (info.playerOnSetLootList == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnSetLootList");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnSetLootList, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnSetLootList);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// lootList
+	lua_createtable(L, lootList.size(), 0);
+	int index = 0;
+	for (auto itemId : lootList) {
+		lua_pushnumber(L, itemId);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	// isSkipMode
+	lua_pushboolean(L, isSkipMode);
+
+	scriptInterface.callVoidFunction(3);
+}
+
+void Events::eventPlayerOnManageLootContainer(Player* player, Item* item, uint8_t modePrimary, uint8_t modeSecondary)
+{
+	// Player:onManageLootContainer(item, modePrimary, modeSecondary)
+	if (info.playerOnManageLootContainer == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnManageLootContainer");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnManageLootContainer, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnManageLootContainer);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// item
+	if (item) {
+		if (Container* container = item->getContainer()) {
+			LuaScriptInterface::pushUserdata<Container>(L, container);
+			LuaScriptInterface::setMetatable(L, -1, "Container");
+		} else {
+			LuaScriptInterface::pushUserdata<Item>(L, item);
+			LuaScriptInterface::setMetatable(L, -1, "Item");
+		}
+	} else {
+		lua_pushnil(L);
+	}
+
+	// modePrimary
+	lua_pushnumber(L, modePrimary);
+
+	// modeSecondary
+	lua_pushnumber(L, modeSecondary);
 
 	scriptInterface.callVoidFunction(4);
 }

@@ -1,5 +1,7 @@
 -- Advanced NPC System by Jiddo
 
+NPCTRADE_MAX_ITEMS_ON_TILE = 200 -- prevents trashing tiles with npc trade
+
 shop_amount = {}
 shop_cost = {}
 shop_rlname = {}

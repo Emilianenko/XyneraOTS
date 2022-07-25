@@ -1523,12 +1523,15 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONST_ME_FATAL)
 	registerEnum(CONST_ME_DODGE)
 	registerEnum(CONST_ME_HOURGLASS)
+	registerEnum(CONST_ME_FIREWORK_STAR)
+	registerEnum(CONST_ME_FIREWORK_CIRCLE)
 	registerEnum(CONST_ME_FERUMBRAS_1)
 	registerEnum(CONST_ME_GAZHARAGOTH)
 	registerEnum(CONST_ME_MAD_MAGE)
 	registerEnum(CONST_ME_HORESTIS)
 	registerEnum(CONST_ME_DEVOVORGA)
 	registerEnum(CONST_ME_FERUMBRAS_2)
+	registerEnum(CONST_ME_FOAM)
 
 	registerEnum(CONST_ANI_NONE)
 	registerEnum(CONST_ANI_SPEAR)
@@ -2799,6 +2802,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getAccountId", LuaScriptInterface::luaPlayerGetAccountId);
 	registerMethod("Player", "getLastLoginSaved", LuaScriptInterface::luaPlayerGetLastLoginSaved);
 	registerMethod("Player", "getLastLogout", LuaScriptInterface::luaPlayerGetLastLogout);
+	registerMethod("Player", "fastRelog", LuaScriptInterface::luaPlayerFastRelog);
 
 	registerMethod("Player", "getAccountType", LuaScriptInterface::luaPlayerGetAccountType);
 	registerMethod("Player", "setAccountType", LuaScriptInterface::luaPlayerSetAccountType);
@@ -9350,6 +9354,40 @@ int LuaScriptInterface::luaPlayerGetLastLogout(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerFastRelog(lua_State* L)
+{
+	// player:fastRelog(otherCharName)
+	Player* player = getUserdata<Player>(L, 1);
+	const std::string& otherCharName = getString(L, 2);
+
+	if (!player) {
+		lua_pushnumber(L, RETURNVALUE_NOTPOSSIBLE);
+	}
+
+	// check logout conditions
+	if (!player->isAccessPlayer()) {
+		if (player->getTile()->hasFlag(TILESTATE_NOLOGOUT)) {
+			lua_pushnumber(L, RETURNVALUE_YOUCANNOTLOGOUTHERE);
+			return 1;
+		}
+
+		if (!player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) && player->hasCondition(CONDITION_INFIGHT)) {
+			lua_pushnumber(L, RETURNVALUE_YOUMAYNOTLOGOUTDURINGAFIGHT);
+			return 1;
+		}
+	}
+
+	//scripting event - onLogout
+	if (!g_creatureEvents->playerLogout(player)) {
+		lua_pushnumber(L, RETURNVALUE_YOUCANNOTLOGOUTHERE);
+		return 1;
+	}
+
+	player->fastRelog(otherCharName);
+	lua_pushnumber(L, RETURNVALUE_NOERROR);
 	return 1;
 }
 

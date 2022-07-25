@@ -86,6 +86,10 @@ static constexpr int32_t PLAYER_MIN_SPEED = 10;
 
 static constexpr int32_t NOTIFY_DEPOT_BOX_RANGE = 1;
 
+// standard exhaust for client requests
+static constexpr int32_t UI_ACTION_INTERVAL_LIGHT = 200;
+static constexpr int32_t UI_ACTION_INTERVAL_HEAVY = 2000;
+
 class Player final : public Creature, public Cylinder
 {
 	public:
@@ -159,6 +163,7 @@ class Player final : public Creature, public Cylinder
 		void removeList() override;
 		void addList() override;
 		void kickPlayer(bool displayEffect, const std::string& message = std::string());
+		void fastRelog(const std::string& otherCharName);
 
 		static uint64_t getExpForLevel(const uint64_t lv) {
 			return (((lv - 6ULL) * lv + 17ULL) * lv - 12ULL) / 6ULL * 100ULL;
@@ -216,6 +221,12 @@ class Player final : public Creature, public Cylinder
 		}
 		void setGuildNick(std::string nick) {
 			guildNick = nick;
+		}
+
+		void editGuildMotd(const std::string& text) {
+			if (client) {
+				client->sendGuildMotdEditDialog(text);
+			}
 		}
 
 		bool isInWar(const Player* player) const;
@@ -1273,6 +1284,7 @@ class Player final : public Creature, public Cylinder
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 
+		// standard exhaust for "use" actions
 		void setNextAction(int64_t time) {
 			if (time > nextAction) {
 				nextAction = time;
@@ -1282,6 +1294,26 @@ class Player final : public Creature, public Cylinder
 			return nextAction <= OTSYS_TIME();
 		}
 		uint32_t getNextActionTime() const;
+
+		// ui click exhaust
+		void setNextLightUIAction() {
+			if (UI_ACTION_INTERVAL_LIGHT > nextLightUIAction) {
+				nextLightUIAction = UI_ACTION_INTERVAL_LIGHT;
+			}
+		}
+		bool canDoLightUIAction() const {
+			return nextLightUIAction <= OTSYS_TIME();
+		}
+
+		// ui click exhaust for heavy operations
+		void setNextHeavyUIAction() {
+			if (UI_ACTION_INTERVAL_HEAVY > nextHeavyUIAction) {
+				nextHeavyUIAction = UI_ACTION_INTERVAL_HEAVY;
+			}
+		}
+		bool canDoHeavyUIAction() const {
+			return nextHeavyUIAction <= OTSYS_TIME();
+		}
 
 		Item* getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen);
 		void setWriteItem(Item* item, uint16_t maxWriteLen = 0);
@@ -1394,6 +1426,8 @@ class Player final : public Creature, public Cylinder
 		int64_t lastPing;
 		int64_t lastPong;
 		int64_t nextAction = 0;
+		int64_t nextLightUIAction = 0; // lightweight UI operations - short cooldowns
+		int64_t nextHeavyUIAction = 0; // heavy UI operations - longer cooldowns
 
 		ProtocolGame_ptr client;
 		BedItem* bedItem = nullptr;

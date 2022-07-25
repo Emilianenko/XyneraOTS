@@ -11,28 +11,157 @@ function msgcontains(message, keyword)
 end
 
 function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
-	local amount = amount or 1
-	local subType = subType or 0
-	local item = 0
-	if ItemType(itemid):isStackable() then
-		if inBackpacks then
-			stuff = Game.createItem(backpack, 1)
-			item = stuff:addItem(itemid, math.min(100, amount))
-		else
-			stuff = Game.createItem(itemid, math.min(100, amount))
-		end
-		return Player(cid):addItemEx(stuff, ignoreCap) ~= RETURNVALUE_NOERROR and 0 or amount, 0
+	local player = Player(cid)
+	if not player then
+		return 1, 0
 	end
 
+	local amount = amount or 1
+	local subType = subType or 0
+
+	local itemType = ItemType(itemid)
+	local weight = itemType:getWeight()
+
+	if itemType:isStackable() then
+		local baseAmount = amount
+		local mainBackpack = player:getSlotItem(CONST_SLOT_BACKPACK)
+
+		if inBackpacks then
+			-- stackable, buy in backpacks: true
+			local shoppingBagType = ItemType(backpack)
+			local shoppingBagSlots = shoppingBagType:getCapacity()
+			if shoppingBagSlots == 0 then
+				-- avoid dividing by zero
+				return 0, 0
+			end
+
+			-- generate virtual shopping bags
+			local itemsToAdd = {}
+			while amount > 0 do
+				local shoppingBag = Game.createItem(backpack, 1)
+
+				while shoppingBag:getEmptySlots() > 0 and amount > 0 do
+					local currentAmount = math.min(amount, 100)
+					shoppingBag:addItem(itemid, currentAmount)
+					amount = amount - currentAmount
+				end
+
+				itemsToAdd[#itemsToAdd + 1] = shoppingBag
+			end
+
+			-- check if virtual bags can be carried
+			local playerCap = player:getFreeCapacity()
+			local playerSlots = (mainBackpack and mainBackpack:getEmptySlots(true) or 0)
+			local shoppingBagCount = #itemsToAdd
+			local slotsDiff = playerSlots - shoppingBagCount
+			local totalWeight = weight * baseAmount + shoppingBagType:getWeight() * shoppingBagCount
+			local weightDiff = playerCap - totalWeight
+
+			if weightDiff >= 0 and slotsDiff >= 0 then
+				-- conditions are met - player has enough cap/slots
+				for _, shoppingBag in pairs(itemsToAdd) do
+					player:addItemEx(shoppingBag, ignoreCap)
+				end
+
+				return baseAmount, shoppingBagCount
+			end
+
+			-- check if player has ignore cap selected
+			if not ignoreCap then
+				return 0, 0
+			end
+
+			-- check if tile exists
+			local tile = player:getTile()
+			if not tile then
+				return 0, 0
+			end
+
+			local fullShoppingBagWeight = shoppingBagSlots * baseAmount * weight * 100
+			local lastShoppingBagWeight = itemsToAdd[#itemsToAdd]:getWeight()
+
+			local droppedBackpacks = shoppingBagCount
+			for i = 1, shoppingBagCount do
+				local currentBagWeight = i < shoppingBagCount and fullShoppingBagWeight or lastShoppingBagWeight
+				playerCap = playerCap - currentBagWeight
+				playerSlots = playerSlots - 1
+				if playerCap < 0 or playerSlots < 0 then
+					droppedBackpacks = droppedBackpacks + 1
+				end
+			end
+
+			-- check if tile can accept more items
+			if NPCTRADE_MAX_ITEMS_ON_TILE - tile:getItemCount() < droppedBackpacks then
+				-- unable to add bags to player, release from memory
+				for _, shoppingBag in pairs(itemsToAdd) do
+					shoppingBag:remove()
+				end
+
+				return 0, 0
+			end
+
+			-- shove shopping bags to player inventory
+			for _, shoppingBag in pairs(itemsToAdd) do
+				player:addItemEx(shoppingBag, ignoreCap)
+			end
+
+			return baseAmount, shoppingBagCount
+		else
+			-- stackable, buy in backpacks: false
+			local slotCount = math.ceil(amount / 100)
+			local slotsDiff = (mainBackpack and mainBackpack:getEmptySlots(true) or 0) - slotCount
+			local weightDiff = player:getFreeCapacity() - (weight * amount)
+
+			if weightDiff >= 0 and slotsDiff >= 0 then
+				-- conditions are met - player has enough cap/slots
+				player:addItem(itemid, amount, false)
+				return baseAmount, 0
+			end
+
+			if ignoreCap then
+				-- ignore cap enabled, calculate how many stacks will drop on the floor
+				local tile = player:getTile()
+				if tile and NPCTRADE_MAX_ITEMS_ON_TILE - tile:getItemCount() >= math.max(math.ceil(-weightDiff / (weight * 100)), -slotsDiff) then
+					player:addItem(itemid, amount)
+					return baseAmount, 0
+				end
+			end
+
+			-- ignore cap disabled or tile not found or tile too trashed to drop new stacks
+			return 0, 0
+		end
+	end
+
+	local tile = player:getTile()
+	local tileSlots = tile and NPCTRADE_MAX_ITEMS_ON_TILE - tile:getItemCount() or 0
+
+	-- not stackable, buy in backpacks: true
 	local a = 0
 	if inBackpacks then
 		local container, b = Game.createItem(backpack, 1), 1
+		local canTakeItems = true
+
 		for i = 1, amount do
 			local item = container:addItem(itemid, subType)
 			if table.contains({(ItemType(backpack):getCapacity() * b), amount}, i) then
-				if Player(cid):addItemEx(container, ignoreCap) ~= RETURNVALUE_NOERROR then
-					b = b - 1
-					break
+				-- try adding a shopping bag
+				local taken = false
+				if canTakeItems then
+					if player:addItemEx(container, false) == RETURNVALUE_NOERROR then
+						taken = true
+					else
+						canTakeItems = false
+					end
+				end
+
+				-- handle ignoreCap situation
+				if not taken then
+					if tileSlots > 0 and player:addItemEx(container, ignoreCap) == RETURNVALUE_NOERROR then
+						tileSlots = tileSlots - 1
+					else
+						b = b - 1
+						break
+					end
 				end
 
 				a = i
@@ -42,16 +171,37 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 				end
 			end
 		end
+		
 		return a, b
 	end
 
-	for i = 1, amount do -- normal method for non-stackable items
+	-- not stackable, buy in backpacks: false
+	local canTakeItems = true
+	for i = 1, amount do
 		local item = Game.createItem(itemid, subType)
-		if Player(cid):addItemEx(item, ignoreCap) ~= RETURNVALUE_NOERROR then
-			break
+
+		-- try adding item normally
+		local taken = false
+		if canTakeItems then
+			if player:addItemEx(item, false) ~= RETURNVALUE_NOERROR then
+				taken = true
+			else
+				canTakeItems = false
+			end
 		end
+
+		-- handle ignoreCap situation
+		if not taken then
+			if tileSlots > 0 and player:addItemEx(item, ignoreCap) == RETURNVALUE_NOERROR then
+				tileSlots = tileSlots - 1
+			else
+				break
+			end
+		end
+
 		a = i
 	end
+
 	return a, 0
 end
 

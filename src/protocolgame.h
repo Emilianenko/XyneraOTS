@@ -61,6 +61,8 @@ class ProtocolGame final : public Protocol
 
 		void login(const std::string& name, uint32_t accountId, OperatingSystem_t operatingSystem);
 		void logout(bool displayEffect, bool forced, const std::string& message = std::string());
+		void fastRelog(const std::string& otherPlayerName);
+		void sendRelogCancel(const std::string& msg, bool isRelog);
 
 		uint16_t getVersion() const {
 			return version;
@@ -114,6 +116,8 @@ class ProtocolGame final : public Protocol
 		void parseHouseWindow(NetworkMessage& msg);
 		void parseWrapItem(NetworkMessage& msg);
 		void parseQuickLoot(NetworkMessage& msg);
+		void parseSelectLootContainer(NetworkMessage& msg);
+		void parseQuickLootList(NetworkMessage& msg);
 
 		void parseLookInShop(NetworkMessage& msg);
 		void parsePlayerPurchase(NetworkMessage& msg);
@@ -162,6 +166,7 @@ class ProtocolGame final : public Protocol
 		void parseOpenChannel(NetworkMessage& msg);
 		void parseOpenPrivateChannel(NetworkMessage& msg);
 		void parseCloseChannel(NetworkMessage& msg);
+		void parseSaveGuildMotd(NetworkMessage& msg);
 
 		//Send functions
 		void sendChannelMessage(const std::string& author, const std::string& text, MessageClasses type, uint16_t channel);
@@ -175,6 +180,7 @@ class ProtocolGame final : public Protocol
 		void sendNamedPrivateMessage(const std::string& speaker, MessageClasses type, const std::string& text);
 		void sendIcons(uint32_t icons);
 		void sendFYIBox(const std::string& message);
+		void sendGuildMotdEditDialog(const std::string& currentMotd);
 
 		void sendDistanceShoot(const Position& from, const Position& to, uint8_t type);
 		void sendMagicEffect(const Position& pos, uint8_t type);
@@ -342,6 +348,12 @@ class ProtocolGame final : public Protocol
 
 		bool debugAssertSent = false;
 		bool acceptPackets = false;
+
+		// player data which is still needed after player object destruction
+		std::string lastName;
+		uint32_t lastAccountId = 0;
+		OperatingSystem_t lastOperatingSystem = CLIENTOS_NONE;
+		int64_t lastDeathTime = 0;
 };
 
 #endif

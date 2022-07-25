@@ -53,6 +53,10 @@ PlayerStorageKeys = {
 	imbuLastEquipItem = 70050,
 	imbuLastEquipSlot = 70051,
 	
+	-- rune to set podium item
+	-- scripts/actions/podiumRune.lua
+	podiumRune = 80040,
+	
 	-- total range: 300000-319999
 	achievementsBase = 300000,
 	achievementsCounter = 310000,

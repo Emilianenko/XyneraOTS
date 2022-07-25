@@ -215,6 +215,10 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 		player->lastLoginSaved = std::max<time_t>(time(nullptr), player->lastLoginSaved + 1);
 		acceptPackets = true;
 
+		lastName = name;
+		lastAccountId = accountId;
+		lastOperatingSystem = operatingSystem;
+
 		addGameTask([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	} else {
 		if (eventConnect != 0 || !g_config.getBoolean(ConfigManager::REPLACE_KICK_ON_LOGIN)) {
@@ -234,10 +238,253 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			connect(foundPlayer->getID(), operatingSystem);
 		}
 
+		lastName = name;
+		lastAccountId = accountId;
+		lastOperatingSystem = operatingSystem;
+
 		addGameTask([=, playerID = foundPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); });
 	}
 
 	OutputMessagePool::getInstance().addProtocolToAutosend(shared_from_this());
+}
+
+
+void ProtocolGame::sendRelogCancel(const std::string& msg, bool isRelog)
+{
+	if (isRelog) {
+		disconnectClient(msg);
+		return;
+	}
+
+	player->sendCancelMessage(msg);
+}
+
+void ProtocolGame::fastRelog(const std::string& otherPlayerName)
+{
+	//dispatcher thread
+	if (!player || player->isRemoved()) {
+		return;
+	}
+
+	// get client type
+	OperatingSystem_t operatingSystem = player->getOperatingSystem();
+
+	// read requested player info
+	bool isRelog = false;
+	Player* otherPlayer = g_game.getPlayerByName(otherPlayerName);
+	if (otherPlayer) {
+		if (otherPlayer->isRemoved()) {
+			player->sendCancelMessage("An error occured. Please try again later.");
+			return;
+		}
+
+		if (player->getAccount() != otherPlayer->getAccount()) {
+			player->sendCancelMessage("Your character could not be loaded.");
+			return;
+		}
+
+		// handle relog to same character situation
+		if (player->getID() == otherPlayer->getID()) {
+			// send logout effect
+			if (!player->isInGhostMode()) {
+				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+			}
+
+			// unlink player client
+			player->client = nullptr;
+
+			// logout
+			g_game.removeCreature(player);
+			otherPlayer = nullptr;
+			isRelog = true;
+		}
+	}
+
+	// handle login situation
+	bool isLogin = !otherPlayer || g_config.getBoolean(ConfigManager::ALLOW_CLONES);
+	if (isLogin) {
+		otherPlayer = new Player(nullptr);
+		otherPlayer->setName(otherPlayerName);
+
+		otherPlayer->incrementReferenceCounter();
+		otherPlayer->setID();
+
+		if (isRelog) {
+			// use a new object instead of removed one
+			this->player = otherPlayer;
+			otherPlayer->client = getThis();
+		}
+
+		// fetch base player info from the database
+		if (!IOLoginData::preloadPlayer(otherPlayer, otherPlayerName)) {
+			sendRelogCancel("Your character could not be loaded.", isRelog);
+			return;
+		}
+
+		// check accounts
+		if (player->getAccount() != otherPlayer->getAccount()) {
+			player->sendCancelMessage("Your character could not be loaded.");
+			return;
+		}
+
+		// check namelock
+		if (IOBan::isPlayerNamelocked(otherPlayer->getGUID())) {
+			sendRelogCancel("Your character has been namelocked.", isRelog);
+			return;
+		}
+
+		// server closed
+		if (!otherPlayer->hasFlag(PlayerFlag_CanAlwaysLogin)) {
+			GameState_t gameState = g_game.getGameState();
+			if (gameState == GAME_STATE_CLOSING) {
+				sendRelogCancel("The game is just going down.\nPlease try again later.", isRelog);
+				return;
+			} else if (gameState == GAME_STATE_CLOSED) {
+				sendRelogCancel("Server is currently closed.\nPlease try again later.", isRelog);
+				return;
+			}
+		}
+
+		// disconnect if banned
+		if (!otherPlayer->hasFlag(PlayerFlag_CannotBeBanned)) {
+			BanInfo banInfo;
+			if (IOBan::isAccountBanned(otherPlayer->getAccount(), banInfo)) {
+				if (banInfo.reason.empty()) {
+					banInfo.reason = "(none)";
+				}
+
+				if (banInfo.expiresAt > 0) {
+					disconnectClient(fmt::format("Your account has been banned until {:s} by {:s}.\n\nReason specified:\n{:s}", formatDateShort(banInfo.expiresAt), banInfo.bannedBy, banInfo.reason));
+				} else {
+					disconnectClient(fmt::format("Your account has been permanently banned by {:s}.\n\nReason specified:\n{:s}", banInfo.bannedBy, banInfo.reason));
+				}
+
+				if (!isRelog) {
+					// send logout effect
+					if (!player->isInGhostMode()) {
+						g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+					}
+
+					// remove
+					g_game.removeCreature(player);
+				}
+
+				return;
+			}
+		}
+	}
+
+	// handle same char relog situation
+	bool sameClient = otherPlayer->client && (otherPlayer->client == getThis());
+	if (!sameClient) {
+		// logged from another place - check config value
+		if (!g_config.getBoolean(ConfigManager::REPLACE_KICK_ON_LOGIN)) {
+			player->sendCancelMessage("You are already logged in.");
+			return;
+		}
+
+		// disconnect other client
+		otherPlayer->disconnect();
+	}
+
+	// logout (already done in relog situation)
+	if (!isRelog) {
+		// send logout effect
+		if (!player->isInGhostMode()) {
+			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		}
+
+		// unlink player client
+		player->client = nullptr;
+
+		// logout the current character
+		g_game.removeCreature(player);
+	}
+
+	// make sure the camera will follow the player
+	knownCreatureSet.clear();
+
+	// copy client information
+	otherPlayer->setOperatingSystem(operatingSystem);
+
+	// set player ip
+	otherPlayer->lastIP = getIP();
+
+	// restore client communication
+	otherPlayer->client = getThis();
+	this->player = otherPlayer;
+
+	if (isLogin) {
+		// multiclient check
+		if (g_config.getBoolean(ConfigManager::ONE_PLAYER_ON_ACCOUNT) && otherPlayer->getAccountType() < ACCOUNT_TYPE_GAMEMASTER && g_game.getPlayerByAccount(otherPlayer->getAccount())) {
+			disconnectClient("You may only login with one character\nof your account at the same time.");
+			return;
+		}
+
+		// fetch full player info
+		if (!IOLoginData::loadPlayerById(otherPlayer, otherPlayer->getGUID())) {
+			disconnectClient("Your character could not be loaded.");
+			return;
+		}
+
+		// place player on the map
+		if (!g_game.placeCreature(otherPlayer, otherPlayer->getLoginPosition())) {
+			if (!g_game.placeCreature(otherPlayer, otherPlayer->getTemplePosition(), false, true)) {
+				disconnectClient("Temple position is wrong. Contact the administrator.");
+				return;
+			}
+		}
+
+		// enable otc feature
+		if (operatingSystem >= CLIENTOS_OTCLIENT_LINUX) {
+			otherPlayer->registerCreatureEvent("ExtendedOpcode");
+		}
+
+		// initialize account currencies
+		addGameTask([=, playerGUID = otherPlayer->getGUID()]() { g_game.playerRegisterCurrencies(playerGUID); });
+
+		// update last login info
+		otherPlayer->lastLoginSaved = std::max<time_t>(time(nullptr), otherPlayer->lastLoginSaved + 1);
+	}
+
+	// send player stats
+	sendStats(); // hp, cap, level, xp rate, etc.
+	sendSkills(); // skills and special skills
+	player->sendIcons(); // active conditions
+
+	// send client info
+	sendClientFeatures(); // player speed, bug reports, store url, pvp mode, etc
+	sendBasicData(); // premium account, vocation, known spells, prey system status, magic shield status
+	sendItems(); // send carried items for action bars
+
+	// send game screen
+	sendMapDescription(player->getPosition());
+
+	// send login effect
+	if (isLogin && !player->isInGhostMode()) {
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
+	}
+
+	// send inventory
+	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
+		sendInventoryItem(static_cast<slots_t>(i), player->getInventoryItem(static_cast<slots_t>(i)));
+	}
+	sendInventoryItem(CONST_SLOT_STORE_INBOX, player->getStoreInbox()->getItem());
+
+	// player light level
+	sendCreatureLight(dynamic_cast<const Creature*>(player));
+
+	// vip list
+	sendVIPEntries();
+
+	// opened containers
+	player->openSavedContainers();
+
+	// remember last relog
+	lastName = otherPlayerName;
+
+	// event onConnect
+	addGameTask([=, playerID = otherPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); });
 }
 
 void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
@@ -509,38 +756,65 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	uint8_t recvbyte = msg.getByte();
 
-	if (!player) {
-		if (recvbyte == 0x0F) {
+	//a dead player can not perform actions
+	if (!player || player->isRemoved() || player->getHealth() <= 0) {
+		// handle user afking on death screen
+		if (OTSYS_TIME() > lastDeathTime) {
+			sendSessionEnd(SESSION_END_LOGOUT);
+			disconnect();
+			return;
+		}
+
+		// "you are dead" window
+		switch (recvbyte) {
+			case 0x0F:
+				// "ok" or "store" button
+				addGameTask([=, thisPtr = getThis(), characterName = std::move(lastName)]() { thisPtr->login(characterName, lastAccountId, lastOperatingSystem); });
+				break;
+			case 0x14:
+				// "cancel" (logout)
+				sendSessionEnd(SESSION_END_LOGOUT);
+				disconnect();
+				break;
+			case 0x1D:
+				// ping check
+				sendPingBack();
+				break;
+			default:
+				break;
+		}
+
+		if (msg.isOverrun()) {
 			disconnect();
 		}
 
 		return;
 	}
 
-	//a dead player can not perform actions
-	if (player->isRemoved() || player->getHealth() <= 0) {
-		if (recvbyte == 0x0F) {
-			disconnect();
-			return;
-		}
-
-		if (recvbyte != 0x14) {
-			return;
-		}
-	}
-
 	// cases commented as "(scripted)" are being handled by lua scripts
 	switch (recvbyte) {
+		// 0x00-0x09 - empty
+		// 0x0A - connection (already handled)
+		// 0x0B - connection (already handled)
+		// 0x0C-0x0E - empty
 		case 0x0F: break; // login
+		// 0x10-0x13 - empty
 		case 0x14: addGameTask([thisPtr = getThis()]() { thisPtr->logout(true, false); }); break;
+		// 0x15-0x1B - empty
 		case 0x1C: break; // ping check
 		case 0x1D: addGameTask([playerID = player->getID()]() { g_game.playerReceivePingBack(playerID); }); break;
 		case 0x1E: addGameTask([playerID = player->getID()]() { g_game.playerReceivePing(playerID); }); break;
+		//case 0x1F: break; // client performance logs (deprecated?)
+		// 0x20-0x27 - empty
+		//case 0x28: break; // stash withdraw
+		//case 0x29: break; // stash action
 		//case 0x2A: break; // bestiary tracker
+		//case 0x2A: break; // party hunt analyzer
 		//case 0x2C: break; // team finder (leader)
 		//case 0x2D: break; // team finder (member)
-		//case 0x28: break; // stash withdraw
+		// 0x2E-0x31 - empty
 		case 0x32: parseExtendedOpcode(msg); break; // otclient extended opcode
+		// 0x33-0x63 - empty
 		case 0x64: parseAutoWalk(msg); break;
 		case 0x65: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTH); }); break;
 		case 0x66: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_EAST); }); break;
@@ -551,11 +825,14 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x6B: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTHEAST); }); break;
 		case 0x6C: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTHWEST); }); break;
 		case 0x6D: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTHWEST); }); break;
+		// 0x6E - empty
 		case 0x6F: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_NORTH); }); break;
 		case 0x70: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_EAST); }); break;
 		case 0x71: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_SOUTH); }); break;
 		case 0x72: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_WEST); }); break;
 		case 0x73: parsePlayerMinimapQuery(msg); break; // ctrl+shift+left click on minimap
+		// 0x74-0x75 - empty
+		// case 0x76: break; // character trade ui
 		case 0x77: parseEquipObject(msg); break;
 		case 0x78: parseThrow(msg); break;
 		case 0x79: parseLookInShop(msg); break;
@@ -566,6 +843,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x7E: parseLookInTrade(msg); break;
 		case 0x7F: addGameTask([playerID = player->getID()]() { g_game.playerAcceptTrade(playerID); }); break;
 		case 0x80: addGameTask([playerID = player->getID()]() { g_game.playerCloseTrade(playerID); }); break;
+		// case 0x81: break; // friend system ui
 		case 0x82: parseUseItem(msg); break;
 		case 0x83: parseUseItemEx(msg); break;
 		case 0x84: parseUseWithCreature(msg); break;
@@ -579,17 +857,21 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x8C: parseLookAt(msg); break;
 		case 0x8D: parseLookInBattleList(msg); break;
 		case 0x8E: /* join aggression */ break;
-		case 0x8F: parseQuickLoot(msg); break;
-		//case 0x90: break; // select loot container (scripted)
-		//case 0x91: break; // parse loot list (scripted)
-		//case 0x92: break; // request locker items
+		case 0x8F: parseQuickLoot(msg); break; // loot corpse
+		case 0x90: parseSelectLootContainer(msg);  break; // select loot container
+		case 0x91: parseQuickLootList(msg); break; // loot list configuration
+		//case 0x92: break; // depot search 1
+		//case 0x93: break; // depot search 2
+		//case 0x94: break; // depot search 3
+		//case 0x95: break; // depot search (?)
 		case 0x96: parseSay(msg); break;
 		case 0x97: addGameTask([playerID = player->getID()]() { g_game.playerRequestChannels(playerID); }); break;
 		case 0x98: parseOpenChannel(msg); break;
 		case 0x99: parseCloseChannel(msg); break;
 		case 0x9A: parseOpenPrivateChannel(msg); break;
-		//case 0x9B: break; // request edit guild motd (scripted)
-		//case 0x9C: breal; // set new guild motd (scripted)
+		case 0x9B: addGameTask([=, playerID = player->getID()]() { g_game.playerEditGuildMotd(playerID); }); break;
+		case 0x9C: parseSaveGuildMotd(msg); break;
+		// 0x9D - empty
 		case 0x9E: addGameTask([playerID = player->getID()]() { g_game.playerCloseNpcChannel(playerID); }); break;
 		case 0xA0: parseFightModes(msg); break;
 		case 0xA1: parseAttack(msg); break;
@@ -600,40 +882,63 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xA6: parsePassPartyLeadership(msg); break;
 		case 0xA7: addGameTask([playerID = player->getID()]() { g_game.playerLeaveParty(playerID); }); break;
 		case 0xA8: parseEnableSharedPartyExperience(msg); break;
+		// 0xA9 - disband party (?)
 		case 0xAA: addGameTask([playerID = player->getID()]() { g_game.playerCreatePrivateChannel(playerID); }); break;
 		case 0xAB: parseChannelInvite(msg); break;
 		case 0xAC: parseChannelExclude(msg); break;
+		//case 0xAD: break; // house auction ui
+		//case 0xAE: break; // bosstiary ui
+		//case 0xAF: break; // boss slots ui
+		// 0xB0 - empty
 		//case 0xB1: break; // request highscores
+		// 0xB2-0xBD - empty
 		case 0xBE: addGameTask([playerID = player->getID()]() { g_game.playerCancelAttackAndFollow(playerID); }); break;
 		//case 0xBF: break; // exaltation forge (scripted)
-		//case 0xC7: break; // request tournament leaderboard
+		//case 0xC0: break; //request forge history (scripted)
+		// 0xC1-0xC2 - empty
+		// 0xC3 - tournament ui 1
+		// 0xC4 - tournament ui 2
+		// 0xC5 - empty
+		// 0xC6 - tournament ui 3
+		// 0xC7 - tournament ui 4
+		// 0xC8 - tournament ui 5
 		case 0xC9: /* update tile */ break;
 		case 0xCA: parseUpdateContainer(msg); break;
 		case 0xCB: parseBrowseField(msg); break;
 		case 0xCC: parseSeekInContainer(msg); break;
 		case 0xCD: parseInspectItem(msg); break;
 		//case 0xCE: break; // allow everyone to inspect me (to do)
-		//case 0xC0: break; //request forge history (scripted)
+		//case 0xCF: break; // blessings UI
 		case 0xD0: parseQuestTracker(msg); break;
+		// 0xD1 - empty/unknown
 		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;
 		case 0xD3: parseSetOutfit(msg); break;
 		case 0xD4: parseToggleMount(msg); break;
 		//case 0xD5: break; // inspect character feature: client preferences
 		//case 0xD6: break; // imbuing(?)
 		//case 0xD7: break; // imbuing(?)
+		//case 0xD8: break; // daily reward 1
+		//case 0xD9: break; // daily reward 2
+		//case 0xDA: break; // daily reward 3
+		//case 0xDB: break; // world map (large) action
 		case 0xDC: parseAddVip(msg); break;
 		case 0xDD: parseRemoveVip(msg); break;
 		case 0xDE: parseEditVip(msg); break;
-		//case 0xDF: break; // premium shop (?)
-		//case 0xE0: break; // premium shop (?)
+		//case 0xDF: break; // vip group
+		//case 0xE0: break; // game news(?)
 		//case 0xE1: break; // bestiary 1 (scripted)
 		//case 0xE2: break; // bestiary 2 (scripted)
 		//case 0xE3: break; // bestiary 3 (scripted)
-		//case 0xE4: break; // buy charm rune
+		//case 0xE4: break; // buy charm
 		//case 0xE5: break; // request character info (in-game knowledge base) (scripted)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
+		// 0xE9 - unknown
+		// 0xEA - unknown
+		// 0xEB - prey
+		// 0xEC - rename hireling
+		case 0xED: /* request resource balance */ break;
 		case 0xEE: addGameTask([playerID = player->getID()]() { g_game.playerSay(playerID, 0, TALKTYPE_SAY, "", "hi"); }); break;
 		//case 0xEF: break; // request store coins transfer
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerShowQuestLog(playerID); }); break;
@@ -651,6 +956,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xFC: break; // store window buy
 		//case 0xFD: break; // store window history 1
 		//case 0xFE: break; // store window history 2
+		//0xFF - empty
 
 		default:
 			// std::cout << "[DEBUG]: Player " << player->getName() << " has sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
@@ -871,6 +1177,16 @@ void ProtocolGame::parseCloseChannel(NetworkMessage& msg)
 		channelID = CHANNEL_GUILD;
 	}
 	addGameTask([=, playerID = player->getID()]() { g_game.playerCloseChannel(playerID, channelID); });
+}
+
+void ProtocolGame::parseSaveGuildMotd(NetworkMessage& msg)
+{
+	std::string text = msg.getString();
+	if (text.length() > 255) {
+		return;
+	}
+
+	addGameTask([=, playerID = player->getID(), text = std::move(text)]() { g_game.playerSaveGuildMotd(playerID, text); });
 }
 
 void ProtocolGame::parseOpenPrivateChannel(NetworkMessage& msg)
@@ -1191,6 +1507,39 @@ void ProtocolGame::parseQuickLoot(NetworkMessage& msg)
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerQuickLoot(playerID, pos, stackpos, spriteId); });
 }
 
+void ProtocolGame::parseSelectLootContainer(NetworkMessage& msg)
+{
+	uint8_t mode = msg.getByte();
+	uint8_t lootType = msg.getByte();
+
+	// 0x00 - select loot container
+	// 0x01 - unselect loot container
+	// 0x02 - unused
+	// 0x03 - toggle fallback to main container
+	if (mode == 0x00) {		
+		Position pos = msg.getPosition();
+		msg.get<uint16_t>(); //spriteId
+		msg.getByte(); //containerPos
+		addGameTask([=, playerID = player->getID()]() { g_game.playerSetLootContainer(playerID, pos, lootType); });
+		return;
+	}
+
+	addGameTask([=, playerID = player->getID()]() { g_game.playerManageLootContainer(playerID, mode, lootType); });
+}
+
+void ProtocolGame::parseQuickLootList(NetworkMessage& msg)
+{
+	uint8_t mode = msg.getByte(); // collect/skip listed
+	std::vector<uint16_t> lootItems;
+
+	uint16_t listSize = std::min<uint16_t>(msg.get<uint16_t>(), static_cast<uint16_t>(g_config.getNumber(ConfigManager::MAX_QUICK_LOOT_LIST_SIZE)));
+	for (uint16_t i = 0; i < listSize; ++i) {
+		lootItems.push_back(msg.get<uint16_t>());
+	}
+
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerConfigureQuickLoot(playerID, lootItems, mode == 0x01); });
+}
+
 void ProtocolGame::parseLookInShop(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
@@ -1202,22 +1551,22 @@ void ProtocolGame::parseLookInShop(NetworkMessage& msg)
 void ProtocolGame::parsePlayerPurchase(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint8_t count = msg.getByte();
-	uint8_t amount = msg.getByte();
+	uint8_t subType = msg.getByte();
+	uint16_t amount = msg.get<uint16_t>();
 	bool ignoreCap = msg.getByte() != 0;
 	bool inBackpacks = msg.getByte() != 0;
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() {
-		g_game.playerPurchaseItem(playerID, id, count, amount, ignoreCap, inBackpacks);
+		g_game.playerPurchaseItem(playerID, id, subType, amount, ignoreCap, inBackpacks);
 	});
 }
 
 void ProtocolGame::parsePlayerSale(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint8_t count = msg.getByte();
-	uint8_t amount = msg.getByte();
+	uint8_t subType = msg.getByte();
+	uint16_t amount = msg.get<uint16_t>();
 	bool ignoreEquipped = msg.getByte() != 0;
-	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerSellItem(playerID, id, count, amount, ignoreEquipped); });
+	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() { g_game.playerSellItem(playerID, id, subType, amount, ignoreEquipped); });
 }
 
 void ProtocolGame::parseRequestTrade(NetworkMessage& msg)
@@ -1899,7 +2248,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 
 	NetworkMessage msg;
 	msg.addByte(0x7B);
-	msg.add<uint64_t>(playerBank + playerMoney); // deprecated and ignored by QT client. OTClient still uses it.
+	//msg.add<uint64_t>(playerBank + playerMoney); // deprecated and ignored by QT client. OTClient still uses it.
 
 	std::map<uint16_t, uint32_t> saleMap;
 
@@ -1970,7 +2319,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 	uint8_t i = 0;
 	for (std::map<uint16_t, uint32_t>::const_iterator it = saleMap.begin(); i < itemsToSend; ++it, ++i) {
 		msg.addItemId(it->first);
-		msg.addByte(std::min<uint32_t>(it->second, std::numeric_limits<uint8_t>::max()));
+		msg.add<uint16_t>(std::min<uint32_t>(it->second, std::numeric_limits<uint16_t>::max()));
 	}
 
 	writeToOutputBuffer(msg);
@@ -2610,6 +2959,14 @@ void ProtocolGame::sendFYIBox(const std::string& message)
 	writeToOutputBuffer(msg);
 }
 
+void ProtocolGame::sendGuildMotdEditDialog(const std::string& currentMotd)
+{
+	NetworkMessage msg;
+	msg.addByte(0xAE);
+	msg.addString(currentMotd);
+	writeToOutputBuffer(msg);
+}
+
 //tile
 void ProtocolGame::sendMapDescription(const Position& pos)
 {
@@ -3052,10 +3409,19 @@ void ProtocolGame::sendOutfitWindow()
 
 	// get current outfit info
 	Outfit_t currentOutfit = player->getDefaultOutfit();
+
+	// default outfit unavailable
 	if (currentOutfit.lookType == 0) {
 		Outfit_t newOutfit;
 		newOutfit.lookType = outfits.front().lookType;
 		currentOutfit = newOutfit;
+	}
+
+	// QT client fix for unmountable looktypes
+	if (player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX) {
+		if (!Outfits::getInstance().getOutfitByLookType(player->getSex(), currentOutfit.lookType)) {
+			currentOutfit.lookType = outfits.front().lookType;
+		}
 	}
 
 	// get current mount info

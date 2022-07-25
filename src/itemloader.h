@@ -93,8 +93,11 @@ enum clientVersion_t {
 	CLIENT_VERSION_1281 = 60,
 	CLIENT_VERSION_1285 = 61,
 	CLIENT_VERSION_1286 = 62,
+	CLIENT_VERSION_1287 = 63,
+	CLIENT_VERSION_1290 = 64,
 
-	CLIENT_VERSION_LAST = CLIENT_VERSION_1286
+	// lowest supported otb version on the server
+	CLIENT_VERSION_LAST = CLIENT_VERSION_1290
 };
 
 enum rootattrib_ {
@@ -106,7 +109,7 @@ enum itemattrib_t {
 	ITEM_ATTR_SERVERID = ITEM_ATTR_FIRST,
 	ITEM_ATTR_CLIENTID,
 	ITEM_ATTR_NAME,
-	ITEM_ATTR_DESCR,
+	ITEM_ATTR_DESCR, // unused
 	ITEM_ATTR_SPEED,
 	ITEM_ATTR_SLOT,
 	ITEM_ATTR_MAXITEMS,
@@ -119,10 +122,10 @@ enum itemattrib_t {
 	ITEM_ATTR_WRITEABLE,
 	ITEM_ATTR_ROTATETO,
 	ITEM_ATTR_DECAY,
-	ITEM_ATTR_SPRITEHASH,
-	ITEM_ATTR_MINIMAPCOLOR,
-	ITEM_ATTR_07,
-	ITEM_ATTR_08,
+	ITEM_ATTR_SPRITEHASH, // marker for otb building tools
+	ITEM_ATTR_MINIMAPCOLOR, // unused
+	ITEM_ATTR_07, // deprecated (hangable/vertical/horizontal, now in flags)
+	ITEM_ATTR_08, // deprecated (hangable/vertical/horizontal, now in flags)
 	ITEM_ATTR_LIGHT,
 
 	//1-byte aligned
@@ -165,8 +168,8 @@ enum itemflags_t {
 	FLAG_HORIZONTAL = 1 << 18,
 	FLAG_CANNOTDECAY = 1 << 19, // unused
 	FLAG_ALLOWDISTREAD = 1 << 20,
-	FLAG_UNUSED = 1 << 21, // unused
-	FLAG_CLIENTCHARGES = 1 << 22, /* deprecated */
+	FLAG_CLIENTDURATION = 1 << 21, // 12.90
+	FLAG_CLIENTCHARGES = 1 << 22, // 12.90
 	FLAG_LOOKTHROUGH = 1 << 23,
 	FLAG_ANIMATION = 1 << 24,
 	FLAG_FULLTILE = 1 << 25, // unused

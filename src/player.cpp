@@ -2352,7 +2352,12 @@ void Player::death(Creature* lastHitCreature)
 
 		sendStats();
 		sendSkills();
+
+		// send death screen
 		sendReLoginWindow(unfairFightReduction);
+
+		// 30 seconds to answer the death screen
+		client->lastDeathTime = OTSYS_TIME() + 30000;
 
 		if (getSkull() == SKULL_BLACK) {
 			health = 40;
@@ -2482,6 +2487,13 @@ void Player::kickPlayer(bool displayEffect, const std::string& message)
 		client->logout(displayEffect, true, message);
 	} else {
 		g_game.removeCreature(this);
+	}
+}
+
+void Player::fastRelog(const std::string& otherCharName)
+{
+	if (client) {
+		g_dispatcher.addTask(createTask([=]() { client->fastRelog(otherCharName); }));
 	}
 }
 
@@ -4076,13 +4088,20 @@ void Player::changeSoul(int32_t soulChange)
 
 bool Player::canWear(uint32_t lookType, uint8_t addons) const
 {
+	// server admins can wear anything they want
 	if (group->access) {
 		return true;
 	}
 
+	// check if outfit exists
 	const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(sex, lookType);
 	if (!outfit) {
 		return false;
+	}
+
+	// check if unlocked in config
+	if (g_config.getBoolean(ConfigManager::UNLOCK_ALL_OUTFITS)) {
+		return true;
 	}
 
 	if (outfit->premium && !isPremium()) {
@@ -4171,7 +4190,7 @@ bool Player::removeOutfitAddon(uint16_t lookType, uint8_t addons)
 
 bool Player::getOutfitAddons(const Outfit& outfit, uint8_t& addons) const
 {
-	if (group->access) {
+	if (group->access || g_config.getBoolean(ConfigManager::UNLOCK_ALL_OUTFITS)) {
 		addons = 3;
 		return true;
 	}
@@ -4693,7 +4712,7 @@ bool Player::untameMount(uint8_t mountId)
 
 bool Player::hasMount(const Mount* mount) const
 {
-	if (isAccessPlayer()) {
+	if (isAccessPlayer() || g_config.getBoolean(ConfigManager::UNLOCK_ALL_MOUNTS)) {
 		return true;
 	}
 
@@ -4807,14 +4826,21 @@ bool Player::canUseFamiliar(const Familiar* familiar) const
 		return true;
 	}
 
+	bool fullUnlock = g_config.getBoolean(ConfigManager::UNLOCK_ALL_FAMILIARS);
+
 	// premium check
-	if (familiar->premium && !isPremium()) {
+	if (familiar->premium && !isPremium() && !fullUnlock) {
 		return false;
 	}
 
 	// vocation check
 	if (familiar->vocations.size() > 0 && std::find(familiar->vocations.begin(), familiar->vocations.end(), vocation->getId()) == familiar->vocations.end()) {
 		return false;
+	}
+
+	// check if unlocked in config.lua
+	if (fullUnlock) {
+		return true;
 	}
 
 	// storage check

@@ -63,6 +63,12 @@ void Guild::addRank(uint32_t rankId, const std::string& rankName, uint16_t level
 	ranks.emplace_back(std::make_shared<GuildRank>(rankId, rankName, level));
 }
 
+void Guild::saveMotd()
+{
+	Database& db = Database::getInstance();
+	db.executeQuery(fmt::format("UPDATE `guilds` SET `motd` = {:s} WHERE `id` = {:d}", db.escapeString(getMotd()), getId()));
+}
+
 Guild* IOGuild::loadGuild(uint32_t guildId)
 {
 	Database& db = Database::getInstance();

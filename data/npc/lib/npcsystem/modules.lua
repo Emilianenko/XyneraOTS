@@ -531,7 +531,7 @@ if Modules == nil then
 		yesNode = nil,
 		noNode = nil,
 		noText = "",
-		maxCount = 100,
+		maxCount = 10000,
 		amount = 0
 	}
 
@@ -966,9 +966,14 @@ if Modules == nil then
 			return false
 		end
 
+		local stackable = ItemType(itemid):isStackable()
+		if not stackable then
+			amount = math.min(amount, 100)
+		end
+
 		local totalCost = amount * shopItem.buy
 		if inBackpacks then
-			totalCost = ItemType(itemid):isStackable() and totalCost + 20 or totalCost + (math.max(1, math.floor(amount / ItemType(ITEM_SHOPPING_BAG):getCapacity())) * 20)
+			totalCost = stackable and totalCost + 20 or totalCost + (math.max(1, math.floor(amount / ItemType(ITEM_SHOPPING_BAG):getCapacity())) * 20)
 		end
 
 		local player = Player(cid)
@@ -1033,6 +1038,10 @@ if Modules == nil then
 			return false
 		end
 
+		if not ItemType(itemid):isStackable() then
+			amount = math.min(amount, 100)
+		end
+		
 		local player = Player(cid)
 		local parseInfo = {
 			[TAG_PLAYERNAME] = player:getName(),

@@ -51,6 +51,10 @@ class ConfigManager
 			PLAYER_CONSOLE_LOGS,
 			TWO_FACTOR_AUTH,
 			EXP_ANALYSER_SEND_TRUE_RAW_EXP,
+			SPAMMABLE_QUICK_LOOT,
+			UNLOCK_ALL_OUTFITS,
+			UNLOCK_ALL_MOUNTS,
+			UNLOCK_ALL_FAMILIARS,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
@@ -122,6 +126,7 @@ class ConfigManager
 			QUEST_TRACKER_PREMIUM_LIMIT,
 			MIN_MARKET_FEE,
 			MAX_MARKET_FEE,
+			MAX_QUICK_LOOT_LIST_SIZE,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

@@ -447,6 +447,8 @@ class ItemType
 		bool lookThrough = false;
 		bool stopTime = false;
 		bool showCount = true;
+		bool showClientCharges = false;
+		bool showClientDuration = false;
 };
 
 class Items

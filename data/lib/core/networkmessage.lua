@@ -44,9 +44,15 @@ function NetworkMessage:addItemType(itemType)
 		self:addByte(0x00) -- is quiver (bool), requires u32 ammo count if true
 	elseif itemType:isPodium() then
 		self:addU16(0) -- lookType
+		self:addU16(0) -- lookTypeEx
 		self:addU16(0) -- lookMount
 		self:addByte(0) -- direction
 		self:addByte(0x01) -- isVisible
+
+	-- workaround for protocol 12.9
+	elseif itemType:hasShowCharges() or itemType:hasShowDuration() then
+		self:addU32(0)
+		self:addByte(0)
 	end
 	
 	if itemType:getClassification() > 0 then

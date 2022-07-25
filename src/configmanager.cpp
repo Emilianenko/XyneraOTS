@@ -234,6 +234,10 @@ bool ConfigManager::load(bool isReload)
 	boolean[PLAYER_CONSOLE_LOGS] = getGlobalBoolean(L, "showPlayerLogInConsole", true);
 	boolean[TWO_FACTOR_AUTH] = getGlobalBoolean(L, "enableTwoFactorAuth", false);
 	boolean[EXP_ANALYSER_SEND_TRUE_RAW_EXP] = getGlobalBoolean(L, "analyserSendTrueRawExp", false);
+	boolean[SPAMMABLE_QUICK_LOOT] = getGlobalBoolean(L, "spammableQuickLoot", false);
+	boolean[UNLOCK_ALL_OUTFITS] = getGlobalBoolean(L, "unlockAllOutfits", false);
+	boolean[UNLOCK_ALL_MOUNTS] = getGlobalBoolean(L, "unlockAllMounts", false);
+	boolean[UNLOCK_ALL_FAMILIARS] = getGlobalBoolean(L, "unlockAllFamiliars", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -282,6 +286,7 @@ bool ConfigManager::load(bool isReload)
 	integer[QUEST_TRACKER_PREMIUM_LIMIT] = getGlobalNumber(L, "questTrackerPremiumLimit", 15);
 	integer[MIN_MARKET_FEE] = getGlobalNumber(L, "minMarketFee", 20);
 	integer[MAX_MARKET_FEE] = getGlobalNumber(L, "maxMarketFee", 100000);
+	integer[MAX_QUICK_LOOT_LIST_SIZE] = getGlobalNumber(L, "maxQuickLootListSize", 200);
 
 	// config loaded successfully
 	console::printResult(CONSOLE_LOADING_OK);

@@ -369,11 +369,11 @@ void Npc::doSayToPlayer(Player* player, const std::string& text)
 	}
 }
 
-void Npc::onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t count,
-                        uint8_t amount, bool ignore/* = false*/, bool inBackpacks/* = false*/)
+void Npc::onPlayerTrade(Player* player, int32_t callback, uint16_t itemId, uint8_t subType,
+                        uint16_t amount, bool ignore/* = false*/, bool inBackpacks/* = false*/)
 {
 	if (npcEventHandler) {
-		npcEventHandler->onPlayerTrade(player, callback, itemId, count, amount, ignore, inBackpacks);
+		npcEventHandler->onPlayerTrade(player, callback, itemId, subType, amount, ignore, inBackpacks);
 	}
 	player->sendSaleItemList();
 }
@@ -1231,13 +1231,13 @@ void NpcEventsHandler::onCreatureSay(Creature* creature, MessageClasses type, co
 }
 
 void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t itemId,
-                              uint8_t count, uint8_t amount, bool ignore, bool inBackpacks)
+                              uint8_t subType, uint16_t amount, bool ignore, bool inBackpacks)
 {
 	if (callback == -1) {
 		return;
 	}
 
-	//onBuy(player, itemid, count, amount, ignore, inbackpacks)
+	//onBuy(player, itemid, subType, amount, ignore, inbackpacks)
 	if (!scriptInterface->reserveScriptEnv()) {
 		console::reportOverflow("NpcScript::onPlayerTrade");
 		return;
@@ -1252,7 +1252,7 @@ void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t 
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 	lua_pushnumber(L, itemId);
-	lua_pushnumber(L, count);
+	lua_pushnumber(L, subType);
 	lua_pushnumber(L, amount);
 	LuaScriptInterface::pushBoolean(L, ignore);
 	LuaScriptInterface::pushBoolean(L, inBackpacks);

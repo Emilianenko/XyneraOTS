@@ -124,10 +124,10 @@ AutoLootMeta = {
 	}
 }
 
--- protocol
--- AUTOLOOT_REQUEST_QUICKLOOT = 0x8F -- 143 - loot corpse/tile (handled in sources)
-AUTOLOOT_REQUEST_SELECT_CONTAINER = 0x90 -- 144 - select loot container
-AUTOLOOT_REQUEST_SETSETTINGS = 0x91 -- 145 - add/remove loot item
+-- protocol (bytes handled in sources)
+-- AUTOLOOT_REQUEST_QUICKLOOT = 0x8F -- 143 - loot corpse/tile
+-- AUTOLOOT_REQUEST_SELECT_CONTAINER = 0x90 -- 144 - select loot container
+-- AUTOLOOT_REQUEST_SETSETTINGS = 0x91 -- 145 - add/remove loot item
 
 AUTOLOOT_RESPONSE_LOOT_CONTAINERS = 0xC0 -- 192 - loot container info
 
@@ -139,7 +139,6 @@ LOOTED_RESOURCE_ALL = 3 -- looted all items
 
 local config = {
 	maxCorpsesLimit = 20, -- how many corpses will be checked
-	maxLootListLength = 2000, -- how many items can the player register
 	messageErrorPosition = "You cannot loot this position.",
 	messageErrorOwner = "You are not the owner.",
 	
@@ -686,17 +685,14 @@ do
 end
 
 -- auto loot update
-function parseRequestUpdateAutoloot(player, recvbyte, msg)		
-	player:setStorageValue(PlayerStorageKeys.autoLootMode, msg:getByte())	
-	local listSize = math.min(msg:getU16(), config.maxLootListLength)
-	local lootList = {}
-	
-	for listIndex = 1, listSize do
-		lootList[#lootList + 1] = msg:getU16()
+do
+	local ec = EventCallback
+	function ec.onSetLootList(player, lootList, mode)
+		player:setStorageValue(PlayerStorageKeys.autoLootMode, mode)
+		AutoLoot[player:getId()] = lootList
 	end
-	AutoLoot[player:getId()] = lootList
+	ec:register()
 end
-setPacketEvent(AUTOLOOT_REQUEST_SETSETTINGS, parseRequestUpdateAutoloot)
 
 function Player:selectLootContainer(item, category)
 	if category <= LOOT_TYPE_NONE or category > LOOT_TYPE_LAST then
@@ -772,56 +768,30 @@ function Player:deSelectLootContainer(category)
 end
 
 -- select loot container from list
-function parseSelectLootContainer(player, recvbyte, msg)
-	local mode = msg:getByte()
-	if mode == 0x00 then
-		-- choose a container
-		local lootType = msg:getByte()
-		local position = Position(msg:getU16(), msg:getU16(), msg:getByte())
-		local spriteId = msg:getU16()
-		local containerPos = msg:getByte() + 1 -- client first index is 0, container:getItems() first index is 1
-		
-		local isPlayerInventory = position.x == CONTAINER_POSITION
-		if not isPlayerInventory then
-			return
-		end
-		
-		if bit.band(position.y, 0x40) ~= 0 then
-			local parent = player:getContainerById(position.y - 0x40)
-			if not (parent and parent:isContainer()) then
-				-- not a container
-				return
-			end
-
-			if parent:getTopParent() ~= player then
-				-- not in player inventory
+do
+	local ec = EventCallback
+	function ec.onManageLootContainer(player, item, mode, lootType)
+		if item then
+			if item:getTopParent() ~= player then
+				local m = ModalWindow()
+				m:setTitle("Invalid Loot Container")
+				m:setMessage("You can only select containers you carry in your inventory.")
+				m:addButton(1, "Ok")
+				m:sendToPlayer(player)
 				return
 			end
 			
-			local containerItem = parent:getItems()[containerPos]
-			if not containerItem then
-				-- invalid slot
-				return
-			end
-			
-			player:selectLootContainer(containerItem, lootType)			
-		elseif position.y >= CONST_SLOT_FIRST and position.y <= CONST_SLOT_LAST then
-			-- slot position
-			local chosenItem = player:getSlotItem(position.y)
-			if chosenItem then
-				player:selectLootContainer(chosenItem, lootType)
-			end
+			-- further validation is performed inside this function
+			player:selectLootContainer(item, lootType)
+		elseif mode == 0x01 then
+			player:deSelectLootContainer(lootType)
+		elseif mode == 0x03 then
+			player:setStorageValue(PlayerStorageKeys.autoLootFallback, lootType == 0x01 and 1 or 0)
+			player:sendLootContainers()
 		end
-	elseif mode == 0x01 then
-		-- clear loot container
-		player:deSelectLootContainer(msg:getByte())
-	elseif mode == 0x03 then
-		-- toggle fallback to main container
-		player:setStorageValue(PlayerStorageKeys.autoLootFallback, msg:getByte() == 0x01 and 1 or 0)
-		player:sendLootContainers()
 	end
+	ec:register()
 end
-setPacketEvent(AUTOLOOT_REQUEST_SELECT_CONTAINER, parseSelectLootContainer)
 
 local function addPlayerLootContainer(player, container)
 	local cid = player:getId()
