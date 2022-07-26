@@ -19169,9 +19169,11 @@
 	</item>
 	<item id="11796" article="an" name="energy gate">
 		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="11798" article="an" name="energy gate">
 		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="11832" article="a" name="skull" plural="skulls">
 		<attribute key="weight" value="2180" />
@@ -29201,6 +29203,7 @@
 	</item>
 	<item id="22677" article="a" name="crystal teleporter">
 		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="22678" article="an" name="arcane staff">
 		<attribute key="weight" value="4000" />
@@ -32439,6 +32442,7 @@
 	<item id="25417" article="a" name="magic forcefield">
 		<attribute key="description" value="It draws you nearer." />
 		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="25418" article="a" name="maimer">
 		<attribute key="weight" value="7700" />
@@ -41066,5 +41070,10 @@
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
+	</item>
+		<item id="39656" article="a" name="magic forcefield">
+		<attribute key="description" value="It draws you nearer." />
+		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 </items>
