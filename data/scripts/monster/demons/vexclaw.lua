@@ -39,7 +39,7 @@ monster.flags = {
 	canPushItems = true,
 	canPushCreatures = true,
 	staticAttackChance = 90,
-	targetDistance = 4,
+	targetDistance = 1,
 	healthHidden = false,
 	canWalkOnEnergy = false,
 	canWalkOnFire = true,
@@ -85,7 +85,7 @@ monster.attacks = {
 	{name ="combat", interval = 2000, chance = 25, minDamage = -350, maxDamage = -480, radius = 4, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREAREA, shootEffect = CONST_ANI_BURSTARROW, target = true}, -- fire ball
 	{name ="combat", interval = 2000, chance = 22, minDamage = -260, maxDamage = -450, radius = 6, range = 7, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER, shootEffect = CONST_ANI_BURSTARROW, target = true}, --greater groundshaker ball
 	{name ="combat", interval = 2000, chance = 16, minDamage = -400, maxDamage = -500, radius = 6, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_ENERGYHIT}, --greater energy ball
-	{name ="combat", interval = 2000, chance = 14, minDamage = -100, maxDamage = -170, length = 6, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_ICEATTACK, direction = true}, -- ice beam
+	{name ="combat", interval = 2000, chance = 14, minDamage = -100, maxDamage = -170, length = 8, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_ICEATTACK, direction = true}, -- ice beam
 	{name ="wexclaw wave", interval = 2000, chance = 13, minDamage = -530, maxDamage = -600} -- T wave manadrain
 }
 
