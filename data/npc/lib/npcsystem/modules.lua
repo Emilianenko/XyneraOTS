@@ -966,17 +966,30 @@ if Modules == nil then
 			return false
 		end
 
+		-- validate player before calculating anything
+		local player = Player(cid)
+		if not player then
+			return false
+		end
+
+		-- one transaction allows buying max 100 non-stackables or max 100 stacks
 		local stackable = ItemType(itemid):isStackable()
 		if not stackable then
 			amount = math.min(amount, 100)
 		end
 
+		-- calculate the price initially
 		local totalCost = amount * shopItem.buy
 		if inBackpacks then
-			totalCost = stackable and totalCost + 20 or totalCost + (math.max(1, math.floor(amount / ItemType(ITEM_SHOPPING_BAG):getCapacity())) * 20)
+			local realSlots = stackable and math.ceil(amount/100) or amount
+			totalCost = totalCost + (math.max(1, math.ceil(realSlots / ItemType(ITEM_SHOPPING_BAG):getCapacity())) * 20)
 		end
 
-		local player = Player(cid)
+		if totalCost <= 0 then
+			player:sendCancelMessage("Error. Unable to calculate item price.")
+			return false
+		end
+
 		local parseInfo = {
 			[TAG_PLAYERNAME] = player:getName(),
 			[TAG_ITEMCOUNT] = amount,
@@ -984,6 +997,7 @@ if Modules == nil then
 			[TAG_ITEMNAME] = shopItem.name
 		}
 
+		-- player money check
 		if player:getTotalMoney() < totalCost then
 			local msg = self.npcHandler:getMessage(MESSAGE_NEEDMONEY)
 			msg = self.npcHandler:parseMessage(msg, parseInfo)
@@ -991,35 +1005,45 @@ if Modules == nil then
 			return false
 		end
 
+		-- transaction
 		local subType = shopItem.subType or 1
-		local a, b = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, ITEM_SHOPPING_BAG)
-		if a < amount then
+		local amountSold, backpacksSold = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, ITEM_SHOPPING_BAG)
+
+		-- payment
+		if amountSold > 0 or backpacksSold > 0 then
+			local realCost = (amountSold * shopItem.buy) + (backpacksSold * 20)
+			if not player:removeTotalMoney(realCost) then
+				local pos = player:getPosition()
+				print(
+					string.format(
+						"Warning: shop error, unable to remove money from player \"%s\", pos: %d %d %d, totalCost: %d, realCost: %d",
+						player:getName(),
+						pos.x, pos.y, pos.z,
+						totalCost,
+						realCost
+					)
+				)
+			end
+		end
+
+		-- post payment events
+		if amountSold < amount then
 			local msgId = MESSAGE_NEEDMORESPACE
-			if a == 0 then
+			if amountSold == 0 then
 				msgId = MESSAGE_NEEDSPACE
 			end
 
 			local msg = self.npcHandler:getMessage(msgId)
-			parseInfo[TAG_ITEMCOUNT] = a
+			parseInfo[TAG_ITEMCOUNT] = amountSold
 			msg = self.npcHandler:parseMessage(msg, parseInfo)
 			player:sendCancelMessage(msg)
 			self.npcHandler.talkStart[cid] = os.time()
 
-			if a > 0 then
-				if not player:removeTotalMoney((a * shopItem.buy) + (b * 20)) then
-					return false
-				end
-				return true
-			end
-
-			return false
+			return amountSold > 0
 		else
 			local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
 			msg = self.npcHandler:parseMessage(msg, parseInfo)
 			player:sendTextMessage(MESSAGE_INFO_DESCR, msg)
-			if not player:removeTotalMoney(totalCost) then
-				return false
-			end
 			self.npcHandler.talkStart[cid] = os.time()
 			return true
 		end
