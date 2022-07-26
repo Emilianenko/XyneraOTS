@@ -60,13 +60,18 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 				end
 
 				local realAmount = subType > 0 and not stackable and subType or currentAmount
-				if backpack:addItem(item, realAmount) then
+				if backpack:addItem(itemid, realAmount) then
 					bpSlots = bpSlots - 1
 
 					amountToSell = amountToSell - currentAmount
 					amountSold = amountSold + currentAmount
 				else
 					bpSlots = 0
+
+					local topParent = backpack:getTopParent()
+					if not topParent or topParent ~= player then
+						return amountSold, backpacksSold
+					end
 				end
 			end
 		end
@@ -81,7 +86,12 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 			return amountSold, backpacksSold
 		end
 
-		if player:addItem(itemid, currentAmount, false, subType) then
+		local addedItems = player:addItem(itemid, currentAmount, false, subType)
+		if addedItems and type(addedItems) == "table" and #addedItems == 0 then
+			addedItems = false
+		end
+
+		if addedItems then
 			amountToSell = amountToSell - currentAmount
 			amountSold = amountSold + currentAmount
 		else
