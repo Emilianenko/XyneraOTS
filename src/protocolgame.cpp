@@ -3203,6 +3203,7 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 		if (teleport) {
 			sendRemoveTileCreature(creature, oldPos, oldStackPos);
 			sendMapDescription(newPos);
+			sendUpdateTileCreature(newPos, newStackPos, creature);
 		} else {
 			NetworkMessage msg;
 			if (oldPos.z == 7 && newPos.z >= 8) {
@@ -3246,6 +3247,7 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 		if (teleport || (oldPos.z == 7 && newPos.z >= 8)) {
 			sendRemoveTileCreature(creature, oldPos, oldStackPos);
 			sendAddCreature(creature, newPos, newStackPos);
+			sendUpdateTileCreature(newPos, newStackPos, creature);
 		} else {
 			NetworkMessage msg;
 			msg.addByte(0x6D);
