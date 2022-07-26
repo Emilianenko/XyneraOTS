@@ -87,7 +87,7 @@ function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, bac
 		end
 
 		local addedItems = player:addItem(itemid, currentAmount, false, subType)
-		if type(addedItems) == "table" and #addedItems == 0 then
+		if addedItems and type(addedItems) == "table" and #addedItems == 0 then
 			addedItems = false
 		end
 
