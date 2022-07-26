@@ -28703,6 +28703,7 @@
 	</item>
 	<item fromid="22476" toid="22477" name="ruined stairs">
 		<attribute key="type" value="teleport" />
+		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="22478" article="a" name="dead sight of surrender">
 		<attribute key="containerSize" value="40" />
