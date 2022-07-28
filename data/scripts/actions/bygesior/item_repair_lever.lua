@@ -1,9 +1,12 @@
 local itemRepairConfig = {
-	[50101] = {itemId = 10021, newItemId = 6132, requiredItemId = 25172, requiredItemCount = 5}, -- soft boots
-	[50102] = {itemId = 10021, newItemId = 6132, requiredItemId = 25172, requiredItemCount = 5}, -- znowu soft boots
+	[50101] = {itemId = 32084, newItemId = 32998, requiredItemId = 25172, requiredItemCount = 2}, -- sleep shawl
+	[50102] = {itemId = 32085, newItemId = 33001, requiredItemId = 25172, requiredItemCount = 2}, -- pendulet
+	[50103] = {itemId = 33057, newItemId = 33059, requiredItemId = 25172, requiredItemCount = 2}, -- theugly
+	[50104] = {itemId = 35277, newItemId = 35292, requiredItemId = 25172, requiredItemCount = 2}, -- ring of souls
+	[50105] = {itemId = 34213, newItemId = 34277, requiredItemId = 25172, requiredItemCount = 2}, -- blister ring
 }
 
-local leverIds = {2401, 2402}
+local leverIds = {1945}
 
 local itemRepairAction = Action()
 
@@ -27,11 +30,13 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 
 	if player:getItemCount(requiredItemId) < requiredItemCount then
 		player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+		item:getPosition():sendMagicEffect(CONST_ME_FIREWORK_TURQUOISE)
 		return false
 	end
 
 	if player:getItemCount(itemId) < 1 then
 		player:sendTextMessage(MESSAGE_INFO_DESCR, "You do not have " .. itemName .. ".")
+		item:getPosition():sendMagicEffect(CONST_ME_POFF)
 		return false
 	end
 
