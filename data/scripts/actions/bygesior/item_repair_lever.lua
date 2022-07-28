@@ -6,7 +6,7 @@ local itemRepairConfig = {
 	[50105] = {itemId = 34213, newItemId = 34277, requiredItemId = 25172, requiredItemCount = 2}, -- blister ring
 }
 
-local leverIds = {1945}
+local leverIds = {1945, 1946}
 
 local itemRepairAction = Action()
 
@@ -44,6 +44,7 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 	player:removeItem(itemId, 1)
 	player:addItem(newItemId, 1)
 	player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repaired for " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+	item:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
 
 	return true
 end
