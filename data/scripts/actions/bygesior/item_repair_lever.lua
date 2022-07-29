@@ -28,9 +28,10 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 	local requiredItemType = ItemType(requiredItemId)
 	local requiredItemName = requiredItemType:getName() or "error-unknown-item"
 
+
 	if player:getItemCount(requiredItemId) < requiredItemCount then
 		player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".")
-		item:getPosition():sendMagicEffect(CONST_ME_FIREWORK_TURQUOISE)
+		item:getPosition():sendMagicEffect(CONST_ME_POFF)
 		return false
 	end
 
