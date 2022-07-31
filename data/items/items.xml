@@ -41176,4 +41176,29 @@
 		<attribute key="decayTo" value="31261"/>
 		<attribute key="containersize" value="20"/>
 	</item>
+		<item id="31527" article="a" name="slain energuardian of tales">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31528" article="a" name="slain energuardian of tales">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31527"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31529" article="a" name="slain energuardian of tales">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31528"/>
+		<attribute key="containersize" value="24"/>
+	</item>
+	<item id="31530" article="a" name="slain energuardian of tales">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31529"/>
+		<attribute key="containersize" value="24"/>
+	</item>
 </items>

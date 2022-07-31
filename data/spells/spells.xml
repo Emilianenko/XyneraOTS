@@ -99,7 +99,7 @@
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" />
 	</instant>
-	<instant group="attack" secondarygroup="focus" spellid="24" name="Hell's Core" words="exevo gran mas flam" aggressive="1" level="60" mana="1100" premium="1" cooldown="40000" groupcooldown="4000" secondarygroupcooldown="40000" selftarget="1" needlearn="0" script="attack/hell's_core.lua">
+	<instant group="attack" secondarygroup="focus" spellid="24" name="Hell's Core" words="exevo gran mas flam" aggressive="1" level="60" mana="1100" premium="1" cooldown="2000" groupcooldown="2000" secondarygroupcooldown="2000" selftarget="1" needlearn="0" script="attack/hell's_core.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 	</instant>
