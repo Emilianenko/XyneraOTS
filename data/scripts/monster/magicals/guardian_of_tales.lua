@@ -80,9 +80,9 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -800},
 	{name ="combat", interval = 2000, chance = 20, minDamage = -550, maxDamage = -700, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE},
-	{name ="combat", interval = 2000, chance = 25, minDamage = -400, maxDamage = -800, range = 7, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true},
-	{name ="combat", interval = 2000, chance = 20, minDamage = -1200, maxDamage = -1600, range = 7, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_ENERGYAREA, shootEffect = CONST_ANI_DEATH, target = true},
-	{name ="combat", interval = 2000, chance = 20, minDamage = -600, maxDamage = -900, length = 6, spread = 0, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA, direction = true}
+	{name ="combat", interval = 2000, chance = 24, minDamage = -400, maxDamage = -800, range = 7, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true},
+	{name ="combat", interval = 2000, chance = 17, minDamage = -1200, maxDamage = -1600, range = 6, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_ENERGYAREA, shootEffect = CONST_ANI_DEATH, target = true},
+	{name ="combat", interval = 2000, chance = 15, minDamage = -600, maxDamage = -900, length = 6, spread = 0, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA, direction = true}
 }
 
 monster.defenses = {

@@ -80,7 +80,7 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500},
 	{name ="combat", interval = 2000, chance = 18, minDamage = -70, maxDamage = -270, length = 3, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_PURPLEENERGY, direction = true}, --purple beam
-	{name ="combat", interval = 2000, chance = 30, minDamage = -450, maxDamage = -760, range = 5, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEATTACK, shootEffect = CONST_ANI_ICE, target = true}, --ice strike
+	{name ="combat", interval = 2000, chance = 30, minDamage = -450, maxDamage = -760, range = 6, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEATTACK, shootEffect = CONST_ANI_ICE, target = true}, --ice strike
 	{name ="frost asura freezing beam", interval = 2000, chance = 16}
 }
 

@@ -79,10 +79,10 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500},
-	{name ="combat", interval = 2000, chance = 8, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -380, ring = 3, target = false, effect = CONST_ME_GROUNDSHAKER},
-	{name ="combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -430, ring = 2, target = false, effect = CONST_ME_GROUNDSHAKER},
-	{name ="combat", interval = 2000, chance = 12, type = COMBAT_EARTHDAMAGE, minDamage = -200, maxDamage = -480, radius = 2, target = false, effect = CONST_ME_GROUNDSHAKER},
-	{name ="combat", interval = 2000, chance = 13, type = COMBAT_HOLYDAMAGE, minDamage = -300, maxDamage = -450, length = 5, spread = 0, effect = CONST_ME_HOLYAREA}
+	{name ="combat", interval = 2000, chance = 10, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -380, ring = 3, target = false, effect = CONST_ME_GROUNDSHAKER},
+	{name ="combat", interval = 2000, chance = 20, type = COMBAT_EARTHDAMAGE, minDamage = -250, maxDamage = -430, ring = 2, target = false, effect = CONST_ME_GROUNDSHAKER},
+	{name ="combat", interval = 2000, chance = 15, type = COMBAT_EARTHDAMAGE, minDamage = -200, maxDamage = -480, radius = 2, target = false, effect = CONST_ME_GROUNDSHAKER},
+	{name ="combat", interval = 2000, chance = 17, type = COMBAT_HOLYDAMAGE, minDamage = -300, maxDamage = -450, length = 5, spread = 0, effect = CONST_ME_HOLYAREA}
 }
 
 monster.defenses = {

@@ -80,7 +80,7 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -700},
 	{name ="asura soulfire", interval = 2000, chance = 20}, -- fire box
-	{name ="combat", interval = 2000, chance = 20, minDamage = -350, maxDamage = -720, range = 5, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true}, --flame strike
+	{name ="combat", interval = 2000, chance = 20, minDamage = -350, maxDamage = -720, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true}, --flame strike
 	{name ="combat", interval = 2000, chance = 14, minDamage = -550, maxDamage = -680, radius = 4, range = 7, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, shootEffect = CONST_ANI_DEATH, target = true}, --death ball
 	{name ="asura skill reducer", interval = 2000, chance = 10, range = 7}, -- magic lvl reducer
 	{name ="combat", interval = 2000, chance = 16, minDamage = -50, maxDamage = -300, length = 8, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_MAGIC_RED, direction = true}, --manadrain beam

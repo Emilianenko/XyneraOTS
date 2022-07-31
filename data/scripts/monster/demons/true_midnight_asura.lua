@@ -80,7 +80,7 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -470},
 	{name ="combat", interval = 2000, chance = 14, minDamage = -60, maxDamage = -290, length = 4, spread = 0, type = COMBAT_MANADRAIN, effect = CONST_ME_PURPLEENERGY, direction = true},
-	{name ="combat", interval = 2000, chance = 23, minDamage = -500, maxDamage = -730, range = 5, radius = 1, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, shootEffect = CONST_ANI_SUDDENDEATH, target = true},
+	{name ="combat", interval = 2000, chance = 23, minDamage = -500, maxDamage = -730, range = 6, radius = 1, type = COMBAT_DEATHDAMAGE, effect = CONST_ME_MORTAREA, shootEffect = CONST_ANI_SUDDENDEATH, target = true},
 	{name ="drunk", interval = 2000, chance = 18, range = 7, radius = 4, effect = CONST_ME_STUN, shootEffect = CONST_ANI_REDSTAR, target = true},
 	{name ="combat", interval = 2000, chance = 16, minDamage = -500, maxDamage = -760, length = 6, spread = 0, type = COMBAT_LIFEDRAIN, effect = CONST_ME_BLACKSMOKE, direction = true},
 }

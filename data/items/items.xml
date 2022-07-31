@@ -41126,4 +41126,54 @@
 		<attribute key="decayTo" value="31265"/>
 		<attribute key="containersize" value="20"/>
 	</item>
+		<item id="31231" article="a" name="slain animated feather">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31232" article="a" name="slain animated feather">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31231"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31233" article="a" name="slain animated feather">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31232"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="31234" article="a" name="slain animated feather">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31233"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+		<item id="31259" article="a" name="slain knowledge elemental">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31260" article="a" name="slain knowledge elemental">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31259"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31261" article="a" name="slain knowledge elemental">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31260"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="31262" article="a" name="slain knowledge elemental">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31261"/>
+		<attribute key="containersize" value="20"/>
+	</item>
 </items>
