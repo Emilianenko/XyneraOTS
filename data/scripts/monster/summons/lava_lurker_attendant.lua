@@ -1,9 +1,9 @@
-local mType = Game.createMonsterType("Ravenous Lava Lurker")
+local mType = Game.createMonsterType("Lava Lurker Attendant")
 local monster = {}
 
-monster.name = "Ravenous Lava Lurker"
-monster.description = "a ravenous lava lurker"
-monster.experience = 4000
+monster.name = "Lava Lurker Attendant"
+monster.description = "a lava lurker attendant"
+monster.experience = 0
 monster.outfit = {
 	lookType = 1041,
 	lookHead = 0,
@@ -14,11 +14,11 @@ monster.outfit = {
 	lookMount = 0
 }
 
-monster.health = 5000
-monster.maxHealth = 5000
+monster.health = 3000
+monster.maxHealth = 3000
 monster.runHealth = 0
 monster.race = "fire"
-monster.corpse = 30238
+monster.corpse = 0
 monster.speed = 116
 monster.summonCost = 0
 
@@ -57,7 +57,7 @@ monster.voices = {
 }
 
 monster.immunities = {
-	{type = "paralyze", condition = false},
+	{type = "paralyze", condition = true},
 	{type = "outfit", condition = false},
 	{type = "invisible", condition = true},
 	{type = "drunk", condition = true},
@@ -78,14 +78,14 @@ monster.elements = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -150},
-	{name ="combat", interval = 2000, chance = 24, minDamage = -90, maxDamage = -120, radius = 4, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE}, --fire ball
-	{name ="combat", interval = 2000, chance = 19, minDamage = -82, maxDamage = -95, radius = 5, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -230},
+	{name ="combat", interval = 2000, chance = 24, minDamage = -270, maxDamage = -340, radius = 4, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE}, --fire ball
+	{name ="combat", interval = 2000, chance = 19, minDamage = -210, maxDamage = -280, radius = 5, range = 7, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true}
 }
 
 monster.defenses = {
-	defense = 45,
-	armor = 45
+	defense = 5,
+	armor = 10
 }
 
 monster.loot = {
