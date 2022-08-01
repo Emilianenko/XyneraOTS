@@ -583,6 +583,7 @@ class LuaScriptInterface
 		static int luaGameSaveAccountStorageValues(lua_State* L);
 
 		static int luaGameSendConsoleMessage(lua_State* L);
+		static int luaGameGetLastConsoleMessage(lua_State* L);
 
 		// Variant
 		static int luaVariantCreate(lua_State* L);
@@ -667,6 +668,7 @@ class LuaScriptInterface
 		static int luaNetworkMessageAddDouble(lua_State* L);
 		static int luaNetworkMessageAddItem(lua_State* L);
 		static int luaNetworkMessageAddItemId(lua_State* L);
+		static int luaNetworkMessageAddItemType(lua_State* L);
 
 		static int luaNetworkMessageReset(lua_State* L);
 		static int luaNetworkMessageSeek(lua_State* L);

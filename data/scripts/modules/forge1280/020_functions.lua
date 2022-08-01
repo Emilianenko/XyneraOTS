@@ -83,20 +83,12 @@ do
 	end
 end
 
--- filter too frequent requests
+-- enter forge on use
 do
-	function dispatcherSendForgeUI(cid)
-		local player = Player(cid)
-		if player and not player:isRemoved() then
-			player:sendForgeUI()
-		end
-	end
-	
-	-- enter forge on use
 	local forgeAction = Action()
 	function forgeAction.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		LastForgePosCache[player:getId()] = item:getPosition()
-		player:addDispatcherTask(dispatcherSendForgeUI, DISPATCHER_FORGE_ENTER, player:getId())
+		player:sendForgeUI()
 		return true
 	end
 	for i = ITEM_FORGE_PLACE_FIRST, ITEM_FORGE_PLACE_LAST do
@@ -472,8 +464,11 @@ end
 -- player requests processors
 do
 	---- FUSION
-	function Player:onFusionRequest(clientId, tier, targetClientId, usesSuccessRateCore, usesTierLossCore)
-		if clientId ~= targetClientId then
+	function Player:onFusionRequest(fromItemType, tier, toItemType, usesSuccessRateCore, usesTierLossCore)
+		usesSuccessRateCore = usesSuccessRateCore and 1 or 0
+		usesTierLossCore = usesTierLossCore and 1 or 0
+
+		if fromItemType:getId() ~= toItemType:getId() then
 			-- bad request (fusion has to be two identical items)
 			self:sendDefaultForgeError(FORGE_ERROR_BADREQUEST)
 			return
@@ -486,13 +481,7 @@ do
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHITEMS)
 		end
 		
-		-- check if item type exists
-		local itemType = Game.getItemTypeByClientId(clientId)
-		if not itemType then
-			-- bad request (client id does not match any item)
-			self:sendDefaultForgeError(FORGE_ERROR_BADREQUEST)
-			return
-		end
+		local itemType = fromItemType
 		
 		-- check if item class is eligible
 		local class = itemType:getClassification()
@@ -536,7 +525,7 @@ do
 	end
 
 	---- TRANSFER
-	function Player:onForgeTransferRequest(clientId, tier, targetClientId)
+	function Player:onForgeTransferRequest(fromItemType, tier, toItemType)
 		-- check if tier can be transfered
 		if tier < 2 then
 			-- selected item has unsupported tier
@@ -550,17 +539,9 @@ do
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHITEMS)
 		end
 		
-		-- check if item types exist
-		local fromItem = Game.getItemTypeByClientId(clientId)
-		local toItem = Game.getItemTypeByClientId(targetClientId)
-		if not (fromItem and toItem) then
-			-- bad request (one of client ids does not match any item)
-			self:sendDefaultForgeError(FORGE_ERROR_BADREQUEST)
-		end
-		
 		-- check if item classes are eligible
-		local fromClass = fromItem:getClassification()
-		if fromClass ~= toItem:getClassification() then
+		local fromClass = fromItemType:getClassification()
+		if fromClass ~= toItemType:getClassification() then
 			-- classes do not match
 			self:sendDefaultForgeError(FORGE_ERROR_NOTUPGRADEABLE)
 			return
@@ -590,9 +571,9 @@ do
 		end
 		
 		-- find the items
-		local transferItems, itemCount = playerBP:getItemsByQuery(1, transferSearch, fromItem:getId(), tier)
+		local transferItems, itemCount = playerBP:getItemsByQuery(1, transferSearch, fromItemType:getId(), tier)
 		if itemCount >= 1 then
-			local targetItems, targetItemCount = playerBP:getItemsByQuery(1, transferSearch, toItem:getId(), 0)
+			local targetItems, targetItemCount = playerBP:getItemsByQuery(1, transferSearch, toItemType:getId(), 0)
 			if targetItemCount >= 1 then
 				-- start the transfer
 				self:transferTier(transferItems[1], targetItems[1], cost)

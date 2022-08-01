@@ -9,9 +9,24 @@
 
 namespace console {
 
+std::string lastMessage;
+
+#ifdef SHOW_CONSOLE_TIMESTAMPS
+std::string currentConsoleStamp() {
+	std::time_t t = std::time(nullptr);
+	std::tm* now = std::localtime(&t);
+
+	char buffer[128];
+	strftime(buffer, sizeof(buffer), "%d/%m/%Y %X", now);
+	return buffer;
+}
+#endif
+
 void print(ConsoleMessageType messageType, const std::string& message, bool newLine, const std::string& location)
 {
 	std::string prefix;
+	std::ostringstream msgToCache;
+
 	Color color;
 
 	switch (messageType) {
@@ -39,14 +54,32 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 			break;
 	}
 
+	msgToCache << "[" << (!location.empty() ? fmt::format("{:s} - {:s}", prefix, location) : prefix) << "]: " << message;
+
 	size_t realMsgLength = prefix.size() + message.size() + location.size();
 
 	if (!location.empty()) {
 		prefix = fmt::format("{:s} - {:s}", prefix, location);
 		realMsgLength += 3;
+
+#ifndef SHOW_CONSOLE_PREFIXES
+		// override prefix preference for error messages
+		prefix = fmt::format("[{:s}]: ", setColor(color, prefix));
+	} else {
+		realMsgLength -= prefix.size();
+		prefix = "";
+#endif
 	}
 
+#ifdef SHOW_CONSOLE_PREFIXES
 	prefix = fmt::format("[{:s}]: ", setColor(color, prefix));
+#endif
+
+#ifdef SHOW_CONSOLE_TIMESTAMPS
+	std::string timePrefix = currentConsoleStamp();
+	prefix = fmt::format("[{:s}] {:s}", timePrefix, prefix);
+	realMsgLength += (timePrefix.size() + 3);
+#endif
 
 	if (messageType == CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL) {
 		color = serveronline;
@@ -74,6 +107,7 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 		outStr << std::flush;
 	}
 
+	lastMessage = msgToCache.str();
 	std::cout << outStr.str() << std::flush;
 }
 
@@ -195,5 +229,10 @@ std::string setColor(Color color, const std::string& text)
 #else
 std::string setColor(Color, const std::string& text) { return text; }
 #endif
+
+const std::string& getLastMessage()
+{
+	return lastMessage;
+}
 
 } // namespace console

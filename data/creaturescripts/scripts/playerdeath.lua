@@ -8,18 +8,18 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 	end
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are dead.")
-	if not deathListEnabled then
-		return
-	end
 
 	local byPlayer = 0
 	local killerName
+	local killerIsPlayer = false
 	if killer then
 		if killer:isPlayer() then
+			killerIsPlayer = true
 			byPlayer = 1
 		else
 			local master = killer:getMaster()
 			if master and master ~= killer and master:isPlayer() then
+				killerIsPlayer = true
 				killer = master
 				byPlayer = 1
 			end
@@ -44,6 +44,21 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 		mostDamageName = mostDamageKiller:getName()
 	else
 		mostDamageName = "field item"
+	end
+
+	-- trigger screenshot events
+	player:takeScreenshot(killerIsPlayer and SCREENSHOT_TYPE_DEATHPVP or SCREENSHOT_TYPE_DEATHPVE)
+	if killerIsPlayer then
+		killer:takeScreenshot(SCREENSHOT_TYPE_PLAYERKILL)
+	end
+	if mostDamageKiller and mostDamageKiller:isPlayer() then
+		if not killer or killer ~= mostDamageKiller then
+			mostDamageKiller:takeScreenshot(SCREENSHOT_TYPE_PLAYERKILL)
+		end
+	end
+
+	if not deathListEnabled then
+		return
 	end
 
 	local playerGuid = player:getGuid()

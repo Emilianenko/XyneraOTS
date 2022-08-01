@@ -1038,9 +1038,10 @@ end
 -- monster death: add kill to all relevant players
 do
 	local ec = EventCallback
+	local maxDuration = 5 * 60 * 1000
 	ec.onDropLoot = function(self, corpse)
 		local damageMap = self:getDamageMap()
-		local expiresAt = os.mtime() - 5 * 60 * 1000 -- max time since dealing dmg to monster, to count to bestiary
+		local expiresAt = os.mtime() - maxDuration -- max time since dealing dmg to monster, to count to bestiary
 		for cid, dmgData in pairs(damageMap) do
 			if expiresAt < dmgData.ticks then
 				local player = Player(cid)
@@ -1061,7 +1062,7 @@ end
 
 function Player:sendCharms()
 	local response = NetworkMessage()
-	response:addByte(COMPENDIUM_RESPONSE_CHARMS)
+	response:addByte(CYCLOPEDIA_RESPONSE_CHARMS)
 	response:addU32(0) -- charm points
 
 	local charmCount = 19
@@ -1096,7 +1097,7 @@ function Player:sendBestiary()
 	self:sendResourceBalance(RESOURCE_CHARM_POINTS, self:getCharmPoints())
 	
 	local response = NetworkMessage()
-	response:addByte(COMPENDIUM_RESPONSE_BESTIARY)
+	response:addByte(CYCLOPEDIA_RESPONSE_BESTIARY)
 	response:addU16(BESTIARY_TYPE_LAST)
 	for bestiaryType = BESTIARY_TYPE_FIRST, BESTIARY_TYPE_LAST do
 		response:addString(GameBestiaryTypes[bestiaryType].name)
@@ -1107,55 +1108,53 @@ function Player:sendBestiary()
 end
 
 -- open bestiary/charms
-function onRequestBestiaryCharms(player, recvbyte, networkMessage)
-	player:sendBestiary()
-	--player:sendCharms()
-	return true
-end
-
 do
-	local callback = onRequestBestiaryCharms
-	setPacketEvent(COMPENDIUM_REQUEST_BESTIARY, callback)
+	local ec = EventCallback
+	ec.onBestiaryInit = function(self)
+		self:sendBestiary()
+		--self:sendCharms()
+	end
+	ec:register()
 end
 
 -- click on monster category
 do
-	local callback = function(player, recvbyte, networkMessage)
-		networkMessage:getByte() -- request type (0 in this case)
-		local requestedCategory = BestiaryTypeByName[networkMessage:getString()]
-		local bestiaryTab = GameBestiaryTypes[requestedCategory]
-		if not bestiaryTab then
-			sendCompendiumError(player, COMPENDIUM_PLAYER_BASEINFORMATION, COMPENDIUM_RESPONSETYPE_NODATA)
-			return true
+	local ec = EventCallback
+	ec.onBestiaryBrowse = function(self, category, raceList)
+		-- determine race list
+		if #raceList == 0 then
+			local bestiaryTab = GameBestiaryTypes[BestiaryTypeByName[category]]
+			if bestiaryTab then
+				raceList = bestiaryTab.races
+			end
 		end
+	
+		-- generate response
+		local response = NetworkMessage()
+		response:addByte(CYCLOPEDIA_RESPONSE_BESTIARY_SPECIES)
+		response:addString(category)
 		
-		local m = NetworkMessage()
-		m:addByte(COMPENDIUM_RESPONSE_BESTIARY_SPECIES)
-		m:addString(bestiaryTab.name)
-
-		-- monsters block
-		m:addU16(#bestiaryTab.races) -- amount of monsters
-		if #bestiaryTab.races > 0 then
-			for raceIndex = 1, #bestiaryTab.races do
-				local raceData = getBestiaryRaceDataById(bestiaryTab.races[raceIndex])
+		response:addU16(#raceList)
+		if #raceList > 0 then
+			for raceIndex = 1, #raceList do
+				local raceData = getBestiaryRaceDataById(raceList[raceIndex])
 				if raceData then
-					m:addU16(raceData.id)
-					local progessLevel = player:getBestiaryRaceProgress(raceData.id)
-					m:addByte(progessLevel) -- progress level(0-4, if > 1, demands rarity byte)
+					response:addU16(raceData.id)
+					local progessLevel = self:getBestiaryRaceProgress(raceData.id)
+					response:addByte(progessLevel) -- progress level(0-4, if > 0, demands rarity byte)
 					if progessLevel > 0 then
-						m:addByte(raceData.rarity - 1)
+						response:addByte(raceData.rarity - 1)
 					end
 				else
-					m:addU16(0)
-					m:addByte(0)
+					response:addU16(0)
+					response:addByte(0)
 				end
 			end
 		end
 		
-		m:sendToPlayer(player)
-		return true
+		response:sendToPlayer(self)
 	end
-	setPacketEvent(COMPENDIUM_REQUEST_BESTIARY_SPECIES, callback)
+	ec:register()
 end
 
 -- view bestiary creature
@@ -1163,7 +1162,7 @@ do
 	-- error page for incorrect creature
 	local function sendGenericPage(player)
 		local m = NetworkMessage()
-		m:addByte(COMPENDIUM_RESPONSE_BESTIARY_RACE)
+		m:addByte(CYCLOPEDIA_RESPONSE_BESTIARY_RACE)
 		m:addU16(0) -- raceId
 		m:addString("Amphibic") -- category name (for return to category button)
 		m:addByte(3) -- progress level
@@ -1198,25 +1197,25 @@ do
 		return maxIndex
 	end
 	
-	local callback = function(player, recvbyte, networkMessage)
-		local raceId = networkMessage:getU16()
+	local ec = EventCallback
+	ec.onBestiaryRaceView = function(self, raceId)
 		local race = getBestiaryRaceDataById(raceId)
 		if not race then
 			-- creature not found
-			sendGenericPage(player)
-			return true
+			sendGenericPage(self)
+			return
 		end
 		
 		local m = NetworkMessage()
-		m:addByte(COMPENDIUM_RESPONSE_BESTIARY_RACE)
+		m:addByte(CYCLOPEDIA_RESPONSE_BESTIARY_RACE)
 		m:addU16(raceId) -- raceId
 		m:addString(BestiaryNameByType[race.class] or "Amphibic") -- category name (for return to category button)
 		
-		local progressLevel = player:getBestiaryRaceProgress(raceId)
+		local progressLevel = self:getBestiaryRaceProgress(raceId)
 		
 		-- kill counter
 		m:addByte(progressLevel) -- progress level
-		m:addU32(player:getBestiaryKillCount(raceId)) -- kill counter
+		m:addU32(self:getBestiaryKillCount(raceId)) -- kill counter
 		
 		local rare = race.rarity == 4
 		local killMap = not rare and GameBestiaryDifficulties[race.difficulty].kills or GameBestiaryDifficulties[race.difficulty].rareKills
@@ -1340,8 +1339,8 @@ do
 			-- byte 0
 			-- byte 1
 		end
-		m:sendToPlayer(player)
-		return true
+		m:sendToPlayer(self)
+		return
 	end
-	setPacketEvent(COMPENDIUM_REQUEST_BESTIARY_RACE, callback)
+	ec:register()
 end

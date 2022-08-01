@@ -421,8 +421,18 @@ class Game
 		void playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
 		void playerRegisterCurrencies(uint32_t playerId);
+		void playerFuseItems(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId, bool successCore, bool tierLossCore);
+		void playerTransferTier(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId);
+		void playerConvertForgeResources(uint32_t playerId, ForgeConversionTypes_t actionType);
+		void playerBrowseForgeHistory(uint32_t playerId, uint8_t page);
+		void playerViewPlayerTab(uint32_t playerId, uint32_t targetPlayerId, PlayerTabTypes_t infoType, uint16_t currentPage, uint16_t entriesPerPage);
+		void playerInitBestiary(uint32_t playerId);
+		void playerBrowseBestiary(uint32_t playerId, const std::string& category, std::vector<uint16_t> raceList);
+		void playerRequestRaceInfo(uint32_t playerId, uint16_t raceId);
 
+#ifdef LUA_EXTENDED_PROTOCOL
 		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);
+#endif
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 

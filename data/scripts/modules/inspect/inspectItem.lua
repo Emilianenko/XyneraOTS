@@ -1,8 +1,8 @@
-function Player:sendItemInspection(item, descriptions, openCompendium, isVirtual)
+function Player:sendItemInspection(item, descriptions, openCyclopedia, isVirtual)
 	local response = NetworkMessage()
 	response:addByte(0x76)
 	response:addByte(0x00) -- responseType 0x00 = ok
-	response:addByte(openCompendium and 0x01 or 0x00)
+	response:addByte(openCyclopedia and 0x01 or 0x00)
 	response:addByte(0x01) --?
 	
 	if tonumber(item) then
@@ -565,7 +565,7 @@ local onInspectNpcTradeItem = function(self, npc, itemId)
 	self:sendItemInspection(itemId, descriptions, false, true)
 end
 
-local onInspectCompendiumItem = function(self, itemId)
+local onInspectCyclopediaItem = function(self, itemId)
 	local descriptions = getItemDetails(itemId)
 
 	if self:getGroup():getAccess() then
@@ -580,7 +580,7 @@ local callbacks = {
 	["onInspectItem"] = onInspectItem,
 	["onInspectTradeItem"] = onInspectTradeItem,
 	["onInspectNpcTradeItem"] = onInspectNpcTradeItem,
-	["onInspectCompendiumItem"] = onInspectCompendiumItem
+	["onInspectCyclopediaItem"] = onInspectCyclopediaItem
 }
 
 for callName, callback in pairs(callbacks) do

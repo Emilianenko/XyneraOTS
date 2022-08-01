@@ -58,11 +58,19 @@ ec.onUseStamina = {[2]=1}
 ec.onInspectItem = {}
 ec.onInspectTradeItem = {}
 ec.onInspectNpcTradeItem = {}
-ec.onInspectCompendiumItem = {}
+ec.onInspectCyclopediaItem = {}
 ec.onMinimapQuery = {}
 ec.onQuickLoot = {}
 ec.onSetLootList = {}
 ec.onManageLootContainer = {}
+ec.onFuseItems = {}
+ec.onTransferTier = {}
+ec.onForgeConversion = {}
+ec.onForgeHistoryBrowse = {}
+ec.onRequestPlayerTab = {}
+ec.onBestiaryInit = {}
+ec.onBestiaryBrowse = {}
+ec.onBestiaryRaceView = {}
 ec.onConnect = {}
 
 -- Monster

@@ -1,6 +1,6 @@
 local secretAchievementsCount = #getSecretAchievements()
 
-function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage, page)
+function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage, page)
 	-- to do: implement permission logic for inspecting other creatures
 	local player = Player(playerId)
 	if not player then
@@ -8,13 +8,13 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 	end
 	
 	if playerId ~= creatureId then
-		sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_ACCESSDENIED)
+		sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_ACCESSDENIED)
 		return
 	end
 
 	local creature = Creature(creatureId)
 	if not creature or creature:isRemoved() then
-		sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+		sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 		return
 	end
 
@@ -33,11 +33,11 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 	end
 	
 	local response = NetworkMessage()
-	response:addByte(COMPENDIUM_RESPONSE_PLAYERDATA)
+	response:addByte(CYCLOPEDIA_RESPONSE_PLAYERDATA)
 	response:addByte(infoType)
-	response:addByte(COMPENDIUM_RESPONSETYPE_OK)
+	response:addByte(CYCLOPEDIA_RESPONSETYPE_OK)
 		
-	if infoType == COMPENDIUM_PLAYER_BASEINFORMATION then
+	if infoType == PLAYERTAB_BASEINFORMATION then
 		response:addString(creature:getName())
 		response:addString(creatureType:gsub("^%l", string.upper))
 		response:addU16(isPlayer and creature:getLevel() or 1)
@@ -47,9 +47,9 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:addString("") -- character title
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_GENERAL then
+	elseif infoType == PLAYERTAB_GENERAL then
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -106,7 +106,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 
 		-- skill amount
 		response:addByte(8)
-		-- u8: skill compendium id
+		-- u8: skill cyclopedia id
 		-- u16: bonus, base, loyalty, percent
 		
 		local baseML = creature:getBaseMagicLevel()
@@ -114,7 +114,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		local manaCost = voc:getRequiredManaSpent(baseML + 1)
 		local manaSpent = creature:getManaSpent()
 		local progress = manaSpent * 10000 / manaCost
-		response:addByte(COMPENDIUM_SKILL_MAGIC)
+		response:addByte(CYCLOPEDIA_SKILL_MAGIC)
 		response:addU16(creature:getMagicLevel())
 		response:addU16(baseML)
 		response:addU16(baseML) -- loyalty bonus
@@ -123,7 +123,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		for skillId = SKILL_FIST, SKILL_FISHING do
 			local baseSkill = creature:getSkillLevel(skillId)
 		
-			response:addByte(compendiumSkillMap[skillId])
+			response:addByte(cyclopediaSkillMap[skillId])
 			response:addU16(creature:getEffectiveSkillLevel(skillId))
 			response:addU16(baseSkill)
 			response:addU16(baseSkill) -- loyalty bonus
@@ -138,7 +138,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_COMBAT then
+	elseif infoType == PLAYERTAB_COMBAT then
 		for skillId = SPECIALSKILL_CRITICALHITCHANCE, SPECIALSKILL_MANALEECHAMOUNT do
 			response:addU16(isPlayer and creature:getSpecialSkill(skillId) or 0)
 			response:addU16(0)
@@ -186,16 +186,16 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_DEATHS then
+	elseif infoType == PLAYERTAB_DEATHS then
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
 		local deathList = getDeathList(creature:getGuid())
 		local pageCount = math.max(1, math.ceil(#deathList / entriesPerPage))
 		if page > pageCount then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -211,16 +211,16 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_PVPKILLS then
+	elseif infoType == PLAYERTAB_PVPKILLS then
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
 		local fragList = getFragList(creature:getGuid())
 		local pageCount = math.max(1, math.ceil(#fragList / entriesPerPage))
 		if page > pageCount then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -254,31 +254,31 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		-- unjustified kills
 		response:addU32(ost)
 		response:addString(string.format("You have %d active unjustified kill%s.", fragStatus.unjustified, (fragStatus.unjustified == 1 and "" or "s")))
-		response:addByte(COMPENDIUM_KILLTYPE_ARENA)
+		response:addByte(CYCLOPEDIA_KILLTYPE_ARENA)
 		
 		-- single frag duration
 		if fragStatus.duration > 0 then
 			response:addU32(ost)
 			response:addString(string.format("Next kill expires in: %s", Game.getCountdownString(fragStatus.duration)))
-			response:addByte(COMPENDIUM_KILLTYPE_ARENA)
+			response:addByte(CYCLOPEDIA_KILLTYPE_ARENA)
 		end
 	
 		-- total frag duration
 		if fragStatus.totalDuration > 0 then
 			response:addU32(ost)
 			response:addString(string.format("All kills expire in: %s", Game.getCountdownString(fragStatus.totalDuration)))
-			response:addByte(COMPENDIUM_KILLTYPE_ARENA)
+			response:addByte(CYCLOPEDIA_KILLTYPE_ARENA)
 		end
 		
 		if pzLockDuration > 0 then
 			response:addU32(ost)
 			response:addString(string.format("PZ lock expires in: %s", Game.getCountdownString(pzLockDuration)))
-			response:addByte(COMPENDIUM_KILLTYPE_ARENA)
+			response:addByte(CYCLOPEDIA_KILLTYPE_ARENA)
 		end
 		
 		response:addU32(ost)
 		response:addString("----------------")
-		response:addByte(COMPENDIUM_KILLTYPE_ARENA)
+		response:addByte(CYCLOPEDIA_KILLTYPE_ARENA)
 		-- end extra info (again)
 
 		-- display kills on page
@@ -290,9 +290,9 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_ACHIEVEMENTS then
+	elseif infoType == PLAYERTAB_ACHIEVEMENTS then
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -316,11 +316,11 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		end
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_INVENTORY then
+	elseif infoType == PLAYERTAB_INVENTORY then
 		-- to do: show loot if inspecting monster?
 		-- shoplist if npc?
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -341,13 +341,13 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_COSMETICS then
+	elseif infoType == PLAYERTAB_COSMETICS then
 		-- This tab shows player unlocked outfits.
 		-- Displaying premium only cosmetics for free accounts
 		-- is intentional and 100% accurate.
 		
 		if not isPlayer then
-			sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+			sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 			return
 		end
 		
@@ -357,15 +357,15 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		-- add outfits
 		local playerSex = creature:getSex()
 		local displayOutfits = {}
-		if #COMPENDIUM_CACHE.outfitLookTypes[playerSex] > 0 then
+		if #CYCLOPEDIA_CACHE.outfitLookTypes[playerSex] > 0 then
 			if creature:getGroup():getAccess() then
 				-- GM outfit not included because it causes issues when clicking on mounts
-				for cacheIndex = 1, #COMPENDIUM_CACHE.outfitLookTypes[playerSex] do
-					displayOutfits[#displayOutfits + 1] = {COMPENDIUM_CACHE.outfitLookTypes[playerSex][cacheIndex], 3}
+				for cacheIndex = 1, #CYCLOPEDIA_CACHE.outfitLookTypes[playerSex] do
+					displayOutfits[#displayOutfits + 1] = {CYCLOPEDIA_CACHE.outfitLookTypes[playerSex][cacheIndex], 3}
 				end
 			else
-				for cacheIndex = 1, #COMPENDIUM_CACHE.outfitLookTypes[playerSex] do
-					local lookType = COMPENDIUM_CACHE.outfitLookTypes[playerSex][cacheIndex]
+				for cacheIndex = 1, #CYCLOPEDIA_CACHE.outfitLookTypes[playerSex] do
+					local lookType = CYCLOPEDIA_CACHE.outfitLookTypes[playerSex][cacheIndex]
 					if creature:hasOutfit(lookType, 0) then
 						local outfitData = {lookType, 0}
 						for i = 1, 2 do
@@ -408,10 +408,10 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		end
 
 		-- add mounts
-		if #COMPENDIUM_CACHE.mounts > 0 then
+		if #CYCLOPEDIA_CACHE.mounts > 0 then
 			local displayMounts = {}
-			for i = 1, #COMPENDIUM_CACHE.mounts do
-				local mount = COMPENDIUM_CACHE.mounts[i]
+			for i = 1, #CYCLOPEDIA_CACHE.mounts do
+				local mount = CYCLOPEDIA_CACHE.mounts[i]
 			
 				if creature:hasMount(mount.id) then
 					displayMounts[#displayMounts + 1] = mount
@@ -437,19 +437,19 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		end
 
 		-- add familiars
-		if #COMPENDIUM_CACHE.familiars > 0 then
+		if #CYCLOPEDIA_CACHE.familiars > 0 then
 			local displayFamiliars = {}
 			
 			if not creature:getGroup():getAccess() then
-				for i = 1, #COMPENDIUM_CACHE.familiars do
-					local familiar = COMPENDIUM_CACHE.familiars[i]
+				for i = 1, #CYCLOPEDIA_CACHE.familiars do
+					local familiar = CYCLOPEDIA_CACHE.familiars[i]
 					if creature:hasFamiliar(familiar.id) and (#familiar.vocations == 0 or table.contains(familiar.vocations, creature:getVocation():getId())) then
 						displayFamiliars[#displayFamiliars + 1] = familiar
 					end	
 				end			
 			else
-				for i = 1, #COMPENDIUM_CACHE.familiars do
-					displayFamiliars[#displayFamiliars + 1] = COMPENDIUM_CACHE.familiars[i]
+				for i = 1, #CYCLOPEDIA_CACHE.familiars do
+					displayFamiliars[#displayFamiliars + 1] = CYCLOPEDIA_CACHE.familiars[i]
 				end
 			end
 			
@@ -469,9 +469,9 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_STORE then
+	elseif infoType == PLAYERTAB_STORE then
 		return
-	elseif infoType == COMPENDIUM_PLAYER_INSPECTION then
+	elseif infoType == PLAYERTAB_INSPECTION then
 		-- this tab shows player eq, outfit and short character summary
 		local playerEQ = {}
 		local eqCount = 0
@@ -533,7 +533,7 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		
 		response:sendToPlayer(player)
 		return
-	elseif infoType == COMPENDIUM_PLAYER_BADGES then
+	elseif infoType == PLAYERTAB_BADGES then
 		--[[
 		response:addByte(1) -- show this info (bool)
 		response:addByte(0) -- account online?
@@ -552,30 +552,22 @@ function sendCompendiumPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:sendToPlayer(player)
 		]]
 		return
-	elseif infoType == COMPENDIUM_PLAYER_TITLES then
+	elseif infoType == PLAYERTAB_TITLES then
 		return
 	end
 
-	sendCompendiumError(player, infoType, COMPENDIUM_RESPONSETYPE_NODATA)
+	sendCyclopediaError(player, infoType, CYCLOPEDIA_RESPONSETYPE_NODATA)
 end
 
-function onRequestPlayerData(player, recvbyte, networkMessage)
-	local targetPlayerId = networkMessage:getU32()
-	if targetPlayerId == 0 then
-		targetPlayerId = player:getId()
-	end
-	
-	local infoType = networkMessage:getByte()
-	local entriesPerPage = 5
-	local currentPage = 1
-	if (infoType == COMPENDIUM_PLAYER_DEATHS or infoType == COMPENDIUM_PLAYER_PVPKILLS) then
-		entriesPerPage = math.min(30, math.max(5, networkMessage:getU16()))
-		currentPage = math.max(1, networkMessage:getU16());
-	end
-	
-	player:addDispatcherTask(sendCompendiumPlayerInfo, infoType + 1, player:getId(), targetPlayerId, infoType, entriesPerPage, currentPage)
-	return true
-end
+do
+	local ec = EventCallback
+	ec.onRequestPlayerTab = function(self, target, infoType, currentPage, entriesPerPage)
+		if (infoType == PLAYERTAB_DEATHS or infoType == PLAYERTAB_PVPKILLS) then
+			entriesPerPage = math.min(30, math.max(5, entriesPerPage))
+			currentPage = math.min(30, currentPage);
+		end
 
-local callback = onRequestPlayerData
-setPacketEvent(COMPENDIUM_REQUEST_PLAYERDATA, callback)
+		self:addDispatcherTask(sendCyclopediaPlayerInfo, infoType + 1, self:getId(), target:getId(), infoType, entriesPerPage, currentPage)
+	end
+	ec:register()
+end

@@ -1038,15 +1038,16 @@ if Modules == nil then
 			msg = self.npcHandler:parseMessage(msg, parseInfo)
 			player:sendCancelMessage(msg)
 			self.npcHandler.talkStart[cid] = os.time()
+		end
 
-			return amountSold > 0
-		else
+		if amountSold > 0 then
 			local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
 			msg = self.npcHandler:parseMessage(msg, parseInfo)
 			player:sendTextMessage(MESSAGE_INFO_DESCR, msg)
 			self.npcHandler.talkStart[cid] = os.time()
-			return true
 		end
+
+		return amount > 0 and amountSold > 0
 	end
 
 	-- Callback onSell() function. If you wish, you can change certain Npc to use your onSell().

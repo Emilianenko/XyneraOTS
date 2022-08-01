@@ -77,6 +77,11 @@ function Container:createLootItem(item)
 
 		if item.subType ~= -1 then
 			tmpItem:setAttribute(ITEM_ATTRIBUTE_CHARGES, item.subType)
+		else
+			local defaultCharges = itemType:getCharges()
+			if defaultCharges ~= 0 then
+				tmpItem:setAttribute(ITEM_ATTRIBUTE_CHARGES, defaultCharges)
+			end
 		end
 
 		if item.actionId ~= -1 then

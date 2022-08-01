@@ -16,6 +16,7 @@ struct spawnBlock_t {
 	int64_t lastSpawn;
 	uint32_t interval;
 	Direction direction;
+	uint8_t spawnTries = 0;
 };
 
 class Spawn

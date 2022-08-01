@@ -55,6 +55,7 @@ class ConfigManager
 			UNLOCK_ALL_OUTFITS,
 			UNLOCK_ALL_MOUNTS,
 			UNLOCK_ALL_FAMILIARS,
+			ALLOW_SPAWN_BLOCKING,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

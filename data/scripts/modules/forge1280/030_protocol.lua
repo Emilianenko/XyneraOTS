@@ -1,66 +1,40 @@
 ---- parse methods
+-- fusion
 do
-	function parseForgeRequest(player, recvbyte, msg)
-		-- request forge action
-		if recvbyte == FORGE_REQUEST_USEFORGE then
-			-- check if player is near the forge
-			if not player:isInForge() then
-				-- player is not close enough to the forge
-				player:sendDefaultForgeError(FORGE_ERROR_NOTINFORGE)
-				return
-			end
-			
-			local forgeAction = msg:getByte()
-			
-			-- fusion
-			if forgeAction == FORGE_ACTION_FUSION then
-				player:onFusionRequest(
-					msg:getU16(), -- from item
-					msg:getByte(), -- from item tier
-					msg:getU16(), -- to item (not needed technically)
-					msg:getByte(), -- increase success chance
-					msg:getByte() -- reduce tier loss
-				)
-				return
-				
-			-- transfer
-			elseif forgeAction == FORGE_ACTION_TRANSFER then
-				player:onForgeTransferRequest(
-					msg:getU16(), -- from item
-					msg:getByte(), -- from item tier
-					msg:getU16() -- to item
-				)
-				return
-
-			-- convert resources
-			elseif forgeAction <= FORGE_ACTION_INCREASELIMIT then
-				player:onResourceConversion(forgeAction)
-				return
-			end
-				
-			-- bad request
-			player:sendDefaultForgeError(FORGE_ERROR_BADREQUEST)
-			return
-		end
-		
-		-- request history
-		-- send history + forge resources
-		--[[
-		request history (both sources):
-			192
-			0 (?)
-			0 (page?)
-			9 (entries per page?)
-		]]
-		player:sendForgeHistory(msg:getByte())
-		
-		--print(recvbyte, message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte(), message:getByte())
-		--player:addDispatcherTask(dispatcherSendForgeUI, DISPATCHER_FORGE_ENTER, player:getId())
+	local ec = EventCallback
+	ec.onFuseItems = function(self, fromItemType, fromTier, toItemType, successCore, tierLossCore)
+		self:onFusionRequest(fromItemType, fromTier, toItemType, successCore, tierLossCore)
 	end
-
-	setPacketEvent(FORGE_REQUEST_USEFORGE, parseForgeRequest)
-	setPacketEvent(FORGE_REQUEST_HISTORY, parseForgeRequest)
+	ec:register()
 end
+
+-- transfer
+do
+	local ec = EventCallback
+	ec.onTransferTier = function(self, fromItemType, fromTier, toItemType)
+		self:onForgeTransferRequest(fromItemType, fromTier, toItemType)
+	end
+	ec:register()
+end
+
+-- convert
+do
+	local ec = EventCallback
+	ec.onForgeConversion = function(self, conversionType)
+		self:onResourceConversion(conversionType)
+	end
+	ec:register()
+end
+
+-- browse history
+do
+	local ec = EventCallback
+	ec.onForgeHistoryBrowse = function(self, page)
+		self:sendForgeHistory(page)
+	end
+	ec:register()
+end
+
 
 ---- send methods
 -- forge resources

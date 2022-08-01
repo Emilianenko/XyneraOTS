@@ -4,8 +4,10 @@
 #ifndef FS_CONSOLEMANAGER_H
 #define FS_CONSOLEMANAGER_H
 
-// comment this line if you wish to disable colors in console
-#define USE_COLOR_CONSOLE
+// console features (comment to disable)
+#define USE_COLOR_CONSOLE // colored messages
+#define SHOW_CONSOLE_PREFIXES // prefixes, eg [Start]
+//#define SHOW_CONSOLE_TIMESTAMPS // timestamps before prefixes
 
 #include "tools.h"
 
@@ -98,6 +100,9 @@ std::string getColumns(const std::string& leftColumn, const std::string& rightCo
 // returns painted string
 // args: text, color
 std::string setColor(Color color, const std::string& text);
+
+// returns last message sent
+const std::string& getLastMessage();
 
 } // namespace console
 #endif

@@ -90,6 +90,7 @@ mysqlSock = ""
 -- NOTE: forceMonsterTypesOnLoad loads all monster types on startup to validate them.
 -- You can disable it to save some memory if you don't see any errors at startup.
 allowChangeOutfit = true
+allowSpawnBlocking = false
 freePremium = false
 kickIdlePlayerAfterMinutes = 15
 maxMessageBuffer = 4

@@ -310,11 +310,19 @@ bool Spawn::isInSpawnZone(const Position& pos)
 bool Spawn::spawnMonster(uint32_t spawnId, spawnBlock_t sb, bool startup/* = false*/)
 {
 	bool isBlocked = !startup && findPlayer(sb.pos);
+	bool ignoreBlocking = !g_config.getBoolean(ConfigManager::ALLOW_SPAWN_BLOCKING);
+	bool hasUnblockables = false;
+
 	size_t monstersCount = sb.mTypes.size(), blockedMonsters = 0;
 
-	const auto spawnFunc = [&](bool roll) {
+	const auto spawnFunc = [&](bool roll, bool force) {
 		for (const auto& pair : sb.mTypes) {
-			if (isBlocked && !pair.first->info.isIgnoringSpawnBlock) {
+			bool realIgnoreBlocking = ignoreBlocking || pair.first->info.isIgnoringSpawnBlock;
+			if (realIgnoreBlocking) {
+				hasUnblockables = true;
+			}
+
+			if (isBlocked && (!realIgnoreBlocking || !force)) {
 				++blockedMonsters;
 				continue;
 			}
@@ -324,6 +332,7 @@ bool Spawn::spawnMonster(uint32_t spawnId, spawnBlock_t sb, bool startup/* = fal
 			}
 
 			if (pair.second >= normal_random(1, 100) && spawnMonster(spawnId, pair.first, sb.pos, sb.direction, startup)) {
+				sb.spawnTries = 0;
 				return true;
 			}
 		}
@@ -332,17 +341,27 @@ bool Spawn::spawnMonster(uint32_t spawnId, spawnBlock_t sb, bool startup/* = fal
 	};
 
 	// Try to spawn something with chance check, unless it's single spawn
-	if (spawnFunc(monstersCount > 1)) {
+	if (spawnFunc(monstersCount > 1, false)) {
+		sb.spawnTries = 0;
 		return true;
 	}
 
 	// Every monster spawn is blocked, bail out
-	if (monstersCount == blockedMonsters) {
+	if (monstersCount == blockedMonsters && !hasUnblockables) {
 		return false;
 	}
 
-	// Just try to spawn something without chance check
-	return spawnFunc(false);
+	// Spawn is blocked, warn about upcoming fight
+	if (sb.spawnTries < 2) {
+		++sb.spawnTries;
+		g_game.addMagicEffect(sb.pos, CONST_ME_TELEPORT);
+		g_scheduler.addEvent(createSchedulerTask(2000, [=]() { spawnMonster(spawnId, sb, false); }));
+		return false;
+	}
+
+	// Force spawn
+	sb.spawnTries = 0;
+	return spawnFunc(false, true);
 }
 
 bool Spawn::spawnMonster(uint32_t spawnId, MonsterType* mType, const Position& pos, Direction dir, bool startup/*= false*/)

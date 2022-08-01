@@ -387,11 +387,13 @@ function internalLootItem(player, item, lootContainers, usesFallback, mainContai
 	local lootedItem = item:clone()
 	local found = false
 	local isSkipMode = player:getStorageValue(PlayerStorageKeys.autoLootMode) ~= 1
-	local isItemListed = table.contains(AutoLoot[player:getId()], item:getClientId())
+	local isItemListed = table.contains(AutoLoot[player:getId()], item:getId())
 
 	if isSkipMode and isItemListed then
+		-- item listed as skipped loot
 		return RETURNVALUE_NOTPOSSIBLE
 	elseif not isSkipMode and not isItemListed then
+		-- item not listed as accepted loot
 		return RETURNVALUE_NOTPOSSIBLE
 	end
 	
@@ -688,7 +690,7 @@ end
 do
 	local ec = EventCallback
 	function ec.onSetLootList(player, lootList, mode)
-		player:setStorageValue(PlayerStorageKeys.autoLootMode, mode)
+		player:setStorageValue(PlayerStorageKeys.autoLootMode, mode and 1 or -1)
 		AutoLoot[player:getId()] = lootList
 	end
 	ec:register()

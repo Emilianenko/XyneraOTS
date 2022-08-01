@@ -24,13 +24,6 @@ FORGE_RESPONSE_HISTORY = 0x88 -- forge actions history / to do
 FORGE_RESPONSE_EXIT = 0x89 -- close forge UI (no more bytes required)
 FORGE_RESPONSE_RESULT = 0x8A -- fusion/transfer result
 
--- forge actions
-FORGE_ACTION_FUSION = 0
-FORGE_ACTION_TRANSFER = 1
-FORGE_ACTION_DUSTTOSLIVERS = 2
-FORGE_ACTION_SLIVERSTOCORES = 3
-FORGE_ACTION_INCREASELIMIT = 4
-
 FORGE_ACTION_CONVERSION = 2 -- for history tab
 
 -- forge results

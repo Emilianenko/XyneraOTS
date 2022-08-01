@@ -2312,6 +2312,30 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(DECAYING_TRUE)
 	registerEnum(DECAYING_PENDING)
 
+	registerEnum(FORGE_ACTION_FUSION)
+	registerEnum(FORGE_ACTION_TRANSFER)
+	registerEnum(FORGE_ACTION_DUSTTOSLIVERS)
+	registerEnum(FORGE_ACTION_SLIVERSTOCORES)
+	registerEnum(FORGE_ACTION_INCREASELIMIT)
+
+	registerEnum(INSPECTION_ITEM_NORMAL)
+	registerEnum(INSPECTION_ITEM_NPCTRADE)
+	registerEnum(INSPECTION_ITEM_PLAYERTRADE)
+	registerEnum(INSPECTION_ITEM_CYCLOPEDIA)
+
+	registerEnum(PLAYERTAB_BASEINFORMATION)
+	registerEnum(PLAYERTAB_GENERAL)
+	registerEnum(PLAYERTAB_COMBAT)
+	registerEnum(PLAYERTAB_DEATHS)
+	registerEnum(PLAYERTAB_PVPKILLS)
+	registerEnum(PLAYERTAB_ACHIEVEMENTS)
+	registerEnum(PLAYERTAB_INVENTORY)
+	registerEnum(PLAYERTAB_COSMETICS)
+	registerEnum(PLAYERTAB_STORE)
+	registerEnum(PLAYERTAB_INSPECTION)
+	registerEnum(PLAYERTAB_BADGES)
+	registerEnum(PLAYERTAB_TITLES)
+
 	// _G
 	registerGlobalVariable("INDEX_WHEREEVER", INDEX_WHEREEVER);
 	registerGlobalBoolean("VIRTUAL_PARENT", true);
@@ -2472,6 +2496,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "saveAccountStorageValues", LuaScriptInterface::luaGameSaveAccountStorageValues);
 
 	registerMethod("Game", "sendConsoleMessage", LuaScriptInterface::luaGameSendConsoleMessage);
+	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
@@ -2559,6 +2584,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("NetworkMessage", "addDouble", LuaScriptInterface::luaNetworkMessageAddDouble);
 	registerMethod("NetworkMessage", "addItem", LuaScriptInterface::luaNetworkMessageAddItem);
 	registerMethod("NetworkMessage", "addItemId", LuaScriptInterface::luaNetworkMessageAddItemId);
+	registerMethod("NetworkMessage", "addItemType", LuaScriptInterface::luaNetworkMessageAddItemType);
 
 	registerMethod("NetworkMessage", "reset", LuaScriptInterface::luaNetworkMessageReset);
 	registerMethod("NetworkMessage", "seek", LuaScriptInterface::luaNetworkMessageSeek);
@@ -5234,11 +5260,11 @@ int LuaScriptInterface::luaGameCreateMonster(lua_State* L)
 			setMetatable(L, -1, "Monster");
 		} else {
 			delete monster;
-			lua_pushnil(L);
+			lua_pushboolean(L, false);
 		}
 	} else {
 		delete monster;
-		lua_pushnil(L);
+		lua_pushboolean(L, false);
 	}
 	return 1;
 }
@@ -5262,7 +5288,7 @@ int LuaScriptInterface::luaGameCreateNpc(lua_State* L)
 		setMetatable(L, -1, "Npc");
 	} else {
 		delete npc;
-		lua_pushnil(L);
+		lua_pushboolean(L, false);
 	}
 	return 1;
 }
@@ -5427,6 +5453,13 @@ int LuaScriptInterface::luaGameSendConsoleMessage(lua_State* L)
 		lua_pushboolean(L, false);
 	}
 
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetLastConsoleMessage(lua_State* L)
+{
+	// Game.getLastConsoleMessage()
+	lua_pushstring(L, console::getLastMessage().c_str());
 	return 1;
 }
 
@@ -6551,6 +6584,22 @@ int LuaScriptInterface::luaNetworkMessageAddItemId(lua_State* L)
 
 	message->addItemId(itemId);
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaNetworkMessageAddItemType(lua_State* L)
+{
+	// networkMessage:addItemType(itemType)
+	ItemType* itemType = getUserdata<ItemType>(L, 2);
+	uint16_t itemId = itemType && itemType->clientId != 0 ? itemType->id : 100;
+
+	NetworkMessage* message = getUserdata<NetworkMessage>(L, 1);
+	if (message) {
+		message->addItem(itemId, 0);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
 	return 1;
 }
 

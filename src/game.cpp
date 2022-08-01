@@ -2711,9 +2711,9 @@ void Game::playerInspectClientItem(uint32_t playerId, uint16_t spriteId, bool is
 		return;
 	}
 
-	// compendium inspect
+	// cyclopedia inspect
 	if (!isNpcTrade) {
-		g_events->eventPlayerOnInspectCompendiumItem(player, it.id);
+		g_events->eventPlayerOnInspectCyclopediaItem(player, it.id);
 		return;
 	}
 
@@ -6104,6 +6104,166 @@ void Game::playerRegisterCurrencies(uint32_t playerId)
 	}
 }
 
+void Game::playerFuseItems(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId, bool successCore, bool tierLossCore)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	// validate items
+	const ItemType& fromItemType = Item::items.getItemIdByClientId(fromSpriteId);
+	const ItemType& toItemType = Item::items.getItemIdByClientId(toSpriteId);
+	if (fromItemType.id == 0 || toItemType.id == 0) {
+		return;
+	}
+
+	g_events->eventPlayerOnFuseItems(player, &fromItemType, fromTier, &toItemType, successCore, tierLossCore);
+}
+
+void Game::playerTransferTier(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	// validate items
+	const ItemType& fromItemType = Item::items.getItemIdByClientId(fromSpriteId);
+	const ItemType& toItemType = Item::items.getItemIdByClientId(toSpriteId);
+	if (fromItemType.id == 0 || toItemType.id == 0) {
+		return;
+	}
+
+	g_events->eventPlayerOnTransferTier(player, &fromItemType, fromTier, &toItemType);
+}
+
+void Game::playerConvertForgeResources(uint32_t playerId, ForgeConversionTypes_t actionType)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnForgeConversion(player, actionType);
+}
+
+void Game::playerBrowseForgeHistory(uint32_t playerId, uint8_t page)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnForgeHistoryBrowse(player, page);
+}
+
+void Game::playerViewPlayerTab(uint32_t playerId, uint32_t targetPlayerId, PlayerTabTypes_t infoType, uint16_t currentPage, uint16_t entriesPerPage)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Player* targetPlayer = getPlayerByID(targetPlayerId);
+	if (!targetPlayer) {
+		targetPlayer = player;
+	}
+
+	if (!targetPlayer || targetPlayer->isRemoved()) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoLightUIAction()) {
+		player->setNextLightUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnRequestPlayerTab(player, targetPlayer, infoType, currentPage, entriesPerPage);
+}
+
+void Game::playerInitBestiary(uint32_t playerId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnBestiaryInit(player);
+}
+
+void Game::playerBrowseBestiary(uint32_t playerId, const std::string& category, std::vector<uint16_t> raceList)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnBestiaryBrowse(player, category, raceList);
+}
+
+void Game::playerRequestRaceInfo(uint32_t playerId, uint16_t raceId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnBestiaryRaceView(player, raceId);
+}
+
+#ifdef LUA_EXTENDED_PROTOCOL
 void Game::parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message)
 {
 	std::unique_ptr<NetworkMessage> msgPtr(message);
@@ -6114,6 +6274,7 @@ void Game::parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMes
 
 	g_events->eventPlayerOnExtendedProtocol(player, recvbyte, std::move(msgPtr));
 }
+#endif
 
 void Game::parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer)
 {

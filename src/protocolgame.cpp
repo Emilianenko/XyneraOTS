@@ -893,8 +893,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xB1: break; // request highscores
 		// 0xB2-0xBD - empty
 		case 0xBE: addGameTask([playerID = player->getID()]() { g_game.playerCancelAttackAndFollow(playerID); }); break;
-		//case 0xBF: break; // exaltation forge (scripted)
-		//case 0xC0: break; //request forge history (scripted)
+		case 0xBF: parseForgeAction(msg); break;
+		case 0xC0: parseForgeBrowseHistory(msg); break;
 		// 0xC1-0xC2 - empty
 		// 0xC3 - tournament ui 1
 		// 0xC4 - tournament ui 2
@@ -926,11 +926,11 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xDE: parseEditVip(msg); break;
 		//case 0xDF: break; // vip group
 		//case 0xE0: break; // game news(?)
-		//case 0xE1: break; // bestiary 1 (scripted)
-		//case 0xE2: break; // bestiary 2 (scripted)
-		//case 0xE3: break; // bestiary 3 (scripted)
+		case 0xE1: addGameTask([playerID = player->getID()]() { g_game.playerInitBestiary(playerID); }); break;
+		case 0xE2: parseBestiaryCategory(msg); break;
+		case 0xE3: parseBestiaryCreature(msg); break;
 		//case 0xE4: break; // buy charm
-		//case 0xE5: break; // request character info (in-game knowledge base) (scripted)
+		case 0xE5: parseCyclopediaViewPlayerInfo(msg); break; // player stats
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
@@ -938,7 +938,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		// 0xEA - unknown
 		// 0xEB - prey
 		// 0xEC - rename hireling
-		case 0xED: /* request resource balance */ break;
+		case 0xED: /* request resource balance (handled server side) */ break;
 		case 0xEE: addGameTask([playerID = player->getID()]() { g_game.playerSay(playerID, 0, TALKTYPE_SAY, "", "hi"); }); break;
 		//case 0xEF: break; // request store coins transfer
 		case 0xF0: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerShowQuestLog(playerID); }); break;
@@ -960,9 +960,11 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 		default:
 			// std::cout << "[DEBUG]: Player " << player->getName() << " has sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
-
+			
+#ifdef LUA_EXTENDED_PROTOCOL
 			// redirecting all unknown headers to lua
 			addGameTask([=, playerID = player->getID()]() { g_game.parseExtendedProtocol(playerID, recvbyte, new NetworkMessage(msg)); });
+#endif
 			break;
 	}
 
@@ -1152,6 +1154,33 @@ bool ProtocolGame::canSee(int32_t x, int32_t y, int32_t z) const
 }
 
 // Parse methods
+
+void ProtocolGame::parseBestiaryCategory(NetworkMessage& msg)
+{
+	// 0 - request category (string)
+	// 1 - request list (u16 size, u16 race ids)
+	uint8_t mode = msg.getByte();
+	std::string category;
+	std::vector<uint16_t> raceList;
+
+	if (mode == 0) {
+		category = msg.getString();
+	} else {
+		// mode == 1
+		uint16_t listSize = msg.get<uint16_t>();
+		for (int i = 0; i < listSize; ++i) {
+			raceList.push_back(msg.get<uint16_t>());
+		}
+	}
+
+	addGameTask([playerID = player->getID(), category = std::move(category), races = raceList]() { g_game.playerBrowseBestiary(playerID, category, races); });
+}
+
+void ProtocolGame::parseBestiaryCreature(NetworkMessage& msg)
+{
+	addGameTask([playerID = player->getID(), raceId = msg.get<uint16_t>()]() { g_game.playerRequestRaceInfo(playerID, raceId); });
+}
+
 void ProtocolGame::parseChannelInvite(NetworkMessage& msg)
 {
 	std::string name = msg.getString();
@@ -1469,7 +1498,7 @@ void ProtocolGame::parseEquipObject(NetworkMessage& msg)
 
 	uint8_t tier = 0;
 	if (it.classification > 0) {
-		tier = msg.get<uint8_t>();
+		tier = msg.getByte();
 	}
 
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID(), isTiered = it.classification > 0]() { g_game.playerEquipItem(playerID, spriteId, isTiered, tier); });
@@ -1774,12 +1803,61 @@ void ProtocolGame::parseMarketAcceptOffer(NetworkMessage& msg)
 	addGameTask([=, playerID = player->getID()]() { g_game.playerAcceptMarketOffer(playerID, timestamp, counter, amount); });
 }
 
+void ProtocolGame::parseForgeAction(NetworkMessage& msg)
+{
+	ForgeConversionTypes_t forgeAction = static_cast<ForgeConversionTypes_t>(msg.getByte());
+	switch (forgeAction) {
+		case FORGE_ACTION_FUSION:
+			addGameTask([=,
+					playerID = player->getID(),
+					fromSpriteId = msg.get<uint16_t>(),
+					fromTier = msg.getByte(),
+					toSpriteId = msg.get<uint16_t>(),
+					successCore = msg.getByte() == 1,
+					tierLossCore = msg.getByte() == 1
+			]() { g_game.playerFuseItems(playerID, fromSpriteId, fromTier, toSpriteId, successCore, tierLossCore); });
+			break;
+		case FORGE_ACTION_TRANSFER:
+			addGameTask([=,
+				playerID = player->getID(),
+				fromSpriteId = msg.get<uint16_t>(),
+				fromTier = msg.getByte(),
+				toSpriteId = msg.get<uint16_t>()
+			]() { g_game.playerTransferTier(playerID, fromSpriteId, fromTier, toSpriteId); });
+			break;
+		default:
+			addGameTask([=, playerID = player->getID()]() { g_game.playerConvertForgeResources(playerID, forgeAction); });
+			break;
+	}
+}
+
+void ProtocolGame::parseForgeBrowseHistory(NetworkMessage& msg)
+{
+	addGameTask([=, playerID = player->getID(), page = msg.getByte()]() { g_game.playerBrowseForgeHistory(playerID, page); });
+}
+
 void ProtocolGame::parseModalWindowAnswer(NetworkMessage& msg)
 {
 	uint32_t id = msg.get<uint32_t>();
 	uint8_t button = msg.getByte();
 	uint8_t choice = msg.getByte();
 	addGameTask([=, playerID = player->getID()]() { g_game.playerAnswerModalWindow(playerID, id, button, choice); });
+}
+
+void ProtocolGame::parseCyclopediaViewPlayerInfo(NetworkMessage& msg)
+{
+	uint32_t targetPlayerId = msg.get<uint32_t>();
+	PlayerTabTypes_t infoType = static_cast<PlayerTabTypes_t>(msg.getByte());
+	uint16_t entriesPerPage = 5;
+	uint16_t currentPage = 0;
+
+	// parse client preferences (page number / entries per page)
+	if (infoType == PLAYERTAB_DEATHS || infoType == PLAYERTAB_PVPKILLS) {
+		entriesPerPage = msg.get<uint16_t>();
+		currentPage = msg.get<uint16_t>();
+	}
+
+	addGameTask([=, playerID = player->getID()]() { g_game.playerViewPlayerTab(playerID, targetPlayerId, infoType, currentPage, entriesPerPage); });
 }
 
 void ProtocolGame::parseBrowseField(NetworkMessage& msg)
@@ -1807,7 +1885,7 @@ void ProtocolGame::parseInspectItem(NetworkMessage& msg)
 			addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID(), isInspectingPartnerOffer = msg.getByte() == 1, index = msg.getByte()]() { g_game.playerInspectTradeItem(playerID, isInspectingPartnerOffer, index); });
 			break;
 		case INSPECTION_ITEM_NPCTRADE:
-		case INSPECTION_ITEM_COMPENDIUM:
+		case INSPECTION_ITEM_CYCLOPEDIA:
 			addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID(), spriteID = msg.get<uint16_t>(), isNpcTrade = inspectionType == INSPECTION_ITEM_NPCTRADE]() { g_game.playerInspectClientItem(playerID, spriteID, isNpcTrade); });
 			break;
 		default:

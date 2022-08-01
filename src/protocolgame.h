@@ -84,83 +84,17 @@ class ProtocolGame final : public Protocol
 		bool canSee(const Creature*) const;
 		bool canSee(const Position& pos) const;
 
-		// we have all the parse methods
 		void parsePacket(NetworkMessage& msg) override;
 		void onRecvFirstMessage(NetworkMessage& msg) override;
 		void onConnect() override;
 
-		//Parse methods
-		void parseAutoWalk(NetworkMessage& msg);
-		void parseSetOutfit(NetworkMessage& msg);
-		void parseEditPodiumRequest(NetworkMessage& msg);
-		void parseSay(NetworkMessage& msg);
-		void parseLookAt(NetworkMessage& msg);
-		void parseLookInBattleList(NetworkMessage& msg);
-		void parseFightModes(NetworkMessage& msg);
-		void parseAttack(NetworkMessage& msg);
-		void parseFollow(NetworkMessage& msg);
-		void parseEquipObject(NetworkMessage& msg);
+		// Parse methods
 
-		void parseBugReport(NetworkMessage& msg);
-		void parseDebugAssert(NetworkMessage& msg);
-		void parseRuleViolationReport(NetworkMessage& msg);
+		// Bestiary
+		void parseBestiaryCategory(NetworkMessage& msg);
+		void parseBestiaryCreature(NetworkMessage& msg);
 
-		void parseThrow(NetworkMessage& msg);
-		void parseUseItemEx(NetworkMessage& msg);
-		void parseUseWithCreature(NetworkMessage& msg);
-		void parseUseItem(NetworkMessage& msg);
-		void parseCloseContainer(NetworkMessage& msg);
-		void parseUpArrowContainer(NetworkMessage& msg);
-		void parseUpdateContainer(NetworkMessage& msg);
-		void parseTextWindow(NetworkMessage& msg);
-		void parseHouseWindow(NetworkMessage& msg);
-		void parseWrapItem(NetworkMessage& msg);
-		void parseQuickLoot(NetworkMessage& msg);
-		void parseSelectLootContainer(NetworkMessage& msg);
-		void parseQuickLootList(NetworkMessage& msg);
-
-		void parseLookInShop(NetworkMessage& msg);
-		void parsePlayerPurchase(NetworkMessage& msg);
-		void parsePlayerSale(NetworkMessage& msg);
-
-		void parseQuestLine(NetworkMessage& msg);
-		void parseQuestTracker(NetworkMessage& msg);
-
-		void parseInviteToParty(NetworkMessage& msg);
-		void parseJoinParty(NetworkMessage& msg);
-		void parseRevokePartyInvite(NetworkMessage& msg);
-		void parsePassPartyLeadership(NetworkMessage& msg);
-		void parseEnableSharedPartyExperience(NetworkMessage& msg);
-
-		void parseToggleMount(NetworkMessage& msg);
-
-		void parseModalWindowAnswer(NetworkMessage& msg);
-
-		void parseBrowseField(NetworkMessage& msg);
-		void parseSeekInContainer(NetworkMessage& msg);
-		void parseInspectItem(NetworkMessage& msg);
-
-		void parsePlayerMinimapQuery(NetworkMessage& msg);
-
-		//trade methods
-		void parseRequestTrade(NetworkMessage& msg);
-		void parseLookInTrade(NetworkMessage& msg);
-
-		//market methods
-		void parseMarketLeave();
-		void parseMarketBrowse(NetworkMessage& msg);
-		void parseMarketCreateOffer(NetworkMessage& msg);
-		void parseMarketCancelOffer(NetworkMessage& msg);
-		void parseMarketAcceptOffer(NetworkMessage& msg);
-
-		//VIP methods
-		void parseAddVip(NetworkMessage& msg);
-		void parseRemoveVip(NetworkMessage& msg);
-		void parseEditVip(NetworkMessage& msg);
-
-		void parseRotateItem(NetworkMessage& msg);
-
-		//Channel tabs
+		// Channel tabs
 		void parseChannelInvite(NetworkMessage& msg);
 		void parseChannelExclude(NetworkMessage& msg);
 		void parseOpenChannel(NetworkMessage& msg);
@@ -168,7 +102,92 @@ class ProtocolGame final : public Protocol
 		void parseCloseChannel(NetworkMessage& msg);
 		void parseSaveGuildMotd(NetworkMessage& msg);
 
-		//Send functions
+		// Containers
+		void parseCloseContainer(NetworkMessage& msg);
+		void parseUpArrowContainer(NetworkMessage& msg);
+		void parseUpdateContainer(NetworkMessage& msg);
+		void parseBrowseField(NetworkMessage& msg);
+		void parseSeekInContainer(NetworkMessage& msg);
+
+		// Exaltation forge
+		void parseForgeAction(NetworkMessage& msg);
+		void parseForgeBrowseHistory(NetworkMessage& msg);
+
+		// Items
+		void parseEquipObject(NetworkMessage& msg);
+		void parseThrow(NetworkMessage& msg);
+		void parseUseItemEx(NetworkMessage& msg);
+		void parseUseWithCreature(NetworkMessage& msg);
+		void parseUseItem(NetworkMessage& msg);
+		void parseWrapItem(NetworkMessage& msg);
+		void parseRotateItem(NetworkMessage& msg);
+		void parseInspectItem(NetworkMessage& msg);
+
+		// Market
+		void parseMarketLeave();
+		void parseMarketBrowse(NetworkMessage& msg);
+		void parseMarketCreateOffer(NetworkMessage& msg);
+		void parseMarketCancelOffer(NetworkMessage& msg);
+		void parseMarketAcceptOffer(NetworkMessage& msg);
+
+		// Outfits
+		void parseSetOutfit(NetworkMessage& msg);
+		void parseToggleMount(NetworkMessage& msg);
+		void parseEditPodiumRequest(NetworkMessage& msg);
+
+		// Party
+		void parseInviteToParty(NetworkMessage& msg);
+		void parseJoinParty(NetworkMessage& msg);
+		void parseRevokePartyInvite(NetworkMessage& msg);
+		void parsePassPartyLeadership(NetworkMessage& msg);
+		void parseEnableSharedPartyExperience(NetworkMessage& msg);
+
+		// Quests
+		void parseQuestLine(NetworkMessage& msg);
+		void parseQuestTracker(NetworkMessage& msg);
+
+		// Quick loot
+		void parseQuickLoot(NetworkMessage& msg);
+		void parseSelectLootContainer(NetworkMessage& msg);
+		void parseQuickLootList(NetworkMessage& msg);
+
+		// Reporting
+		void parseBugReport(NetworkMessage& msg);
+		void parseDebugAssert(NetworkMessage& msg);
+		void parseRuleViolationReport(NetworkMessage& msg);
+
+		// Trade (with players)
+		void parseRequestTrade(NetworkMessage& msg);
+		void parseLookInTrade(NetworkMessage& msg);
+
+		// Trade (with NPC)
+		void parseLookInShop(NetworkMessage& msg);
+		void parsePlayerPurchase(NetworkMessage& msg);
+		void parsePlayerSale(NetworkMessage& msg);
+
+		// UI (other)
+		void parseTextWindow(NetworkMessage& msg);
+		void parseHouseWindow(NetworkMessage& msg);
+		void parseModalWindowAnswer(NetworkMessage& msg);
+		void parseCyclopediaViewPlayerInfo(NetworkMessage& msg);
+
+		// VIP list
+		void parseAddVip(NetworkMessage& msg);
+		void parseRemoveVip(NetworkMessage& msg);
+		void parseEditVip(NetworkMessage& msg);
+
+		// other
+		void parsePlayerMinimapQuery(NetworkMessage& msg);
+		void parseSay(NetworkMessage& msg);
+		void parseLookAt(NetworkMessage& msg);
+		void parseLookInBattleList(NetworkMessage& msg);
+		void parseFightModes(NetworkMessage& msg);
+		void parseAttack(NetworkMessage& msg);
+		void parseFollow(NetworkMessage& msg);
+		void parseAutoWalk(NetworkMessage& msg);
+
+
+		// Send functions
 		void sendChannelMessage(const std::string& author, const std::string& text, MessageClasses type, uint16_t channel);
 		void sendChannelEvent(uint16_t channelId, const std::string& playerName, ChannelEvent_t channelEvent);
 		void sendClosePrivate(uint16_t channelId);

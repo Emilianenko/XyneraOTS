@@ -334,9 +334,9 @@ function Player:onInspectNpcTradeItem(npc, itemId)
 	end
 end
 
-function Player:onInspectCompendiumItem(itemId)
-	if EventCallback.onInspectCompendiumItem then
-		EventCallback.onInspectCompendiumItem(self, itemId)
+function Player:onInspectCyclopediaItem(itemId)
+	if EventCallback.onInspectCyclopediaItem then
+		EventCallback.onInspectCyclopediaItem(self, itemId)
 	end
 end
 -- end inspection feature
@@ -373,6 +373,54 @@ end
 function Player:onManageLootContainer(item, mode, lootType)
 	if EventCallback.onManageLootContainer then
 		EventCallback.onManageLootContainer(self, item, mode, lootType)
+	end
+end
+
+function Player:onFuseItems(fromItemType, fromTier, toItemType, successCore, tierLossCore)
+	if EventCallback.onFuseItems then
+		EventCallback.onFuseItems(self, fromItemType, fromTier, toItemType, successCore, tierLossCore)
+	end
+end
+
+function Player:onTransferTier(fromItemType, fromTier, toItemType)
+	if EventCallback.onTransferTier then
+		EventCallback.onTransferTier(self, fromItemType, fromTier, toItemType)
+	end
+end
+
+function Player:onForgeConversion(conversionType)
+	if EventCallback.onForgeConversion then
+		EventCallback.onForgeConversion(self, conversionType)
+	end
+end
+
+function Player:onForgeHistoryBrowse(page)
+	if EventCallback.OnForgeHistoryBrowse then
+		EventCallback.OnForgeHistoryBrowse(self, page)
+	end
+end
+
+function Player:onRequestPlayerTab(target, infoType, currentPage, entriesPerPage)
+	if EventCallback.onRequestPlayerTab then
+		EventCallback.onRequestPlayerTab(self, target, infoType, currentPage, entriesPerPage)
+	end
+end
+
+function Player:onBestiaryInit()
+	if EventCallback.onBestiaryInit then
+		EventCallback.onBestiaryInit(self)
+	end
+end
+
+function Player:onBestiaryBrowse(category, raceList)
+	if EventCallback.onBestiaryBrowse then
+		EventCallback.onBestiaryBrowse(self, category, raceList)
+	end
+end
+
+function Player:onBestiaryRaceView(raceId)
+	if EventCallback.onBestiaryRaceView then
+		EventCallback.onBestiaryRaceView(self, raceId)
 	end
 end
 

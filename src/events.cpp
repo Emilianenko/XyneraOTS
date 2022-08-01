@@ -123,8 +123,8 @@ bool Events::load()
 				info.playerOnInspectTradeItem = event;
 			} else if (methodName == "onInspectNpcTradeItem") {
 				info.playerOnInspectNpcTradeItem = event;
-			} else if (methodName == "onInspectCompendiumItem") {
-				info.playerOnInspectCompendiumItem = event;
+			} else if (methodName == "onInspectCyclopediaItem") {
+				info.playerOnInspectCyclopediaItem = event;
 			} else if (methodName == "onMinimapQuery") {
 				info.playerOnMinimapQuery = event;
 			} else if (methodName == "onInventoryUpdate") {
@@ -135,6 +135,22 @@ bool Events::load()
 				info.playerOnSetLootList = event;
 			} else if (methodName == "onManageLootContainer") {
 				info.playerOnManageLootContainer = event;
+			} else if (methodName == "onFuseItems") {
+				info.playerOnFuseItems = event;
+			} else if (methodName == "onTransferTier") {
+				info.playerOnTransferTier = event;
+			} else if (methodName == "onForgeConversion") {
+				info.playerOnForgeConversion = event;
+			} else if (methodName == "onForgeHistoryBrowse") {
+				info.playerOnForgeHistoryBrowse = event;
+			} else if (methodName == "onRequestPlayerTab") {
+				info.playerOnRequestPlayerTab = event;
+			} else if (methodName == "onBestiaryInit") {
+				info.playerOnBestiaryInit = event;
+			} else if (methodName == "onBestiaryBrowse") {
+				info.playerOnBestiaryBrowse = event;
+			} else if (methodName == "onBestiaryRaceView") {
+				info.playerOnBestiaryRaceView = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -1281,23 +1297,23 @@ void Events::eventPlayerOnInspectNpcTradeItem(Player* player, Npc* npc, uint16_t
 	scriptInterface.callVoidFunction(3);
 }
 
-void Events::eventPlayerOnInspectCompendiumItem(Player* player, uint16_t itemId)
+void Events::eventPlayerOnInspectCyclopediaItem(Player* player, uint16_t itemId)
 {
-	// Player:onInspectCompendiumItem(itemId)
-	if (info.playerOnInspectCompendiumItem == -1) {
+	// Player:onInspectCyclopediaItem(itemId)
+	if (info.playerOnInspectCyclopediaItem == -1) {
 		return;
 	}
 
 	if (!scriptInterface.reserveScriptEnv()) {
-		console::reportOverflow("Events::onInspectCompendiumItem");
+		console::reportOverflow("Events::onInspectCyclopediaItem");
 		return;
 	}
 
 	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(info.playerOnInspectCompendiumItem, &scriptInterface);
+	env->setScriptId(info.playerOnInspectCyclopediaItem, &scriptInterface);
 
 	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(info.playerOnInspectCompendiumItem);
+	scriptInterface.pushFunction(info.playerOnInspectCyclopediaItem);
 
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
@@ -1477,6 +1493,267 @@ void Events::eventPlayerOnManageLootContainer(Player* player, Item* item, uint8_
 	scriptInterface.callVoidFunction(4);
 }
 
+void Events::eventPlayerOnFuseItems(Player* player, const ItemType* fromItemType, uint8_t fromTier, const ItemType* toItemType, bool successCore, bool tierLossCore)
+{
+	// Player:onFuseItems(fromItemType, fromTier, toItemType, successCore, tierLossCore)
+	if (info.playerOnFuseItems == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnFuseItems");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnFuseItems, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnFuseItems);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// fromItemType
+	LuaScriptInterface::pushUserdata<const ItemType>(L, fromItemType);
+	LuaScriptInterface::setMetatable(L, -1, "ItemType");
+
+	// fromTier
+	lua_pushnumber(L, fromTier);
+
+	// toItemType
+	LuaScriptInterface::pushUserdata<const ItemType>(L, toItemType);
+	LuaScriptInterface::setMetatable(L, -1, "ItemType");
+
+	// successCore
+	lua_pushboolean(L, successCore);
+
+	// tierLossCore
+	lua_pushboolean(L, tierLossCore);
+
+	scriptInterface.callVoidFunction(6);
+}
+
+void Events::eventPlayerOnTransferTier(Player* player, const ItemType* fromItemType, uint8_t fromTier, const ItemType* toItemType)
+{
+	// Player:onTransferTier(fromItemType, fromTier, toItemType)
+	if (info.playerOnTransferTier == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnTransferTier");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnTransferTier, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnTransferTier);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// fromItemType
+	LuaScriptInterface::pushUserdata<const ItemType>(L, fromItemType);
+	LuaScriptInterface::setMetatable(L, -1, "ItemType");
+
+	// fromTier
+	lua_pushnumber(L, fromTier);
+
+	// toItemType
+	LuaScriptInterface::pushUserdata<const ItemType>(L, toItemType);
+	LuaScriptInterface::setMetatable(L, -1, "ItemType");
+
+	scriptInterface.callVoidFunction(4);
+}
+
+void Events::eventPlayerOnForgeConversion(Player* player, ForgeConversionTypes_t conversionType)
+{
+	// Player:onForgeConversion(conversionType)
+	if (info.playerOnForgeConversion == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnForgeConversion");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnForgeConversion, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnForgeConversion);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// conversionType
+	lua_pushnumber(L, conversionType);
+
+	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnForgeHistoryBrowse(Player* player, uint8_t page)
+{
+	// Player:onForgeHistoryBrowse(page)
+	if (info.playerOnForgeHistoryBrowse == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnForgeHistoryBrowse");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnForgeHistoryBrowse, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnForgeHistoryBrowse);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// conversionType
+	lua_pushnumber(L, page);
+
+	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnRequestPlayerTab(Player* player, Player* targetPlayer, PlayerTabTypes_t infoType, uint16_t currentPage, uint16_t entriesPerPage)
+{
+	// Player:onRequestPlayerTab(target, infoType, currentPage, entriesPerPage)
+	if (info.playerOnRequestPlayerTab == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnRequestPlayerTab");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnRequestPlayerTab, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnRequestPlayerTab);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// target
+	LuaScriptInterface::pushUserdata<Player>(L, targetPlayer);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// infoType
+	lua_pushnumber(L, infoType);
+
+	// currentPage
+	lua_pushnumber(L, currentPage);
+
+	// entriesPerPage
+	lua_pushnumber(L, entriesPerPage);
+
+	scriptInterface.callVoidFunction(5);
+}
+
+void Events::eventPlayerOnBestiaryInit(Player* player)
+{
+	// Player:onBestiaryInit()
+	if (info.playerOnBestiaryInit == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnBestiaryInit");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnBestiaryInit, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnBestiaryInit);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	scriptInterface.callVoidFunction(1);
+}
+
+void Events::eventPlayerOnBestiaryBrowse(Player* player, const std::string& category, std::vector<uint16_t> raceList)
+{
+	// Player:onBestiaryBrowse(category, raceList)
+	if (info.playerOnBestiaryBrowse == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnBestiaryBrowse");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnBestiaryBrowse, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnBestiaryBrowse);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// category
+	lua_pushstring(L, category.c_str());
+
+	// raceList
+	lua_createtable(L, raceList.size(), 0);
+	int index = 0;
+	for (auto raceId : raceList) {
+		lua_pushnumber(L, raceId);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	scriptInterface.callVoidFunction(3);
+}
+
+void Events::eventPlayerOnBestiaryRaceView(Player* player, uint16_t raceId)
+{
+	// Player:onBestiaryRaceView(category, raceId)
+	if (info.playerOnBestiaryRaceView == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnBestiaryRaceView");
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnBestiaryRaceView, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnBestiaryRaceView);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// raceId
+	lua_pushnumber(L, raceId);
+
+	scriptInterface.callVoidFunction(2);
+}
+
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)
 {
 	// Player:onConnect(isLogin)
@@ -1502,6 +1779,7 @@ void Events::eventPlayerOnConnect(Player* player, bool isLogin)
 	scriptInterface.callVoidFunction(2);
 }
 
+#ifdef LUA_EXTENDED_PROTOCOL
 void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message)
 {
 	// Player:onExtendedProtocol(recvbyte, msg)
@@ -1530,6 +1808,7 @@ void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std
 
 	scriptInterface.callVoidFunction(3);
 }
+#endif
 
 void Events::eventMonsterOnDropLoot(Monster* monster, Container* corpse)
 {

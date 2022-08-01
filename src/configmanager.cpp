@@ -238,6 +238,7 @@ bool ConfigManager::load(bool isReload)
 	boolean[UNLOCK_ALL_OUTFITS] = getGlobalBoolean(L, "unlockAllOutfits", false);
 	boolean[UNLOCK_ALL_MOUNTS] = getGlobalBoolean(L, "unlockAllMounts", false);
 	boolean[UNLOCK_ALL_FAMILIARS] = getGlobalBoolean(L, "unlockAllFamiliars", false);
+	boolean[ALLOW_SPAWN_BLOCKING] = getGlobalBoolean(L, "allowSpawnBlocking", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

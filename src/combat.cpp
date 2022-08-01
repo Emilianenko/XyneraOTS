@@ -267,14 +267,6 @@ ReturnValue Combat::canDoCombat(Creature* caster, Tile* tile, bool aggressive)
 		return RETURNVALUE_NOTENOUGHROOM;
 	}
 
-	if (tile->hasFlag(TILESTATE_FLOORCHANGE)) {
-		return RETURNVALUE_NOTENOUGHROOM;
-	}
-
-	if (tile->getTeleportItem()) {
-		return RETURNVALUE_NOTENOUGHROOM;
-	}
-
 	if (caster) {
 		const Position& casterPosition = caster->getPosition();
 		const Position& tilePosition = tile->getPosition();
@@ -291,7 +283,7 @@ ReturnValue Combat::canDoCombat(Creature* caster, Tile* tile, bool aggressive)
 		}
 	}
 
-	//pz-zone
+	// protection zone
 	if (aggressive && tile->hasFlag(TILESTATE_PROTECTIONZONE)) {
 		return RETURNVALUE_ACTIONNOTPERMITTEDINPROTECTIONZONE;
 	}
@@ -618,16 +610,18 @@ void Combat::combatTileEffects(const SpectatorVec& spectators, Creature* caster,
 			}
 		}
 
-		Item* item = Item::CreateItem(itemId);
-		if (caster) {
-			item->setOwner(caster->getID());
-		}
+		if (!tile->hasFlag(TILESTATE_FLOORCHANGE) && !tile->hasFlag(TILESTATE_TELEPORT)) {
+			Item* item = Item::CreateItem(itemId);
+			if (caster) {
+				item->setOwner(caster->getID());
+			}
 
-		ReturnValue ret = g_game.internalAddItem(tile, item);
-		if (ret == RETURNVALUE_NOERROR) {
-			g_game.startDecay(item);
-		} else {
-			delete item;
+			ReturnValue ret = g_game.internalAddItem(tile, item);
+			if (ret == RETURNVALUE_NOERROR) {
+				g_game.startDecay(item);
+			} else {
+				delete item;
+			}
 		}
 	}
 

@@ -697,7 +697,7 @@ bool Spell::playerInstantSpellCheck(Player* player, const Position& toPos)
 		return false;
 	}
 
-	if (blockingSolid && tile->hasFlag(TILESTATE_BLOCKSOLID)) {
+	if (blockingSolid && (tile->hasFlag(TILESTATE_BLOCKSOLID) || tile->hasFlag(TILESTATE_FLOORCHANGE) || tile->hasFlag(TILESTATE_TELEPORT))) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
@@ -752,7 +752,7 @@ bool Spell::playerRuneSpellCheck(Player* player, const Position& toPos)
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
-	} else if (blockingSolid && tile->hasFlag(TILESTATE_BLOCKSOLID)) {
+	} else if (blockingSolid && (tile->hasFlag(TILESTATE_BLOCKSOLID) || tile->hasFlag(TILESTATE_FLOORCHANGE) || tile->hasFlag(TILESTATE_TELEPORT))) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
