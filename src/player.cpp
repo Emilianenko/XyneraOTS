@@ -1679,8 +1679,16 @@ void Player::onThink(uint32_t interval)
 		addMessageBuffer();
 	}
 
-	// momentum (cooldown resets)
 	int64_t timeNow = OTSYS_TIME();
+
+	// fix desynced equipment timers after alt tabbing
+	if (timeNow % 10 == 0) {
+		for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
+			sendInventoryItem(static_cast<slots_t>(i), getInventoryItem(static_cast<slots_t>(i)));
+		}
+	}
+
+	// momentum (cooldown resets)
 	uint16_t momentumChance = getSpecialSkill(SPECIALSKILL_MOMENTUM);
 
 	// check momentum eligibility (chance to trigger every 2 seconds)
