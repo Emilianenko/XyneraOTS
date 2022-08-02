@@ -395,8 +395,8 @@ function Player:onForgeConversion(conversionType)
 end
 
 function Player:onForgeHistoryBrowse(page)
-	if EventCallback.OnForgeHistoryBrowse then
-		EventCallback.OnForgeHistoryBrowse(self, page)
+	if EventCallback.onForgeHistoryBrowse then
+		EventCallback.onForgeHistoryBrowse(self, page)
 	end
 end
 
