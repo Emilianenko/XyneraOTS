@@ -1381,7 +1381,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		}
 	}
 
-	if (item->getDuration() > 0) {
+	if (item->getDuration() > 0 && !item->getDecaying()) {
 		item->incrementReferenceCounter();
 		item->setDecaying(DECAYING_TRUE);
 		toDecayItems.push_front(item);
@@ -4488,6 +4488,9 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.secondary.value = -std::abs(damage.secondary.value);
 	}
 
+	// informs if part of the damage taken was already blocked by the mana shield
+	bool isBeforeManaShield = true;
+
 	const Position& targetPos = target->getPosition();
 	if (damage.primary.value > 0) {
 		if (target->getHealth() <= 0) {
@@ -4511,7 +4514,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			if (!events.empty()) {
 				for (CreatureEvent* creatureEvent : events) {
 					// healing
-					creatureEvent->executeHealthChange(target, attacker, damage, true);
+					creatureEvent->executeHealthChange(target, attacker, damage, isBeforeManaShield);
 				}
 				damage.origin = ORIGIN_NONE;
 				return combatChangeHealth(attacker, target, damage);
@@ -4609,7 +4612,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					if (!events.empty()) {
 						for (CreatureEvent* creatureEvent : events) {
 							// damage that would be taken if mana shield was not active
-							creatureEvent->executeHealthChange(target, attacker, damage, true);
+							creatureEvent->executeHealthChange(target, attacker, damage, isBeforeManaShield);
+							isBeforeManaShield = false;
 
 							// damage blocked by mana shield
 							creatureEvent->executeManaChange(target, attacker, damage);
@@ -4684,8 +4688,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			const auto& events = target->getCreatureEvents(CREATURE_EVENT_HEALTHCHANGE);
 			if (!events.empty()) {
 				for (CreatureEvent* creatureEvent : events) {
-					// damage taken when mana shielded player ran out of mana
-					creatureEvent->executeHealthChange(target, attacker, damage, false);
+					// real damage taken
+					creatureEvent->executeHealthChange(target, attacker, damage, isBeforeManaShield);
 				}
 				damage.origin = ORIGIN_NONE;
 				return combatChangeHealth(attacker, target, damage);

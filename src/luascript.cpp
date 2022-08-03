@@ -7617,7 +7617,6 @@ int LuaScriptInterface::luaItemDecay(lua_State* L)
 		if (isNumber(L, 2)) {
 			item->setDecayTo(getNumber<int32_t>(L, 2));
 		}
-
 		g_game.startDecay(item);
 		pushBoolean(L, true);
 	} else {
