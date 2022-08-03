@@ -99,10 +99,18 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 	// charges/duration indicators
 	} else if (it.showClientCharges) {
 		add<uint32_t>(it.charges);
-		addByte(0x01);
+		addByte(0x01); // (item is brand-new)
 	} else if (it.showClientDuration) {
-		add<uint32_t>(it.decayTime);
-		addByte(0x01);
+		uint32_t duration = it.decayTime;
+		if (duration == 0) {
+			int32_t equipId = it.transformEquipTo;
+			if (equipId != 0) {
+				duration = Item::items[equipId].decayTime;
+			}
+		}
+
+		add<uint32_t>(duration);
+		addByte(0x01); // (item is brand-new)
 	}
 
 	if (it.isPodium()) {
@@ -133,14 +141,14 @@ void NetworkMessage::addItem(const Item* item)
 	if (it.showClientCharges) {
 		uint32_t charges = item->getCharges();
 		add<uint32_t>(charges > 0 ? charges : it.charges);
-		addByte(charges == it.charges ? 1 : 0); // has default charges
+		addByte(charges == it.charges); // has default charges
 	} else if (it.showClientDuration) {
 		uint32_t duration = item->getDuration() / 1000;
 		bool isUnused = false;
 		if (duration == 0) {
-			int32_t decayId = it.transformEquipTo;
-			if (decayId != 0) {
-				duration = Item::items[decayId].decayTime;
+			int32_t equipId = it.transformEquipTo;
+			if (equipId != 0) {
+				duration = Item::items[equipId].decayTime;
 				isUnused = true;
 			}
 		}
