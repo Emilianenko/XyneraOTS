@@ -79,11 +79,11 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -700},
-	{name ="combat", interval = 2000, chance = 100, minDamage = -700, maxDamage = -1000},
-	{name ="combat", interval = 2000, chance = 100, minDamage = -600, maxDamage = -1100},
-	{name ="combat", interval = 2000, chance = 100, minDamage = -600, maxDamage = -900},
-	{name ="combat", interval = 2000, chance = 100, minDamage = -400, maxDamage = -600},
-	{name ="combat", interval = 2000, chance = 100, minDamage = -800, maxDamage = -1000},
+	{name ="combat", interval = 2000, chance = 25, minDamage = -700, maxDamage = -1000, radius = 3, range = 7, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_EXPLOSIONHIT, shootEffect = CONST_ANI_FLASHARROW, target = true},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -600, maxDamage = -1100, range = 6, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_ENERGYAREA, shootEffect = CONST_ANI_ENERGY, target = true},
+	{name ="combat", interval = 2000, chance = 16, minDamage = -600, maxDamage = -900, radius = 2, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_ENERGYHIT},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -400, maxDamage = -600, length = 5, spread = 0, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_YELLOWENERGY, direction = true},
+	{name ="combat", interval = 2000, chance = 16, minDamage = -800, maxDamage = -1000, radius = 3, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_BLOCKHIT}
 }
 
 monster.defenses = {
