@@ -79,16 +79,16 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -700},
-	{name ="combat", interval = 2000, chance = 20, minDamage = -800, maxDamage = -1100, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, shootEffect = CONST_ANI_FLAMMINGARROW, target = true},
-	{name ="combat", interval = 2000, chance = 22, minDamage = -700, maxDamage = -950, length = 5, spread = 0, type = COMBAT_FIREDAMAGE, effect = CONST_ME_MAGIC_RED, direction = true},
-	{name ="combat", interval = 2000, chance = 26, minDamage = -750, maxDamage = -950, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA},
+	{name ="combat", interval = 2000, chance = 30, minDamage = -800, maxDamage = -1100, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_HITBYFIRE, shootEffect = CONST_ANI_FLAMMINGARROW, target = true},
+	{name ="combat", interval = 2000, chance = 25, minDamage = -700, maxDamage = -950, length = 5, spread = 0, type = COMBAT_FIREDAMAGE, effect = CONST_ME_MAGIC_RED, direction = true},
+	{name ="combat", interval = 2000, chance = 18, minDamage = -750, maxDamage = -950, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA},
 }
 
 monster.defenses = {
 	defense = 82,
 	armor = 82,
-	{name ="combat", interval = 2000, chance = 15, type = COMBAT_HEALING, minDamage = 340, maxDamage = 510, effect = CONST_ME_MAGIC_BLUE, target = false},
-	{name = "speed", chance = 15, interval = 2*1000, speed = 320, effect = CONST_ME_MAGIC_RED, duration = 5000}
+	{name ="combat", interval = 2000, chance = 20, minDamage = 220, maxDamage = 350, effect = CONST_ME_MAGIC_BLUE, type = COMBAT_HEALING},
+	{name = "speed", chance = 15, interval = 2000, speed = 320, duration = 5000, effect = CONST_ME_MAGIC_RED}
 }
 
 monster.loot = {

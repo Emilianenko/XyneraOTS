@@ -82,7 +82,7 @@ monster.attacks = {
 	{name ="combat", interval = 2000, chance = 22, minDamage = -600, maxDamage = -800, range = 6, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEATTACK, shootEffect = CONST_ANI_ICE, target = true},
 	{name ="combat", interval = 2000, chance = 27, minDamage = -500, maxDamage = -850, range = 7, radius = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEAREA, shootEffect = CONST_ANI_SNOWBALL, target = true },
 	{name ="animatedFeatherWave", interval = 2000, chance = 20, minDamage = -800, maxDamage = -1150},
-	{name ="combat", interval = 2000, chance = 15, minDamage = -500, maxDamage = -850, radius = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICETORNADO}
+	{name ="combat", interval = 2000, chance = 17, minDamage = -500, maxDamage = -850, radius = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICETORNADO}
 
 
 }

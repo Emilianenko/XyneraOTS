@@ -83,7 +83,7 @@ monster.attacks = {
 	{name ="combat", interval = 2000, chance = 20, minDamage = -600, maxDamage = -800, radius = 2, type = COMBAT_ENERGYDAMAGE, effect = CONST_ME_PURPLEENERGY},
 	{name ="combat", interval = 2000, chance = 17, minDamage = -500, maxDamage = -600, length = 5, spread = 0, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_YELLOWENERGY, direction = true},
 	{name ="combat", interval = 2000, chance = 25, minDamage = -600, maxDamage = -800, range = 7, radius = 3, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_HOLYDAMAGE, shootEffect = CONST_ANI_HOLY, target = true},
-	{name ="combat", interval = 2000, chance = 13, minDamage = -700, maxDamage = -750, radius = 2, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_YELLOWENERGY}
+	{name ="combat", interval = 2000, chance = 15, minDamage = -700, maxDamage = -750, radius = 2, type = COMBAT_HOLYDAMAGE, effect = CONST_ME_YELLOWENERGY}
 }
 
 monster.defenses = {

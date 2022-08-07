@@ -41201,4 +41201,80 @@
 		<attribute key="decayTo" value="31529"/>
 		<attribute key="containersize" value="24"/>
 	</item>
+		<item id="31243" article="a" name="slain cursed book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31244" article="a" name="slain cursed book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31243"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31245" article="a" name="slain cursed book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31244"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="31246" article="a" name="slain cursed book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31245"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+		<item id="31431" article="a" name="slain energetic book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31432" article="a" name="slain energetic book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31431"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31433" article="a" name="slain energetic book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31432"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="31434" article="a" name="slain energetic book">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31433"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+		<item id="31255" article="a" name="slain ink blob">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+	<item id="31256" article="a" name="slain ink blob">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31255"/>
+		<attribute key="containersize" value="10"/>
+	</item>
+	<item id="31257" article="a" name="slain ink blob">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="31256"/>
+		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="31258" article="a" name="slain ink blob">
+		<attribute key="corpseType" value="blood"/>
+		<attribute key="fluidsource" value="blood"/>
+		<attribute key="duration" value="10"/>
+		<attribute key="decayTo" value="31257"/>
+		<attribute key="containersize" value="20"/>
+	</item>
 </items>
