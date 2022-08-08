@@ -1212,7 +1212,7 @@ function getThingfromPos(pos)
 	return pushThing(thing)
 end
 
-function doRelocate(fromPos, toPos)
+function doRelocate(fromPos, toPos, removeFields, removeSplashes, forceMoveCorpses)
 	if fromPos == toPos then
 		return false
 	end
@@ -1230,8 +1230,11 @@ function doRelocate(fromPos, toPos)
 		local thing = fromTile:getThing(i)
 		if thing then
 			if thing:isItem() then
-				if ItemType(thing:getId()):isMovable() then
+				local itemType = ItemType(thing:getId())
+				if itemType:isMovable() or (forceMoveCorpses and itemType:isCorpse() or (thing:isContainer() and thing:getCorpseOwner() ~= 0)) then
 					thing:moveTo(toPos)
+				elseif (removeFields and itemType:isMagicField()) or (removeSplashes and itemType:isSplash()) then
+					thing:remove()
 				end
 			elseif thing:isCreature() then
 				thing:teleportTo(toPos)
