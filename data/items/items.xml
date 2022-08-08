@@ -34861,14 +34861,23 @@
 		<attribute key="defense" value="32"/>
 		<attribute key="weight" value="8100"/>
 	</item>
+		<item id="34213" article="an" name="enchanted blister ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="stopduration" value="1"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="showAttributes" value="1"/>
+		<attribute key="absorbpercentfire" value="6"/>
+		<attribute key="transformequipto" value="34272"/>
+		<attribute key="weight" value="90"/>
+	</item>
 	<item id="34272" article="a" name="blister ring">
 		<attribute key="slotType" value="ring"/>
 		<attribute key="showduration" value="1"/>
 		<attribute key="showAttributes" value="1"/>
 		<attribute key="absorbpercentfire" value="6"/>
 		<attribute key="duration" value="3600"/>
-		<attribute key="transformdeequipto" value="34277"/>
-		<attribute key="decayTo" value="34213"/>
+		<attribute key="transformdeequipto" value="34213"/>
+		<attribute key="decayTo" value="34277"/>
 		<attribute key="weight" value="90"/>
 	</item>
 	<item id="34273" name="winged boots">
@@ -34883,11 +34892,6 @@
 	<item id="34277" article="a" name="blister ring">
 		<attribute key="description" value="This ring is out of magic energy."/>
 		<attribute key="slotType" value="ring"/>
-		<attribute key="stopduration" value="1"/>
-		<attribute key="showduration" value="1"/>
-		<attribute key="showAttributes" value="1"/>
-		<attribute key="absorbpercentfire" value="6"/>
-		<attribute key="transformequipto" value="34272"/>
 		<attribute key="weight" value="90"/>
 	</item>
 	<item id="34281" article="a" name="winged backpack">
@@ -35027,6 +35031,12 @@
 	<item id="35277" article="a" name="ring of souls">
 		<attribute key="description" value="This ring is out of magic energy."/>
 		<attribute key="slotType" value="ring"/>
+		<attribute key="stopduration" value="1"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="showAttributes" value="1"/>
+		<attribute key="absorbpercentphysical" value="2"/>
+		<attribute key="absorbpercentlifedrain" value="10"/>
+		<attribute key="transformequipto" value="35291"/>
 		<attribute key="weight" value="80"/>
 	</item>
 	<item id="35278" article="a" name="giant amethyst">
@@ -35068,19 +35078,13 @@
 		<attribute key="absorbpercentphysical" value="2"/>
 		<attribute key="absorbpercentlifedrain" value="10"/>
 		<attribute key="duration" value="7200"/>
-		<attribute key="transformdeequipto" value="35292"/>
-		<attribute key="decayTo" value="35277"/>
+		<attribute key="transformdeequipto" value="35277"/>
+		<attribute key="decayTo" value="35292"/>
 		<attribute key="weight" value="80"/>
 	</item>
 	<item id="35292" article="a" name="ring of souls">
 		<attribute key="description" value="This ring is out of magic energy."/>
 		<attribute key="slotType" value="ring"/>
-		<attribute key="stopduration" value="1"/>
-		<attribute key="showduration" value="1"/>
-		<attribute key="showAttributes" value="1"/>
-		<attribute key="absorbpercentphysical" value="2"/>
-		<attribute key="absorbpercentlifedrain" value="10"/>
-		<attribute key="transformequipto" value="35291"/>
 		<attribute key="weight" value="80"/>
 	</item>
 	<item id="35425" article="a" name="white gem">

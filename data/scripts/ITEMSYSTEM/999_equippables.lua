@@ -190,6 +190,7 @@ local rings = {
 	[26189] = { level = 100, vocs = {4} }, -- ring of red plasma
 	[26190] = {}, -- ring of red plasma
 	[28354] = {level = 50}, -- butterfly ring
+	[34213] = {level = 220}, -- blister ring 
 	[34272] = {level = 220}, -- blister ring 
 	[34277] = {level = 220}, -- blister ring
 	[35277] = {level = 200}, -- ring of souls
