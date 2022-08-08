@@ -2797,11 +2797,14 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "say", LuaScriptInterface::luaCreatureSay);
 
 	registerMethod("Creature", "getDamageMap", LuaScriptInterface::luaCreatureGetDamageMap);
+	registerMethod("Creature", "resetDamageMap", LuaScriptInterface::luaCreatureResetDamageMap);
+
 	registerMethod("Creature", "getAssistMap", LuaScriptInterface::luaCreatureGetAssistMap);
+	registerMethod("Creature", "resetAssistMap", LuaScriptInterface::luaCreatureResetAssistMap);
 
 	registerMethod("Creature", "addAssist", LuaScriptInterface::luaCreatureAddAssist);
 	registerMethod("Creature", "removeAssist", LuaScriptInterface::luaCreatureRemoveAssist);
-	registerMethod("Creature", "resetAssistMap", LuaScriptInterface::luaCreatureResetAssistMap);
+
 
 	registerMethod("Creature", "getSummons", LuaScriptInterface::luaCreatureGetSummons);
 
@@ -9125,6 +9128,20 @@ int LuaScriptInterface::luaCreatureResetAssistMap(lua_State* L)
 	}
 
 	creature->resetAssists();
+	lua_pushboolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureResetDamageMap(lua_State* L)
+{
+	// creature:resetDamageMap()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	creature->resetDamageMap();
 	lua_pushboolean(L, true);
 	return 1;
 }

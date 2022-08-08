@@ -10,6 +10,7 @@
 #include "condition.h"
 #include "configmanager.h"
 #include "depotchest.h"
+#include "events.h"
 #include "game.h"
 #include "inbox.h"
 #include "iologindata.h"
@@ -27,6 +28,7 @@ extern ConfigManager g_config;
 extern Actions actions;
 extern CreatureEvents* g_creatureEvents;
 extern Chat* g_chat;
+extern Events* g_events;
 
 namespace {
 
@@ -3933,7 +3935,10 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	}
 
 	msg.addByte(creature->getSpeechBubble());
-	msg.addByte(0xFF); // MARK_UNMARKED
+
+	// (experimental) frame colors
+	msg.addByte(g_events->eventPlayerOnFrameView(player, creature));
+
 	msg.addByte(0x00); // inspection type (flags)
 	msg.addByte(player->canWalkthroughEx(creature) ? 0x00 : 0x01);
 }

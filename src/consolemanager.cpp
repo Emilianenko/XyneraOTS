@@ -77,8 +77,9 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 
 #ifdef SHOW_CONSOLE_TIMESTAMPS
 	std::string timePrefix = currentConsoleStamp();
-	prefix = fmt::format("[{:s}] {:s}", timePrefix, prefix);
 	realMsgLength += (timePrefix.size() + 3);
+	timePrefix = setColor(color, timePrefix);
+	prefix = fmt::format("[{:s}] {:s}", timePrefix, prefix);
 #endif
 
 	if (messageType == CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL) {
@@ -163,12 +164,18 @@ void printPVPType(const std::string& worldType)
 
 void printLoginPorts(uint16_t loginPort, uint16_t gamePort, uint16_t statusPort)
 {
+#ifdef SHOW_CONSOLE_TIMESTAMPS
+	std::string spacing = "  ";
+#else
+	std::string spacing = "        ";
+#endif
+
 	print(
 		CONSOLEMESSAGE_TYPE_STARTUP,
 		fmt::format(
-			"Login port: {:s}        Game port: {:s}        Status port: {:s}",
-			setColor(serverPorts, std::to_string(loginPort)),
-			setColor(serverPorts, std::to_string(gamePort)),
+			"Login port: {:s}{:s}Game port: {:s}{:s}Status port: {:s}",
+			setColor(serverPorts, std::to_string(loginPort)), spacing,
+			setColor(serverPorts, std::to_string(gamePort)), spacing,
 			setColor(serverPorts, std::to_string(statusPort))
 		)
 	);
@@ -177,7 +184,7 @@ void printLoginPorts(uint16_t loginPort, uint16_t gamePort, uint16_t statusPort)
 void printWorldInfo(const std::string& key, const std::string& value, bool isStartup, size_t width)
 {
 	std::ostringstream worldInfo;
-	worldInfo << std::setw(width) << std::left << fmt::format(">> {:s}:", key) << value;
+	worldInfo << std::setw(width) << std::left << fmt::format(">> {:s}:", key) << setColor(mapStats, value);
 	print(isStartup ? CONSOLEMESSAGE_TYPE_STARTUP : CONSOLEMESSAGE_TYPE_INFO, worldInfo.str());
 }
 

@@ -114,32 +114,32 @@ void printServerVersion()
 	startupMsg << "*** DIRTY - NOT OFFICIAL RELEASE ***" << std::endl;
 	#endif
 #else
-	startupMsg << "- " << STATUS_SERVER_NAME << " - Version " << STATUS_SERVER_VERSION << std::endl;
+	startupMsg << console::setColor(console::header, fmt::format("- {:s} - Version {:s}", STATUS_SERVER_NAME, STATUS_SERVER_VERSION)) << std::endl;
 #endif
 	startupMsg << std::endl;
 
-	startupMsg << "- " << "Compiled with " << BOOST_COMPILER << std::endl;
-	startupMsg << "- " << "Compiled on " << __DATE__ << ' ' << __TIME__ << " for platform ";
+	startupMsg << console::setColor(console::header, fmt::format("- Compiled with {:s}", BOOST_COMPILER)) << std::endl;
+
 #if defined(__amd64__) || defined(_M_X64)
-	startupMsg << "x64" << std::endl;
+	std::string platform = "x64";
 #elif defined(__i386__) || defined(_M_IX86) || defined(_X86_)
-	startupMsg << "x86" << std::endl;
+	std::string platform = "x86";
 #elif defined(__arm__)
-	startupMsg << "ARM" << std::endl;
+	std::string platform = "ARM";
 #else
-	startupMsg << "unknown" << std::endl;
+	std::string platform = "other";
 #endif
+
+	startupMsg << console::setColor(console::header, fmt::format("- Compiled on {:s} {:s} for platform {:s}", __DATE__, __TIME__, platform)) << std::endl;
+
 #if defined(LUAJIT_VERSION)
-	startupMsg << "- " << "Linked with " << LUAJIT_VERSION << " for Lua support" << std::endl;
+	startupMsg << console::setColor(console::header, fmt::format("- Linked with {:s} for Lua support", LUAJIT_VERSION)) << std::endl;
 #else
-	startupMsg << "- " << "Linked with " << LUA_RELEASE << " for Lua support" << std::endl;
+	startupMsg << console::setColor(console::header, fmt::format("- Linked with {:s} for Lua support", LUA_RELEASE)) << std::endl;
 #endif
 
 	startupMsg << hrLine;
-	startupMsg << "- " << "A fork of Mark Samman's server, developed by " << STATUS_SERVER_DEVELOPERS << "." << std::endl;
-	startupMsg << hrLine;
-	startupMsg << "- " << "The Forgotten Server Plus: https://github.com/Zbizu/forgottenserver" << std::endl;
-	startupMsg << "- " << "Original Repository:       https://github.com/otland/forgottenserver" << std::endl;
+	startupMsg << "- " << "Property of " << console::setColor(console::developers, "Xynera") << " (" << console::setColor(console::community, "https://Xynera.net/") << ")" << std::endl;
 	startupMsg << hrLine;
 	std::cout << startupMsg.str() << std::flush;
 }
@@ -228,7 +228,7 @@ void mainLoader(int, char*[], ServiceManager* services)
 
 
 	// connect to the database
-	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Establishing database connection ... ", false);
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Connecting database ... ", false);
 
 	if (!Database::getInstance().connect()) {
 		// normally this line is executed in startupErrorMessage

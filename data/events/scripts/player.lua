@@ -424,6 +424,15 @@ function Player:onBestiaryRaceView(raceId)
 	end
 end
 
+function Player:onFrameView(targetId)
+	local player = Player(targetId)
+	if player and player:isAdmin() then
+		return 3
+	end
+
+	return 255
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)

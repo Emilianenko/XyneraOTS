@@ -1,3 +1,4 @@
 function onUpdateDatabase()
-	return false
+	-- base TFS randomize mount (we do it on storage)
+	return true
 end

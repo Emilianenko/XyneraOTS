@@ -45,8 +45,12 @@ end
 
 -- multiple uids, one storage
 local specialQuests = {
-	-- anni chest uids
-	[PlayerStorageKeys.annihilatorReward] = {1990, 2400, 2431, 2494},
+	-- chests with these uids will give anninhilator storage
+	[PlayerStorageKeys.annihilatorReward] = {1200, 1201, 1202, 1203},
+	-- [PlayerStorageKeys.yurPharaohQuest] = {1204, 1205, 1206}
+	
+	-- other quest example
+	-- [yourStorageHere] = {yourUID1, yourUID2},
 }
 
 -- achievements based on quest storage
@@ -98,7 +102,7 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	
 	-- prevent storage conflict
 	-- NOTE: does not check for specialQuests
-	if item.uid < 65535 and table.contains(reservedStorageKeys, item.uid) then
+	if table.contains(reservedStorageKeys, item.uid) then
 		-- storage conflict error
 		sendQuestSystemMessage(player, string.format(questSystemMessages.storageConflict[1], item:getName()))
 		return true

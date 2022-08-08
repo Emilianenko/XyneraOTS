@@ -24,6 +24,7 @@
 	<event class="Player" method="onWrapItem" enabled="1" />
 	<event class="Player" method="onMinimapQuery" enabled="1" />
 	<event class="Player" method="onGuildMotdEdit" enabled="0" />
+	<event class="Player" method="onFrameView" enabled="0" />
 	
 	<!-- Player - look -->
 	<event class="Player" method="onLook" enabled="1" />

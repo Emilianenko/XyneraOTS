@@ -874,11 +874,13 @@ class LuaScriptInterface
 		static int luaCreatureSay(lua_State* L);
 
 		static int luaCreatureGetDamageMap(lua_State* L);
+		static int luaCreatureResetDamageMap(lua_State* L);
+
 		static int luaCreatureGetAssistMap(lua_State* L);
+		static int luaCreatureResetAssistMap(lua_State* L);
 
 		static int luaCreatureAddAssist(lua_State* L);
 		static int luaCreatureRemoveAssist(lua_State* L);
-		static int luaCreatureResetAssistMap(lua_State* L);
 
 		static int luaCreatureGetSummons(lua_State* L);
 
