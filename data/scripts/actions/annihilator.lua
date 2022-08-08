@@ -183,7 +183,12 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 	return true
 end
 
+local anniCount = 0
 for uid, _ in pairs(Annihilators) do
 	annihilator:uid(uid)
+	anniCount = anniCount + 1
 end
-annihilator:register()
+
+if anniCount > 0 then
+	annihilator:register()
+end

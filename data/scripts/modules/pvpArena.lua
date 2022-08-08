@@ -305,7 +305,12 @@ function arenaLever.onUse(player, item, fromPosition, target, toPosition, isHotk
 	return true
 end
 
+local arenaCount = 0
 for uid, _ in pairs(PVPArenas) do
 	arenaLever:uid(uid)
+	arenaCount = arenaCount + 1
 end
-arenaLever:register()
+
+if arenaCount > 0 then
+	arenaLever:register()
+end
