@@ -35210,7 +35210,7 @@
 	</item>
 	<item id="36746" article="a" name="soultainter">
 		<attribute key="weaponType" value="wand"/>
-		<attribute key="shootType" value="death"/>
+		<attribute key="shootType" value="suddendeath"/>
 		<attribute key="absorbpercentdeath" value="12"/>
 		<attribute key="magicpoints" value="5"/>
 		<attribute key="criticalhitamount" value="10"/>
@@ -35220,7 +35220,7 @@
 	</item>
 	<item id="36747" article="a" name="soulhexer">
 		<attribute key="weaponType" value="wand"/>
-		<attribute key="shootType" value="smallice"/>
+		<attribute key="shootType" value="shiverarrow"/>
 		<attribute key="absorbpercentice" value="12"/>
 		<attribute key="magicpoints" value="5"/>
 		<attribute key="manaleechamount" value="3"/>

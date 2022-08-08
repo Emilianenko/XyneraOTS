@@ -43,6 +43,9 @@
 	<wand id="30114" level="200" mana="18" min="80" max="110" type="ice"> <!-- Rod of Destruction -->
 		<vocation name="Druid" />
 	</wand>
+	<wand id="36747" level="400" mana="21" min="98" max="118" type="ice"> <!-- soulhexer -->
+		<vocation name="Druid" />
+	</wand>
 
 	<!-- Wands -->
 	<wand id="23719" level="1" mana="1" min="3" max="7" type="fire"> <!-- The Scorcher -->
