@@ -2509,8 +2509,12 @@ void ProtocolGame::sendMarketEnter()
 	msg.add<uint16_t>(itemsToSend);
 	for (auto it = depotItems.begin(); i < itemsToSend; ++it, ++i) {
 		const ItemType& itemType = Item::items[it->first.first];
-		msg.add<uint16_t>(itemType.wareId);
-		if (itemType.classification > 0) {
+		const ItemType& wareItemType = Item::items.getItemIdByClientId(itemType.wareId);
+		bool displayWareItem = wareItemType.clientId != 0;
+		uint8_t classification = displayWareItem ? wareItemType.classification : itemType.classification;
+
+		msg.add<uint16_t>(displayWareItem ? itemType.wareId : itemType.clientId);
+		if (classification > 0) {
 			msg.addByte(it->first.second);
 		}
 		msg.add<uint16_t>(std::min<uint32_t>(0xFFFF, it->second));
