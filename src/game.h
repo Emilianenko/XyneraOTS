@@ -157,6 +157,13 @@ class Game
 		Player* getPlayerByName(const std::string& s);
 
 		/**
+		  * Returns a player based on his display name
+		  * \param s is the name identifier
+		  * \returns A Pointer to the player
+		  */
+		Player* getPlayerByDisplayName(const std::string& s);
+
+		/**
 		  * Returns a player based on guid
 		  * \returns A Pointer to the player
 		  */

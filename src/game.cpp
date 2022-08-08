@@ -484,6 +484,17 @@ Player* Game::getPlayerByName(const std::string& s)
 	return it->second;
 }
 
+Player* Game::getPlayerByDisplayName(const std::string& s)
+{
+	for (const auto& it : g_game.getPlayers()) {
+		if (it.second->getDisplayName() == s) {
+			return it.second;
+		}
+	}
+
+	return nullptr;
+}
+
 Player* Game::getPlayerByGUID(const uint32_t& guid)
 {
 	if (guid == 0) {
@@ -2088,17 +2099,25 @@ void Game::playerOpenPrivateChannel(uint32_t playerId, std::string receiver)
 		return;
 	}
 
-	if (!IOLoginData::formatPlayerName(receiver)) {
-		player->sendCancelMessage("A player with this name does not exist.");
-		return;
+	std::string realPlayerName;
+	if (IOLoginData::formatPlayerName(receiver)) {
+		realPlayerName = receiver;
+	} else {
+		Player* otherPlayer = getPlayerByDisplayName(receiver);
+		if (!otherPlayer) {
+			player->sendCancelMessage("A player with this name does not exist.");
+			return;
+		}
+
+		realPlayerName = otherPlayer->getName();
 	}
 
-	if (player->getName() == receiver) {
+	if (player->getName() == realPlayerName) {
 		player->sendCancelMessage("You cannot set up a private message channel with yourself.");
 		return;
 	}
 
-	player->sendOpenPrivateChannel(receiver);
+	player->sendOpenPrivateChannel(realPlayerName);
 }
 
 void Game::playerCloseNpcChannel(uint32_t playerId)
@@ -3594,7 +3613,7 @@ void Game::playerSetFightModes(uint32_t playerId, fightMode_t fightMode, bool ch
 
 void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 {
-	if (name.length() > PLAYER_NAME_LENGTH) {
+	if (name.length() > PLAYER_NAME_LENGTH + 40) {
 		return;
 	}
 
@@ -3604,6 +3623,10 @@ void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 	}
 
 	Player* vipPlayer = getPlayerByName(name);
+	if (!vipPlayer) {
+		vipPlayer = getPlayerByDisplayName(name);
+	}
+
 	if (!vipPlayer) {
 		uint32_t guid;
 		bool specialVip;

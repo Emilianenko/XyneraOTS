@@ -3893,10 +3893,11 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 			msg.add<uint32_t>(masterId);
 		}
 
-		msg.addString(creature->isHealthHidden() ? "" : creature->getName());
+		const std::string& displayName = creature->getDisplayName();
+		msg.addString(!displayName.empty() ? displayName : (creature->isHealthHidden() ? "" : creature->getName()));
 	}
 
-	if (creature->isHealthHidden()) {
+	if (creature->isHealthHidden() || otherPlayer && otherPlayer->isAccessPlayer()) {
 		msg.addByte(0x00);
 	} else {
 		msg.addByte(std::ceil((static_cast<double>(creature->getHealth()) / std::max<int32_t>(creature->getMaxHealth(), 1)) * 100));
@@ -3981,12 +3982,17 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
+	if (!player->isAccessPlayer()) {
+		if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
+		} else {
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
+			msg.add<uint16_t>(10000);
+		}
 	} else {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
-		msg.add<uint16_t>(10000);
+		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(0);
 	}
 
 	msg.add<uint32_t>(player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getFreeCapacity());
@@ -4000,12 +4006,17 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(0); // xp boost
 	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
 
-	if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
+	if (!player->isAccessPlayer()) {
+		if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
+		} else {
+			msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
+			msg.add<uint16_t>(10000);
+		}
 	} else {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
-		msg.add<uint16_t>(10000);
+		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(0);
 	}
 
 	msg.addByte(player->getSoul());

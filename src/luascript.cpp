@@ -2748,6 +2748,11 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Creature", "getId", LuaScriptInterface::luaCreatureGetId);
 	registerMethod("Creature", "getName", LuaScriptInterface::luaCreatureGetName);
+	registerMethod("Creature", "getDisplayName", LuaScriptInterface::luaCreatureGetDisplayName);
+	registerMethod("Creature", "setDisplayName", LuaScriptInterface::luaCreatureSetDisplayName);
+
+	registerMethod("Creature", "isPhantom", LuaScriptInterface::luaCreatureIsPhantom);
+	registerMethod("Creature", "setPhantom", LuaScriptInterface::luaCreatureSetPhantom);
 
 	registerMethod("Creature", "getTarget", LuaScriptInterface::luaCreatureGetTarget);
 	registerMethod("Creature", "setTarget", LuaScriptInterface::luaCreatureSetTarget);
@@ -8418,6 +8423,65 @@ int LuaScriptInterface::luaCreatureGetName(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+
+int LuaScriptInterface::luaCreatureGetDisplayName(lua_State* L)
+{
+	// creature:getDisplayName()
+	const Creature* creature = getUserdata<const Creature>(L, 1);
+	if (creature) {
+		pushString(L, creature->getDisplayName());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureSetDisplayName(lua_State* L)
+{
+	// creature:setDisplayName()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	creature->setDisplayName(getString(L, 2));
+	creature->refreshInClient();
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureIsPhantom(lua_State* L)
+{
+	// creature:isPhantom()
+	const Creature* creature = getUserdata<const Creature>(L, 1);
+	if (creature) {
+		pushBoolean(L, creature->isPhantom());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureSetPhantom(lua_State* L)
+{
+	// alters walkthrough permissions:
+	// true - can always be walked through
+	// false - use default walkthrough logic
+
+	// creature:setPhantom(state)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	creature->setPhantom(getBoolean(L, 2));
+	creature->refreshInClient();
+	pushBoolean(L, true);
 	return 1;
 }
 

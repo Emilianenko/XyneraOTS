@@ -800,7 +800,8 @@ bool Player::canWalkthrough(const Creature* creature) const
 {
 	// server staff can walk through everything
 	// ghost mode targets are not supposed to block anything
-	if (group->access || creature->isInGhostMode()) {
+	// phantom creatures can always be walked through
+	if (group->access || creature->isInGhostMode() || creature->isPhantom()) {
 		return true;
 	}
 
@@ -841,8 +842,9 @@ bool Player::canWalkthrough(const Creature* creature) const
 // walkthrough info for game UI
 bool Player::canWalkthroughEx(const Creature* creature) const
 {
-	if (group->access) {
+	if (group->access || creature->isPhantom()) {
 		// server staff can walk through everything
+		// phantom creatures can always be walked through
 		return true;
 	}
 

@@ -117,6 +117,12 @@ class Creature : virtual public Thing
 
 		virtual const std::string& getName() const = 0;
 		virtual const std::string& getNameDescription() const = 0;
+		const std::string& getDisplayName() const {
+			return displayName;
+		}
+		void setDisplayName(const std::string& displayName) {
+			this->displayName = displayName;
+		}
 
 		virtual CreatureType_t getType() const = 0;
 
@@ -456,6 +462,14 @@ class Creature : virtual public Thing
 		bool isMovementBlocked() const {
 			return movementBlocked;
 		}
+		void setPhantom(bool state) {
+			// true - always possible to be walked through
+			// false - use default walkthrough logic
+			phantomMode = state;
+		}
+		bool isPhantom() const {
+			return phantomMode;
+		}
 		void addAssist(uint32_t creatureId) {
 			assistMap[creatureId] = OTSYS_TIME();
 		}
@@ -552,6 +566,8 @@ class Creature : virtual public Thing
 		Creature* master = nullptr;
 		Creature* followCreature = nullptr;
 
+		std::string displayName;
+
 		uint64_t lastStep = 0;
 		uint32_t referenceCounter = 0;
 		uint32_t id = 0;
@@ -590,6 +606,7 @@ class Creature : virtual public Thing
 		bool hiddenHealth = false;
 		bool canUseDefense = true;
 		bool movementBlocked = false;
+		bool phantomMode = false;
 
 		//creature script events
 		bool hasEventRegistered(CreatureEventType_t event) const {
