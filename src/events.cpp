@@ -151,6 +151,8 @@ bool Events::load()
 				info.playerOnBestiaryBrowse = event;
 			} else if (methodName == "onBestiaryRaceView") {
 				info.playerOnBestiaryRaceView = event;
+			} else if (methodName == "onFrameView") {
+				info.playerOnFrameView = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -1752,6 +1754,44 @@ void Events::eventPlayerOnBestiaryRaceView(Player* player, uint16_t raceId)
 	lua_pushnumber(L, raceId);
 
 	scriptInterface.callVoidFunction(2);
+}
+
+uint8_t Events::eventPlayerOnFrameView(Player* player, const Creature* target)
+{
+	uint8_t frameColor = 0xFF;
+
+	// Player:onFrameView(targetId)
+	if (info.playerOnFrameView == -1) {
+		return frameColor;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow("Events::eventPlayerOnFrameView");
+		return frameColor;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnFrameView, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnFrameView);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// target
+	lua_pushnumber(L, target->getID());
+
+	if (scriptInterface.protectedCall(L, 2, 1) != 0) {
+		LuaScriptInterface::reportError(nullptr, LuaScriptInterface::popString(L));
+	} else {
+		frameColor = LuaScriptInterface::getNumber<uint8_t>(L, -1);
+		lua_pop(L, 1);
+	}
+
+	scriptInterface.resetScriptEnv();
+	return frameColor;
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)
