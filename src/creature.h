@@ -465,6 +465,9 @@ class Creature : virtual public Thing
 		void resetAssists() {
 			assistMap.clear();
 		}
+		void resetDamageMap() {
+			damageMap.clear();
+		}
 
 		//creature script events
 		bool registerCreatureEvent(const std::string& name);
