@@ -2343,7 +2343,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 
 			const ItemType& itemType = Item::items[shopInfo.itemId];
 			if (itemType.hasSubType() && !itemType.stackable && itemType.charges == 0) {
-				subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
+				subtype = (!itemType.isFluidContainer() && shopInfo.subType == 0 ? -1 : shopInfo.subType);
 			}
 
 			uint32_t count = player->getItemTypeCount(shopInfo.itemId, subtype, true, 0);
@@ -2370,7 +2370,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 
 			const ItemType& itemType = Item::items[shopInfo.itemId];
 			if (itemType.hasSubType() && !itemType.stackable && itemType.charges == 0) {
-				subtype = (shopInfo.subType == 0 ? -1 : shopInfo.subType);
+				subtype = (!itemType.isFluidContainer() && shopInfo.subType == 0 ? -1 : shopInfo.subType);
 			}
 
 			if (subtype != -1) {
