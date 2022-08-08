@@ -47,7 +47,7 @@ end
 local specialQuests = {
 	-- chests with these uids will give anninhilator storage
 	[PlayerStorageKeys.annihilatorReward] = {1200, 1201, 1202, 1203},
-	[PlayerStorageKeys.yurPharaohQuest] = {1204, 1205, 1206}
+	-- [PlayerStorageKeys.yurPharaohQuest] = {1204, 1205, 1206}
 	
 	-- other quest example
 	-- [yourStorageHere] = {yourUID1, yourUID2},
