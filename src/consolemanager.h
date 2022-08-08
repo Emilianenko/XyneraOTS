@@ -6,8 +6,8 @@
 
 // console features (comment to disable)
 #define USE_COLOR_CONSOLE // colored messages
-#define SHOW_CONSOLE_PREFIXES // prefixes, eg [Start]
-//#define SHOW_CONSOLE_TIMESTAMPS // timestamps before prefixes
+//#define SHOW_CONSOLE_PREFIXES // prefixes, eg [Start]
+#define SHOW_CONSOLE_TIMESTAMPS // timestamps before prefixes
 
 #include "tools.h"
 
@@ -36,6 +36,9 @@ typedef fmt::color Color;
 // stylesheet
 static constexpr Color
 	// server loading
+	header = Color::lime_green,
+	developers = Color::orange,
+	community = Color::cornflower_blue,
 	serveronline = Color::lime_green,
 	serverPorts = Color::lime_green,
 	pvp = Color(0xBFBF00),
@@ -53,10 +56,18 @@ static constexpr Color
 	warning = Color(0xBFBF00),
 	start = Color::green,
 	info = Color::cornflower_blue,
-	broadcast = Color(0xF86060);
+	broadcast = Color(0xF86060),
+
+	// map info
+	mapStats = Color::lime_green;
 
 static constexpr size_t TAG_WIDTH = 12;
+
+#ifdef SHOW_CONSOLE_TIMESTAMPS
+static constexpr size_t WORLDINFO_SPACING = 18;
+#else
 static constexpr size_t WORLDINFO_SPACING = 24;
+#endif
 
 // functions responsible for printing formatted messages in the console
 
