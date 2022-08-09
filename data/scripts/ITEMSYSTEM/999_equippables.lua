@@ -836,7 +836,7 @@ local weapons = {
 	[20092] = { level = 15 }, -- ratana
 	[20093] = { level = 15, sockets = 2 }, -- life preserver
 	[20139] = { level = 20 }, -- spiky club
-	[21470] = {}, -- Mexcalibur
+	-- [21470] = {}, -- Mexcalibur
 	[22398] = { level = 75, vocs = {4} }, -- crude umbral blade
 	[22399] = { level = 120, vocs = {4}, sockets = 1 }, -- umbral blade
 	[22400] = { level = 250, vocs = {4}, sockets = 1 }, -- umbral masterblade
@@ -1129,7 +1129,7 @@ local weapons = {
 	[30179] = {}, -- strange mallet
 	[30181] = {}, -- mallet handle
 	[30307] = { level = 250, vocs = {4}, sockets = 2 }, -- gnome sword
-	[31120] = {}, -- test weapon for knights 
+	-- [31120] = {}, -- test weapon for knights 
 	[31379] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon longsword
 	[31380] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon battleaxe
 	[31381] = { level = 300, vocs = {4}, sockets = 2 }, -- falcon mace
@@ -1151,8 +1151,8 @@ local weapons = {
 	[33054] = { level = 220, vocs = {4}, sockets = 2 }, -- cobra sword
 	[34236] = { level = 220, vocs = {4}, sockets = 2 }, -- mortal mace
 	[34270] = { level = 250, vocs = {4}, sockets = 2 }, -- tagralt blade
-	[34666] = {}, -- meat hammer
-	[34669] = {}, -- orc hammer
+	-- [34666] = {}, -- meat hammer
+	-- [34669] = {}, -- orc hammer
 	[34749] = {}, -- schnitzel meat grinder
 	[35272] = { level = 180, vocs = {4}, sockets = 2 }, -- phantasmal axe
 	[36738] = { level = 400, vocs = {4}, sockets = 2 }, -- soulcutter
@@ -1165,7 +1165,7 @@ local weapons = {
 	[36909] = { level = 270, vocs = {4}, sockets = 2 }, -- lion axe
 	[36910] = { level = 270, vocs = {4}, sockets = 2 }, -- lion hammer
 	[36987] = {}, -- golden magic longsword
-	[37882] = {}, -- rascoohan rat revealer
+	-- [37882] = {}, -- rascoohan rat revealer
 	[38170] = { level = 150, vocs = {4}, sockets = 2 }, -- jungle flail
 	[38171] = { level = 150, vocs = {4}, sockets = 1 }, -- throwing axe
 	[39313] = { level = 270, vocs = {4}, sockets = 2 }, -- eldritch claymore

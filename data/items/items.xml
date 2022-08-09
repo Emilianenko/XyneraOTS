@@ -29218,7 +29218,10 @@
 		<attribute key="effect" value="teleport" />
 	</item>
 	<item id="22678" article="an" name="arcane staff">
-		<attribute key="weight" value="4000" />
+		<attribute key="attack" value="50"/>
+		<attribute key="defense" value="30"/>
+		<attribute key="weight" value="4000"/>
+		<attribute key="weaponType" value="club" />
 	</item>
 	<item id="22686" article="a" name="dead draptor">
 		<attribute key="containerSize" value="10" />
@@ -34332,6 +34335,7 @@
 		<attribute key="defense" value="40"/>
 		<attribute key="armor" value="1"/>
 		<attribute key="weight" value="18000"/>
+		<attribute key="weaponType" value="club"/>
 	</item>
 	<item id="31487" article="an" name="unliving demonbone">
 		<attribute key="absorbpercentdeath" value="3"/>
@@ -34340,6 +34344,7 @@
 		<attribute key="defense" value="40"/>
 		<attribute key="armor" value="1"/>
 		<attribute key="weight" value="18000"/>
+		<attribute key="weaponType" value="club"/>
 	</item>
 	<item id="31488" article="a" name="sulphurous demonbone">
 		<attribute key="absorbpercentfire" value="3"/>
@@ -34348,6 +34353,7 @@
 		<attribute key="defense" value="40"/>
 		<attribute key="armor" value="1"/>
 		<attribute key="weight" value="18000"/>
+		<attribute key="weaponType" value="club"/>
 	</item>
 	<item fromid="31571" toid="31574" article="an" name="adamant shield">
 		<attribute key="description" value="It was forged with magical diamonds collected during the journey of a true warrior."/>
@@ -34604,6 +34610,7 @@
 		<attribute key="weight" value="2700"/>
 	</item>
 	<item id="33054" name="cobra sword">
+	    <attribute key="weaponType" value="sword"/>
 		<attribute key="skillsword" value="3"/>
 		<attribute key="attack" value="52"/>
 		<attribute key="extradef" value="2"/>
