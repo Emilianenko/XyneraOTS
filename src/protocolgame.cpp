@@ -3886,11 +3886,11 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	if (displayMode != CREATURE_DISPLAY_MODE_NONE) {
 		creatureType = static_cast<CreatureType_t>(displayMode - 1);
 	}
-
+	/*
 	if (known) {
 		msg.add<uint16_t>(0x62);
 		msg.add<uint32_t>(creature->getID());
-	} else {
+	} else { */
 		msg.add<uint16_t>(0x61);
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
@@ -3901,9 +3901,9 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 
 		const std::string& displayName = creature->getDisplayName();
 		msg.addString(!displayName.empty() ? displayName : (creature->isHealthHidden() ? "" : creature->getName()));
-	}
+	//}
 
-	if (creature->isHealthHidden() || otherPlayer && otherPlayer->isAccessPlayer()) {
+	if (creature->isHealthHidden()) {
 		msg.addByte(0x00);
 	} else {
 		msg.addByte(std::ceil((static_cast<double>(creature->getHealth()) / std::max<int32_t>(creature->getMaxHealth(), 1)) * 100));
@@ -3930,9 +3930,9 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	msg.addByte(player->getSkullClient(creature));
 	msg.addByte(player->getPartyShield(otherPlayer));
 
-	if (!known) {
+	//if (!known) {
 		msg.addByte(player->getGuildEmblem(otherPlayer));
-	}
+	//}
 
 	// Creature type and summon emblem
 	msg.addByte(creatureType);
@@ -3988,17 +3988,12 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	if (!player->isAccessPlayer()) {
-		if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
-		} else {
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
-			msg.add<uint16_t>(10000);
-		}
+	if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
 	} else {
-		msg.add<uint16_t>(0);
-		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
+		msg.add<uint16_t>(10000);
 	}
 
 	msg.add<uint32_t>(player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getFreeCapacity());
@@ -4012,17 +4007,12 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(0); // xp boost
 	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
 
-	if (!player->isAccessPlayer()) {
-		if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
-		} else {
-			msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
-			msg.add<uint16_t>(10000);
-		}
+	if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
 	} else {
-		msg.add<uint16_t>(0);
-		msg.add<uint16_t>(0);
+		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
+		msg.add<uint16_t>(10000);
 	}
 
 	msg.addByte(player->getSoul());
