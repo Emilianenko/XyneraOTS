@@ -1,6 +1,19 @@
 local increasing = {[416] = 417, [426] = 425, [446] = 447, [3216] = 3217, [3202] = 3215, [11062] = 11063}
 local decreasing = {[417] = 416, [425] = 426, [447] = 446, [3217] = 3216, [3215] = 3202, [11063] = 11062}
 
+local function getDepotItemsCount(player)
+	local totalCount = 0
+	for boxId = 1, Game.getDepotBoxCount() do
+		local depotBox = player:getDepotChest(boxId - 1)
+		if depotBox then
+			totalCount = totalCount + depotBox:getItemHoldingCount()
+		end
+	end
+	
+	return totalCount
+end
+
+
 function onStepIn(creature, item, position, fromPosition)
 	if not increasing[item.itemid] then
 		return true
@@ -26,8 +39,8 @@ function onStepIn(creature, item, position, fromPosition)
 		lookPosition:getNextPosition(creature:getDirection())
 		local depotItem = Tile(lookPosition):getItemByType(ITEM_TYPE_DEPOT)
 		if depotItem then
-			local depotItems = creature:getDepotChest(getDepotId(depotItem:getUniqueId()), true):getItemHoldingCount()
-			creature:sendTextMessage(MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItems .. " item" .. (depotItems ~= 1 and "s." or "."))
+			local depotItemCount = getDepotItemsCount(creature)
+			creature:sendTextMessage(MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItemCount .. " item" .. (depotItemCount ~= 1 and "s." or "."))
 			creature:addAchievementProgress("Safely Stored Away", 1000)
 			return true
 		end

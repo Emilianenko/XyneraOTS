@@ -801,8 +801,15 @@ std::vector<uint16_t> depotBoxes = {
 	ITEM_DEPOT_BOX_XV,
 	ITEM_DEPOT_BOX_XVI,
 	ITEM_DEPOT_BOX_XVII,
-	ITEM_DEPOT_BOX_XVIII
+	ITEM_DEPOT_BOX_XVIII,
+	ITEM_DEPOT_BOX_XIX,
+	ITEM_DEPOT_BOX_XX,
 };
+
+uint16_t getDepotBoxCount()
+{
+	return depotBoxes.size();
+}
 
 uint16_t getDepotBoxId(uint16_t index)
 {

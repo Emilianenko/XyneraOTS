@@ -33,6 +33,7 @@
 #include "spectators.h"
 #include "spells.h"
 #include "storeinbox.h"
+#include "tools.h"
 #include "teleport.h"
 #include "weapons.h"
 
@@ -1842,6 +1843,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_DEPOT_BOX_XV)
 	registerEnum(ITEM_DEPOT_BOX_XVI)
 	registerEnum(ITEM_DEPOT_BOX_XVII)
+	registerEnum(ITEM_DEPOT_BOX_XVIII)
+	registerEnum(ITEM_DEPOT_BOX_XIX)
+	registerEnum(ITEM_DEPOT_BOX_XX)
 
 	registerEnum(ITEM_MALE_CORPSE)
 	registerEnum(ITEM_FEMALE_CORPSE)
@@ -2462,6 +2466,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getMonsterCount", LuaScriptInterface::luaGameGetMonsterCount);
 	registerMethod("Game", "getPlayerCount", LuaScriptInterface::luaGameGetPlayerCount);
 	registerMethod("Game", "getNpcCount", LuaScriptInterface::luaGameGetNpcCount);
+	registerMethod("Game", "getDepotBoxCount", LuaScriptInterface::luaGameGetDepotBoxCount);
 	registerMethod("Game", "getMonsterTypes", LuaScriptInterface::luaGameGetMonsterTypes);
 	registerMethod("Game", "getMountIdByLookType", LuaScriptInterface::luaGameGetMountIdByLookType);
 	registerMethod("Game", "getCurrencyItems", LuaScriptInterface::luaGameGetCurrencyItems);
@@ -4904,6 +4909,13 @@ int LuaScriptInterface::luaGameGetNpcCount(lua_State* L)
 {
 	// Game.getNpcCount()
 	lua_pushnumber(L, g_game.getNpcsOnline());
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetDepotBoxCount(lua_State* L)
+{
+	// Game.getDepotBoxCount()
+	lua_pushnumber(L, getDepotBoxCount());
 	return 1;
 }
 

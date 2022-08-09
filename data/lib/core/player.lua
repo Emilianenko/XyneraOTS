@@ -508,11 +508,10 @@ do
 		elseif location == LOCATION_STASH then
 			-- not implemented yet
 		elseif location == LOCATION_DEPOT then
-			local towns = Game.getTowns()
-			for _, town in pairs(towns) do
-				local depotBox = self:getDepotChest(town:getId())
+			for boxId = 1, Game.getDepotBoxCount() do		
+				local depotBox = self:getDepotChest(boxId - 1)
 				if depotBox then
-					for containerIndex, containerItem in pairs(depotBox:getItems(true)) do
+					for _, containerItem in pairs(depotBox:getItems(true)) do
 						parseItem(containerItem, response, onlyMarketable)
 					end
 				end

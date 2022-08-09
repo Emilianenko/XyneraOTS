@@ -541,6 +541,7 @@ class LuaScriptInterface
 		static int luaGameGetMonsterCount(lua_State* L);
 		static int luaGameGetPlayerCount(lua_State* L);
 		static int luaGameGetNpcCount(lua_State* L);
+		static int luaGameGetDepotBoxCount(lua_State* L);
 		static int luaGameGetMonsterTypes(lua_State* L);
 		static int luaGameGetCurrencyItems(lua_State* L);
 		static int luaGameGetMountIdByLookType(lua_State* L);
