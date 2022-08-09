@@ -5,7 +5,7 @@
 -- local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
 -- local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
 
-local labelDefault = '<font color="orange" size="5">|NPCNAME|<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN|</font>'
+local labelDefault = '<font color="orange" size="5">|NPCNAME|<br />|CENTERARROW||ARROWDOWN|</font>'
 
 local markers = {
 	["Monsters"] = {
@@ -24,7 +24,8 @@ local markers = {
 
 local macros = {
 	["|ARROWDOWN|"] = function(creature, pos) return string.char(25) end,
-	["|NPCNAME|"] = function(creature, pos) return creature:getName() end
+	["|NPCNAME|"] = function(creature, pos) return creature:getName() end,
+	["|CENTERARROW|"] = function(creature, pos) return string.rep("&nbsp;", math.floor(creature:getName():len() * 0.85)) end,
 }
 
 local init = false
