@@ -3028,6 +3028,9 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "getIdleTime", LuaScriptInterface::luaPlayerGetIdleTime);
 
+	registerMethod("Player", "isIgnoringFriction", LuaScriptInterface::luaPlayerIsIgnoringFriction);
+	registerMethod("Player", "setIgnoreFriction", LuaScriptInterface::luaPlayerSetIgnoreFriction);
+
 	// Monster
 	registerClass("Monster", "Creature", LuaScriptInterface::luaMonsterCreate);
 	registerMetaMethod("Monster", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -11967,6 +11970,33 @@ int LuaScriptInterface::luaPlayerGetIdleTime(lua_State* L)
 	}
 
 	lua_pushnumber(L, player->getIdleTime());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerIsIgnoringFriction(lua_State* L)
+{
+	// player:isIgnoringFriction()
+	const Player* player = getUserdata<const Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	pushBoolean(L, player->isIgnoringFriction());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetIgnoreFriction(lua_State* L)
+{
+	// player:setIgnoreFriction(mode)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	player->setIgnoreFriction(getBoolean(L, 2));
+	pushBoolean(L, true);
 	return 1;
 }
 

@@ -53,6 +53,9 @@ PlayerStorageKeys = {
 	imbuLastEquipItem = 70050,
 	imbuLastEquipSlot = 70051,
 	
+	-- command /friction
+	adminSpeedPreference = 70060,
+	
 	-- rune to set podium item
 	-- scripts/actions/podiumRune.lua
 	podiumRune = 80040,

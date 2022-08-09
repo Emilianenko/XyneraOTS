@@ -1103,6 +1103,9 @@ class LuaScriptInterface
 
 		static int luaPlayerGetIdleTime(lua_State* L);
 
+		static int luaPlayerIsIgnoringFriction(lua_State* L);
+		static int luaPlayerSetIgnoreFriction(lua_State* L);
+
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 

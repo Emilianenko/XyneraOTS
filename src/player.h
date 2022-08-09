@@ -160,6 +160,13 @@ class Player final : public Creature, public Cylinder
 			return hasFlag(PlayerFlag_CanSenseInvisibility) || group->access;
 		}
 
+		void setIgnoreFriction(bool newState) {
+			this->ignoreFriction = newState;
+		}
+		bool isIgnoringFriction() const {
+			return ignoreFriction;
+		}
+
 		void removeList() override;
 		void addList() override;
 		void kickPlayer(bool displayEffect, const std::string& message = std::string());
@@ -1504,6 +1511,7 @@ class Player final : public Creature, public Cylinder
 		bool isConnecting = false;
 		bool addAttackSkillPoint = false;
 		bool randomizeMount = false;
+		bool ignoreFriction = false;
 		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 
 		static uint32_t playerAutoID;

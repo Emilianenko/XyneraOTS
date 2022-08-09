@@ -1490,7 +1490,7 @@ int64_t Creature::getStepDuration() const
 
 	// ignore tile friction for god chars
 	const Player* player = getPlayer();
-	if (player && player->hasFlag(PlayerFlag_SetMaxSpeed)) {
+	if (player && player->isIgnoringFriction()) {
 		return 1;
 	}
 
