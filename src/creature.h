@@ -123,6 +123,12 @@ class Creature : virtual public Thing
 		void setDisplayName(const std::string& displayName) {
 			this->displayName = displayName;
 		}
+		const CreatureDisplayModes_t getDisplayMode() const {
+			return displayMode;
+		}
+		void setDisplayMode(CreatureDisplayModes_t newMode) {
+			this->displayMode = newMode;
+		}
 
 		virtual CreatureType_t getType() const = 0;
 
@@ -582,6 +588,7 @@ class Creature : virtual public Thing
 		int32_t health = 1000;
 		int32_t healthMax = 1000;
 		uint8_t drunkenness = 0;
+		CreatureDisplayModes_t displayMode = CREATURE_DISPLAY_MODE_NONE;
 
 		Outfit_t currentOutfit;
 		Outfit_t defaultOutfit;

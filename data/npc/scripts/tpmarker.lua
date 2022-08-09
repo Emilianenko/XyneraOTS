@@ -1,23 +1,24 @@
 -- wczesniejszy wyglad
 -- local labelDefault = "<center><h2>|ARROWDOWN| |NPCNAME| |ARROWDOWN|</h2></center>Travel to |NPCNAME|",
 
+-- wersja 2
+-- local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
+-- local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
 
-local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
-local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
-
+local labelDefault = '<font color="orange" size="5">|NPCNAME|<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN|</font>'
 
 local markers = {
 	["Monsters"] = {
 		itemId = 1387,
 		destination = Position(1052, 1010, 5),
 		effect = CONST_ME_FIREWORK_BLUE,
-		label = labelDefaultLeft,
+		label = labelDefault,
 	},
 	["Trainers"] = {
 		--itemId = 1387,
 		--destination = Position(0, 0, 0),
 		effect = CONST_ME_FIREWORK_BLUE,
-		label = labelDefaultLeft,
+		label = labelDefault,
 	}
 }
 
@@ -52,6 +53,7 @@ local function onInit(npcId)
 	end
 	
 	self:setDisplayName(label)
+	self:setDisplayMode(CREATURE_DISPLAY_MODE_PLAYER)
 	self:setHiddenHealth(true)
 	self:setPhantom(true)
 	

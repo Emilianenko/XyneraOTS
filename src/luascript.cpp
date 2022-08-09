@@ -1711,6 +1711,14 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CREATURETYPE_SUMMON_OWN)
 	registerEnum(CREATURETYPE_SUMMON_OTHERS)
 
+	registerEnum(CREATURE_DISPLAY_MODE_NONE)
+	registerEnum(CREATURE_DISPLAY_MODE_PLAYER)
+	registerEnum(CREATURE_DISPLAY_MODE_MONSTER)
+	registerEnum(CREATURE_DISPLAY_MODE_NPC)
+	registerEnum(CREATURE_DISPLAY_MODE_SUMMON)
+	registerEnum(CREATURE_DISPLAY_MODE_SUMMON_OTHER)
+	registerEnum(CREATURE_DISPLAY_MODE_HIDDEN)
+
 	registerEnum(CLIENTOS_LINUX)
 	registerEnum(CLIENTOS_WINDOWS)
 	registerEnum(CLIENTOS_FLASH)
@@ -2750,6 +2758,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "getName", LuaScriptInterface::luaCreatureGetName);
 	registerMethod("Creature", "getDisplayName", LuaScriptInterface::luaCreatureGetDisplayName);
 	registerMethod("Creature", "setDisplayName", LuaScriptInterface::luaCreatureSetDisplayName);
+	registerMethod("Creature", "getDisplayMode", LuaScriptInterface::luaCreatureGetDisplayMode);
+	registerMethod("Creature", "setDisplayMode", LuaScriptInterface::luaCreatureSetDisplayMode);
 
 	registerMethod("Creature", "isPhantom", LuaScriptInterface::luaCreatureIsPhantom);
 	registerMethod("Creature", "setPhantom", LuaScriptInterface::luaCreatureSetPhantom);
@@ -8453,6 +8463,39 @@ int LuaScriptInterface::luaCreatureSetDisplayName(lua_State* L)
 	}
 
 	creature->setDisplayName(getString(L, 2));
+	creature->refreshInClient();
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureGetDisplayMode(lua_State* L)
+{
+	// creature:getDisplayMode()
+	const Creature* creature = getUserdata<const Creature>(L, 1);
+	if (creature) {
+		lua_pushnumber(L, creature->getDisplayMode());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureSetDisplayMode(lua_State* L)
+{
+	// creature:setDisplayMode()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	CreatureDisplayModes_t newMode = getNumber<CreatureDisplayModes_t>(L, 2);
+	if (newMode > CREATURE_DISPLAY_MODE_LAST) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	creature->setDisplayMode(newMode);
 	creature->refreshInClient();
 	pushBoolean(L, true);
 	return 1;

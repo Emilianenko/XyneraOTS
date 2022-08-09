@@ -3881,6 +3881,12 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		}
 	}
 
+	// override display mode
+	CreatureDisplayModes_t displayMode = creature->getDisplayMode();
+	if (displayMode != CREATURE_DISPLAY_MODE_NONE) {
+		creatureType = static_cast<CreatureType_t>(displayMode - 1);
+	}
+
 	if (known) {
 		msg.add<uint16_t>(0x62);
 		msg.add<uint32_t>(creature->getID());
