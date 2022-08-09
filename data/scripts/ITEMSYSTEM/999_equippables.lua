@@ -1,13 +1,13 @@
 local backpacks = {
-	[1987] = { sockets = 1 },
+	[1987] = { }, -- bags are not imbuable
 	[1988] = { sockets = 1 },
-	[1991] = { sockets = 1 },
-	[1992] = { sockets = 1 },
-	[1993] = { sockets = 1 },
-	[1994] = { sockets = 1 },
-	[1995] = { sockets = 1 },
-	[1996] = { sockets = 1 },
-	[1997] = { sockets = 1 },
+	[1991] = { },
+	[1992] = { },
+	[1993] = { },
+	[1994] = { },
+	[1995] = { },
+	[1996] = { },
+	[1997] = { },
 	[1998] = { sockets = 1 },
 	[1999] = { sockets = 1 },
 	[2000] = { sockets = 1 },
@@ -16,26 +16,26 @@ local backpacks = {
 	[2003] = { sockets = 1 },
 	[2004] = { sockets = 1 },
 	[2365] = { sockets = 1 },
-	[3939] = { sockets = 1 },
+	[3939] = { },
 	[3940] = { sockets = 1 },
 	[3960] = { sockets = 1 },
 	[5801] = { sockets = 1 },
 	[5926] = { sockets = 1 },
-	[5927] = { sockets = 1 },
+	[5927] = { },
 	[5949] = { sockets = 1 },
-	[5950] = { sockets = 1 },
+	[5950] = { },
 	[7342] = { sockets = 1 },
-	[7343] = { sockets = 1 },
+	[7343] = { },
 	[9774] = { sockets = 1 },
-	[9775] = { sockets = 1 },
+	[9775] = { },
 	[10518] = { sockets = 1 },
 	[10519] = { sockets = 1 },
-	[10520] = { sockets = 1 },
+	[10520] = { },
 	[10521] = { sockets = 1 },
 	[10522] = { sockets = 1 },
 	[11119] = { sockets = 1 },
 	[11241] = { sockets = 1 },
-	[11242] = { sockets = 1 },
+	[11242] = { },
 	[11243] = { sockets = 1 },
 	[11244] = { sockets = 1 },
 	[11263] = { sockets = 1 },
@@ -53,7 +53,7 @@ local backpacks = {
 	[26181] = { sockets = 1 },
 	[27049] = { sockets = 1 },
 	[27051] = { sockets = 1 },
-	[28436] = { sockets = 1 },
+	[28436] = { }, -- blossom bag (not imbuable)
 	[31227] = { sockets = 1 },
 	[32853] = { sockets = 1 },
 	[34281] = { sockets = 1 },
@@ -190,8 +190,8 @@ local rings = {
 	[26189] = { level = 100, vocs = {4} }, -- ring of red plasma
 	[26190] = {}, -- ring of red plasma
 	[28354] = {level = 50}, -- butterfly ring
-	[34213] = {level = 220}, -- blister ring 
-	[34272] = {level = 220}, -- blister ring 
+	[34213] = {level = 220}, -- blister ring
+	[34272] = {level = 220}, -- blister ring
 	[34277] = {level = 220}, -- blister ring
 	[35277] = {level = 200}, -- ring of souls
 	[35291] = {level = 200}, -- ring of souls
@@ -727,7 +727,7 @@ local weapons = {
 	[7454] = { level = 30, vocs = {4} }, -- glorious axe
 	[7455] = { level = 80, sockets = 2 }, -- mythril axe
 	[7456] = { level = 35, sockets = 2 }, -- noble axe
-	[7744] = {removecharges=true}, -- fiery spike sword
+	[7744] = { removecharges=true }, -- fiery spike sword
 	[7745] = { level = 50, removecharges=true }, -- fiery relic sword
 	[7746] = { level = 60, removecharges=true }, -- fiery mystic blade
 	[7747] = { level = 35, vocs = {4}, removecharges=true }, -- fiery blacksteel sword
@@ -1797,4 +1797,43 @@ for itemId, itemData in pairs(Equippables.throwables) do
 	else
 		generateDefaultMissile(itemId)
 	end
+end
+
+---- REGISTER WANDS
+for itemId, itemData in pairs(Equippables.weapons_magic) do
+	if itemData.callback then
+		itemData.callback(itemId)
+	else
+		generateDefaultWand(itemId)
+	end
+end
+
+---- REGISTER MELEE WEAPONS
+for itemId, itemData in pairs(Equippables.weapons) do
+	if itemData.callback then
+		itemData.callback(itemId)
+	else
+		generateDefaultMeleeWeapon(itemId)
+	end
+end
+
+---- REGISTER CROSSBOWS
+for itemId, itemData in pairs(Equippables.weapons_distance) do
+	if itemData.callback then
+		itemData.callback(itemId)
+	else
+		generateDefaultCrossbow(itemId)
+	end
+end
+
+-- helper for imbuing altar
+function ItemType:getEquippableCategory()
+	local itemId = self:getId()
+	for categoryType, category in pairs(Equippables) do
+		if category[itemId] then
+			return categoryType
+		end
+	end
+	
+	return "NONE"
 end
