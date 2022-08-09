@@ -1,3 +1,12 @@
+-- corpses to skip (eg. player corpses)
+AutoLootSkip = {
+	-- corpse m
+	3058, 3059, 3060,
+	
+	-- corpse f
+	3064, 3065, 3066,
+}
+
 -- helpers for autoloot sorting
 AutoLootMeta = {
 	-- 20 entries per line for easier reading
@@ -562,7 +571,6 @@ do
 		local itemCount = 0
 		local goldCount = 0
 		local corpseCount = 0
-		local lootContainers = player:getLootContainers()
 		
 		if position.x ~= CONTAINER_POSITION then
 			-- shift + right click on the floor
@@ -589,12 +597,13 @@ do
 			local hasBodies = false
 			local looted = false
 
+			local lootContainers = player:getLootContainers()
 			local items = tile:getItems()
 			for _, corpse in ipairs(items) do
 				if corpse:isCorpse() and corpse:isContainer() then
 					hasBodies = true
 					
-					if player:canOpenCorpse(corpse) and corpseCount < config.maxCorpsesLimit then
+					if player:canOpenCorpse(corpse) and corpseCount < config.maxCorpsesLimit and not table.contains(AutoLootSkip, corpse:getId()) then
 						local tmpLootedItems = LOOTED_RESOURCE_ABSENT
 						local tmpLootedGold = LOOTED_RESOURCE_ABSENT
 						local tmpItemCount = 0
@@ -631,6 +640,11 @@ do
 					return
 				end
 				
+				if table.contains(AutoLootSkip, openedContainer:getId()) then
+					-- autoloot disabled corpse
+					return
+				end
+				
 				if not player:canOpenCorpse(openedContainer) then
 					-- container is open but the player has lost rights to it
 					-- (eg by leaving party)
@@ -652,12 +666,12 @@ do
 						return
 					end
 					
-					lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, lootContainers)
+					lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, player:getLootContainers())
 				else
 					-- clicked an item inside the corpse
 					local isCurrency = clickedItem:isCurrency()
 					
-					local ret = internalLootItem(player, clickedItem, lootContainers, player:getStorageValue(PlayerStorageKeys.autoLootFallback) == 1, player:getSlotItem(CONST_SLOT_BACKPACK))
+					local ret = internalLootItem(player, clickedItem, player:getLootContainers(), player:getStorageValue(PlayerStorageKeys.autoLootFallback) == 1, player:getSlotItem(CONST_SLOT_BACKPACK))
 					if ret == RETURNVALUE_NOERROR then
 						local itemCount = clickedItem:getCount()
 						clickedItem:remove()
@@ -876,7 +890,7 @@ end
 do
 	local creatureEvent = CreatureEvent("AutoLootDeath")
 	function creatureEvent.onDeath(player)
-		player:unregisterAutoLoot()
+		AutoLootWarnings[player:getId()] = nil
 		return true
 	end
 	creatureEvent:register()

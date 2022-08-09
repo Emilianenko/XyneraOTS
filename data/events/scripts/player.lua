@@ -45,6 +45,14 @@ function Player:onLookInMarket(itemType, tier)
 end
 
 function Player:onMoveItem(item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+	-- prevent moving items into corpses
+	if toPosition.x == CONTAINER_POSITION and bit.band(toPosition.y, 0x40) ~= 0 then
+		local openedContainer = self:getContainerById(toPosition.y - 0x40)
+		if openedContainer:isCorpse() then
+			return RETURNVALUE_CONTAINERNOTENOUGHROOM
+		end
+	end
+	
 	if EventCallback.onMoveItem then
 		return EventCallback.onMoveItem(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	end
