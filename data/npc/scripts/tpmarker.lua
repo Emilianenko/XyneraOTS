@@ -1,12 +1,34 @@
-local destinations = {
-	["Monsters"] = {Position(1052, 1010, 5), CONST_ME_FIREWORK_BLUE},
-	["Trainers"] = {Position(0, 0, 0), CONST_ME_FIREWORK_BLUE}
+-- wczesniejszy wyglad
+-- local labelDefault = "<center><h2>|ARROWDOWN| |NPCNAME| |ARROWDOWN|</h2></center>Travel to |NPCNAME|",
+
+
+local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
+local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
+
+
+local markers = {
+	["Monsters"] = {
+		itemId = 1387,
+		destination = Position(1052, 1010, 5),
+		effect = CONST_ME_FIREWORK_BLUE,
+		label = labelDefaultLeft,
+	},
+	["Trainers"] = {
+		--itemId = 1387,
+		--destination = Position(0, 0, 0),
+		effect = CONST_ME_FIREWORK_BLUE,
+		label = labelDefaultLeft,
+	}
+}
+
+local macros = {
+	["|ARROWDOWN|"] = function(creature, pos) return string.char(25) end,
+	["|NPCNAME|"] = function(creature, pos) return creature:getName() end
 }
 
 local init = false
 local selfPos
 local effect
-local arrowDown = string.char(25)
 
 if not TP_MARKERS_RELOAD_GUARD then
 	TP_MARKERS_RELOAD_GUARD = {}
@@ -22,21 +44,47 @@ local function onInit(npcId)
 	selfPos = self:getPosition()
 	
 	self:setOutfit({lookTypeEx = 1548})
-	self:setDisplayName(string.format("<center><h2>%s %s %s</h2></center>Travel to %s", arrowDown, selfName, arrowDown, selfName))
+	
+	local tpInfo = markers[selfName]
+	local label = tpInfo.label
+	for macro, callback in pairs(macros) do
+		label = label:gsub(macro, callback(self, selfPos))
+	end
+	
+	self:setDisplayName(label)
 	self:setHiddenHealth(true)
 	self:setPhantom(true)
 	
+	
 	if TP_MARKERS_RELOAD_GUARD[npcId] then
-		effect = destinations[selfName][2]
-	else
-		TP_MARKERS_RELOAD_GUARD[npcId] = true
-		local destination = destinations[selfName][1]
-		if destination then
-			local tp = Game.createItem(1387, 1, selfPos)
-			if tp then
-				tp:setDestination(destination)
-				effect = destinations[selfName][2]
+		-- handle reload
+		effect = tpInfo.effect
+		local tile = self:getTile()
+		if tile then
+			local prevTp = TP_MARKERS_RELOAD_GUARD[npcId]
+			if prevTp and prevTp ~= 1 then
+				local oldTp = tile:getItemById(prevTp)
+				if oldTp then
+					oldTp:remove()
+				end
 			end
+		end
+	end
+
+	-- initialize
+	TP_MARKERS_RELOAD_GUARD[npcId] = tpInfo.itemId or 1
+	local destination = tpInfo.destination
+	if destination then
+		local destId = tpInfo.itemId
+		if not destId then
+			markers[selfName].itemId = 1387
+			destId = 1387
+		end
+	
+		local tp = Game.createItem(destId, 1, selfPos)
+		if tp then
+			tp:setDestination(destination)
+			effect = tpInfo.effect
 		end
 	end
 end
