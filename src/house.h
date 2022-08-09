@@ -55,7 +55,7 @@ class Door final : public Item
 
 		//serialization
 		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
-		void serializeAttr(PropWriteStream&) const override {}
+		void serializeAttr(PropWriteStream& propStream) const override;
 
 		void setDoorId(uint32_t doorId) {
 			setIntAttr(ITEM_ATTRIBUTE_DOORID, doorId);
@@ -123,6 +123,7 @@ class House
 		// SUBOWNER_LIST subowner list
 		void setAccessList(uint32_t listId, const std::string& textlist);
 		bool getAccessList(uint32_t listId, std::string& list) const;
+		bool isInAccessList(Player* player, uint32_t listId);
 
 		bool isInvited(const Player* player) const;
 

@@ -3193,6 +3193,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("House", "canEditAccessList", LuaScriptInterface::luaHouseCanEditAccessList);
 	registerMethod("House", "getAccessList", LuaScriptInterface::luaHouseGetAccessList);
 	registerMethod("House", "setAccessList", LuaScriptInterface::luaHouseSetAccessList);
+	registerMethod("House", "isInAccessList", LuaScriptInterface::luaHouseIsInAccessList);
 
 	registerMethod("House", "kickPlayer", LuaScriptInterface::luaHouseKickPlayer);
 
@@ -13605,6 +13606,31 @@ int LuaScriptInterface::luaHouseSetAccessList(lua_State* L)
 	const std::string& list = getString(L, 3);
 	house->setAccessList(listId, list);
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaHouseIsInAccessList(lua_State* L)
+{
+	// house:isInAccessList(player, listId)
+	House* house = getUserdata<House>(L, 1);
+	if (!house) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Player* player = getUserdata<Player>(L, 2);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (house->getHouseAccessLevel(player) >= HOUSE_SUBOWNER) {
+		pushBoolean(L, true);
+		return 1;
+	}
+
+	uint32_t listId = getNumber<uint32_t>(L, 3);
+	pushBoolean(L, house->isInAccessList(player, listId));
 	return 1;
 }
 

@@ -259,6 +259,21 @@ bool House::getAccessList(uint32_t listId, std::string& list) const
 	return door->getAccessList(list);
 }
 
+bool House::isInAccessList(Player* player, uint32_t listId) {
+	if (listId == GUEST_LIST) {
+		return guestList.isInList(player);
+	} else if (listId == SUBOWNER_LIST) {
+		return subOwnerList.isInList(player);
+	}
+
+	Door* door = getDoorByNumber(listId);
+	if (!door) {
+		return false;
+	}
+
+	return door->accessList->isInList(player);
+}
+
 bool House::isInvited(const Player* player) const
 {
 	return getHouseAccessLevel(player) != HOUSE_NOT_INVITED;
@@ -514,6 +529,17 @@ Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 		return ATTR_READ_CONTINUE;
 	}
 	return Item::readAttr(attr, propStream);
+}
+
+void Door::serializeAttr(PropWriteStream& propWriteStream) const
+{
+	uint16_t actionId = getActionId();
+	if (actionId != 0) {
+		propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
+		propWriteStream.write<uint16_t>(actionId);
+	}
+
+	return Item::serializeAttr(propWriteStream);
 }
 
 void Door::setHouse(House* house)
