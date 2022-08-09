@@ -16,7 +16,7 @@ talk:register()
 -- load remembered preference
 local creatureevent = CreatureEvent("tileFrictionLogin")
 function creatureevent.onLogin(player)
-	if player:getStorageValue(PlayerStorageKeys.adminSpeedPreference) == 1 then
+	if player:isAdmin() and player:getStorageValue(PlayerStorageKeys.adminSpeedPreference) == 1 then
 		player:setIgnoreFriction(true)
 	end
 	return true
