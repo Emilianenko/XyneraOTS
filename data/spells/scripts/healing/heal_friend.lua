@@ -13,6 +13,12 @@ end
 combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 
 function onCastSpell(creature, variant)
+	if creature:getId() == variant:getNumber() then
+		creature:sendCancelMessage("You cannot cast this spell on yourself.")
+		creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+	
 	creature:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
 	return combat:execute(creature, variant)
 end
