@@ -138,7 +138,7 @@ int32_t Weapons::getMaxMeleeDamage(int32_t attackSkill, int32_t attackValue)
 //players
 int32_t Weapons::getMaxWeaponDamage(uint32_t level, int32_t attackSkill, int32_t attackValue, float attackFactor)
 {
-	return static_cast<int32_t>(std::round((level / 5) + (((((attackSkill / 4.) + 1) * (attackValue / 3.)) * 1.03) / attackFactor)));
+	return static_cast<int32_t>(0.085 * 1 / attackFactor * attackValue * attackSkill + level / 5);
 }
 
 bool Weapon::configureEvent(const pugi::xml_node& node)
@@ -621,25 +621,29 @@ int32_t WeaponMelee::getElementDamage(const Player* player, const Creature*, con
 	}
 
 	int32_t attackSkill = player->getWeaponSkill(item);
-	int32_t attackValue = elementDamage;
+	int32_t attackValue = elementDamage + std::max<int32_t>(0, item->getAttack());
 	float attackFactor = player->getAttackFactor();
+	float elementModifier = elementDamage * 1.0 / attackValue; // 1.0 casts var to float
 
-	int32_t maxValue = Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor);
-	return -normal_random(0, static_cast<int32_t>(maxValue * player->getVocation()->meleeDamageMultiplier));
+	int32_t damageMin = player->getLevel() * 0.2 * elementModifier;
+	int32_t damageMax = Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * elementModifier * player->getVocation()->meleeDamageMultiplier;
+
+	return -uniform_random(damageMin, damageMax);
 }
 
 int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, const Item* item, bool maxDamage /*= false*/) const
 {
 	int32_t attackSkill = player->getWeaponSkill(item);
-	int32_t attackValue = std::max<int32_t>(0, item->getAttack());
+	int32_t baseAttack = std::max<int32_t>(0, item->getAttack());
+	int32_t attackValue = elementDamage + baseAttack;
 	float attackFactor = player->getAttackFactor();
-
-	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->meleeDamageMultiplier);
+	float attackModifier = baseAttack * 1.0 / attackValue; // 1.0 casts var to float
+	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * attackModifier * player->getVocation()->meleeDamageMultiplier);
 	if (maxDamage) {
 		return -maxValue;
 	}
 
-	return -normal_random(0, maxValue);
+	return -uniform_random(static_cast<int32_t>(player->getLevel() * 0.2 * attackModifier), maxValue);
 }
 
 WeaponDistance::WeaponDistance(LuaScriptInterface* interface) :
