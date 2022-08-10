@@ -32670,6 +32670,15 @@
 	<item id="25469" article="a" name="depot box XVII">
 		<attribute key="containerSize" value="32" />
 	</item>
+	<item id="34571" article="a" name="depot box XVIII">
+			<attribute key="containerSize" value="32" />
+	</item>
+	<item id="44714" article="a" name="depot box XIX">
+				<attribute key="containerSize" value="32" />
+	</item>
+    <item id="44715" article="a" name="depot box XX">
+				<attribute key="containerSize" value="32" />
+	</item>
 	<item id="25519" article="a" name="test voodoo doll">
 		<attribute key="weight" value="650" />
 	</item>
