@@ -5,19 +5,49 @@
 -- local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
 -- local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
 
-local labelDefault = '<font color="orange" size="5">|NPCNAME|<br />|CENTERARROW||ARROWDOWN|</font>'
+local labelDefault = '<font color="#f7df05" size="5">|NPCNAME|<br />|CENTERARROW||ARROWDOWN|</font>'
 
 local markers = {
 	["Monsters"] = {
 		itemId = 1387,
 		destination = Position(1052, 1010, 5),
-		effect = CONST_ME_FIREWORK_BLUE,
+		effect = 178,
+		label = labelDefault,
+	},
+	["Temple"] = {
+		itemId = 1387,
+		destination = Position(1121, 959, 7),
+		effect = 178,
+		label = labelDefault,
+	},
+	["Quests"] = {
+		itemId = 1387,
+		destination = Position(1050, 1000, 5),
+		effect = 178,
+		label = labelDefault,
+	},
+	["NPC"] = {
+		itemId = 1387,
+		destination = Position(968, 1059, 7),
+		effect = 178,
+		label = labelDefault,
+	},
+	["Bosses"] = {
+		itemId = 1387,
+		-- destination = Position(968, 1059, 7),
+		effect = 178,
+		label = labelDefault,
+	},
+	["Cassino"] = {
+		itemId = 1387,
+		-- destination = Position(968, 1059, 7),
+		effect = 178,
 		label = labelDefault,
 	},
 	["Trainers"] = {
 		--itemId = 1387,
 		--destination = Position(0, 0, 0),
-		effect = CONST_ME_FIREWORK_BLUE,
+		effect = 178,
 		label = labelDefault,
 	}
 }
