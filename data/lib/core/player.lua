@@ -184,7 +184,6 @@ end
 do
 	if not ADD_MANA_SPENT_OVERRIDE then
 		internalAddManaSpent = Player.addManaSpent
-		local addManaSpentFunc = Player.addManaSpent
 		function Player:addManaSpent(...)
 			APPLY_SKILL_MULTIPLIER = false
 			local ret = internalAddManaSpent(self, ...)
