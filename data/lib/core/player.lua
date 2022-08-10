@@ -183,6 +183,7 @@ end
 
 do
 	if not ADD_MANA_SPENT_OVERRIDE then
+		ADD_MANA_SPENT_OVERRIDE = true
 		internalAddManaSpent = Player.addManaSpent
 		function Player:addManaSpent(...)
 			APPLY_SKILL_MULTIPLIER = false
