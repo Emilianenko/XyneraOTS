@@ -2072,9 +2072,17 @@ void ProtocolGame::sendClientFeatures()
 
 	// variables for client-sided step duration
 	// see Creature::getStepDuration() for server-sided equivalent
+	/*
 	msg.addDouble(Creature::speedA, 3);
 	msg.addDouble(Creature::speedB, 3);
 	msg.addDouble(Creature::speedC, 3);
+	*/
+	msg.addByte(0x03);
+	msg.add<uint32_t>(0x800D150F);
+	msg.addByte(0x03);
+	msg.add<uint32_t>(0x8003FCA9);
+	msg.addByte(0x03);
+	msg.add<uint32_t>(0x7FB6D57E);
 
 	// can report bugs?
 	msg.addByte(player->getAccountType() >= ACCOUNT_TYPE_TUTOR ? 0x01 : 0x00);
