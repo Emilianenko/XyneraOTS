@@ -34627,6 +34627,7 @@
 		<attribute key="weight" value="6300"/>
 	</item>
 	<item id="33055" name="cobra wand">
+	    <attribute key="shootType" value="energy"/>
 		<attribute key="weaponType" value="wand"/>
 		<attribute key="magicpoints" value="2"/>
 		<attribute key="criticalhitamount" value="35"/>
@@ -34635,6 +34636,7 @@
 		<attribute key="weight" value="1900"/>
 	</item>
 	<item id="33056" name="cobra rod">
+	    <attribute key="shootType" value="earth"/>
 		<attribute key="weaponType" value="wand"/>
 		<attribute key="magicpoints" value="2"/>
 		<attribute key="lifeleechamount" value="18"/>
@@ -35340,8 +35342,8 @@
 		<attribute key="weight" value="4800"/>
 	</item>
 	<item id="36807" article="a" name="lion rod">
+	    <attribute key="shootType" value="smallice"/>
 		<attribute key="weaponType" value="wand"/>
-		<attribute key="shootType" value="smallice"/>
 		<attribute key="magicpoints" value="2"/>
 		<attribute key="criticalhitamount" value="35"/>
 		<attribute key="criticalhitchance" value="10"/>
