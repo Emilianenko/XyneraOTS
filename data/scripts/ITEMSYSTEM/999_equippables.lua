@@ -61,6 +61,9 @@ local backpacks = {
 	[38233] = { sockets = 1 },
 	[39469] = { sockets = 1 },
 	[40686] = { sockets = 1 }, -- changing backpack
+	-- 12.90 update
+	[44745] = { sockets = 1 }, -- lilypad backpack
+	-- ----------
 }
 
 local lightSources = {
@@ -196,8 +199,22 @@ local rings = {
 	[35277] = {level = 200}, -- ring of souls
 	[35291] = {level = 200}, -- ring of souls
 	[35292] = {level = 200}, -- ring of souls
-	[34248] = {}, -- signet ring
+	[34248] = {}, -- signet ring 
 	[36736] = {}, -- lion ring
+	-- 12.90 update
+	[44211] = {level = 400, vocs = {3} }, -- alicorn ring
+	[44212] = {level = 400, vocs = {3} }, -- alicorn ring
+	[44213] = {level = 400, vocs = {3} }, -- alicorn ring
+	[44217] = {level = 400, vocs = {2} }, -- arboreal ring
+	[44218] = {level = 400, vocs = {2} }, -- arboreal ring
+	[44219] = {level = 400, vocs = {2} }, -- arboreal ring
+	[44214] = {level = 400, vocs = {1} }, -- arcanomancer sigil
+	[44215] = {level = 400, vocs = {1} }, -- arcanomancer sigil
+	[44216] = {level = 400, vocs = {1} }, -- arcanomancer sigil
+	[44208] = {level = 400, vocs = {4} }, -- Spiritthorn Ring
+	[44209] = {level = 400, vocs = {4} }, -- Spiritthorn Ring
+	[44210] = {level = 400, vocs = {4} }, -- Spiritthorn Ring
+	-- -------------
 }
 
 local necklaces = {
@@ -287,6 +304,11 @@ local necklaces = {
 	[38265] = {}, -- amethyst necklace
 	[39364] = {}, -- the Eye of Suon
 	[39715] = {}, -- lucky clover amulet
+	-- 12.90 update
+	[44264] = { level = 200, vocs = {4}}, -- turtle amulet
+	[44265] = { level = 200, vocs = {4}}, -- turtle amulet
+	[44266] = { level = 200, vocs = {4}}, -- turtle amulet
+	-- -----------
 }
 
 local weapons_magic = {
@@ -408,6 +430,10 @@ local weapons_magic = {
 	[39325] = { level = 250, vocs = {1}, mana = 22, damage = {87, 101}, element = "fire", sockets = 2 }, -- gilded eldritch wand
 	[39330] = { level = 250, vocs = {2}, mana = 22, damage = {87, 101}, element = "ice", sockets = 2 }, -- eldritch rod
 	[39331] = { level = 250, vocs = {2}, mana = 22, damage = {87, 101}, element = "ice", sockets = 2 }, -- gilded eldritch rod
+	-- 12.90 update
+	[44194] = { level = 250, vocs = {2}, mana = 21, damage = {90, 110}, element = "ice", sockets = 2 }, -- Naga Rod
+	[44193] = { level = 250, vocs = {1}, mana = 21, damage = {90, 120}, element = "energy", sockets = 2 }, -- Naga wand
+	-- -----------
 }
 
 local throwables = {
@@ -538,6 +564,9 @@ local weapons_distance = {
 	[38174] = { level = 150, vocs = {3}, sockets = 2 }, -- jungle bow
 	[39320] = { level = 250, vocs = {3}, sockets = 3 }, -- eldritch bow
 	[39321] = { level = 250, vocs = {3}, sockets = 3 }, -- gilded eldritch bow
+	-- 12.90 update
+	[44190] = { level = 300, vocs = {3}, sockets = 3 }, -- naga crossbow
+	-- ---------------
 
 }
 
@@ -580,6 +609,10 @@ local quivers = {
 	[38504] = { vocs = {3, 0} }, -- blue quiver
 	[38505] = { vocs = {3, 0} }, -- red quiver
 	[39322] = { level = 250, vocs = {3} }, -- eldritch quiver
+	-- 12.90 update
+	[44181] = { level = 400, vocs = {3} }, -- Alicorn Quiver
+	[44191] = { level = 250, vocs = {3} }, -- Naga Quiver
+	-- -----------
 }
 
 local weapons = {
@@ -1174,6 +1207,11 @@ local weapons = {
 	[39316] = { level = 270, vocs = {4}, sockets = 2 }, -- gilded eldritch warmace
 	[39317] = { level = 270, vocs = {4}, sockets = 2 }, -- eldritch greataxe
 	[39318] = { level = 270, vocs = {4}, sockets = 2 }, -- gilded eldritch greataxe
+	-- 12.90 update
+	[44187] = { level = 300, vocs = {4}, sockets = 2 }, -- naga axe
+	[44188] = { level = 300, vocs = {4}, sockets = 2 }, -- naga club
+	[44186] = { level = 300, vocs = {4}, sockets = 2 }, -- naga sword
+	-- ---------
 }
 
 local helmets = {
@@ -1308,6 +1346,12 @@ local helmets = {
 	[39820] = {}, -- golden horned helmet
 	[40758] = {}, -- green demon helmet
 	[40760] = {}, -- Morshabaal's mask
+	-- 12.90 update
+	[44180] = { level = 400, vocs = {3}, sockets = 2 }, -- Alicorn Headguard
+	[44184] = { level = 400, vocs = {2}, sockets = 2 }, -- arboreal crown
+	[44182] = { level = 400, vocs = {1}, sockets = 2 }, -- arboreal crown
+	[44179] = { level = 400, vocs = {4}, sockets = 2 }, -- Spiritthorn Helmet
+	-- --------------
 }
 
 local armors = {
@@ -1442,6 +1486,11 @@ local armors = {
 	[36813] = { level = 270, vocs = {4}, sockets = 2 }, -- lion plate
 	[39319] = { level = 250, vocs = {4}, sockets = 2 }, -- eldritch cuirass
 	[40757] = { sockets = 2 }, -- green demon armor
+	-- 12.90 update
+	[44195] = { level = 270, vocs = {1}, sockets = 1 }, -- dawnfire sherwani
+	[44196] = { level = 300, vocs = {2}, sockets = 1 }, -- midnight tunic
+	[44178] = { level = 400, vocs = {4}, sockets = 2 }, -- spiritthorn armor
+	-- ------------
 }
 
 local legs = {
@@ -1492,6 +1541,10 @@ local legs = {
 	[38173] = { level = 150, vocs = {3}}, -- bast legs
 	[39323] = { level = 250, vocs = {3}}, -- eldritch breeches
 	[40756] = {}, -- green demon legs
+	-- 12.90 update
+	[44197] = { level = 300, vocs = {1}}, -- dawnfire pantaloons
+	[44198] = { level = 250, vocs = {2}}, -- dawnfire pantaloons
+	-- ----------
 }
 
 local boots = {
@@ -1550,6 +1603,10 @@ local boots = {
 	[38175] = { level = 150, vocs = {1}, sockets = 1 }, -- makeshift boots
 	[38176] = { level = 150, vocs = {2}, sockets = 1 }, -- make-do boots
 	[40759] = { sockets = 1 }, -- green demon slippers
+	-- 12.90 update
+	[44192] = { level = 270, vocs = {3}, sockets = 1 }, -- feverbloom boots
+	[44189] = { level = 270, vocs = {4}, sockets = 1 }, -- frostflower boots
+	-- ---------------
 }
 
 local shields = {
@@ -1669,6 +1726,10 @@ local shields = {
 	[39708] = {}, -- bonelord tome
 	[39709] = {}, -- bonelord tome
 	[39716] = {}, -- shield of endless search
+	-- 12.90 update
+	[44183] = { level = 400, vocs = {1}, sockets = 1 }, -- arcanomancer folio
+	[44185] = { level = 400, vocs = {2}, sockets = 1 }, -- arboreal tome
+	-- -----------
 }
 
 --[[

@@ -34879,7 +34879,7 @@
 		<attribute key="defense" value="32"/>
 		<attribute key="weight" value="8100"/>
 	</item>
-		<item id="34213" article="an" name="enchanted blister ring">
+	<item id="34213" article="an" name="enchanted blister ring">
 		<attribute key="slotType" value="ring"/>
 		<attribute key="stopduration" value="1"/>
 		<attribute key="showduration" value="1"/>
@@ -35921,7 +35921,7 @@
 		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="3150" />
 	</item>
-		<item id="36478" article="a" name="dead werelion">
+	<item id="36478" article="a" name="dead werelion">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="600"/>
 		<attribute key="decayTo" value="0"/>
@@ -35982,7 +35982,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="26068" article="a" name="dead reality reaver">
+	<item id="26068" article="a" name="dead reality reaver">
 		<attribute key="duration" value="10"/>
 		<attribute key="decayTo" value="26069"/>
 		<attribute key="containersize" value="30"/>
@@ -36020,7 +36020,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="26209" article="a" name="Burster's remains">
+	<item id="26209" article="a" name="Burster's remains">
 		<attribute key="duration" value="10"/>
 		<attribute key="decayTo" value="26210"/>
 		<attribute key="containersize" value="30"/>
@@ -36086,7 +36086,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="26969" article="a" name="dead Lloyd">
+	<item id="26969" article="a" name="dead Lloyd">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -36134,7 +36134,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="27724" article="the" name="remains of a Shaper">
+	<item id="27724" article="the" name="remains of a Shaper">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -36172,7 +36172,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="27841" name="remains of an ice dragon">
+	<item id="27841" name="remains of an ice dragon">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -36279,7 +36279,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="28460" article="the" name="remains of a nymph">
+	<item id="28460" article="the" name="remains of a nymph">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -36539,7 +36539,7 @@
 		<attribute key="decayTo" value="28521"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="30150" article="the" name="remains of a diremaw">
+	<item id="30150" article="the" name="remains of a diremaw">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -37150,7 +37150,7 @@
 		<attribute key="decayTo" value="31295"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31297" article="a" name="dead grey monk">
+	<item id="31297" article="a" name="dead grey monk">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -37856,7 +37856,7 @@
 		<attribute key="decayTo" value="32732"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="32734" article="a" name="dead summer rearguard">
+	<item id="32734" article="a" name="dead summer rearguard">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41003,7 +41003,7 @@
 		<attribute key="corpseType" value="blood" />
 		<attribute key="fluidSource" value="blood" />
 	</item>
-		<item id="27734" name="remains of an orclops doomhauler">
+	<item id="27734" name="remains of an orclops doomhauler">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -41022,7 +41022,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="27730" name="remains of an orclops ravager">
+	<item id="27730" name="remains of an orclops ravager">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -41041,7 +41041,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="27738" name="remains of a stone rhino">
+	<item id="27738" name="remains of a stone rhino">
 		<attribute key="duration" value="600"/>
 		<attribute key="decayTo" value="27739"/>
 		<attribute key="containersize" value="10"/>
@@ -41055,7 +41055,7 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="31239" article="a" name="dead flying book">
+	<item id="31239" article="a" name="dead flying book">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41080,7 +41080,7 @@
 		<attribute key="decayTo" value="31241"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31466" article="a" name="dead arctic faun">
+	<item id="31466" article="a" name="dead arctic faun">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -41105,12 +41105,12 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-		<item id="39656" article="a" name="magic forcefield">
+	<item id="39656" article="a" name="magic forcefield">
 		<attribute key="description" value="It draws you nearer." />
 		<attribute key="type" value="teleport" />
 		<attribute key="effect" value="teleport" />
 	</item>
-		<item id="31251" article="a" name="slain floating savant">
+	<item id="31251" article="a" name="slain floating savant">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41135,7 +41135,7 @@
 		<attribute key="decayTo" value="31253"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31263" article="a" name="slain biting book">
+	<item id="31263" article="a" name="slain biting book">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41160,7 +41160,7 @@
 		<attribute key="decayTo" value="31265"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31231" article="a" name="slain animated feather">
+	<item id="31231" article="a" name="slain animated feather">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41185,7 +41185,7 @@
 		<attribute key="decayTo" value="31233"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31259" article="a" name="slain knowledge elemental">
+	<item id="31259" article="a" name="slain knowledge elemental">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41210,7 +41210,7 @@
 		<attribute key="decayTo" value="31261"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31527" article="a" name="slain energuardian of tales">
+	<item id="31527" article="a" name="slain energuardian of tales">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41235,7 +41235,7 @@
 		<attribute key="decayTo" value="31529"/>
 		<attribute key="containersize" value="24"/>
 	</item>
-		<item id="31243" article="a" name="slain cursed book">
+	<item id="31243" article="a" name="slain cursed book">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41260,7 +41260,7 @@
 		<attribute key="decayTo" value="31245"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31431" article="a" name="slain energetic book">
+	<item id="31431" article="a" name="slain energetic book">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41286,7 +41286,7 @@
 		<attribute key="decayTo" value="31433"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-		<item id="31255" article="a" name="slain ink blob">
+	<item id="31255" article="a" name="slain ink blob">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
@@ -41310,5 +41310,911 @@
 		<attribute key="duration" value="10"/>
 		<attribute key="decayTo" value="31257"/>
 		<attribute key="containersize" value="20"/>
+	</item>
+	<item id="44211" article="a" name="charged alicorn ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="transformEquipTo" value="44212" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="85"/>
+	</item>
+	<item id="44212" article="a" name="charged alicorn ring">
+	    <attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="holymagiclevelpoints" value="1"/-->
+		<attribute key="magicpoints" value="1"/>
+		<attribute key="skilldist" value="3"/>
+		<attribute key="transformDeEquipTo" value="44211"/>>
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="duration" value="10800"/>
+		<attribute key="decayTo" value="44213"/>
+		<attribute key="weight" value="85"/>
+	</item>
+	<item id="44213" article="an" name="alicorn ring">
+	    <attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="holymagiclevelpoints" value="1"/-->
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="85"/>
+	</item>
+	<item id="44180" article="an" name="alicorn headguard">
+		<attribute key="slotType" value="head"/>
+		<attribute key="absorbpercentphysical" value="5"/>
+		<attribute key="absorbpercentfire" value="5"/>
+		<attribute key="absorbpercentice" value="5"/>
+		<attribute key="absorbpercentpoison" value="5"/>
+		<attribute key="absorbpercentenergy" value="5"/>
+		<attribute key="absorbpercentdeath" value="5"/>
+		<attribute key="absorbpercentholy" value="5"/>
+		<attribute key="skilldist" value="3"/>
+		<attribute key="armor" value="11"/>
+		<attribute key="weight" value="3900"/>
+	</item>
+	<item id="44181" article="an" name="alicorn quiver">
+		<attribute key="weaponType" value="quiver"/>
+		<attribute key="containersize" value="12"/>
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="2000"/>
+		<attribute key="magicpoints" value="1"/>
+		<!--attribute key="perfectshotdamage" value="20"/-->
+		<!--attribute key="perfectshotrange" value="3"/-->
+	</item>
+	<item id="44437" article="a" name="coral branch">
+		<attribute key="weight" value="110"/>
+	</item>
+	<item id="44446" name="corrupt naga scales">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="44425" article="a" name="cry-stal">
+		<attribute key="weight" value="970"/>
+	</item>
+	<item id="44410" article="an" name="emerald tortoise shell">
+		<attribute key="weight" value="600"/>
+	</item>
+	<item id="44438" article="a" name="flotsam">
+		<attribute key="weight" value="290"/>
+	</item>
+	<item id="44416" article="a" name="fungal blister">
+		<attribute key="weight" value="240"/>
+	</item>
+	<item id="44408" article="a" name="gore horn">
+		<attribute key="weight" value="260"/>
+	</item>
+	<item id="44423" article="a" name="gorerilla mane">
+		<attribute key="weight" value="240"/>
+	</item>
+	<item id="44424" article="a" name="gorerilla tail">
+		<attribute key="weight" value="280"/>
+	</item>
+	<item id="44418" article="a" name="headpecker beak">
+		<attribute key="weight" value="390"/>
+	</item>
+	<item id="44419" article="a" name="headpecker feather">
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="44441" name="hydrophytes">
+		<attribute key="weight" value="45"/>
+	</item>
+	<item id="44435" article="a" name="jungle moa claw">
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="44436" article="a" name="jungle moa egg">
+		<attribute key="weight" value="840"/>
+	</item>
+	<item id="44434" article="a" name="jungle moa feather">
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="44432" article="a" name="makara fin">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="44433" article="a" name="makara tongue">
+		<attribute key="weight" value="120"/>
+	</item>
+	<item id="44426" article="a" name="mercurial wing">
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="44444" name="naga archer scales">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="44442" article="a" name="naga armring">
+		<attribute key="weight" value="350"/>
+	</item>
+	<item id="44443" article="a" name="naga earring">
+		<attribute key="weight" value="280"/>
+	</item>
+	<item id="44445" name="naga warrior scales">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="44412" article="a" name="nighthunter wing">
+		<attribute key="weight" value="140"/>
+	</item>
+	<item id="44430" name="one of Timira's many heads">
+		<attribute key="weight" value="3150"/>
+	</item>
+	<item id="44449" article="a" name="parder fur">
+		<attribute key="weight" value="290"/>
+	</item>
+	<item id="44448" article="a" name="parder tooth">
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="44431" article="a" name="piece of Timira's sensors">
+		<attribute key="weight" value="3150"/>
+	</item>
+	<item id="44413" name="prehemoth horns">
+		<attribute key="weight" value="1100"/>
+	</item>
+	<item id="44420" article="a" name="ripptor claw">
+		<attribute key="weight" value="280"/>
+	</item>
+	<item id="44422" name="ripptor scales">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="44447" name="rogue naga scales">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="44409" article="a" name="sabretooth fur">
+		<attribute key="weight" value="135"/>
+	</item>
+	<item id="44439" article="a" name="small tropical fish">
+		<attribute key="weight" value="220"/>
+	</item>
+	<item id="44574" article="a" name="smoldering eye">
+		<attribute key="weight" value="3150"/>
+	</item>
+	<item id="44415" name="stalking seeds">
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="44406" article="a" name="sulphider shell">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="44407" article="a" name="sulphur powder">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="44440" name="two-headed turtle heads">
+		<attribute key="weight" value="760"/>
+	</item>
+	<item id="44411" name="undertaker fangs">
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="44183" article="an" name="arcanomancer folio">
+		<attribute key="weaponType" value="shield"/>
+		<attribute key="absorbpercentfire" value="8"/>
+		<attribute key="absorbpercentphysical" value="3"/>
+		<attribute key="magicpoints" value="5"/>
+		<!--attribute key="firemagiclevelpoints" value="1"/-->
+		<!--attribute key="energymagiclevelpoints" value="1"/-->
+		<attribute key="defense" value="22"/>
+		<attribute key="weight" value="2600"/>
+	</item>
+	<item id="44070" article="a" name="cerulean abyss">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="44068" article="a" name="cobalt ridge">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="44579" article="a" name="colourful water lily">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="44071" article="a" name="fiery tear">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="44575" article="a" name="firefighting axe">
+		<attribute key="weight" value="1600"/>
+	</item>
+	<item id="44576" article="a" name="portable flame">
+		<attribute key="weight" value="15"/>
+	</item>
+	<item id="44067" article="a" name="rainbow opal">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="44069" article="a" name="royal almandine">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="44184" article="an" name="arboreal crown">
+		<attribute key="slotType" value="head"/>
+		<attribute key="absorbpercentice" value="9"/>
+		<attribute key="absorbpercentphysical" value="2"/>
+		<attribute key="magicpoints" value="3"/>
+		<!--attribute key="healingmagiclevelpoints" value="1"/-->
+		<attribute key="armor" value="9"/>
+		<attribute key="weight" value="1200"/>
+	</item>
+	<item id="44185" article="an" name="arboreal tome">
+		<attribute key="weaponType" value="shield"/>
+		<attribute key="absorbpercentphysical" value="4"/>
+		<attribute key="absorbpercentenergy" value="6"/>
+		<attribute key="magicpoints" value="5"/>
+		<!--attribute key="healingmagiclevelpoints" value="1"/-->
+		<!--attribute key="icemagiclevelpoints" value="1"/-->
+		<attribute key="defense" value="22"/>
+		<attribute key="weight" value="2300"/>
+	</item>
+	<item id="44217" article="a" name="charged arboreal ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="weight" value="70"/>
+		<attribute key="transformEquipTo" value="44218" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+	</item>
+	<item id="44218" article="a" name="charged arboreal ring">
+	    <attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="healingmagiclevelpoints" value="2"/-->
+		<attribute key="magicpoints" value="2"/>
+		<attribute key="manaleechamount" value="1"/>
+		<attribute key="manaleechchance" value="100"/>
+		<attribute key="transformDeEquipTo" value="44217"/>
+		<attribute key="showattributes" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="duration" value="10800"/>
+		<attribute key="decayTo" value="44219"/>
+	</item>
+	<item id="44219" article="an" name="arboreal ring">
+	    <attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="healingmagiclevelpoints" value="2"/-->
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="44182" article="an" name="arcanomancer regalia">
+	    <attribute key="slotType" value="head"/>
+		<attribute key="absorbpercentphysical" value="3"/>
+		<attribute key="absorbpercentpoison" value="7"/>
+		<attribute key="magicpoints" value="3"/>
+		<!--attribute key="firemagiclevelpoints" value="1"/-->
+		<attribute key="armor" value="9"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+	<item id="44214" article="a" name="charged arcanomancer sigil">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="transformEquipTo" value="44215" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="44215" article="a" name="charged arcanomancer ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="firemagiclevelpoints" value="1"/-->
+		<!--attribute key="energymagiclevelpoints" value="1"/-->
+		<attribute key="magicpoints" value="2"/>
+		<attribute key="manaleechamount" value="1"/>
+		<attribute key="manaleechchance" value="100"/>
+		<attribute key="transformDeEquipTo" value="44214"/>>
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="duration" value="10800"/>
+		<attribute key="decayTo" value="44216"/>
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="44216" article="an" name="arcanomancer sigil">
+	    <attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<!--attribute key="firemagiclevelpoints" value="1"/-->
+		<!--attribute key="energymagiclevelpoints" value="1"/-->
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="44197" article="a" name="dawnfire pantaloons">
+		<attribute key="slotType" value="legs" />
+		<attribute key="absorbpercentphysical" value="3"/>
+		<attribute key="magicpoints" value="2"/>
+		<attribute key="armor" value="8"/>
+		<attribute key="weight" value="3000"/>
+	</item>
+	<item id="44195" article="a" name="dawnfire sherwani">
+		<attribute key="slotType" value="body" />
+		<attribute key="absorbpercentfire" value="10"/>
+		<attribute key="absorbpercentearth" value="-2"/>
+		<attribute key="magicpoints" value="4"/>
+		<attribute key="armor" value="16"/>
+		<attribute key="weight" value="2800"/>
+	</item>
+	<item id="44192" article="a" name="feverbloom boots">
+		<attribute key="slotType" value="feet" />
+		<attribute key="absorbpercentice" value="7"/>
+		<attribute key="skilldist" value="1"/>
+		<attribute key="speed" value="15"/>
+		<attribute key="armor" value="2"/>
+		<attribute key="weight" value="980"/>
+	</item>
+	<item id="44189" article="a" name="frostflower boots">
+		<attribute key="absorbpercentice" value="5"/>
+		<attribute key="absorbpercentphysical" value="5"/>
+		<attribute key="armor" value="3"/>
+		<attribute key="weight" value="1100"/>
+        <attribute key="slotType" value="feet" />
+	</item>
+	<item id="44198" article="a" name="midnight sarong">
+		<attribute key="slotType" value="legs" />
+		<attribute key="absorbpercentice" value="7"/>
+		<attribute key="magicpoints" value="2"/>
+		<attribute key="armor" value="8"/>
+		<attribute key="weight" value="3100"/>
+	</item>
+	<item id="44196" article="a" name="midnight tunic">
+		<attribute key="slotType" value="body" />
+		<attribute key="absorbpercentphysical" value="3"/>
+		<attribute key="magicpoints" value="4"/>
+		<attribute key="armor" value="16"/>
+		<attribute key="weight" value="2700"/>
+	</item>
+	    <item id="44608" article="a" name="bag with naga eggs">
+		<attribute key="weight" value="5000"/>
+	</item>
+	<item id="44187" article="a" name="naga axe">
+		<attribute key="weaponType" value="axe"/>
+		<attribute key="elementenergy" value="44"/>
+		<attribute key="skillaxe" value="3"/>
+		<attribute key="attack" value="8"/>
+		<attribute key="extradef" value="3"/>
+		<attribute key="defense" value="31"/>
+		<attribute key="weight" value="5500"/>
+	</item>
+	<item id="44188" article="a" name="naga club">
+		<attribute key="weaponType" value="club"/>
+		<attribute key="skillclub" value="3"/>
+		<attribute key="attack" value="52"/>
+		<attribute key="extradef" value="3"/>
+		<attribute key="defense" value="31"/>
+		<attribute key="weight" value="6000"/>
+	</item>
+	<item id="44190" article="a" name="naga crossbow">
+		<attribute key="weaponType" value="distance"/>
+		<attribute key="slotType" value="two-handed"/>
+		<attribute key="ammotype" value="bolt"/>
+		<attribute key="absorbpercentpoison" value="4"/>
+		<attribute key="skilldist" value="2"/>
+		<attribute key="hitchance" value="7"/>
+		<attribute key="range" value="6"/>
+		<attribute key="attack" value="8"/>
+		<attribute key="weight" value="10200"/>
+	</item>
+	<item fromid="39568" toid="39569" article="a" name="naga nest">
+		<attribute key="weight" value="1000"/>
+	  </item>
+	  	<item id="44191" article="a" name="naga quiver">
+		<attribute key="weaponType" value="quiver"/>
+		<attribute key="showattributes" value="1" />
+		<attribute key="absorbpercentice" value="2"/>
+		<attribute key="containersize" value="8"/>
+		<attribute key="weight" value="1900"/>
+	</item>
+	<item id="44194" article="a" name="naga rod">
+		<attribute key="weaponType" value="wand"/>
+		<attribute key="shootType" value="smallice"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="magicpoints" value="2"/>
+		<!--attribute key="icemagiclevelpoints" value="2"/-->
+		<attribute key="range" value="6"/>
+		<attribute key="weight" value="2900"/>
+	</item>
+	<item id="44186" article="a" name="naga sword">
+		<attribute key="weaponType" value="sword"/>
+		<attribute key="elementice" value="44"/>
+		<attribute key="skillsword" value="3"/>
+		<attribute key="attack" value="8"/>
+		<attribute key="extradef" value="3"/>
+		<attribute key="defense" value="31"/>
+		<attribute key="weight" value="5200"/>
+	</item>
+	<item id="44193" article="a" name="naga wand">
+		<attribute key="weaponType" value="wand"/>
+		<attribute key="shootType" value="energy"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<attribute key="magicpoints" value="2"/>
+		<!--attribute key="energymagiclevelpoints" value="2"/-->
+		<attribute key="range" value="6"/>
+		<attribute key="weight" value="2800"/>
+	</item>
+	<item id="44179" article="a" name="spiritthorn helmet">
+		<attribute key="slotType" value="head"/>
+		<attribute key="absorbpercentphysical" value="6"/>
+		<attribute key="absorbpercentenergy" value="10"/>
+		<attribute key="skillsword" value="3"/>
+		<attribute key="skillaxe" value="3"/>
+		<attribute key="skillclub" value="3"/>
+		<!--attribute key="damagereflection" value="13"/-->
+		<attribute key="armor" value="12"/>
+		<attribute key="weight" value="4400"/>
+	</item>
+	<item id="44208" article="a" name="charged spiritthorn ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="transformEquipTo" value="44209" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="95"/>
+	</item>
+	<item id="44209" article="a" name="charged spiritthorn ring">
+		<attribute key="slotType" value="ring"/>
+		<attribute key="absorbpercentphysical" value="8"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<attribute key="skillclub" value="3"/>
+		<attribute key="skillaxe" value="3"/>
+		<attribute key="skillsword" value="3"/>
+		<attribute key="armor" value="2"/>
+		<attribute key="transformDeEquipTo" value="44208"/>>
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+		<attribute key="duration" value="10800"/>
+		<attribute key="decayTo" value="44210"/>
+		<attribute key="weight" value="95"/>
+	</item>
+	<item id="44210" article="a" name="spiritthorn ring">
+		<attribute key="slotType" value="ring"/>	
+		<attribute key="absorbpercentphysical" value="8"/>
+		<attribute key="absorbpercentfire" value="4"/>
+		<attribute key="absorbpercentearth" value="4"/>
+		<attribute key="absorbpercentenergy" value="4"/>
+		<attribute key="absorbpercentice" value="4"/>
+		<attribute key="showattributes" value="1" />
+		<attribute key="weight" value="95"/>
+	</item>
+	<item id="44178" article="a" name="spiritthorn armor">
+		<attribute key="slotType" value="body"/>	
+		<attribute key="absorbpercentphysical" value="13"/>
+		<attribute key="skillsword" value="4"/>
+		<attribute key="skillaxe" value="4"/>
+		<attribute key="skillclub" value="4"/>
+		<!--attribute key="damagereflection" value="19"/-->
+		<attribute key="armor" value="20"/>
+		<attribute key="weight" value="16000"/>
+	</item>
+	<item id="44264" article="an" name="enchanted turtle amulet">
+		<attribute key="slotType" value="necklace" />	
+		<attribute key="weight" value="480"/>
+		<attribute key="transformEquipTo" value="44265" />
+		<attribute key="stopduration" value="1" />
+		<attribute key="showduration" value="1" />
+		<attribute key="showattributes" value="1" />
+	</item>
+	<item id="44265" article="an" name="enchanted turtle amulet">
+		<attribute key="slotType" value="necklace" />
+		<attribute key="absorbpercentphysical" value="7"/>
+		<attribute key="absorbpercentice" value="15"/>
+		<attribute key="skillclub" value="3"/>
+		<attribute key="skillaxe" value="3"/>
+		<attribute key="skillsword" value="3"/>
+		<attribute key="transformDeEquipTo" value="44264"/>>
+		<attribute key="showduration" value="1" />
+		<attribute key="duration" value="7200"/>
+		<attribute key="decayTo" value="44266"/>
+		<attribute key="weight" value="480"/>
+	</item>
+	<item id="44266" article="a" name="turtle amulet">
+		<attribute key="slotType" value="necklace" />
+		<attribute key="weight" value="480"/>
+	</item>
+	<item id="44417" article="a" name="mantosaurus jaw">
+		<attribute key="weight" value="420"/>
+	</item>
+	<item id="43875" article="an" name="asuri talisman">
+		<attribute key="weight" value="450"/>
+	</item>
+	<item id="44611" article="a" name="beautiful ice flowers">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="44176" article="a" name="blessed water">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="44602" article="a" name="canary feather">
+		<attribute key="weight" value="36"/>
+	</item>
+	<item id="44167" article="a" name="celestial chart">
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="44172" article="a" name="coral vow flower">
+		<attribute key="weight" value="400"/>
+	</item>
+	<item id="44429" article="a" name="cure for sick beavers">
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="43676" article="a" name="flamingo feather">
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="44370" name="flask of mango honey juice">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="44369" name="flask of mango juice">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="44271" article="a" name="foam stalker spume">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="44604" article="a" name="gemmed lotus brooch">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="44272" name="glass lens">
+		<attribute key="weight" value="95"/>
+	</item>
+	<item id="39531" article="a" name="golden hand mirror">
+		<attribute key="description" value="It has an ornate frame"/>
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="44610" article="a" name="marvelous ice flowers">
+		<attribute key="weight" value="320"/>
+	</item>
+	<item id="44163" article="a" name="moon mint">
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="44165" article="a" name="moonshine pearl">
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="24631" article="a" name="peacock feather fan" plural="peacock feather fans">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="44612" article="a" name="pretty ice flower">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="44613" article="a" name="puny ice flower">
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="43874" article="a" name="silver and a golden hand">
+		<attribute key="weight" value="300"/>
+	</item>
+	<item id="35428" article="a" name="silver hand mirror">
+		<attribute key="description" value="It has an ornate frame"/>
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="44273" article="an" name="empty bucket" editorsuffix="Timira">
+		<attribute key="weight" value="2000"/>
+	</item>
+	<item id="44274" article="a" name="bucket full of water" editorsuffix="Timira">
+		<attribute key="weight" value="2500"/>
+	</item>
+	<item id="44275" article="a" name="bucket full of sparkles" editorsuffix="Timira">
+		<attribute key="weight" value="2500"/>
+	</item>
+	<item id="44567" article="a" name="candy lure">
+		<attribute key="description" value="It is slowly melting"/>
+		<attribute key="decayTo" value="39195" />
+		<attribute key="duration" value="7200" />
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="27900" article="a" name="tattered swan feather">
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="44609" article="an" name="icicle chisel">
+		<attribute key="weight" value="320"/>
+	</item>
+	<item id="44168" article="a" name="burning splint">
+		<attribute key="weight" value="45"/>
+	</item>
+	<item id="44175" article="a" name="splint">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="43688" article="a" name="bronze hand">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="44428" article="a" name="coral powder">
+		<attribute key="weight" value="10"/>
+	</item>
+	<item fromid="281" toid="282" article="a" name="giant shimmering pearl">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="43738" article="a" name="podium of vigour"/>
+	<item id="44371" article="a" name="butterfly conservation kit">
+		<attribute key="description" value="It contains a damselfly" />
+		<attribute key="weight" value="800"/>
+	  </item>
+	  	<item id="43965" article="a" name="handwritten message">
+		<attribute key="description" value="&quot;Myladies, I was so bold as to take this little treasure for myself. Very pleasing to the eye, indeed. Take this as a warning and stay clear of my territory. Yours sincerely, Sir Valorcrest&quot;" />
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="44577" article="a" name="primal bag">
+		<attribute key="description" value="A small gift from the gnomes of gnomprona"/>
+		<attribute key="weight" value="16000"/>
+	</item>
+	<item id="44414" article="a" name="prehemoth claw">
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="44261" article="a" name="charged flame">
+		<attribute key="description" value="You should follow gnomish advice and use it on green crystals" />
+		<attribute key="weight" value="85"/>
+	</item>
+	<item id="44745" article="a" name="lilypad backpack">
+		<attribute key="containersize" value="26"/>
+		<attribute key="weight" value="1500"/>
+		<attribute key="slotType" value="backpack" />
+	</item>
+	<item id="44746" article="a" name="naga basin">
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="44712" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="44713" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="43005" article="a" name="ramp"/>
+	<item id="43006" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="43007" article="a" name="ramp"/>
+	<item id="43008" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="43009" article="a" name="ramp"/>
+	<item id="43010" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="43011" article="a" name="ramp"/>
+	<item id="43012" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="39101" article="a" name="ramp"/>
+	<item id="39102" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="39103" article="a" name="ramp"/>
+	<item id="39104" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="39105" article="a" name="ramp"/>
+	<item id="39106" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="39099" article="a" name="ramp"/>
+	<item id="39100" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="36821" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="35911" article="a" name="ramp"/>
+	<item id="35912" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="35913" article="a" name="ramp"/>
+	<item id="35914" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="35915" article="a" name="ramp"/>
+	<item id="35916" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="35917" article="a" name="ramp"/>
+	<item id="35918" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="35888" article="a" name="ramp"/>
+	<item id="35889" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="35890" article="a" name="ramp"/>
+	<item id="35891" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="35892" article="a" name="ramp"/>
+	<item id="35893" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="35894" article="a" name="ramp"/>
+	<item id="35895" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="35859" article="a" name="ramp"/>
+	<item id="35860" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="35861" article="a" name="ramp"/>
+	<item id="35862" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="35863" article="a" name="ramp"/>
+	<item id="35864" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="35865" article="a" name="ramp"/>
+	<item id="35866" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="35830" article="a" name="ramp"/>
+	<item id="35831" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="35832" article="a" name="ramp"/>
+	<item id="35833" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="35834" article="a" name="ramp"/>
+	<item id="35835" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="35836" article="a" name="ramp"/>
+	<item id="35837" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="33559" article="a" name="ramp"/>
+	<item id="33560" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="33561" article="a" name="ramp"/>
+	<item id="33562" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="33563" article="a" name="ramp"/>
+	<item id="33564" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="33565" article="a" name="ramp"/>
+	<item id="33566" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="33567" article="a" name="ramp"/>
+	<item id="33568" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="33569" article="a" name="ramp"/>
+	<item id="33570" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="33571" article="a" name="ramp"/>
+	<item id="33572" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="33573" article="a" name="ramp"/>
+	<item id="33574" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item id="33475" article="a" name="ramp"/>
+	<item id="33476" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="33477" article="a" name="ramp"/>
+	<item id="33478" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="33479" article="a" name="ramp"/>
+	<item id="33480" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="33481" article="a" name="ramp"/>
+	<item id="33482" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="33412" article="a" name="ramp"/>
+	<item id="33413" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="33414" article="a" name="ramp"/>
+	<item id="33415" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="33416" article="a" name="ramp"/>
+	<item id="33417" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="33418" article="a" name="ramp"/>
+	<item id="33419" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="31764" article="a" name="ramp"/>
+	<item id="31765" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="31766" article="a" name="ramp"/>
+	<item id="31767" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="31768" article="a" name="ramp"/>
+	<item id="31769" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="31770" article="a" name="ramp"/>
+	<item id="31771" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+	<item fromid="29116" toid="29135" article="a" name="frozen wall"/>
+	<item id="31792" article="a" name="ramp"/>
+	<item id="31793" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="31794" article="a" name="ramp"/>
+	<item id="31795" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="31796" article="a" name="ramp"/>
+	<item id="31797" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="31798" article="a" name="ramp"/>
+	<item id="31799" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="31012" article="a" name="ramp"/>
+	<item id="31013" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="31014" article="a" name="ramp"/>
+	<item id="31015" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="31016" article="a" name="ramp"/>
+	<item id="31017" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="31019" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="30284" article="a" name="ramp">
+		<attribute key="floorchange" value="down"/>
+	</item>
+	<item id="30285" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+		<item id="27671" article="a" name="ramp"/>
+	<item id="27672" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="27673" article="a" name="ramp"/>
+	<item id="27674" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="27675" article="a" name="ramp"/>
+	<item id="27676" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="27677" article="a" name="ramp"/>
+	<item id="27678" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="27462" article="a" name="old ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="27463" article="a" name="old ramp"/>
+	<item id="27464" article="a" name="old ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="27465" article="a" name="old ramp"/>
+	<item id="27466" article="a" name="old ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="27467" article="a" name="old ramp"/>
+	<item id="27468" article="a" name="old ramp">
+		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="26513" article="a" name="ramp"/>
+	<item id="26514" article="a" name="ramp">
+		<attribute key="floorchange" value="north"/>
+	</item>
+	<item id="26515" article="a" name="ramp"/>
+	<item id="26516" article="a" name="ramp">
+		<attribute key="floorchange" value="west"/>
+	</item>
+	<item id="26517" article="a" name="ramp"/>
+	<item id="26518" article="a" name="ramp">
+		<attribute key="floorchange" value="east"/>
+	</item>
+	<item id="26519" article="a" name="ramp"/>
+	<item id="26520" article="a" name="ramp">
+		<attribute key="floorchange" value="south"/>
 	</item>
 </items>
