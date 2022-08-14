@@ -1,9 +1,14 @@
 local itemRepairConfig = {
 	[50101] = {itemId = 32084, newItemId = 32998, requiredItemId = 25172, requiredItemCount = 2}, -- sleep shawl
-	[50102] = {itemId = 32085, newItemId = 33001, requiredItemId = 25172, requiredItemCount = 2}, -- pendulet
+	[50102] = {itemId = 32085, newItemId = 33000, requiredItemId = 25172, requiredItemCount = 2}, -- pendulet
 	[50103] = {itemId = 33057, newItemId = 33059, requiredItemId = 25172, requiredItemCount = 2}, -- theugly
-	[50104] = {itemId = 35277, newItemId = 35292, requiredItemId = 25172, requiredItemCount = 2}, -- ring of souls
-	[50105] = {itemId = 34213, newItemId = 34277, requiredItemId = 25172, requiredItemCount = 2}, -- blister ring
+	[50104] = {itemId = 35292, newItemId = 35277, requiredItemId = 25172, requiredItemCount = 2}, -- ring of souls
+	[50105] = {itemId = 34277, newItemId = 34213, requiredItemId = 25172, requiredItemCount = 2}, -- blister ring
+	[50106] = {itemId = 44266, newItemId = 44264, requiredItemId = 25172, requiredItemCount = 2}, -- turtle amulet
+	[50107] = {itemId = 44210, newItemId = 44208, requiredItemId = 25172, requiredItemCount = 5}, -- spiritthorn ring
+	[50108] = {itemId = 44213, newItemId = 44211, requiredItemId = 25172, requiredItemCount = 5}, --  alicorn ring
+	[50109] = {itemId = 44219, newItemId = 44217, requiredItemId = 25172, requiredItemCount = 5}, -- arboreal ring
+	[50110] = {itemId = 44216, newItemId = 44214, requiredItemId = 25172, requiredItemCount = 5}, -- arcanomancer sigil
 }
 
 local leverIds = {1945, 1946}
