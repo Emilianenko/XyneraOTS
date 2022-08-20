@@ -41659,7 +41659,7 @@
 		<attribute key="armor" value="16"/>
 		<attribute key="weight" value="2700"/>
 	</item>
-    <item id="44608" article="a" name="bag with naga eggs">
+	<item id="44608" article="a" name="bag with naga eggs">
 		<attribute key="weight" value="5000"/>
 	</item>
 	<item id="44187" article="a" name="naga axe">
@@ -42214,6 +42214,1306 @@
 	<item id="26519" article="a" name="ramp"/>
 	<item id="26520" article="a" name="ramp">
 		<attribute key="floorchange" value="south"/>
+	</item>
+		<item id="27042" article="a" name="rhino horn carving">
+		<attribute key="weight" value="600"/>
+	</item>
+		<item id="27041" article="a" name="cracked alabaster vase">
+		<attribute key="weight" value="450"/>
+	</item>
+		<item id="27040" article="an" name="ancient belt buckle" plural="ancient belt buckles">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="27043" article="a" name="tarnished rhino figurine" plural="tarnished rhino figurines">
+		<attribute key="weight" value="750"/>
+	</item>
+		<item id="27039" article="a" name="cave turnip" plural="cave turnips">
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="27046" article="an" name="ancient coin" plural="ancient coins">
+		<attribute key="description" value="The face design portrays the sun god Suon"/>
+		<attribute key="weight" value="30"/>
+	</item>
+		<item id="27625" article="an" name="ancient watch">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27632" article="an" name="astral glyph">
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="27616" article="an" name="astral shaper rune">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="26884" article="an" name="astral source">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27631" article="an" name="astral source">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27037" article="a" name="beetle carapace" plural="beetle carapaces">
+		<attribute key="weight" value="3500"/>
+	</item>
+		<item id="27036" article="a" name="bone toothpick">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="27038" name="bug meat" plural="bug meat">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="1100"/>
+	</item>
+		<item id="27634" name="coal eyes">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27050" article="an" name="orclops santa">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27047" article="a" name="coral brooch">
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="27623" article="a" name="dragon crown">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27622" article="a" name="forbidden fruit">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27627" article="a" name="forbidden tome">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27626" article="a" name="frozen time">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="26642" article="a" name="heavy old tome">
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="27048" article="a" name="gemmed figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27633" article="a" name="glowing carrot">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27624" article="a" name="golden talon">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27628" article="a" name="key to knowledge">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27618" article="a" name="prismatic quartz">
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="26388" article="a" name="painting of a girl">
+		<attribute key="description" value="She has long dark hair and might be about seven years old"/>
+		<attribute key="weight" value="330"/>
+	</item>
+		<item id="27044" article="a" name="rhino hide">
+		<attribute key="weight" value="800"/>
+	</item>
+		<item id="27045" article="a" name="rhino horn">
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="26387" article="an" name="old note">
+		<attribute key="description" value="&quot;They'll come and kill us all. I have to protect the key to the secret door at all costs. If I just could find my only daughter's portrait ... I lost it somewhere down here. I won't leave without it&quot;"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="27629" article="a" name="shadow mask">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27630" article="a" name="shadow paint">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27621" article="a" name="thorn seed">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="27617" article="a" name="tiger eye" plural="tiger eyes">
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="27715" article="an" name="inert astral shaper rune">
+		<attribute key="description" value="The rune has become inert and will need some hours to regain full strength"/>
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="26390" article="a" name="ghostsilver lantern">
+		<attribute key="description" value="It is made of filigree silver braces and delicate indigo glass. But it is dark at the moment"/>
+		<attribute key="weight" value="600"/>
+	</item>
+		<item id="26394" article="a" name="ghostsilver lantern">
+		<attribute key="description" value="It is made of filigree silver braces and delicate indigo glass. It glows with an otherworldly light"/>
+		<attribute key="weight" value="600"/>
+	</item>
+		<item id="26466" article="a" name="phial of fresh water">
+		<attribute key="description" value="The phial contains fresh, clean water. It also looks like it sparkles. The flask is so thin and finely crated that the water seems to pour out little by little"/>
+		<attribute key="weight" value="300"/>
+	</item>
+		<item id="26468" article="an" name="empty birdcage">
+		<attribute key="description" value="This birdcage is empty. It seems uniquely prepared to host a specific species of birds"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="26469" article="an" name="occupied birdcage">
+		<attribute key="description" value="This birdcage is currently the home of a confused parrot"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="26467" article="a" name="reinvigorating seeds">
+		<attribute key="description" value="A small bag full of healthy seeds"/>
+		<attribute key="weight" value="500"/>
+	</item>
+		<item id="27620" article="an" name="imbuing crystal">
+		<attribute key="description" value="This is a Shaper crystal used by their ancient imbuing shrines. It has been separated from its shrine. Without a crystal, it cannot focus any energy"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="26389" article="an" name="old silver key">
+		<attribute key="description" value="It is beautifully ornate but heavily tarnished"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item fromid="24954" toid="24959" article="a" name="part of a rune">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="27594" article="a" name="dragon tongue">
+		<attribute key="weight" value="550"/>
+	</item>
+	<item id="26385" article="a" name="lost time">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="27960" article="a" name="pink fluid">
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="28358" article="a" name="little bowl of myrrh">
+		<attribute key="description" value="It smells like mummy's spirit"/>
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="28357" article="a" name="single human eye">
+		<attribute key="description" value="You see an oculus gift. For two dimensions only"/>
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="28345" article="a" name="golden brush">
+		<attribute key="description" value="The owner of this golden brush can be proud of supporting arts"/>
+		<attribute key="weight" value="1240"/>
+	</item>
+		<item id="27962" article="a" name="loupe">
+		<attribute key="weight" value="1400"/>
+	</item>
+		<item id="27951" article="a" name="fae talisman">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="27894" article="a" name="fur of a wolf whelp">
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="27898" article="a" name="notes of a poacher">
+		<attribute key="description" value="Hints to other wolf whelps"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="27891" article="a" name="book with old legends">
+		<attribute key="description" value="It contains many stories and myths about the woods and the forest animals. But you don't find any story about a white deer"/>
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item id="27895" article="a" name="book with old legends">
+		<attribute key="description" value="It contains many stories and myths about the Tibian woods and the forest animals - recently also a story about how it brings ill luck to kill a white deer"/>
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item id="28837" article="a" name="swan feather" plural="swan feathers">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="28399" article="a" name="bed of nails">
+		<attribute key="description" value="Not for everyone"/>
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="28402" article="a" name="broken compass">
+		<attribute key="description" value="This compass has seen better times if it ever worked at all"/>
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="28352" article="a" name="colourful snail shell">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="170"/>
+	</item>
+		<item id="28351" article="a" name="dandelion seeds">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="130"/>
+	</item>
+		<item id="28350" article="a" name="fairy wings">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="28353" article="a" name="green bandage">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="28401" article="a" name="guidebook">
+		<attribute key="description" value="Someone's guidebook. It looks rather used and seems to have been read many times"/>
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="28349" article="a" name="shimmering beetles">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="170"/>
+	</item>
+		<item id="28347" name="wild flowers" plural="wild flowers">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="27959" article="a" name="milk tooth">
+		<attribute key="weight" value="300"/>
+	</item>
+		<item id="27958" article="a" name="present">
+		<attribute key="containersize" value="5"/>
+		<attribute key="weight" value="600"/>
+	</item>
+		<item id="28398" article="a" name="fig leaf">
+		<attribute key="description" value="For vital parts"/>
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="28348" name="fresh fruit" plural="fresh fruits">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="28393" article="a" name="rainbow quartz" plural="rainbow quartzes">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="28438" article="a" name="magical music notes">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="26641" article="an" name="old tome">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="27603" article="an" name="old map">
+		<attribute key="description" value="Supposedly it shows the way to a hidden fairy treasure"/>
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="27952" article="a" name="rubbish amulet">
+		<attribute key="description" value="To some it is rubbish, others see it as the most magnificent necklace in the world"/>
+		<attribute key="weight" value="509"/>
+	</item>
+	<item id="27953" article="a" name="glowing rubbish amulet">
+		<attribute key="description" value="To some it is rubbish, others see it as the most magnificent necklace in the world. This one glows violently"/>
+		<attribute key="weight" value="509"/>
+	</item>
+		<item id="28430" article="a" name="guilt">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item fromid="24943" toid="24946" article="a" name="part of an old map">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="28400" article="a" name="torn shirt">
+		<attribute key="description" value="Someone's last shroud"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="27891" article="a" name="book with old legends">
+		<attribute key="description" value="It contains many stories and myths about the woods and the forest animals. But you don't find any story about a white deer"/>
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item id="27895" article="a" name="book with old legends">
+		<attribute key="description" value="It contains many stories and myths about the Tibian woods and the forest animals - recently also a story about how it brings ill luck to kill a white deer"/>
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item fromid="22151" toid="22152" name="Cateroide's doll">
+		<attribute key="description" value="A rare doll that only worthy warriors can touch! Awarded by Cateroide.com.br"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="28635" article="a" name="draken doll">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+	<item id="27953" article="a" name="glowing rubbish amulet">
+		<attribute key="description" value="To some it is rubbish, others see it as the most magnificent necklace in the world. This one glows violently"/>
+		<attribute key="weight" value="509"/>
+	</item>
+		<item id="28844" article="an" name="iron crown">
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="28845" article="a" name="incandescent crown">
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="28846" article="a" name="reflecting crown">
+		<attribute key="weight" value="500"/>
+	</item>
+		<item id="28843" article="a" name="leaf crown">
+		<attribute key="weight" value="500"/>
+	</item>
+		<item id="28842" article="a" name="mystery box">
+		<attribute key="description" value="There is something inside this box. A light scent of magic envelops it"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item fromid="26085" toid="26086" article="a" name="Goromaphone">
+		<attribute key="description" value="There's a small record that seemingly has an endless aura of sweet tunes playing through its crude speaker, however, something about it seems off. It's the official audio device of RadioGoroma.com.br"/>
+		<attribute key="weight" value="6659"/>
+	</item>
+	<item id="28730" article="a" name="blessed acorn">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="28847" article="a" name="your magical tree">
+		<attribute key="description" value="This certainly is no ordinary tree, yet it looks exactly like one and smells invigoratingly fresh."/>
+	</item>
+	<!-- druid -->
+	<item id="28848" article="a" name="your magical tree">
+		<attribute key="description" value="This certainly is no ordinary tree, yet it looks exactly like one and smells invigoratingly fresh."/>
+	</item>
+	<!-- knight -->
+	<item id="28849" article="a" name="your magical tree">
+		<attribute key="description" value="This certainly is no ordinary tree, yet it looks exactly like one and smells invigoratingly fresh."/>
+	</item>
+	<!-- paladin -->
+	<item id="28850" article="a" name="your magical tree">
+		<attribute key="description" value="This certainly is no ordinary tree, yet it looks exactly like one and smells invigoratingly fresh."/>
+	</item>
+	<!-- sorcerer -->
+		<item id="27900" article="a" name="tattered swan feather">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="28374" article="a" name="temple teleport scroll">
+		<attribute key="description" value="You bought this item in the Store or gained it as a daily reward. This item cannot be traded."/>
+		<attribute key="charges" value="1"/>
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="29926" article="a" name="metal file">
+		<attribute key="description" value="This file is useful for treating metals"/>
+		<attribute key="weight" value="509"/>
+	</item>
+		<item fromid="27261" toid="27262" article="a" name="rusted key fragment">
+		<attribute key="description" value="The key fragment is quite rusted. Looks like it has been an ornate key once"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item fromid="27263" toid="27264" article="a" name="polished key fragment">
+		<attribute key="description" value="This key fragment is polished and glares"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item fromid="27265" toid="27266" article="a" name="glowing key fragment">
+		<attribute key="description" value="The key fragment is still glowing"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item fromid="27267" toid="27268" article="a" name="forged glowing key">
+		<attribute key="description" value="The key is forged, still glowing"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="29925" article="a" name="forged key">
+		<attribute key="description" value="The key is ornate and nearly perfectly forged"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="29957" article="a" name="rare earth">
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="30262" article="a" name="stonerefiner's skull">
+		<attribute key="weight" value="300"/>
+	</item>
+		<item id="29964" article="a" name="gnome chart">
+		<attribute key="description" value="Used by gnomes to map out details of locations and structures"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="30154" name="gnomish pesticides">
+		<attribute key="description" value="Gnomes use devices such as this to battle various insect pests"/>
+		<attribute key="weight" value="500"/>
+	</item>
+		<item id="30310" article="a" name="surprise jar">
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="30254" name="diremaw legs">
+		<attribute key="weight" value="229"/>
+	</item>
+		<item id="30253" name="diremaw brainpan">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="30250" name="deepworm jaws">
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="29963" article="a" name="gnome trignometre">
+		<attribute key="description" value="The device measures heat by absorbing it like a sponge. It changes its smell under certain conditions"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30309" article="a" name="suspicious device">
+		<attribute key="description" value="This thing looks like it was carried around by someone for a long time"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="30165" article="a" name="heavy crystal fragment">
+		<attribute key="description" value="A heavy fragment harvested from a large tree of crystals. It's fragile but should last about a day"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="30369" article="a" name="heavy crystal fragment">
+		<attribute key="description" value="A heavy fragment harvested from a large tree of crystals. It's fragile but should last about a day"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="30257" name="cave devourer legs">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="30252" article="a" name="tunnel tyrant shell">
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="30251" name="tunnel tyrant head">
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="30260" article="a" name="chasm spawn tail">
+		<attribute key="weight" value="160"/>
+	</item>
+		<item id="30259" article="a" name="chasm spawn abdomen">
+		<attribute key="weight" value="270"/>
+	</item>
+		<item id="30258" article="a" name="chasm spawn head">
+		<attribute key="weight" value="160"/>
+	</item>
+		<item id="30119" article="a" name="werefox tail">
+		<attribute key="weight" value="140"/>
+	</item>
+		<item id="30118" article="a" name="fox paw">
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="30256" article="a" name="cave devourer maw">
+		<attribute key="weight" value="190"/>
+	</item>
+		<item id="30255" name="cave devourer eyes">
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="30116" name="shadow bite berries">
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="30101" name="silver nuggets">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="30100" name="gold nuggets">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="30102" name="gold dust">
+		<attribute key="weight" value="2000"/>
+	</item>
+	<item id="30103" name="silver dust">
+		<attribute key="weight" value="1700"/>
+	</item>
+		<item id="30121" article="a" name="crimson nightshade blossoms">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="30117" article="a" name="nightshade distillate">
+		<attribute key="weight" value="300"/>
+	</item>
+		<item id="30155" name="golden symbol of Suon">
+		<attribute key="description" value="The aureola represents Suon the Benevolent Sun, one of the Tibian sun gods"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="30120" article="a" name="stone tablet with ley lines">
+		<attribute key="weight" value="4000"/>
+	</item>
+		<item id="30026" article="a" name="hastily scribbled note">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30027" article="a" name="piece of parchment">
+		<attribute key="description" value="Underneath the moon you read: &quot;The alchemical symbol for silver.&quot;"/>
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="30028" article="a" name="piece of parchment">
+		<attribute key="description" value="Underneath the circle with the dot inside you read: &quot;The alchemical symbol for gold.&quot;"/>
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="30099" article="a" name="piece of parchment">
+		<attribute key="description" value="Underneath the plant drawing you read: &quot;Shadow Bite Plant, grows only subterranean, underneath Edron.&quot;"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30248" name="deepworm spikes">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="30249" name="deepworm spike roots">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="30247" article="a" name="santa fox">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="30025" article="a" name="half-digested stones">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30263" name="withered pauldrons">
+		<attribute key="weight" value="140"/>
+	</item>
+		<item id="30264" article="a" name="withered scalp">
+		<attribute key="weight" value="170"/>
+	</item>
+		<item id="30261" article="a" name="candle stump">
+		<attribute key="description" value="It is attached to a long leather strap with a tinged tin clasp"/>
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="30283" article="a" name="huge spiky snail shell">
+		<attribute key="description" value="The spikey shell of the Count of the Core"/>
+		<attribute key="weight" value="380"/>
+	</item>
+		<item id="30282" article="a" name="chitinous mouth">
+		<attribute key="description" value="The mouth of the Count of the Core"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="30281" article="a" name="harpoon of a giant snail">
+		<attribute key="description" value="The harpoon of the Count of the Core is hollow and contains lethal poison"/>
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="30274" article="a" name="pristine worm head">
+		<attribute key="description" value="One of the heads of the Duke of the Depths"/>
+		<attribute key="weight" value="190"/>
+	</item>
+		<item id="30275" article="a" name="giant tentacle">
+		<attribute key="description" value="A tentacle of the Duke of the Depths"/>
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="30276" article="a" name="damaged worm head">
+		<attribute key="description" value="One of the heads of the Duke of the Depths"/>
+		<attribute key="weight" value="160"/>
+	</item>
+		<item id="30313" article="a" name="crude wood planks">
+		<attribute key="description" value="They look like you could use them to enhance some kind of makeshift armour"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30311" article="a" name="plan for a makeshift armour">
+		<attribute key="description" value="With this plan you should be able to knock up an improvised armour"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="30312" article="a" name="tinged pot">
+		<attribute key="description" value="It looks like you could use it as a makeshift helmet"/>
+		<attribute key="weight" value="3500"/>
+	</item>
+		<item id="30280" name="longing eyes">
+		<attribute key="description" value="The longing eyes of the Baron from Below"/>
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="30279" article="a" name="slimy leg">
+		<attribute key="description" value="A slimy leg of the Baron from Below"/>
+		<attribute key="weight" value="160"/>
+	</item>
+	<item id="30278" article="a" name="chitinous mouth">
+		<attribute key="description" value="The chitinous mouth of the Baron from Below"/>
+		<attribute key="weight" value="240"/>
+	</item>
+	<item id="30277" article="a" name="huge shell">
+		<attribute key="description" value="The shell of the Baron from Below"/>
+		<attribute key="weight" value="320"/>
+	</item>
+		<item fromid="27704" toid="27705" article="a" name="werefox trophy">
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="30362" article="a" name="werefox trophy">
+		<attribute key="weight" value="500"/>
+	</item>
+		<item id="34288" article="the" name="missing piece of the cube">
+		<attribute key="description" value="It's black and it's missing"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="30589" article="an" name="ominous book">
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="1500"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="30588" article="a" name="sinister book">
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="1500"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="30590" article="a" name="knowledgeable book">
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="1500"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="31144" article="a" name="parchment of dark knowledge">
+		<attribute key="description" value="Its power seems to seek a book to attach to"/>
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="31552" article="a" name="golden falcon">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="31550" article="an" name="old radio">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="4015"/>
+	</item>
+		<item id="31553" article="an" name="assassin doll">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="2504"/>
+	</item>
+		<item id="31363" article="a" name="hawser">
+		<attribute key="weight" value="600"/>
+	</item>
+		<item id="31479" article="a" name="falcon crest">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="31224" article="an" name="inkwell">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="31564" article="a" name="secret map">
+		<attribute key="description" value="Several spots on it are marked with the letter Z"/>
+		<attribute key="weight" value="830"/>
+	</item>
+		<item id="30524" article="a" name="yellow energy ball">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="31474" article="a" name="parchment of interest">
+		<attribute key="description" value="Once there was an extraordinary place where the magic entities lived peacefully and in harmony. It was a stronghold of knowledge"/>
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="30503" article="a" name="bony rod">
+		<attribute key="description" value="There is an empty bracket on its top"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="31364" article="a" name="bony rod">
+		<attribute key="description" value="It has a glowing fire stone on its top"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="31365" article="a" name="ruby fire stone">
+		<attribute key="description" value="It looks quite fragile"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="30525" article="a" name="red energy ball">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="30523" article="a" name="green energy ball">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="31191" article="a" name="ritual figurine">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="31193" article="a" name="ritual sword">
+		<attribute key="description" value="It is far too fragile to use it in a real battle"/>
+		<attribute key="weight" value="900"/>
+	</item>
+		<item id="31194" article="a" name="ritual stone tablet">
+		<attribute key="description" value="&quot;With courage and foresight every challenge can be mastered!&quot;"/>
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="31147" article="a" name="piece of ebony">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="31145" article="a" name="skull">
+		<attribute key="weight" value="1900"/>
+	</item>
+		<item id="31192" article="an" name="exultant ritual figurine">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="31133" article="an" name="eye key">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31171" article="a" name="scribbled notes">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31174" article="an" name="old letter">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="31146" article="a" name="strand of hair">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31132" article="a" name="lotus key">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31139" article="a" name="torn book">
+		<attribute key="description" value="This chalk is very fine, the wind is already carrying it away."/>
+		<attribute key="weight" value="1100"/>
+	</item>
+		<item id="31150" article="a" name="silver chimes">
+		<attribute key="weight" value="280"/>
+	</item>
+		<item id="31478" name="damaged armor plates">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="31477" article="a" name="patch of fine cloth">
+		<attribute key="description" value="A patch of fine cloth in the colours of the Order of the Falcon"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="31447" article="a" name="library ticket">
+		<attribute key="description" value="The initials are beautifully decorated and it is sealed with red wax"/>
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="31480" name="grant of arms">
+		<attribute key="description" value="Letter from the Order of the Falcon conferring on a person and his or her descendants to bear the Falcon coat of arms"/>
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="31226" article="a" name="glowing rune">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="31449" article="an" name="epaulette">
+		<attribute key="description" value="It looks like you could combine it with a robe"/>
+		<attribute key="weight" value="3500"/>
+	</item>
+		<item id="31521" article="a" name="the spatial warp almanac">
+		<attribute key="description" value="The book crumbles to dust as soon as you reach for it"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="31448" article="a" name="sturdy book">
+		<attribute key="description" value="It looks like you could use it as a kind of protection"/>
+		<attribute key="weight" value="3500"/>
+	</item>
+		<item id="31222" article="a" name="silken bookmark">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31306" article="a" name="sealed scroll">
+		<attribute key="description" value="It is sealed with the symbol of Zathroth"/>
+		<attribute key="weight" value="110"/>
+	</item>
+		<item id="31223" article="a" name="quill">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="31228" article="an" name="ornate tome">
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="3997"/>
+		<attribute key="weight" value="1500"/>
+	</item>
+		<item id="31225" article="a" name="book page">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31151" article="a" name="perfume flacon">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="30530" article="a" name="sample of monster blood">
+		<attribute key="description" value="The blood in this test tube is of a very deep ruby red"/>
+		<attribute key="weight" value="85"/>
+	</item>
+		<item id="31511" article="a" name="can of grease">
+		<attribute key="description" value="Ideal to grease large mechanisms. The can is leaky"/>
+		<attribute key="weight" value="1900"/>
+	</item>
+		<item id="31119" article="a" name="can of grease">
+		<attribute key="description" value="Ideal to grease large mechanisms. The can is leaky"/>
+		<attribute key="weight" value="1900"/>
+	</item>
+		<item id="31117" article="a" name="page from a mystic book">
+		<attribute key="description" value="A page from an extremely old book. It somehow feels very heavy, as if it was still part of the original book it was torn out of"/>
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="31551" article="a" name="bookworm doll">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="1900"/>
+	</item>
+		<item id="32802" article="a" name="elven parchment">
+		<attribute key="description" value="Strange symbols hard to decrypt. You wonder if one of the symbols looks like a foreign and mysterious creature."/>
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="32788" article="a" name="dream talisman">
+		<attribute key="description" value="This beautiful amulet is half sun and half snowflake"/>
+		<attribute key="weight" value="1200"/>
+	</item>
+		<item id="32647" article="an" name="anatomy book">
+		<attribute key="description" value="It describes the physiology of different humanoid races"/>
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item id="32599" name="Alptramun's toothbrush">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32714" article="an" name="ice flower">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="32602" article="a" name="beast's nightmare-cushion">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32738" article="a" name="blue ectoplasm">
+		<attribute key="description" value="The stuff nightmares are made of - literally"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32001" article="a" name="blue glass plate">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="31965" article="a" name="bucket full of ectoplasm">
+		<attribute key="description" value="This bucket is filled to the brim with ectoplasm. It is very leaky"/>
+		<attribute key="weight" value="2600"/>
+	</item>
+		<item id="31964" article="a" name="bucket with ectoplasm">
+		<attribute key="description" value="This bucket contains a lot of ectoplasm. It is very leaky"/>
+		<attribute key="weight" value="2400"/>
+	</item>
+		<item id="31963" article="a" name="bucket with some ectoplasm">
+		<attribute key="description" value="This bucket contains some samples of ectoplasm. It is very leaky"/>
+		<attribute key="weight" value="2200"/>
+	</item>
+		<item id="31947" article="a" name="chargeable compass">
+		<attribute key="description" value="This compass has been repaired. It can be charged anyways"/>
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="32665" article="a" name="colourful mushroom">
+		<attribute key="description" value="It smells of liquorice, raspberries, pepper and fish"/>
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="32711" article="a" name="crunor idol">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="32839" article="a" name="Crunor's heart">
+		<attribute key="description" value="It was frozen deep in the caverns of Folda. A certain warmth and pulse emit from inside."/>
+		<attribute key="weight" value="700"/>
+	</item>
+	<item id="32840" article="a" name="Crunor's heart">
+		<attribute key="description" value="It was frozen deep in the caverns of Folda. A certain warmth and pulse emit from inside."/>
+		<attribute key="duration" value="300"/>
+		<attribute key="decayTo" value="32839"/>
+		<attribute key="weight" value="700"/>
+	</item>
+		<item id="32709" article="a" name="dragon figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="32651" article="a" name="sun fruit">
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="32661" article="a" name="dream essence egg">
+		<attribute key="description" value="Maybe the magical dream bird lays such eggs"/>
+		<attribute key="weight" value="280"/>
+	</item>
+		<item id="32717" article="a" name="giant sapphire">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="32716" article="a" name="giant emerald">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="32715" article="a" name="giant ruby">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="32739" article="a" name="green ectoplasm">
+		<attribute key="description" value="The stuff nightmares are made of - literally"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="32002" article="a" name="green glass plate">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="32836" article="a" name="hexagonal ruby">
+		<attribute key="weight" value="125"/>
+	</item>
+	<item id="32600" name="Izcandar's snow globe">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32601" name="Izcandar's sundial">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32650" article="a" name="magical paint">
+		<attribute key="weight" value="550"/>
+	</item>
+		<item id="32744" article="a" name="Malofur's lunchbox">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32598" article="a" name="Maxxenius head">
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="32644" article="a" name="minotaur skull">
+		<attribute key="weight" value="2500"/>
+	</item>
+	<item id="32645" article="an" name="orc skull">
+		<attribute key="weight" value="2180"/>
+	</item>
+		<item id="32603" article="a" name="nightmare beast santa">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="32648" article="an" name="old lock">
+		<attribute key="description" value="It is engraved with seven key symbols"/>
+		<attribute key="weight" value="2500"/>
+	</item>
+		<item id="32712" article="an" name="ornate locket">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="32743" article="a" name="Plagueroot offshoot">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="32004" article="a" name="poison gland">
+		<attribute key="description" value="This is from lucifuga aranea"/>
+		<attribute key="weight" value="33"/>
+	</item>
+		<item id="32825" article="a" name="pomegranate">
+		<attribute key="description" value="It looks like you could adorn a staff with it"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32827" article="a" name="purple tendril lantern">
+		<attribute key="description" value="It is made of leaves and seems to be irresistible to moths and other insects"/>
+		<attribute key="weight" value="919"/>
+	</item>
+	<item id="32861" article="a" name="red ectoplasm">
+		<attribute key="description" value="The stuff nightmares are made of - literally"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32740" article="a" name="red ectoplasm">
+		<attribute key="description" value="The stuff nightmares are made of - literally"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32649" article="a" name="rosebush">
+		<attribute key="weight" value="1300"/>
+	</item>
+		<item id="32660" article="a" name="sapphire dust">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="31966" article="a" name="strange empty bucket">
+		<attribute key="description" value="This strange bucket seems to have been specially prepared for something but looks quite leaky"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="32007" article="a" name="strangely ornamented key">
+		<attribute key="description" value="This key belongs to an ancient being which will reclaim it if you do not hurry"/>
+		<attribute key="duration" value="1800"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32646" article="a" name="troll skull">
+		<attribute key="weight" value="2300"/>
+	</item>
+		<item id="32826" article="a" name="turquoise tendril lantern">
+		<attribute key="description" value="It is made of leaves and seems to be irresistible to moths and other insects"/>
+		<attribute key="weight" value="919"/>
+	</item>
+		<item id="32710" article="a" name="unicorn figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="32003" article="a" name="violet glass plate">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="31948" article="a" name="charged compass">
+		<attribute key="description" value="This compass has been repaired. It is charged and shines blue"/>
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="31949" article="a" name="charged compass">
+		<attribute key="description" value="This compass has been repaired. It is charged and shines green"/>
+		<attribute key="weight" value="152"/>
+	</item>
+	<item id="31950" article="a" name="charged compass">
+		<attribute key="description" value="This compass has been repaired. It is charged and shines violet"/>
+		<attribute key="weight" value="155"/>
+	</item>
+		<item id="32606" article="an" name="acid resistant fishing rod">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="32659" article="a" name="bottle of sun fruit juice">
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="32662" article="a" name="bottle of sun fruit juice">
+		<attribute key="description" value="Tiny sapphire particles are floating in it"/>
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="33820" article="a" name="golden idol of Tukh">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="31955" article="a" name="golden idol of Tukh">
+		<attribute key="description" value="Ghosts have taken this golden idol before, hurry before they're at it again"/>
+		<attribute key="showduration" value="1"/>
+		<attribute key="showAttributes" value="1"/>
+		<attribute key="duration" value="600"/>
+		<attribute key="weight" value="2000"/>
+		<attribute key="decayTo" value="0"/>
+	</item>
+		<item id="31956" article="a" name="golden idol of Tukh that is brand-new">
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="32862" article="a" name="golden idol of tukh">
+		<attribute key="description" value="Ghosts have taken this golden idol before, hurry before they're at it again!"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="31943" article="a" name="blue crystal">
+		<attribute key="description" value="The crystal is full of energy"/>
+		<attribute key="weight" value="30"/>
+	</item>
+		<item id="31944" article="a" name="green crystal">
+		<attribute key="description" value="The crystal is full of energy"/>
+		<attribute key="weight" value="32"/>
+	</item>
+	<item id="31945" article="a" name="violet crystal">
+		<attribute key="description" value="The crystal is full of energy"/>
+		<attribute key="weight" value="35"/>
+	</item>
+		<item id="31932" article="a" name="dream catcher">
+		<attribute key="duration" value="60"/>
+		<attribute key="decayTo" value="0"/>
+		<attribute key="weight" value="750"/>
+	</item>
+		<item id="32803" article="a" name="recipe for magical paint">
+		<attribute key="description" value="It says: Mix sun fruit juice with sapphire dust and dream essence to create magical paint. This paint may transform imagination into reality"/>
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="32824" article="an" name="ice shield">
+		<attribute key="description" value="It looks like you could combine it with a robe"/>
+		<attribute key="weight" value="3500"/>
+	</item>
+		<item id="32000" name="red ectoplasmic residue">
+		<attribute key="description" value="It seems a ghost was here"/>
+		<attribute key="weight" value="120"/>
+	</item>
+		<item id="33984" article="a" name="bark peeler">
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="33990" article="a" name="hand auger">
+		<attribute key="weight" value="1000"/>
+	</item>
+		<item id="33983" article="a" name="ritual scissors">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="34271" article="a" name="pick">
+		<attribute key="description" value="The spell on it has faded"/>
+		<attribute key="weight" value="4500"/>
+	</item>
+		<item id="34269" article="a" name="pick">
+		<attribute key="description" value="It seems to be enchanted with a spell"/>
+		<attribute key="weight" value="4500"/>
+	</item>
+		<item id="34244" article="an" name="ancient liche bone">
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="34028" article="a" name="mirror mask">
+		<attribute key="description" value="It is composed of many small shards"/>
+		<attribute key="weight" value="1600"/>
+	</item>
+		<item id="34025" article="a" name="gryphon mask">
+		<attribute key="description" value="It is carved from sequoia wood"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+		<item id="34099" article="a" name="Fafnar symbol">
+		<attribute key="weight" value="170"/>
+	</item>
+		<item id="34027" article="an" name="ivory mask">
+		<attribute key="description" value="It is smoothly polished and cool to the touch"/>
+		<attribute key="weight" value="1800"/>
+	</item>
+		<item id="34026" article="a" name="silver mask">
+		<attribute key="description" value="It is slightly tarnished"/>
+		<attribute key="weight" value="3200"/>
+	</item>
+		<item id="34215" article="a" name="blue goanna scale">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="34334" name="cobra crest">
+		<attribute key="weight" value="170"/>
+	</item>
+		<item id="33987" article="an" name="empty honey glass">
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="34217" article="a" name="goanna claw">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="34216" article="a" name="goanna meat">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="34097" article="a" name="lamassu hoof">
+		<attribute key="weight" value="110"/>
+	</item>
+		<item id="34098" article="a" name="lamassu horn">
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="33996" article="a" name="lizard heart">
+		<attribute key="weight" value="350"/>
+	</item>
+		<item id="34096" article="a" name="manticore ear">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="34095" article="a" name="manticore tail">
+		<attribute key="weight" value="750"/>
+	</item>
+		<item id="34247" article="a" name="medal of valiance">
+		<attribute key="weight" value="55"/>
+	</item>
+		<item id="34249" article="a" name="noble cape">
+		<attribute key="weight" value="130"/>
+	</item>
+		<item id="34214" article="a" name="red goanna scale">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="34245" article="a" name="rotten heart">
+		<attribute key="weight" value="110"/>
+	</item>
+		<item id="34093" article="a" name="sphinx feather">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="34094" article="a" name="sphinx tiara">
+		<attribute key="weight" value="350"/>
+	</item>
+		<item id="34250" article="a" name="token of love">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="34279" name="Urmahlullu's mane">
+		<attribute key="weight" value="76"/>
+	</item>
+		<item id="34280" name="urmahlullu's paw">
+		<attribute key="weight" value="76"/>
+	</item>
+		<item id="34278" name="Urmahlullu's tail">
+		<attribute key="weight" value="76"/>
+	</item>
+		<item id="34246" article="a" name="young lich worm">
+		<attribute key="weight" value="30"/>
+	</item>
+		<item id="34342" name="ground reed">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="33986" article="a" name="wild desert rose">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="34011" article="a" name="violet memory shard">
+		<attribute key="weight" value="13"/>
+	</item>
+		<item id="33991" article="a" name="vial of cactus milk">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="34010" article="a" name="blue memory shard">
+		<attribute key="weight" value="13"/>
+	</item>
+		<item id="34012" article="a" name="green memory shard">
+		<attribute key="weight" value="13"/>
+	</item>
+		<item id="34230" article="a" name="sunray emblem">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="34229" article="a" name="sun medal">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="34232" article="the" name="Regalia of Suon">
+		<attribute key="description" value="A golden sun medal is attached to a silken cordon and soldered on a sunray emblem with a bijou"/>
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="33979" name="sea horse figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="34231" article="a" name="golden bijou">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="34228" article="a" name="blue and golden cordon">
+		<attribute key="weight" value="850"/>
+	</item>
+		<item id="34084" name="goanna hide with sun symbol">
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="34070" name="sceptre of sun and sea">
+		<attribute key="weight" value="900"/>
+	</item>
+		<item id="34394" article="a" name="final judgement">
+		<attribute key="weight" value="370"/>
+	</item>
+		<item id="34393" article="a" name="shadow cowl">
+		<attribute key="weight" value="370"/>
+	</item>
+		<item id="33985" name="honey palm bark">
+		<attribute key="weight" value="300"/>
+	</item>
+		<item id="34382" article="a" name="box with balm">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="34141" article="a" name="scorpion">
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="34268" article="a" name="vial of potent holy water">
+		<attribute key="weight" value="200"/>
+	</item>
+		<item id="34144" article="a" name="scared frog">
+		<attribute key="description" value="It hopped out of the mouth of recently killed goanna. It is barely alive and looks very scared"/>
+		<attribute key="weight" value="700"/>
+	</item>
+		<item id="34101" article="a" name="small tortoise">
+		<attribute key="weight" value="4300"/>
+	</item>
+		<item id="34102" article="a" name="small petrified tortoise">
+		<attribute key="weight" value="4300"/>
+	</item>
+		<item id="34143" article="a" name="bat">
+		<attribute key="weight" value="700"/>
+	</item>
+		<item id="34330" article="an" name="omniscient owl">
+		<attribute key="weight" value="910"/>
+	</item>
+	<item id="34331" article="an" name="omniscient owl">
+		<attribute key="weight" value="910"/>
+		<attribute key="duration" value="5"/>
+		<attribute key="decayto" value="34330"/>
+	</item>
+	<item id="33919" article="a" name="Ring of Secret Thoughts">
+		<attribute key="weight" value="90"/>
+	</item>
+		<item id="33962" article="a" name="Ring of Secret Thoughts">
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="33981" article="a" name="veldt flowers">
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="33992" article="a" name="snake maw">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="34381" name="greasy wool">
+		<attribute key="weight" value="118"/>
+	</item>
+		<item id="34145" article="a" name="net">
+		<attribute key="weight" value="98"/>
+	</item>
+		<item id="34332" article="a" name="note about two souls">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="33995" article="a" name="spiderweb clouds shreds">
+		<attribute key="weight" value="10"/>
+	</item>
+		<item id="34087" article="a" name="symbol of sun and sea">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="34103" article="an" name="ivory lyre">
+		<attribute key="weight" value="490"/>
+	</item>
+		<item id="33952" article="a" name="flask with snake poison">
+		<attribute key="description" value="The cobra poison in this flask is very potent. Even inhaling it would be dangerous. It leaks a bit and will evaporate shortly"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="34006" article="a" name="flask of hallucinogen">
+		<attribute key="description" value="It smells sickly sweet"/>
+		<attribute key="weight" value="165"/>
+	</item>
+		<item id="33953" article="an" name="empty ritual flask">
+		<attribute key="description" value="This small ritual flask is used to gather potent snake poison"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="34290" article="a" name="box with waterproof balm">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="33917" article="a" name="box with waterproof balm">
+		<attribute key="weight" value="240"/>
+	</item>
+		<item id="33989" article="a" name="tagralt nugget">
+		<attribute key="weight" value="750"/>
+	</item>
+		<item fromid="31367" toid="31368" article="a" name="flask with lamp oil">
+		<attribute key="description" value="This lamp oil is highly flammable and evaporates quickly"/>
+		<attribute key="weight" value="160"/>
+	</item>
+		<item id="33922" article="a" name="pigeon trophy">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="99"/>
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="33923" article="a" name="loremaster doll">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="7700"/>
+	</item>
+		<item id="33924" article="a" name="jade amulet">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="writeable" value="1"/>
+		<attribute key="maxtextlen" value="99"/>
+		<attribute key="weight" value="400"/>
+	</item>
+		<item id="33921" article="a" name="dragon goblet">
+		<attribute key="description" value="Souvenir from Thais Museum"/>
+		<attribute key="weight" value="1800"/>
+	</item>
+		<item id="34035" article="a" name="wooden cage key">
+		<attribute key="type" value="key"/>
+		<attribute key="weight" value="77"/>
+	</item>
+		<item id="33631" article="a" name="bunch of reed">
+		<attribute key="weight" value="550"/>
+	</item>
+		<item id="33980" article="a" name="golden mask">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="34248" article="a" name="signet ring">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="34567" article="a" name="golden sea horse figurine">
+		<attribute key="description" value="It is a mark of distinction, awarded by the priesthood of Bastesh to those who help sea creatures in need"/>
+		<attribute key="weight" value="1050"/>
+	</item>
+		<item id="34569" article="a" name="baking tray">
+		<attribute key="description" value="There is reed flour dough on it"/>
+		<attribute key="weight" value="1200"/>
+	</item>
+		<item id="34570" article="a" name="lump of reed flour dough">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="34341" name="reed balls">
+		<attribute key="weight" value="30"/>
+	</item>
+		<item id="7729" article="a" name="torn piece of paper">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="34212" article="a" name="rainbow amulet">
+		<attribute key="absorbpercentphysical" value="5"/>
+		<attribute key="absorbpercentice" value="-10"/>
+		<attribute key="absorbpercentfire" value="6"/>
+		<attribute key="armor" value="3"/>
+		<attribute key="weight" value="570"/>
+	</item>
+	<item id="34142" article="a" name="calamary">
+		<attribute key="weight" value="700"/>
 	</item>
 	<item id="1639" article="an" name="open passthrough">
         <attribute key="blockprojectile" value="0" />
