@@ -41659,7 +41659,7 @@
 		<attribute key="armor" value="16"/>
 		<attribute key="weight" value="2700"/>
 	</item>
-	    <item id="44608" article="a" name="bag with naga eggs">
+    <item id="44608" article="a" name="bag with naga eggs">
 		<attribute key="weight" value="5000"/>
 	</item>
 	<item id="44187" article="a" name="naga axe">
@@ -42215,4 +42215,22 @@
 	<item id="26520" article="a" name="ramp">
 		<attribute key="floorchange" value="south"/>
 	</item>
+	<item id="1639" article="an" name="open passthrough">
+        <attribute key="blockprojectile" value="0" />
+    </item>
+    <item fromid="19469" toid="19474" name="stone pillar">
+        <attribute key="blockprojectile" value="0" />
+    </item>
+    <item fromid="21936" toid="21937" name="stone rubble">
+        <attribute key="blockprojectile" value="0" />
+    </item>
+    <item id="22158" name="stone rubble">
+        <attribute key="blockprojectile" value="0" />
+    </item>
+    <item id="21935" name="stone rubble">
+        <attribute key="blockprojectile" value="0" />
+    </item>
+	 <item id="21934" name="stone rubble">
+        <attribute key="blockprojectile" value="0" />
+    </item>
 </items>
