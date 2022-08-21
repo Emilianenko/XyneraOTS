@@ -2133,10 +2133,10 @@ void ProtocolGame::sendTextMessage(const TextMessage& message)
 		case MESSAGE_DAMAGE_RECEIVED:
 		case MESSAGE_DAMAGE_OTHERS: {
 			msg.addPosition(message.position);
-			msg.add<uint32_t>(message.primary.value);
-			msg.addByte(message.primary.color);
 			msg.add<uint32_t>(message.secondary.value);
 			msg.addByte(message.secondary.color);
+			msg.add<uint32_t>(message.primary.value);
+			msg.addByte(message.primary.color);
 			break;
 		}
 		case MESSAGE_HEALED:
@@ -3248,9 +3248,12 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	// send player stats
-	sendStats(); // hp, cap, level, xp rate, etc.
-	sendSkills(); // skills and special skills
-	player->sendIcons(); // active conditions
+	// moved to onCreatureAppear
+	//sendStats(); // hp, cap, level, xp rate, etc.
+	//sendSkills(); // skills and special skills
+
+	// send active conditions
+	player->sendIcons();
 
 	// send client info
 	sendClientFeatures(); // player speed, bug reports, store url, pvp mode, etc
@@ -4057,7 +4060,12 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 
 	// crit, leech, tier bonuses
 	for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; ++i) {
-		msg.add<uint16_t>(std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i])); // base + bonus special skill
+		int32_t skillAmount = std::max<int32_t>(0, std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i]));
+		if (i != SPECIALSKILL_CRITICALHITAMOUNT && i != SPECIALSKILL_LIFELEECHAMOUNT && i != SPECIALSKILL_MANALEECHAMOUNT) {
+			skillAmount = std::min<int32_t>(skillAmount, i < SPECIALSKILL_ONSLAUGHT ? 100 : 10000);
+		}
+
+		msg.add<uint16_t>(skillAmount); // base + bonus special skill
 		msg.add<uint16_t>(0); // base special skill
 	}
 

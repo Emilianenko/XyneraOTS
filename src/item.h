@@ -5,6 +5,7 @@
 #define FS_ITEM_H
 
 #include "cylinder.h"
+#include "imbuing.h"
 #include "items.h"
 #include "luascript.h"
 #include "thing.h"
@@ -91,6 +92,7 @@ enum AttrTypes_t {
 	ATTR_REFLECT = 42,
 	ATTR_BOOST = 43,
 	ATTR_LOOTCONTAINER = 44,
+	ATTR_IMBUEMENTS = 45,
 };
 
 enum Attr_ReadValue {
@@ -332,6 +334,30 @@ class ItemAttributes
 			}
 		};
 
+		// imbuements on item
+		std::map<uint8_t, Imbuement>& getImbuements() {
+			return imbuements;
+		}
+		size_t getImbuementsCount() {
+			return imbuements.size();
+		}
+
+		// imbuement active on slot
+		Imbuement* getImbuement(uint8_t slotId) {
+			auto it = imbuements.find(slotId);
+			if (it == imbuements.end()) {
+				return nullptr;
+			}
+
+			return &imbuements[slotId];
+		}
+		void setImbuement(Imbuement imbuement) {
+			this->imbuements[imbuement.getSlotId()] = imbuement;
+		}
+		bool removeImbuement(uint8_t slotId) {
+			return this->imbuements.erase(slotId);
+		}
+
 	private:
 		bool hasAttribute(itemAttrTypes type) const {
 			return (type & attributeBits) != 0;
@@ -414,6 +440,7 @@ class ItemAttributes
 
 		std::map<CombatType_t, Reflect> reflect;
 		std::map<CombatType_t, uint16_t> boostPercent;
+		std::map<uint8_t, Imbuement> imbuements;
 
 		const Reflect& getReflect(CombatType_t combatType) {
 			auto it = reflect.find(combatType);
@@ -858,6 +885,12 @@ class Item : virtual public Thing
 			}
 			return tmpLootId;
 		}
+
+		// Imbuements
+		std::map<uint8_t, Imbuement>& getImbuements() {
+			return getAttributes()->getImbuements();
+		}
+		void refreshImbuements(Player* player, bool consumePassive = false, bool consumeInfight = false);
 
 		//serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);

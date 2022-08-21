@@ -1,46 +1,42 @@
 -- memorize eq tier buff values
 if not playerTierBonuses then
 	playerTierBonuses = {}
+end
+
+-- stores eq tier bonuses to update later
+function Player:cacheTierBonuses()
+	local cid = self:getId()
+	playerTierBonuses[cid] = {}
 	
-	-- stores eq tier bonuses to update later
-	function Player:cacheTierBonuses()
-		local cid = self:getId()
-		playerTierBonuses[cid] = {}
-		
-		for slotId = CONST_SLOT_FIRST, CONST_SLOT_LAST do
-			local slotItem = self:getSlotItem(slotId)
-			if slotItem then
-				local skillType, amount = slotItem:getType():getTierBonus(slotItem:getTier())
-				if skillType > -1 then
-					playerTierBonuses[cid][skillType] = (playerTierBonuses[cid][skillType] or 0) + amount * 100
-				end
+	for slotId = CONST_SLOT_FIRST, CONST_SLOT_LAST do
+		local slotItem = self:getSlotItem(slotId)
+		if slotItem then
+			local skillType, amount = slotItem:getType():getTierBonus(slotItem:getTier())
+			if skillType > -1 then
+				playerTierBonuses[cid][skillType] = (playerTierBonuses[cid][skillType] or 0) + amount * 100
 			end
 		end
 	end
+end
+
+-- updates eq tier bonuses (requires caching first)
+function Player:updateTierBonuses()
+	local cid = self:getId()
 	
-	-- updates eq tier bonuses (requires caching first)
-	function Player:updateTierBonuses(isSuccess)
-		local cid = self:getId()
-		
-		if isSuccess then
-			-- remove old eq tier bonuses
-			for skillType, amount in pairs(playerTierBonuses[cid]) do
-				self:addSpecialSkill(skillType, -amount)
-			end
-			
-			-- apply new eq tier bonuses
-			for slotId = CONST_SLOT_FIRST, CONST_SLOT_LAST do
-				local slotItem = self:getSlotItem(slotId)
-				if slotItem then
-					local skillType, amount = slotItem:getType():getTierBonus(slotItem:getTier())
-					if skillType > -1 then
-						self:addSpecialSkill(skillType, amount * 100)
-					end
-				end
+	-- remove old eq tier bonuses
+	for skillType, amount in pairs(playerTierBonuses[cid]) do
+		self:addSpecialSkill(skillType, -amount)
+	end
+	
+	-- apply new eq tier bonuses
+	for slotId = CONST_SLOT_FIRST, CONST_SLOT_LAST do
+		local slotItem = self:getSlotItem(slotId)
+		if slotItem then
+			local skillType, amount = slotItem:getType():getTierBonus(slotItem:getTier())
+			if skillType > -1 then
+				self:addSpecialSkill(skillType, amount * 100)
 			end
 		end
-		
-		playerTierBonuses[cid] = nil
 	end
 end
 
@@ -59,8 +55,10 @@ end
 do
 	local ec = EventCallback
 	ec.onTradeCompleted = function(self, target, item, targetItem, isSuccess)
-		self:updateTierBonuses(isSuccess)
-		target:updateTierBonuses(isSuccess)
+		if isSuccess then
+			self:updateTierBonuses()
+			target:updateTierBonuses()
+		end
 	end
 	ec:register()
 end
@@ -88,6 +86,7 @@ do
 			end
 		end
 		
+		self:cacheTierBonuses()
 		return true
 	end
 	ec:register()
@@ -107,7 +106,42 @@ do
 			end
 		end
 		
+		player:cacheTierBonuses()
 		return true
 	end
 	creatureevent:register()
+end
+
+-- override setTier to apply bonuses on equipped
+Item.legacySetTier = Item.legacySetTier or Item.setTier
+function Item:setTier(newTier)
+	local player = Player(self:getParent())
+
+	if player then
+		local skillType, amount = self:getType():getTierBonus(self:getTier())
+		if skillType > -1 then
+			player:addSpecialSkill(skillType, -amount * 100)
+		end
+	end
+	
+	local ret = self:legacySetTier(newTier)
+	
+	if player then
+		local skillType, amount = self:getType():getTierBonus(self:getTier())
+		if skillType > -1 then
+			player:addSpecialSkill(skillType, amount * 100)
+		end
+	end
+	
+	return ret
+end
+
+if TIERSYSTEM_IS_RELOAD then
+	for _, player in pairs(Game.getPlayers()) do
+		player:updateTierBonuses()
+		player:cacheTierBonuses()
+	end
+else
+	-- next load is reload
+	TIERSYSTEM_IS_RELOAD = true
 end

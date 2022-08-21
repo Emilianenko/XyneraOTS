@@ -81,7 +81,7 @@ function onSay(player, words, param)
 	
 	-- prevent unhooking eventCallbacks registered in data/scripts folder
 	-- in "/reload events" situation
-	if reloadType == RELOAD_TYPE_EVENTS or reloadType == RELOAD_TYPE_GLOBAL then
+	if reloadType == RELOAD_TYPE_EVENTS or reloadType == RELOAD_TYPE_GLOBAL then --or reloadType == RELOAD_TYPE_ALL then -- add if bugs
 		EventCallback:clear()
 		Game.reload(RELOAD_TYPE_SCRIPTS)
 	end

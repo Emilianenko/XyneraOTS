@@ -183,7 +183,7 @@ class Monster final : public Creature
 		}
 
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                     bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false) override;
+		                     bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false, bool isReflect = false) override;
 
 		// monster icons
 		auto& getMonsterIcons() const {

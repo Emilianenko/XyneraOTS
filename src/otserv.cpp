@@ -7,6 +7,7 @@
 #include "databasemanager.h"
 #include "databasetasks.h"
 #include "game.h"
+#include "imbuing.h"
 #include "iomarket.h"
 #include "monsters.h"
 #include "outfit.h"
@@ -32,6 +33,7 @@ Scheduler g_scheduler;
 
 Game g_game;
 ConfigManager g_config;
+Imbuements g_imbuements;
 Monsters g_monsters;
 Vocations g_vocations;
 extern Scripts* g_scripts;

@@ -26,14 +26,15 @@
 #include "tools.h"
 #include "weapons.h"
 
-extern ConfigManager g_config;
-extern Game g_game;
 extern Chat* g_chat;
-extern Vocations g_vocations;
-extern MoveEvents* g_moveEvents;
-extern Weapons* g_weapons;
+extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
+extern Game g_game;
+extern Imbuements g_imbuements;
+extern MoveEvents* g_moveEvents;
+extern Vocations g_vocations;
+extern Weapons* g_weapons;
 
 MuteCountMap Player::muteCountMap;
 
@@ -1239,6 +1240,7 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
 			Item* item = inventory[slot];
 			if (item) {
+				toggleImbuements(item, true, true);
 				item->startDecaying();
 				g_moveEvents->onPlayerEquip(this, item, static_cast<slots_t>(slot), false);
 			}
@@ -1295,6 +1297,9 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 				removeCondition(condition);
 			}
 		}
+
+		sendStats();
+		sendSkills();
 
 		g_game.checkPlayersRecord();
 		IOLoginData::updateOnlineStatus(guid, true);
@@ -1682,6 +1687,11 @@ void Player::onThink(uint32_t interval)
 	}
 
 	int64_t timeNow = OTSYS_TIME();
+
+	// refresh imbuements
+	if (timeNow % 60 == 0) {
+		consumeImbuements(true, (getZone() != ZONE_PROTECTION) && hasCondition(CONDITION_INFIGHT));
+	}
 
 	// fix desynced equipment timers after alt tabbing
 	if (timeNow % 10 == 0) {
@@ -2170,9 +2180,9 @@ bool Player::hasShield() const
 }
 
 BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/, bool ignoreResistances /* = false*/)
+							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/, bool ignoreResistances /* = false*/, bool isReflect /* = false */)
 {
-	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor, field, ignoreResistances);
+	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
 	if (attacker) {
 		sendCreatureSquare(attacker, SQ_COLOR_BLACK);
@@ -2201,42 +2211,49 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 				continue;
 			}
 
+			// element resistances
 			const ItemType& it = Item::items[item->getID()];
-			if (!it.abilities) {
-				if (damage <= 0) {
-					damage = 0;
-					return BLOCK_ARMOR;
-				}
-
-				continue;
-			}
-
-			const int16_t & absorbPercent = it.abilities->absorbPercent[combatIndex];
-			if (absorbPercent != 0) {
-				damage -= std::round(damage * (absorbPercent / 100.));
-
-				uint16_t charges = item->getCharges();
-				if (charges != 0) {
-					consumeCharge(item);
-				}
-			}
-
-			reflect += item->getReflect(combatType);
-
-			if (field) {
-				const int16_t& fieldAbsorbPercent = it.abilities->fieldAbsorbPercent[combatIndex];
-				if (fieldAbsorbPercent != 0) {
-					damage -= std::round(damage * (fieldAbsorbPercent / 100.));
+			if (it.abilities) {
+				const int16_t& absorbPercent = it.abilities->absorbPercent[combatIndex];
+				if (absorbPercent != 0) {
+					damage -= std::round(damage * (absorbPercent / 100.));
 
 					uint16_t charges = item->getCharges();
 					if (charges != 0) {
 						consumeCharge(item);
 					}
 				}
+
+				if (field) {
+					const int16_t& fieldAbsorbPercent = it.abilities->fieldAbsorbPercent[combatIndex];
+					if (fieldAbsorbPercent != 0) {
+						damage -= std::round(damage * (fieldAbsorbPercent / 100.));
+
+						uint16_t charges = item->getCharges();
+						if (charges != 0) {
+							consumeCharge(item);
+						}
+					}
+				}
+			}
+
+			// reflect chance
+			reflect += item->getReflect(combatType);
+
+			// element resistances from imbuements
+			const auto& imbuements = item->getImbuements();
+			for (const auto& imbuement : imbuements) {
+				uint8_t imbuId = imbuement.second.getImbuId();
+				if (imbuId >= IMBUEMENT_PROTECTION_FIRST && imbuId <= IMBUEMENT_PROTECTION_LAST) {
+					ImbuementType* imbuType = g_imbuements.getImbuementType(imbuId);
+					if (combatType == imbuType->getPrimaryValue()) {
+						damage -= std::round(damage * (imbuType->getSecondaryValue() / 100.));
+					}
+				}
 			}
 		}
 
-		if (attacker && reflect.chance > 0 && reflect.percent != 0 && uniform_random(1, 100) <= reflect.chance) {
+		if (!isReflect && combatType != COMBAT_MANADRAIN && attacker && reflect.chance > 0 && reflect.percent != 0 && uniform_random(1, 100) <= reflect.chance) {
 			CombatDamage reflectDamage;
 			reflectDamage.primary.type = combatType;
 			reflectDamage.primary.value = -std::round(damage * (reflect.percent / 100.));
@@ -3382,6 +3399,12 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 		//calling movement scripts
 		g_moveEvents->onPlayerEquip(this, thing->getItem(), static_cast<slots_t>(index), false);
 		g_events->eventPlayerOnInventoryUpdate(this, thing->getItem(), static_cast<slots_t>(index), true);
+
+		// equip - refresh imbuements without consuming duration
+		if (Item* item = thing->getItem()) {
+			item->refreshImbuements(this);
+			toggleImbuements(item, true);
+		}
 	}
 
 	bool requireListUpdate = false;
@@ -3439,6 +3462,12 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 		//calling movement scripts
 		g_moveEvents->onPlayerDeEquip(this, thing->getItem(), static_cast<slots_t>(index));
 		g_events->eventPlayerOnInventoryUpdate(this, thing->getItem(), static_cast<slots_t>(index), false);
+
+		// deequip - consume duration if applicable
+		if (Item* item = thing->getItem()) {
+			item->refreshImbuements(this, true, hasCondition(CONDITION_INFIGHT));
+			toggleImbuements(item, false);
+		}
 	}
 
 	bool requireListUpdate = false;
@@ -3712,7 +3741,8 @@ void Player::onWalkAborted()
 void Player::onWalkComplete()
 {
 	if (walkTask) {
-		walkTaskEvent = g_scheduler.addEvent(walkTask);
+		walkTaskEvent = 0;
+		g_dispatcher.addTask(walkTask);
 		walkTask = nullptr;
 	}
 }
@@ -3760,6 +3790,9 @@ void Player::onAddCondition(ConditionType_t type)
 
 	if (type == CONDITION_OUTFIT && isMounted()) {
 		dismount();
+	} else if (type == CONDITION_INFIGHT) {
+		// infight started - update timers, consume outofcombat durations
+		consumeImbuements(true, false);
 	}
 
 	sendIcons();
@@ -3817,6 +3850,9 @@ void Player::onEndCondition(ConditionType_t type)
 		if (getSkull() != SKULL_RED && getSkull() != SKULL_BLACK) {
 			setSkull(SKULL_NONE);
 		}
+
+		// combat ended, update all imbu durations
+		consumeImbuements(true, getZone() != ZONE_PROTECTION);
 	}
 
 	sendIcons();
@@ -5204,5 +5240,95 @@ void Player::updateRegeneration()
 		condition->setParam(CONDITION_PARAM_HEALTHTICKS, vocation->getHealthGainTicks() * 1000);
 		condition->setParam(CONDITION_PARAM_MANAGAIN, vocation->getManaGainAmount());
 		condition->setParam(CONDITION_PARAM_MANATICKS, vocation->getManaGainTicks() * 1000);
+	}
+}
+
+void Player::toggleImbuement(uint8_t imbuId, bool isEquip)
+{
+	if (imbuId == 0) {
+		return;
+	}
+
+	// equip - add stats
+	// deEquip - substract
+	int32_t equip = isEquip ? 1 : -1;
+
+	ImbuementType* imbuementType = g_imbuements.getImbuementType(imbuId);
+	ImbuingTypes type = static_cast<ImbuingTypes>(imbuementType->getType());
+
+	int32_t primary = imbuementType->getPrimaryValue();
+	if (type != IMBUING_TYPE_SKILLBOOST) {
+		primary *= equip;
+	}
+	int32_t secondary = imbuementType->getSecondaryValue() * equip;
+
+	switch (type) {
+		case IMBUING_TYPE_CRIT:
+			setVarSpecialSkill(SPECIALSKILL_CRITICALHITAMOUNT, primary);
+			setVarSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE, secondary);
+			break;
+
+		case IMBUING_TYPE_LEECH_MANA:
+			setVarSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT, primary);
+			setVarSpecialSkill(SPECIALSKILL_MANALEECHCHANCE, secondary);
+			break;
+
+		case IMBUING_TYPE_LEECH_HP:
+			setVarSpecialSkill(SPECIALSKILL_LIFELEECHAMOUNT, primary);
+			setVarSpecialSkill(SPECIALSKILL_LIFELEECHCHANCE, secondary);
+			break;
+
+		case IMBUING_TYPE_SKILLBOOST:
+			if (static_cast<skills_t>(primary) != SKILL_MAGLEVEL) {
+				setVarSkill(static_cast<skills_t>(primary), secondary);
+			} else {
+				setVarStats(STAT_MAGICPOINTS, secondary);
+			}
+			break;
+
+		case IMBUING_TYPE_SPEED:
+			g_game.changeSpeed(this, primary * 2);
+			break;
+
+		case IMBUING_TYPE_CAPACITY:
+			setVarStats(STAT_CAPACITY, static_cast<int32_t>(getBaseCapacity() * ((primary - 100) / 100.f)));
+			break;
+
+		case IMBUING_TYPE_DEFLECT_PARALYZE:
+			//TO DO / script? / hardcode?
+			setVarStats(STAT_VIBRANCY, secondary);
+			break;
+
+		// do nothing
+		//case IMBUING_TYPE_NONE: // invalid
+		//case IMBUING_TYPE_DAMAGE: // calculated during combat
+		//case IMBUING_TYPE_PROTECTION: // calculated during combat
+		//case IMBUING_TYPE_SCRIPT: // not implemented
+		default: // invalid
+			break;
+	}
+}
+
+void Player::toggleImbuements(Item* item, bool isEquip, bool silent)
+{
+	// invalid item
+	if (!item) {
+		return;
+	}
+
+	bool needUpdate = false;
+
+	const std::map<uint8_t, Imbuement>& itemImbuements = item->getImbuements();
+	for (const auto& imbuement : itemImbuements) {
+		int32_t duration = imbuement.second.getDuration();
+		if (duration > 0 || duration == -1) {
+			toggleImbuement(imbuement.second.getImbuId(), isEquip);
+			needUpdate = true;
+		}
+	}
+
+	if (needUpdate && !silent) {
+		sendStats();
+		sendSkills();
 	}
 }

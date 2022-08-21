@@ -477,7 +477,10 @@ void ConditionAttributes::updatePercentStats(Player* player)
 				break;
 
 			case STAT_CAPACITY:
-				stats[i] = static_cast<int32_t>(player->getCapacity() * ((statsPercent[i] - 100) / 100.f));
+				stats[i] = static_cast<int32_t>(player->getBaseCapacity() * ((statsPercent[i] - 100) / 100.f));
+				break;
+
+			default:
 				break;
 		}
 	}
@@ -704,6 +707,11 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 			return true;
 		}
 
+		case CONDITION_PARAM_STAT_VIBRANCY: {
+			stats[STAT_VIBRANCY] = value;
+			return true;
+		}
+
 		case CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT: {
 			statsPercent[STAT_MAXHITPOINTS] = std::max<int32_t>(0, value);
 			return true;
@@ -840,6 +848,9 @@ int32_t ConditionAttributes::getParam(ConditionParam_t param)
 
 		case CONDITION_PARAM_STAT_CAPACITY:
 			return stats[STAT_CAPACITY];
+
+		case CONDITION_PARAM_STAT_VIBRANCY:
+			return stats[STAT_VIBRANCY];
 
 		case CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT:
 			return statsPercent[STAT_MAXHITPOINTS];

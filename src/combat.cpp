@@ -835,8 +835,10 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 		if (casterPlayer) {
 			Player* targetPlayer = target ? target->getPlayer() : nullptr;
 			if (targetPlayer && casterPlayer != targetPlayer && targetPlayer->getSkull() != SKULL_BLACK && damage.primary.type != COMBAT_HEALING) {
-				damage.primary.value /= 2;
-				damage.secondary.value /= 2;
+				if (damage.origin != ORIGIN_CONDITION) {
+					damage.primary.value /= 2;
+					damage.secondary.value /= 2;
+				}
 			}
 
 			if (damage.primary.type != COMBAT_HEALING && damage.origin != ORIGIN_CONDITION) {
@@ -1033,8 +1035,10 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		if ((damageCopy.primary.value < 0 || damageCopy.secondary.value < 0) && caster) {
 			Player* targetPlayer = creature->getPlayer();
 			if (casterPlayer && targetPlayer && casterPlayer != targetPlayer && targetPlayer->getSkull() != SKULL_BLACK) {
-				damageCopy.primary.value /= 2;
-				damageCopy.secondary.value /= 2;
+				if (damageCopy.origin != ORIGIN_CONDITION) {
+					damageCopy.primary.value /= 2;
+					damageCopy.secondary.value /= 2;
+				}
 				playerCombatReduced = true;
 			}
 		}

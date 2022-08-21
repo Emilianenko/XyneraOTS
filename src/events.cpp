@@ -1372,8 +1372,12 @@ void Events::eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t sl
 	LuaScriptInterface::pushUserdata<Player>(L, player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	LuaScriptInterface::pushUserdata<Item>(L, item);
-	LuaScriptInterface::setItemMetatable(L, -1, item);
+	if (item) {
+		LuaScriptInterface::pushUserdata<Item>(L, item);
+		LuaScriptInterface::setItemMetatable(L, -1, item);
+	} else {
+		lua_pushnil(L);
+	}
 
 	lua_pushnumber(L, slot);
 	LuaScriptInterface::pushBoolean(L, equip);

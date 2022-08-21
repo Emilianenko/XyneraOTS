@@ -644,7 +644,7 @@ class Player final : public Creature, public Cylinder
 			return pzLocked;
 		}
 		BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-		                             bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false) override;
+		                             bool checkDefense = false, bool checkArmor = false, bool field = false, bool ignoreResistances = false, bool isReflect = false) override;
 		void doAttacking(uint32_t interval) override;
 		bool hasExtraSwing() override {
 			return lastAttack > 0 && ((OTSYS_TIME() - lastAttack) >= getAttackSpeed());
@@ -795,6 +795,16 @@ class Player final : public Creature, public Cylinder
 
 				if (lootContainerId > 0) {
 					setLootContainer(static_cast<LootTypes_t>(lootType), lootContainerId);
+				}
+			}
+		}
+
+		// imbuements
+		void consumeImbuements(bool consumeDuration = false, bool consumeInfight = false) {
+			for (uint8_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+				Item* slotItem = getInventoryItem(static_cast<slots_t>(slot));
+				if (slotItem) {
+					slotItem->refreshImbuements(this, consumeDuration, consumeInfight);
 				}
 			}
 		}
@@ -1337,6 +1347,9 @@ class Player final : public Creature, public Cylinder
 		const std::map<uint8_t, OpenContainer>& getOpenContainers() const {
 			return openContainers;
 		}
+
+		void toggleImbuement(uint8_t imbuId, bool isEquip);
+		void toggleImbuements(Item* item, bool isEquip, bool silent = false);
 
 	private:
 		std::forward_list<Condition*> getMuteConditions() const;

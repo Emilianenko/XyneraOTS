@@ -768,6 +768,12 @@ class LuaScriptInterface
 		static int luaItemSetBoostPercent(lua_State* L);
 		static int luaItemGetBoostPercent(lua_State* L);
 
+		static int luaItemGetImbuements(lua_State* L);
+
+		static int luaItemSetImbuement(lua_State* L);
+		static int luaItemGetImbuement(lua_State* L);
+		static int luaItemRemoveImbuement(lua_State* L);
+
 		// Container
 		static int luaContainerCreate(lua_State* L);
 
@@ -955,6 +961,8 @@ class LuaScriptInterface
 		static int luaPlayerGetBaseMaxHealth(lua_State* L);
 		static int luaPlayerGetBaseMaxMana(lua_State* L);
 
+		static int luaPlayerGetVibrancy(lua_State* L);
+
 		static int luaPlayerGetSkillLevel(lua_State* L);
 		static int luaPlayerGetEffectiveSkillLevel(lua_State* L);
 		static int luaPlayerGetSkillPercent(lua_State* L);
@@ -1108,6 +1116,8 @@ class LuaScriptInterface
 
 		static int luaPlayerIsIgnoringFriction(lua_State* L);
 		static int luaPlayerSetIgnoreFriction(lua_State* L);
+
+		static int luaPlayerImbuementsReload(lua_State* L);
 
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
@@ -1661,6 +1671,17 @@ class LuaScriptInterface
 
 		// exclusively for wands & distance weapons
 		static int luaWeaponShootType(lua_State* L);
+
+		// ImbuementType
+		static int luaImbuementTypeCreate(lua_State* L);
+		static int luaImbuementTypeName(lua_State* L);
+		static int luaImbuementTypeDescription(lua_State* L);
+		static int luaImbuementTypeType(lua_State* L);
+		static int luaImbuementTypeIconId(lua_State* L);
+		static int luaImbuementTypePrimaryValue(lua_State* L);
+		static int luaImbuementTypeSecondaryValue(lua_State* L);
+		static int luaImbuementTypeDuration(lua_State* L);
+		static int luaImbuementTypeOutOfCombat(lua_State* L);
 
 		//
 		std::string lastLuaError;

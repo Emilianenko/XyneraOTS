@@ -35,19 +35,20 @@
 #include "talkaction.h"
 #include "weapons.h"
 
-extern ConfigManager g_config;
 extern Actions* g_actions;
 extern Chat* g_chat;
-extern TalkActions* g_talkActions;
-extern Spells* g_spells;
-extern Vocations g_vocations;
-extern GlobalEvents* g_globalEvents;
+extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
+extern GlobalEvents* g_globalEvents;
+extern Imbuements g_imbuements;
 extern Monsters g_monsters;
 extern MoveEvents* g_moveEvents;
-extern Weapons* g_weapons;
 extern Scripts* g_scripts;
+extern Spells* g_spells;
+extern TalkActions* g_talkActions;
+extern Vocations g_vocations;
+extern Weapons* g_weapons;
 
 Game::Game()
 {
@@ -4316,6 +4317,7 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 		return true;
 	}
 
+	// healing
 	if (damage.primary.value > 0) {
 		return false;
 	}
@@ -4367,10 +4369,93 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 		}
 	}
 
+	// damage conversion
+	if (attacker) {
+		if (Player* attackerPlayer = attacker->getPlayer()) {
+			std::map<CombatType_t, int32_t> convertedDamage;
+			bool converted = false;
+			convertedDamage[damage.primary.type] = damage.primary.value;
+			convertedDamage[damage.secondary.type] = damage.secondary.value;
+
+			for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+				if (!attackerPlayer->isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+					continue;
+				}
+
+				Item* item = attackerPlayer->getInventoryItem(static_cast<slots_t>(slot));
+				if (!item) {
+					continue;
+				}
+
+				// apply damage boost
+				uint16_t boostPercent = item->getBoostPercent(damage.primary.type);
+				if (boostPercent != 0) {
+					damage.primary.value += std::round(damage.primary.value * (boostPercent / 100.));
+				}
+				boostPercent = item->getBoostPercent(damage.secondary.type);
+				if (boostPercent != 0) {
+					damage.secondary.value += std::round(damage.secondary.value * (boostPercent / 100.));
+				}
+
+				// apply damage conversion
+				if (damage.origin != ORIGIN_CONVERTED) {
+					const auto& imbuements = item->getImbuements();
+					if (imbuements.size() > 0) {
+						for (const auto& imbuement : imbuements) {
+							uint8_t imbuId = imbuement.second.getImbuId();
+							if (imbuId >= IMBUEMENT_DAMAGE_FIRST && imbuId <= IMBUEMENT_DAMAGE_LAST) {
+								ImbuementType* imbuType = g_imbuements.getImbuementType(imbuId);
+								CombatType_t newCombatType = static_cast<CombatType_t>(imbuType->getPrimaryValue());
+								if (newCombatType != COMBAT_PHYSICALDAMAGE) {
+									// convert physical to magic
+									int32_t convertedAmount = std::round(convertedDamage[COMBAT_PHYSICALDAMAGE] * (imbuType->getSecondaryValue() / 100.));
+									convertedDamage[COMBAT_PHYSICALDAMAGE] -= convertedAmount;
+									convertedDamage[newCombatType] += convertedAmount;
+									converted = true;
+								} else {
+									// convert magic to physical
+									for (auto const& [combatType, amount] : convertedDamage) {
+										if (combatType != COMBAT_PHYSICALDAMAGE) {
+											int32_t convertedAmount = std::round(amount * (imbuType->getSecondaryValue() / 100.));
+											convertedDamage[COMBAT_PHYSICALDAMAGE] += convertedAmount;
+											convertedDamage[newCombatType] -= convertedAmount;
+											converted = true;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if (converted) {
+				damage.primary.value = 0;
+				damage.secondary.value = 0;
+
+				for (auto const& [combatType, amount] : convertedDamage) {
+					if (damage.primary.value == 0) {
+						damage.primary.type = combatType;
+						damage.primary.value = amount;
+					} else if (damage.secondary.value == 0) {
+						damage.secondary.type = combatType;
+						damage.secondary.value = amount;
+					} else {
+						CombatDamage extraDamage;
+						extraDamage.primary.type = combatType;
+						extraDamage.primary.value = amount;
+						extraDamage.origin = ORIGIN_CONVERTED;
+						g_game.combatChangeHealth(attacker, target, extraDamage);
+					}
+				}
+			}
+		}
+	}
+
 	BlockType_t primaryBlockType, secondaryBlockType;
 	if (damage.primary.type != COMBAT_NONE) {
 		damage.primary.value = -damage.primary.value;
-		primaryBlockType = target->blockHit(attacker, damage.primary.type, damage.primary.value, checkDefense, checkArmor, field, ignoreResistances);
+		primaryBlockType = target->blockHit(attacker, damage.primary.type, damage.primary.value, checkDefense, checkArmor, field, ignoreResistances, damage.origin == ORIGIN_REFLECT);
 
 		damage.primary.value = -damage.primary.value;
 		sendBlockEffect(primaryBlockType, damage.primary.type, target->getPosition());
@@ -4380,7 +4465,7 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 
 	if (damage.secondary.type != COMBAT_NONE) {
 		damage.secondary.value = -damage.secondary.value;
-		secondaryBlockType = target->blockHit(attacker, damage.secondary.type, damage.secondary.value, false, false, field, ignoreResistances);
+		secondaryBlockType = target->blockHit(attacker, damage.secondary.type, damage.secondary.value, false, false, field, ignoreResistances, damage.origin == ORIGIN_REFLECT);
 		damage.secondary.value = -damage.secondary.value;
 		sendBlockEffect(secondaryBlockType, damage.secondary.type, target->getPosition());
 	} else {

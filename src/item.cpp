@@ -18,6 +18,7 @@
 class Spells;
 
 extern Game g_game;
+extern Imbuements g_imbuements;
 extern Spells* g_spells;
 extern Vocations g_vocations;
 
@@ -674,6 +675,27 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_IMBUEMENTS: {
+			uint8_t size;
+			if (!propStream.read<uint8_t>(size)) {
+				return ATTR_READ_ERROR;
+			}
+
+			for (uint8_t i = 0; i < size; ++i) {
+				uint8_t slotId = 0;
+				uint8_t imbuId = 0;
+				int32_t duration = 0;
+				int64_t lastUpdated = 0;
+
+				if (!propStream.read<uint8_t>(slotId) || !propStream.read<uint8_t>(imbuId) || !propStream.read<int32_t>(duration) || !propStream.read<int64_t>(lastUpdated)) {
+					return ATTR_READ_ERROR;
+				}
+
+				getAttributes()->setImbuement(Imbuement(slotId, imbuId, duration, lastUpdated));
+			}
+			break;
+		}
+
 		// these should be handled through derived classes
 		// If these are called then something has changed in the items.xml since the map was saved
 		// just read the values
@@ -956,6 +978,19 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 			for (const auto& boost : boosts) {
 				propWriteStream.write<CombatType_t>(boost.first);
 				propWriteStream.write<uint16_t>(boost.second);
+			}
+		}
+
+		const auto& imbuements = attributes->imbuements;
+		if (!imbuements.empty()) {
+			propWriteStream.write<uint8_t>(ATTR_IMBUEMENTS);
+			propWriteStream.write<uint8_t>(imbuements.size());
+
+			for (const auto& imbuement : imbuements) {
+				propWriteStream.write<uint8_t>(imbuement.first);
+				propWriteStream.write<uint8_t>(imbuement.second.getImbuId());
+				propWriteStream.write<int32_t>(imbuement.second.getDuration());
+				propWriteStream.write<int64_t>(imbuement.second.getLastUpdateTime());
 			}
 		}
 	}
@@ -1283,6 +1318,15 @@ bool Item::hasMarketAttributes() const
 		}
 	}
 
+	// discard items with imbuements
+	if (attributes->imbuements.size() > 0) {
+		for (const auto& imbuInfo : attributes->imbuements) {
+			if (imbuInfo.second.getDuration() != 0) {
+				return false;
+			}
+		}
+	}
+
 	// discard items with other modified attributes
 	const ItemType& itemType = Item::items[id];
 
@@ -1312,6 +1356,45 @@ bool Item::hasMarketAttributes() const
 		}
 	}
 	return true;
+}
+
+void Item::refreshImbuements(Player* player, bool consumePassive, bool consumeInfight) {
+	// item was never customized
+	if (!attributes) {
+		return;
+	}
+
+	// invalid player reference
+	if (!player) {
+		return;
+	}
+
+	std::map<uint8_t, Imbuement>& imbuements = getAttributes()->getImbuements();
+	for (auto& imbuement : imbuements) {
+		bool erase = false;
+
+		ImbuementType* imbuementType = g_imbuements.getImbuementType(imbuement.second.getImbuId());
+		if (imbuementType && imbuement.second.getDuration() > 0) {
+			imbuement.second.update(consumeInfight || imbuementType->isOutOfCombat() && consumePassive);
+
+			if (imbuement.second.getDuration() <= 0) {
+				erase = true;
+			}
+		} else if (imbuement.second.getDuration() != -1) { // spare -1 for permanent imbuements
+			erase = true;
+		}
+
+		if (erase) {
+			// imbuement type invalid or expired
+			// to do: test if it is safe to use (potential crash)
+			player->toggleImbuement(imbuement.second.getImbuId(), false);
+			imbuements.erase(imbuement.first);
+
+			// refresh client stats (on expired imbuement)
+			player->sendStats();
+			player->sendSkills();
+		}
+	}
 }
 
 template<>

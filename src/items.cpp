@@ -5,12 +5,14 @@
 
 #include "items.h"
 
+#include "game.h"
 #include "movement.h"
 #include "pugicast.h"
 #include "weapons.h"
 
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
+extern Game g_game;
 
 uint64_t Items::lastSavedLootContainerAutoId = 0;
 uint64_t Items::lootContainerAutoId = 0;
@@ -292,16 +294,44 @@ bool Items::reload()
 {
 	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloading items ... ", false);
 
+	// deequip bonuses
+	for (const auto& playerInfo : g_game.getPlayers()) {
+		Player* player = playerInfo.second;
+		if (player && !player->isRemoved()) {
+			for (int32_t slotId = CONST_SLOT_FIRST; slotId <= CONST_SLOT_LAST; ++slotId) {
+				slots_t slot = static_cast<slots_t>(slotId);
+				Item* item = player->getInventoryItem(slot);
+				if (item) {
+					player->toggleImbuements(item, false, true);
+					g_moveEvents->onPlayerDeEquip(player, item, slot);
+				}
+			}
+		}
+	}
+
 	clear();
 	loadFromOtb("data/items/items.otb", true);
-
-	if (!loadFromXml()) {
-		return false;
-	}
+	loadFromXml();
 
 	g_moveEvents->reload();
 	g_weapons->reload();
 	g_weapons->loadDefaults();
+
+	// equip bonuses again
+	for (const auto& playerInfo : g_game.getPlayers()) {
+		Player* player = playerInfo.second;
+		if (player && !player->isRemoved()) {
+			for (int32_t slotId = CONST_SLOT_FIRST; slotId <= CONST_SLOT_LAST; ++slotId) {
+				slots_t slot = static_cast<slots_t>(slotId);
+				Item* item = player->getInventoryItem(slot);
+				if (item) {
+					player->toggleImbuements(item, true, false);
+					g_moveEvents->onPlayerEquip(player, item, slot, false);
+				}
+			}
+		}
+	}
+
 	return true;
 }
 

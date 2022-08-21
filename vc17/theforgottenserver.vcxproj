@@ -187,6 +187,7 @@
     <ClCompile Include="..\src\guild.cpp" />
     <ClCompile Include="..\src\house.cpp" />
     <ClCompile Include="..\src\housetile.cpp" />
+    <ClCompile Include="..\src\imbuing.cpp" />
     <ClCompile Include="..\src\inbox.cpp" />
     <ClCompile Include="..\src\iologindata.cpp" />
     <ClCompile Include="..\src\iomap.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="..\src\guild.h" />
     <ClInclude Include="..\src\house.h" />
     <ClInclude Include="..\src\housetile.h" />
+    <ClInclude Include="..\src\imbuing.h" />
     <ClInclude Include="..\src\inbox.h" />
     <ClInclude Include="..\src\iologindata.h" />
     <ClInclude Include="..\src\iomap.h" />
