@@ -230,7 +230,7 @@ class Imbuement {
 		void update(bool consumeDuration) {
 			int64_t now = OTSYS_TIME();
 			if (consumeDuration) {
-				this->duration = duration - static_cast<int32_t>(now - lastUpdated);
+				this->duration = duration - static_cast<int32_t>((now - lastUpdated)/1000);
 			}
 			this->lastUpdated = now;
 		}
