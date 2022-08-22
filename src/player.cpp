@@ -5291,18 +5291,18 @@ void Player::toggleImbuement(uint8_t imbuId, bool isEquip)
 			break;
 
 		case IMBUING_TYPE_CAPACITY:
-			setVarStats(STAT_CAPACITY, static_cast<int32_t>(getBaseCapacity() * ((primary - 100) / 100.f)));
+			setVarStats(STAT_CAPACITY, static_cast<int32_t>(std::round(getBaseCapacity() * (primary / 100.))));
 			break;
 
 		case IMBUING_TYPE_DEFLECT_PARALYZE:
-			//TO DO / script? / hardcode?
-			setVarStats(STAT_VIBRANCY, secondary);
+			// handled in: imbuing.lua -> onAddCondition
+			setVarStats(STAT_VIBRANCY, primary);
 			break;
 
 		// do nothing
-		//case IMBUING_TYPE_NONE: // invalid
-		//case IMBUING_TYPE_DAMAGE: // calculated during combat
-		//case IMBUING_TYPE_PROTECTION: // calculated during combat
+		//case IMBUING_TYPE_NONE: // empty/incomplete
+		//case IMBUING_TYPE_DAMAGE: // handled in Game::combatBlockHit
+		//case IMBUING_TYPE_PROTECTION: // handled in Player::blockHit
 		//case IMBUING_TYPE_SCRIPT: // not implemented
 		default: // invalid
 			break;

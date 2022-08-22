@@ -1369,31 +1369,38 @@ void Item::refreshImbuements(Player* player, bool consumePassive, bool consumeIn
 		return;
 	}
 
+	bool needRefresh = false;
+
 	std::map<uint8_t, Imbuement>& imbuements = getAttributes()->getImbuements();
-	for (auto& imbuement : imbuements) {
+	for (auto it = imbuements.begin(); it != imbuements.end(); ) {
 		bool erase = false;
 
-		ImbuementType* imbuementType = g_imbuements.getImbuementType(imbuement.second.getImbuId());
-		if (imbuementType && imbuement.second.getDuration() > 0) {
-			imbuement.second.update(consumeInfight || imbuementType->isOutOfCombat() && consumePassive);
+		ImbuementType* imbuementType = g_imbuements.getImbuementType(it->second.getImbuId());
+		if (imbuementType && it->second.getDuration() > 0) {
+			it->second.update(consumeInfight || imbuementType->isOutOfCombat() && consumePassive);
 
-			if (imbuement.second.getDuration() <= 0) {
+			if (it->second.getDuration() <= 0) {
 				erase = true;
+				needRefresh = true;
 			}
-		} else if (imbuement.second.getDuration() != -1) { // spare -1 for permanent imbuements
+		} else if (it->second.getDuration() != -1) { // spare -1 for permanent imbuements
 			erase = true;
+			needRefresh = true;
 		}
 
 		if (erase) {
 			// imbuement type invalid or expired
-			// to do: test if it is safe to use (potential crash)
-			player->toggleImbuement(imbuement.second.getImbuId(), false);
-			imbuements.erase(imbuement.first);
-
-			// refresh client stats (on expired imbuement)
-			player->sendStats();
-			player->sendSkills();
+			player->toggleImbuement(it->second.getImbuId(), false);
+			it = imbuements.erase(it);
+		} else {
+			++it;
 		}
+	}
+
+	// refresh client stats (on expired imbuement)
+	if (needRefresh) {
+		player->sendStats();
+		player->sendSkills();
 	}
 }
 

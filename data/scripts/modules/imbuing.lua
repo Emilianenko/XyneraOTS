@@ -285,12 +285,9 @@ function Item:getImbuementDuration(imbuData)
 			local timeDiff = math.floor((os.mtime() - imbuData.lastUpdated) / 1000)
 			return math.max(0, imbuData.duration - timeDiff)
 		end
-
-		-- player out of combat, return duration
-		return imbuData.duration
 	end
 	
-	-- get duration of unequipped item
+	-- player out of combat or item not equipped
 	return imbuData.duration
 end
 
@@ -337,7 +334,7 @@ function Item:getImbuementsDescription()
 		if imbuements[socketId] then
 			local duration = self:getImbuementDuration(imbuements[socketId])
 			local durationStr = "--:--h"
-			if duration > 0 then
+			if duration ~= -1 then
 				duration = math.floor(duration / 60)
 				durationStr = string.format("%d:%.2dh", math.floor(duration / 60), duration % 60)
 			end
@@ -437,7 +434,7 @@ function getInspectImbuements(item, isVirtual)
 			-- duration
 			local duration = item:getImbuementDuration(imbuement)
 			local durationStr = ", permanent"
-			if duration > 0 then
+			if duration ~= -1 then
 				duration = math.floor(duration / 60)
 				durationStr = string.format(
 					", lasts %d:%.2dh%s",

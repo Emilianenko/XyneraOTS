@@ -4418,7 +4418,7 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 										if (combatType != COMBAT_PHYSICALDAMAGE) {
 											int32_t convertedAmount = std::round(amount * (imbuType->getSecondaryValue() / 100.));
 											convertedDamage[COMBAT_PHYSICALDAMAGE] += convertedAmount;
-											convertedDamage[newCombatType] -= convertedAmount;
+											convertedDamage[combatType] -= convertedAmount;
 											converted = true;
 										}
 									}
