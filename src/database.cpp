@@ -6,6 +6,7 @@
 #include "database.h"
 
 #include "configmanager.h"
+#include "tasks.h"
 
 #include <mysql/errmsg.h>
 
@@ -87,6 +88,10 @@ bool Database::executeQuery(const std::string& query)
 	// executes the query
 	databaseLock.lock();
 
+#ifdef STATS_ENABLED
+	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+#endif
+
 	while (mysql_real_query(handle, query.c_str(), query.length()) != 0) {
 		console::reportError("mysql_real_query", fmt::format("Query: {:s}\nMessage: {:s}", query.substr(0, 256), mysql_error(handle)));
 		auto error = mysql_errno(handle);
@@ -100,6 +105,11 @@ bool Database::executeQuery(const std::string& query)
 	MYSQL_RES* m_res = mysql_store_result(handle);
 	databaseLock.unlock();
 
+#ifdef STATS_ENABLED
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	g_stats.addSqlStats(new Stat(ns, query.substr(0, 100), query.substr(0, 256)));
+#endif
+
 	if (m_res) {
 		mysql_free_result(m_res);
 	}
@@ -110,6 +120,10 @@ bool Database::executeQuery(const std::string& query)
 DBResult_ptr Database::storeQuery(const std::string& query)
 {
 	databaseLock.lock();
+
+#ifdef STATS_ENABLED
+	std::chrono::high_resolution_clock::time_point time_point = std::chrono::high_resolution_clock::now();
+#endif
 
 	retry:
 	while (mysql_real_query(handle, query.c_str(), query.length()) != 0) {
@@ -134,6 +148,11 @@ DBResult_ptr Database::storeQuery(const std::string& query)
 		goto retry;
 	}
 	databaseLock.unlock();
+
+#ifdef STATS_ENABLED
+	uint64_t ns = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - time_point).count();
+	g_stats.addSqlStats(new Stat(ns, query.substr(0, 100), query.substr(0, 256)));
+#endif
 
 	// retrieving results of query
 	DBResult_ptr result = std::make_shared<DBResult>(res);

@@ -62,7 +62,7 @@ void Scheduler::shutdown()
 	});
 }
 
-SchedulerTask* createSchedulerTask(uint32_t delay, TaskFunc&& f)
+SchedulerTask* createNewSchedulerTask(uint32_t delay, TaskFunc&& f, const std::string& description, const std::string& extraDescription)
 {
-	return new SchedulerTask(delay, std::move(f));
+	return new SchedulerTask(delay, std::move(f), description, extraDescription);
 }

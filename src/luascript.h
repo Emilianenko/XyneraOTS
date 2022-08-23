@@ -420,10 +420,11 @@ class LuaScriptInterface
 		lua_State* luaState = nullptr;
 
 		int32_t eventTableRef = -1;
-		int32_t runningEventId = EVENT_ID_USER;
+
+		static int32_t runningEventId; // = EVENT_ID_USER; / previously not static
 
 		//script file cache
-		std::map<int32_t, std::string> cacheFiles;
+		static std::map<int32_t, std::string> cacheFiles; // previously not static
 
 	private:
 		void registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction = nullptr);

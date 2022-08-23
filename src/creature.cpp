@@ -1255,7 +1255,7 @@ bool Creature::addCondition(Condition* condition, bool force/* = false*/)
 	if (!force && condition->getType() == CONDITION_HASTE && hasCondition(CONDITION_PARALYZE)) {
 		int64_t walkDelay = getWalkDelay();
 		if (walkDelay > 0) {
-			g_scheduler.addEvent(createSchedulerTask(walkDelay, [=, id = getID()]() { g_game.forceAddCondition(id, condition); }));
+			g_scheduler.addEvent(createSchedulerTask(walkDelay, ([=, id = getID()]() { g_game.forceAddCondition(id, condition); })));
 			return false;
 		}
 	}
@@ -1303,7 +1303,7 @@ void Creature::removeCondition(ConditionType_t type, bool force/* = false*/)
 		if (!force && type == CONDITION_PARALYZE) {
 			int64_t walkDelay = getWalkDelay();
 			if (walkDelay > 0) {
-				g_scheduler.addEvent(createSchedulerTask(walkDelay, [=, id = getID()]() { g_game.forceRemoveCondition(id, type); }));
+				g_scheduler.addEvent(createSchedulerTask(walkDelay, ([=, id = getID()]() { g_game.forceRemoveCondition(id, type); })));
 				return;
 			}
 		}
@@ -1330,7 +1330,7 @@ void Creature::removeCondition(ConditionType_t type, ConditionId_t conditionId, 
 		if (!force && type == CONDITION_PARALYZE) {
 			int64_t walkDelay = getWalkDelay();
 			if (walkDelay > 0) {
-				g_scheduler.addEvent(createSchedulerTask(walkDelay, [=, id = getID()]() { g_game.forceRemoveCondition(id, type); }));
+				g_scheduler.addEvent(createSchedulerTask(walkDelay, ([=, id = getID()]() { g_game.forceRemoveCondition(id, type); })));
 				return;
 			}
 		}
@@ -1368,7 +1368,7 @@ void Creature::removeCondition(Condition* condition, bool force/* = false*/)
 	if (!force && condition->getType() == CONDITION_PARALYZE) {
 		int64_t walkDelay = getWalkDelay();
 		if (walkDelay > 0) {
-			g_scheduler.addEvent(createSchedulerTask(walkDelay, [id = getID(), type = condition->getType()]() { g_game.forceRemoveCondition(id, type); }));
+			g_scheduler.addEvent(createSchedulerTask(walkDelay, ([id = getID(), type = condition->getType()]() { g_game.forceRemoveCondition(id, type); })));
 			return;
 		}
 	}

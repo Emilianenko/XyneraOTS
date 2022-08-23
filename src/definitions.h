@@ -19,6 +19,9 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 // experimental feature - may cause connection issues
 //#define LUA_EXTENDED_PROTOCOL
 
+// enable logging execution times
+#define STATS_ENABLED
+
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
 #endif

@@ -88,7 +88,7 @@ Connection::~Connection()
 void Connection::accept(Protocol_ptr protocol)
 {
 	this->protocol = protocol;
-	g_dispatcher.addTask(createTask([=]() { protocol->onConnect(); }));
+	g_dispatcher.addTask(createTask(([=]() { protocol->onConnect(); })));
 	connectionState = CONNECTION_STATE_GAMEWORLD_AUTH;
 	accept();
 }
