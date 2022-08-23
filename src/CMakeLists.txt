@@ -37,6 +37,45 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/item.cpp
 	${CMAKE_CURRENT_LIST_DIR}/items.cpp
 	${CMAKE_CURRENT_LIST_DIR}/luascript.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_action.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_combat.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_condition.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_container.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_creature.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_creatureevent.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_db.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_functions.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_game.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_globalevent.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_group.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_guild.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_house.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_imbuementtype.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_item.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_itemtype.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_loot.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_modalwindow.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_monster.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_monsterspell.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_monstertype.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_moveevent.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_networkmessage.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_npc.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_os.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_outfit.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_party.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_player.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_podium.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_position.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_spell.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_table.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_talkaction.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_teleport.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_tile.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_town.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_variant.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_vocation.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_weapon.cpp
 	${CMAKE_CURRENT_LIST_DIR}/mailbox.cpp
 	${CMAKE_CURRENT_LIST_DIR}/map.cpp
 	${CMAKE_CURRENT_LIST_DIR}/monster.cpp

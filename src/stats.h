@@ -16,7 +16,7 @@ class Task;
 #define createTimedTask(delay, function) createNewTask(delay, function, #function, __FUNCTION__)
 #define createSchedulerTask(delay, function) createNewSchedulerTask(delay, function, #function, __FUNCTION__)
 #define addGameTask(function, ...) addNewGameTask(function, #function, __FUNCTION__, ## __VA_ARGS__)
-#define addGameTimedTask(delay, function, ...) addNewGameTaskTimed(delay, function, #function, __FUNCTION__, ## __VA_ARGS__)
+#define addGameTaskTimed(delay, function, ...) addNewGameTaskTimed(delay, function, #function, __FUNCTION__, ## __VA_ARGS__)
 #define addGameTaskWithPlayer(player, function, ...) addNewGameTask(function, #function, player, ## __VA_ARGS__)
 #define addGameTimedTaskWithPlayer(player, delay, function, ...) addNewGameTaskTimed(delay, function, #function, player, ## __VA_ARGS__)
 #else
@@ -24,7 +24,7 @@ class Task;
 #define createTimedTask(delay, function) createNewTask(delay, function, "", "")
 #define createSchedulerTask(delay, function) createNewSchedulerTask(delay, function, "", "")
 #define addGameTask(function, ...) addNewGameTask(function, "", "", ## __VA_ARGS__)
-#define addGameTimedTask(delay, function, ...) addNewGameTaskTimed(delay, function, "", "", ## __VA_ARGS__)
+#define addGameTaskTimed(delay, function, ...) addNewGameTaskTimed(delay, function, "", "", ## __VA_ARGS__)
 #define addGameTaskWithPlayer(player, function, ...) addNewGameTask(function, "", "", ## __VA_ARGS__)
 #define addGameTimedTaskWithPlayer(player, delay, function, ...) addNewGameTaskTimed(delay, function, "", "", ## __VA_ARGS__)
 #endif

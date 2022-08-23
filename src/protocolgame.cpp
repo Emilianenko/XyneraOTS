@@ -828,10 +828,10 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x6C: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_SOUTHWEST); }); break;
 		case 0x6D: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTHWEST); }); break;
 		// 0x6E - empty
-		case 0x6F: g_scheduler.addEvent(createSchedulerTask(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_NORTH); })); break;
-		case 0x70: g_scheduler.addEvent(createSchedulerTask(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_EAST); })); break;
-		case 0x71: g_scheduler.addEvent(createSchedulerTask(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_SOUTH); })); break;
-		case 0x72: g_scheduler.addEvent(createSchedulerTask(DISPATCHER_TASK_EXPIRATION, [playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_WEST); })); break;
+		case 0x6F: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, ([playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_NORTH); })); break;
+		case 0x70: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, ([playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_EAST); })); break;
+		case 0x71: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, ([playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_SOUTH); })); break;
+		case 0x72: addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, ([playerID = player->getID()]() { g_game.playerTurn(playerID, DIRECTION_WEST); })); break;
 		case 0x73: parsePlayerMinimapQuery(msg); break; // ctrl+shift+left click on minimap
 		// 0x74-0x75 - empty
 		// case 0x76: break; // character trade ui
