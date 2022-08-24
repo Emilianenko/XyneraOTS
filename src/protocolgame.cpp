@@ -1078,6 +1078,7 @@ void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& remo
 	int64_t now = OTSYS_TIME();
 	bool elementExists = !(knownCreatureMap.find(id) == knownCreatureMap.end() || now > knownCreatureMap[id]);
 	if (elementExists) {
+		knownCreatureMap[id] = now + CLIENT_CACHE_DURATION; // extend duration
 		known = true;
 		return;
 	}
