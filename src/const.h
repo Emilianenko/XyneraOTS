@@ -5,6 +5,7 @@
 #define FS_CONST_H
 
 static constexpr int32_t NETWORKMESSAGE_MAXSIZE = 0xFFFF;
+static constexpr int64_t CLIENT_CACHE_DURATION = 5 * 60 * 1000; // how long can creature be "known"
 
 enum MagicEffectsType_t : uint8_t {
 	MAGIC_EFFECTS_END_LOOP = 0, // ends the magic effect loop

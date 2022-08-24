@@ -404,7 +404,7 @@ void ProtocolGame::fastRelog(const std::string& otherPlayerName)
 	}
 
 	// make sure the camera will follow the player
-	knownCreatureSet.clear();
+	knownCreatureMap.clear();
 
 	// copy client information
 	otherPlayer->setOperatingSystem(operatingSystem);
@@ -1075,33 +1075,35 @@ void ProtocolGame::GetFloorDescription(NetworkMessage& msg, int32_t x, int32_t y
 
 void ProtocolGame::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown)
 {
-	auto result = knownCreatureSet.insert(id);
-	if (!result.second) {
+	int64_t now = OTSYS_TIME();
+	bool elementExists = !(knownCreatureMap.find(id) == knownCreatureMap.end() || now > knownCreatureMap[id]);
+	if (elementExists) {
 		known = true;
 		return;
 	}
 
+	knownCreatureMap[id] = now + CLIENT_CACHE_DURATION;
 	known = false;
 
-	if (knownCreatureSet.size() > 1300) {
+	if (knownCreatureMap.size() > 1300) {
 		// Look for a creature to remove
-		for (auto it = knownCreatureSet.begin(), end = knownCreatureSet.end(); it != end; ++it) {
-			Creature* creature = g_game.getCreatureByID(*it);
+		for (auto it = knownCreatureMap.begin(), end = knownCreatureMap.end(); it != end; ++it) {
+			Creature* creature = g_game.getCreatureByID(it->first);
 			if (!canSee(creature)) {
-				removedKnown = *it;
-				knownCreatureSet.erase(it);
+				removedKnown = it->first;
+				knownCreatureMap.erase(it);
 				return;
 			}
 		}
 
 		// Bad situation. Let's just remove anyone.
-		auto it = knownCreatureSet.begin();
-		if (*it == id) {
+		auto it = knownCreatureMap.begin();
+		if (it->first == id) {
 			++it;
 		}
 
-		removedKnown = *it;
-		knownCreatureSet.erase(it);
+		removedKnown = it->first;
+		knownCreatureMap.erase(it);
 	} else {
 		removedKnown = 0;
 	}
@@ -3298,7 +3300,6 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Position& ne
 		if (teleport) {
 			sendRemoveTileCreature(creature, oldPos, oldStackPos);
 			sendMapDescription(newPos);
-			sendUpdateTileCreature(newPos, newStackPos, creature);
 		} else {
 			NetworkMessage msg;
 			if (oldPos.z == 7 && newPos.z >= 8) {
@@ -3897,11 +3898,11 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	if (displayMode != CREATURE_DISPLAY_MODE_NONE) {
 		creatureType = static_cast<CreatureType_t>(displayMode - 1);
 	}
-	/*
+	
 	if (known) {
 		msg.add<uint16_t>(0x62);
 		msg.add<uint32_t>(creature->getID());
-	} else { */
+	} else {
 		msg.add<uint16_t>(0x61);
 		msg.add<uint32_t>(remove);
 		msg.add<uint32_t>(creature->getID());
@@ -3912,7 +3913,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 
 		const std::string& displayName = creature->getDisplayName();
 		msg.addString(!displayName.empty() ? displayName : (creature->isHealthHidden() ? "" : creature->getName()));
-	//}
+	}
 
 	if (creature->isHealthHidden()) {
 		msg.addByte(0x00);
@@ -3941,9 +3942,9 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	msg.addByte(player->getSkullClient(creature));
 	msg.addByte(player->getPartyShield(otherPlayer));
 
-	//if (!known) {
+	if (!known) {
 		msg.addByte(player->getGuildEmblem(otherPlayer));
-	//}
+	}
 
 	// Creature type and summon emblem
 	msg.addByte(creatureType);

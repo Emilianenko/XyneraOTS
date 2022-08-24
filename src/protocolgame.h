@@ -356,7 +356,7 @@ class ProtocolGame final : public Protocol
 			g_dispatcher.addTask(createNewTask(delay, std::forward<Callable>(function), function_str, extra_info));
 		}
 
-		std::unordered_set<uint32_t> knownCreatureSet;
+		std::unordered_map<uint32_t, int64_t> knownCreatureMap;
 		Player* player = nullptr;
 
 		uint32_t eventConnect = 0;
