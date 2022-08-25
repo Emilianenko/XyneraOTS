@@ -377,6 +377,10 @@ do
 	door:register()
 end
 
+local function canEnterAutolockedDoor(player, house, doorId)
+	return house:isInAccessList(player, doorId) or player:getAccountId() == house:getOwnerAccountId() or house:isInAccessList(player, SUBOWNER_LIST)
+end
+
 do
 	local doorEvent = MoveEvent()
 	doorEvent:type("stepin")
@@ -408,7 +412,7 @@ do
 				local house = tile:getHouse()
 				if house then
 					local doorId = item:getAttribute(ITEM_ATTRIBUTE_DOORID)
-					if doorId ~= 0 and not house:isInAccessList(player, doorId) then
+					if doorId ~= 0 and not canEnterAutolockedDoor(creature, house, doorId) then
 						creature:sendCancelMessage(RETURNVALUE_PLAYERISNOTINVITED)
 						creature:teleportTo(fromPosition, true)
 						return false
