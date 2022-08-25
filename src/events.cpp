@@ -153,6 +153,12 @@ bool Events::load()
 				info.playerOnBestiaryRaceView = event;
 			} else if (methodName == "onFrameView") {
 				info.playerOnFrameView = event;
+			} else if (methodName == "onImbuementApply") {
+				info.playerOnImbuementApply = event;
+			} else if (methodName == "onImbuementClear") {
+				info.playerOnImbuementClear = event;
+			} else if (methodName == "onImbuementExit") {
+				info.playerOnImbuementExit = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -1796,6 +1802,92 @@ uint8_t Events::eventPlayerOnFrameView(Player* player, const Creature* target)
 
 	scriptInterface.resetScriptEnv();
 	return frameColor;
+}
+
+void Events::eventPlayerOnImbuementApply(Player* player, uint8_t slotId, uint8_t imbuId, bool luckProtection)
+{
+	// Player:onImbuementApply(slotId, imbuId, luckProtection)
+	if (info.playerOnImbuementApply == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow(__FUNCTION__);
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnImbuementApply, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnImbuementApply);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// slotId
+	lua_pushnumber(L, slotId);
+
+	// imbuId
+	lua_pushnumber(L, imbuId);
+
+	// luckProtection
+	lua_pushboolean(L, luckProtection);
+
+	scriptInterface.callVoidFunction(4);
+}
+
+void Events::eventPlayerOnImbuementClear(Player* player, uint8_t slotId)
+{
+	// Player:onImbuementClear(slotId)
+	if (info.playerOnImbuementClear == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow(__FUNCTION__);
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnImbuementClear, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnImbuementClear);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	lua_pushnumber(L, slotId);
+
+	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnImbuementExit(Player* player)
+{
+	// Player:onImbuementExit()
+	if (info.playerOnImbuementExit == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		console::reportOverflow(__FUNCTION__);
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnImbuementExit, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnImbuementExit);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	scriptInterface.callVoidFunction(1);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)

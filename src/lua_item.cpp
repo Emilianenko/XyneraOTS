@@ -903,10 +903,6 @@ int LuaScriptInterface::luaItemGetImbuement(lua_State* L)
 	}
 
 	uint8_t socketId = getNumber<uint8_t>(L, 2);
-	if (socketId == 0) {
-		lua_pushnil(L);
-		return 1;
-	}
 
 	Imbuement* imbuement = item->getAttributes()->getImbuement(socketId);
 	if (!imbuement) {
@@ -937,8 +933,8 @@ int LuaScriptInterface::luaItemRemoveImbuement(lua_State* L)
 		player->toggleImbuements(item, false, true);
 	}
 
-	// remove imbuement
-	item->getAttributes()->removeImbuement(getNumber<uint8_t>(L, 2));
+	// remove imbuement and push result
+	lua_pushboolean(L, item->getAttributes()->removeImbuement(getNumber<uint8_t>(L, 2)));
 
 	// item is equipped, load imbuements
 	if (player) {

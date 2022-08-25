@@ -71,6 +71,9 @@ ec.onRequestPlayerTab = {}
 ec.onBestiaryInit = {}
 ec.onBestiaryBrowse = {}
 ec.onBestiaryRaceView = {}
+ec.onImbuementApply = {}
+ec.onImbuementClear = {}
+ec.onImbuementExit = {}
 ec.onConnect = {}
 
 -- Monster

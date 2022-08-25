@@ -113,6 +113,9 @@ class ProtocolGame final : public Protocol
 		void parseForgeAction(NetworkMessage& msg);
 		void parseForgeBrowseHistory(NetworkMessage& msg);
 
+		// Imbuing
+		void parseImbuingApply(NetworkMessage& msg);
+
 		// Items
 		void parseEquipObject(NetworkMessage& msg);
 		void parseThrow(NetworkMessage& msg);

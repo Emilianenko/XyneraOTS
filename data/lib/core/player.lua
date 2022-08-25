@@ -1,3 +1,11 @@
+function Player:sendInfoBox(text)
+	local m = NetworkMessage()
+	m:addByte(0xED)
+	m:addByte(0x00)
+	m:addString(text)
+	m:sendToPlayer(self)
+end
+
 do
 	-- admin check for various server actions
 	-- set this option to true if you wish to use admin commands as a player (god account only)

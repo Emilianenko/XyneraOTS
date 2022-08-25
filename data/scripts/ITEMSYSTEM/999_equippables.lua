@@ -1838,6 +1838,15 @@ for slotType, slotItems in pairs(Equippables) do
 end
 		
 weaponAction.onUse = function(player, item, fromPosition, target, toPosition, isHotkey)
+	-- quality of life modification:
+	-- if imbuements module is installed: open imbuements dialog when using weapon on altar
+	if Player.sendImbuingUI and ImbuingAltars then
+		if target and target:isItem() and table.contains(ImbuingAltars, target:getId()) then
+			player:sendImbuingUI(item, target, fromPosition)
+			return true
+		end
+	end
+
 	return destroyItem(player, target, toPosition)
 end
 weaponAction:register()

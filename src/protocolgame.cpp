@@ -916,9 +916,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;
 		case 0xD3: parseSetOutfit(msg); break;
 		case 0xD4: parseToggleMount(msg); break;
-		//case 0xD5: break; // inspect character feature: client preferences
-		//case 0xD6: break; // imbuing(?)
-		//case 0xD7: break; // imbuing(?)
+		case 0xD5: parseImbuingApply(msg); break; // apply imbu
+		case 0xD6: addGameTask(([=, playerID = player->getID(), slotId = msg.getByte()]() { g_game.playerImbuingClear(playerID, slotId); })); break; // clear imbu
+		case 0xD7: addGameTask([playerID = player->getID()]() { g_game.playerImbuingExit(playerID); }); break; // close ui
 		//case 0xD8: break; // daily reward 1
 		//case 0xD9: break; // daily reward 2
 		//case 0xDA: break; // daily reward 3
@@ -1901,6 +1901,15 @@ void ProtocolGame::parseInspectItem(NetworkMessage& msg)
 void ProtocolGame::parsePlayerMinimapQuery(NetworkMessage& msg)
 {
 	addGameTask(([=, playerID = player->getID(), pos = msg.getPosition()]() { g_game.playerMinimapQuery(playerID, pos); }));
+}
+
+void ProtocolGame::parseImbuingApply(NetworkMessage& msg)
+{
+	uint8_t slotId = msg.getByte();
+	uint8_t imbuId = msg.getByte();
+	msg.skipBytes(3); // imbuId is u32, but we use one byte only
+	bool luckProtection = msg.getByte() != 0;
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerImbuingApply(playerID, slotId, imbuId, luckProtection); }));
 }
 
 // Send methods

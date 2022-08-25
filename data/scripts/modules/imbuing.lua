@@ -44,7 +44,6 @@ ImbuNames = {
 	[IMBUING_TYPE_DEFLECT_PARALYZE] = "Vibrancy",
 }
 
--- AUTOREGISTER / these variables will be cleared after initialization
 ImbuDescriptions = {
 	[IMBUING_TYPE_CRIT] = "Critical extra damage: %d%%. Critical hit chance: %d%%.",
 	[IMBUING_TYPE_DAMAGE] = {

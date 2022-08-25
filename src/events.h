@@ -74,7 +74,9 @@ class Events
 		int32_t playerOnBestiaryBrowse = -1;
 		int32_t playerOnBestiaryRaceView = -1;
 		int32_t playerOnFrameView = -1;
-
+		int32_t playerOnImbuementApply = -1;
+		int32_t playerOnImbuementClear = -1;
+		int32_t playerOnImbuementExit = -1;
 		int32_t playerOnConnect = -1;
 		int32_t playerOnExtendedProtocol = -1;
 
@@ -142,6 +144,9 @@ class Events
 		void eventPlayerOnBestiaryBrowse(Player* player, const std::string& category, std::vector<uint16_t> raceList);
 		void eventPlayerOnBestiaryRaceView(Player* player, uint16_t raceId);
 		uint8_t eventPlayerOnFrameView(Player* player, const Creature* target);
+		void eventPlayerOnImbuementApply(Player* player, uint8_t slotId, uint8_t imbuId, bool luckProtection);
+		void eventPlayerOnImbuementClear(Player* player, uint8_t slotId);
+		void eventPlayerOnImbuementExit(Player* player);
 
 		void eventPlayerOnConnect(Player* player, bool isLogin);
 

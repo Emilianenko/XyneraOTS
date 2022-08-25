@@ -6378,6 +6378,50 @@ void Game::playerRequestRaceInfo(uint32_t playerId, uint16_t raceId)
 	g_events->eventPlayerOnBestiaryRaceView(player, raceId);
 }
 
+void Game::playerImbuingApply(uint32_t playerId, uint8_t slotId, uint8_t imbuId, bool luckProtection)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnImbuementApply(player, slotId, imbuId, luckProtection);
+}
+
+void Game::playerImbuingClear(uint32_t playerId, uint8_t slotId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	g_events->eventPlayerOnImbuementClear(player, slotId);
+}
+
+void Game::playerImbuingExit(uint32_t playerId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnImbuementExit(player);
+}
+
 #ifdef LUA_EXTENDED_PROTOCOL
 void Game::parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message)
 {

@@ -441,6 +441,24 @@ function Player:onFrameView(targetId)
 	return 255
 end
 
+function Player:onImbuementApply(slotId, imbuId, luckProtection)
+	if EventCallback.onImbuementApply then
+		EventCallback.onImbuementApply(self, slotId, imbuId, luckProtection)
+	end
+end
+
+function Player:onImbuementClear(slotId)
+	if EventCallback.onImbuementClear then
+		EventCallback.onImbuementClear(self, slotId)
+	end
+end
+
+function Player:onImbuementExit()
+	if EventCallback.onImbuementExit then
+		EventCallback.onImbuementExit(self)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)
@@ -492,9 +510,6 @@ function callPacketEvent(player, recvbyte, networkMessage)
 end
 
 function Player:onExtendedProtocol(recvbyte, networkMessage)
-	-- unhnadled login packets:
-	-- 0xCE -- allow everyone to inspect me(?)
-	-- 0xD0 -- quest tracker
 	callPacketEvent(self, recvbyte, networkMessage)
 end
 -- end extended protocol

@@ -436,6 +436,9 @@ class Game
 		void playerInitBestiary(uint32_t playerId);
 		void playerBrowseBestiary(uint32_t playerId, const std::string& category, std::vector<uint16_t> raceList);
 		void playerRequestRaceInfo(uint32_t playerId, uint16_t raceId);
+		void playerImbuingApply(uint32_t playerId, uint8_t slotId, uint8_t imbuId, bool luckProtection);
+		void playerImbuingClear(uint32_t playerId, uint8_t slotId);
+		void playerImbuingExit(uint32_t playerId);
 
 #ifdef LUA_EXTENDED_PROTOCOL
 		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);

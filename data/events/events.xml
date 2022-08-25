@@ -80,6 +80,11 @@
 	<event class="Player" method="onBestiaryBrowse" enabled="1" />
 	<event class="Player" method="onBestiaryRaceView" enabled="1" />
 
+	<!-- Player - imbuing -->
+	<event class="Player" method="onImbuementApply" enabled="1" />
+	<event class="Player" method="onImbuementClear" enabled="1" />
+	<event class="Player" method="onImbuementExit" enabled="1" />	
+	
 	<!-- Player - network -->
 	<event class="Player" method="onConnect" enabled="1" />
 	<event class="Player" method="onExtendedProtocol" enabled="1" />
