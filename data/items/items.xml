@@ -34973,6 +34973,7 @@
 		<attribute key="weight" value="250" />
 	</item>
 	<item id="35239" article="a" name="skull coin">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="25" />
 	</item>
 	<item id="35240" article="a" name="vial with a skull cork">
@@ -34997,12 +34998,14 @@
 	</item>
 	<item id="35245" article="an" name="angel figurine">
 		<attribute key="description" value="It is made of ivory." />
+		<attribute key="weight" value="650"/>
 	</item>
 	<item id="35247" article="a" name="soulforged lantern">
 		<attribute key="description" value="Forged of tormented souls, it might grant protection from the powers of the Pale Worm, but it has a chance to burn out in the process."/>
 		<attribute key="weight" value="3000"/>
 	</item>
 	<item id="35258" name="bone meal">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="80" />
 	</item>
 	<item id="35272" article="a" name="phantasmal axe">
@@ -35056,9 +35059,11 @@
 		<attribute key="weight" value="80"/>
 	</item>
 	<item id="35278" article="a" name="giant amethyst">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="170" />
 	</item>
 	<item id="35279" article="a" name="giant topaz">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="170" />
 	</item>
 	<item id="35280" article="an" name="amber with a bug">
@@ -35104,12 +35109,15 @@
 		<attribute key="weight" value="80"/>
 	</item>
 	<item id="35425" article="a" name="white gem">
+		<attribute key="showCount" value="1"/>
 		<attribute key="weight" value="30" />
 	</item>
 	<item id="35426" article="a" name="diamond">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="30" />
 	</item>
 	<item id="35427" article="a" name="moonstone">
+	    <attribute key="showCount" value="1"/>
 		<attribute key="weight" value="35" />
 	</item>
 	<item id="35428" article="a" name="silver hand mirror">
@@ -43533,4 +43541,415 @@
 	 <item id="21934" name="stone rubble">
         <attribute key="blockprojectile" value="0" />
     </item>
+		<item id="34883" article="a" name="lost soul">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="20"/>
+	</item>
+		<item id="35359" article="a" name="death toll">
+		<attribute key="weight" value="4"/>
+	</item>
+		<item id="35361" article="a" name="pair of old bracers">
+		<attribute key="armor" value="1"/>
+		<attribute key="weight" value="20"/>
+	</item>
+		<item id="35360" article="a" name="phantasmal hair">
+		<attribute key="weight" value="50"/>
+	</item>
+		<item id="35354" article="a" name="ensouled essence">
+		<attribute key="weight" value="135"/>
+	</item>
+		<item id="34882" article="a" name="purifier for lost souls">
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="35280" article="a" name="amber with a bug">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="35281" article="a" name="amber with a dragonfly">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="35282" article="a" name="amber">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="35289" article="a" name="eye of the chasm">
+		<attribute key="description" value="A beautiful gem radiating a white light from within"/>
+		<attribute key="weight" value="250"/>
+	</item>
+		<item id="35250" name="bloody tears">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="20"/>
+	</item>
+		<item id="35237" article="a" name="brain head's brain">
+		<attribute key="weight" value="70"/>
+	</item>
+		<item id="35234" article="a" name="brain head's giant neuron">
+		<attribute key="weight" value="24"/>
+	</item>
+		<item id="35235" article="a" name="brain head's left hemisphere">
+		<attribute key="weight" value="35"/>
+	</item>
+		<item id="35236" article="a" name="brain head's right hemisphere">
+		<attribute key="weight" value="35"/>
+	</item>
+		<item id="35252" article="a" name="dark bell">
+		<attribute key="weight" value="220"/>
+	</item>
+		<item id="35259" article="a" name="grave flower extract">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="150"/>
+	</item>
+		<item id="35249" article="a" name="grimace">
+		<attribute key="weight" value="60"/>
+	</item>
+		<item id="35251" article="a" name="jagged sickle">
+		<attribute key="weight" value="80"/>
+	</item>
+		<item id="35254" article="a" name="pale worm's scalp">
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="35253" article="a" name="ravenous circlet">
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="35256" article="a" name="writhing brain">
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="35255" article="a" name="writhing heart">
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="35402" article="a" name="santa leech">
+		<attribute key="weight" value="720"/>
+	</item>
+	<item id="35288" article="a" name="raw eye of the chasm">
+		<attribute key="description" value="A raw yet beautiful gem"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="34881" article="a" name="scalpel">
+		<attribute key="weight" value="490"/>
+	</item>
+	<item id="35380" article="a" name="spectral gold nugget">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="135"/>
+	</item>
+	<item id="35381" article="a" name="spectral silver nugget">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="135"/>
+	</item>
+	<item id="34853" article="a" name="ulcer probe">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="34884" article="a" name="purified soul">
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="35413" article="a" name="luminescent crystal">
+		<attribute key="description" value="This crystal glows from the inside. An unknown force seems to be interested in it, dragging and pulling. Better to leave it tucked away"/>
+		<attribute key="showCount" value="1"/>
+		<attribute key="weight" value="25"/>
+	</item>
+	<item id="35367" article="a" name="luminescent crystal pickaxe">
+		<attribute key="weight" value="135"/>
+	</item>
+	<item id="36589" article="an" name="apron" plural="aprons">
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="36794" article="a" name="capricious heart" plural="capricious hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36576" name="Malice's horn">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="36577" name="Malice's spine">
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="36578" name="Cruelty's claw" plural="Cruelty's claws">
+		<attribute key="weight" value="140"/>
+	</item>
+	<item id="36579" name="Cruelty's chest" plural="Cruelty's chests">
+		<attribute key="weight" value="140"/>
+	</item>
+	<item id="36580" name="Greed's arm" plural="Greed's arms">
+		<attribute key="weight" value="125"/>
+	</item>
+	<item id="36581" name="Megalomania's skull" plural="Megalomania's skulls">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="36582" name="Spite's spirit">
+		<attribute key="weight" value="110"/>
+	</item>
+	<item id="36583" article="a" name="vial of Hatred" plural="vials of Hatred">
+		<attribute key="weight" value="110"/>
+	</item>
+	<item id="36584" name="Megalomania's essence" plural="Megalomania's essences">
+		<attribute key="weight" value="110"/>
+	</item>
+	<item id="36586" article="an" name="salt">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="36817" article="a" name="broken longbow" plural="broken longbows">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="36592" article="a" name="hand" plural="hands">
+		<!--brachiodemon-->
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="36593" article="a" name="head" plural="heads">
+		<!--brachiodemon-->
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="36588" article="an" name="head" plural="heads">
+		<!--many faces-->
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="36590" article="a" name="telescope eye" plural="telescope eyes">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="36594" name="roots">
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="36599" article="a" name="werehyaena nose" plural="werehyaena noses">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="36600" article="a" name="werehyaena talisman" plural="werehyaena talismans">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="36601" article="a" name="ivory carving" plural="ivory carvings">
+		<attribute key="weight" value="140"/>
+	</item>
+	<item id="36603" article="a" name="hard-boiled hydra egg" plural="hard-boiled hydra eggs">
+		<attribute key="weight" value="2000"/>
+	</item>
+	<item id="36638" name="crawler's essence" plural="crawler's essences">
+		<attribute key="weight" value="45"/>
+	</item>
+	<item id="36664" name="white silk flower">
+		<attribute key="description" value="The petals are made of silk, the buds and pistil of white pearls. The werelions of the Darama Desert often use such flowers as love pledges"/>
+		<attribute key="weight" value="300"/>
+	</item>
+	<item id="36670" name="jaws">
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="36678" article="a" name="goblet of gloom" plural="goblets of gloom">
+		<attribute key="description" value="It is adorned with rubies"/>
+		<attribute key="weight" value="190"/>
+	</item>
+	<item id="36679" article="a" name="brooch of embracement" plural="brooches of embracement">
+		<attribute key="description" value="The oval gem looks like a huge onyx"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="36680" article="a" name="gruesome fan" plural="gruesome fans">
+		<attribute key="description" value="It is made of spider legs and human skin"/>
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="36681" article="a" name="diabolic skull" plural="diabolic skulls">
+		<attribute key="description" value="It is made of gold and rubies"/>
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="36794" article="a" name="capricious heart" plural="capricious hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36795" article="an" name="infernal heart" plural="infernal hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36796" article="a" name="hazardous heart" plural="hazardous hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36797" article="a" name="mould heart" plural="mould hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36798" article="a" name="distorted heart" plural="distorted hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36799" article="a" name="vibrant heart" plural="vibrant hearts">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="75"/>
+	</item>
+	<item id="36805" article="a" name="distorted robe" plural="distorted robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="36804" article="a" name="mould robe" plural="mould robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="36800" article="a" name="vibrant robe" plural="vibrant robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="36728" article="a" name="spectral horseshoe" plural="spectral horseshoes">
+		<attribute key="weight" value="120"/>
+	</item>
+	<item id="36732" article="a" name="bracelet of strengthening">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="36865" name="Fitzwilliam's Special Reserve">
+		<attribute key="description" value="A fine but practically ancient wine. It's absolutely not advised to actually drink it"/>
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="36820" article="a" name="fur shred" plural="fur shreds">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="36756" name="Katex' blood">
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="36818" article="a" name="lion cloak patch" plural="lion cloak patches">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="36816" article="a" name="lion crest" plural="lion crests">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="36819" article="a" name="lion seal" plural="lion seals">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="36437" article="a" name="lion figurine" plural="lion figurines">
+		<attribute key="description" value="It is made of gold"/>
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="36434" article="a" name="raw watermelon tourmaline" plural="raw watermelon tourmalines">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="36735" name="Seal of Quality">
+		<attribute key="description" value="It was awarded by a CM as a token of gratitude for valuable feedback"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="36730" article="a" name="spectral horse tack" plural="spectral horse tacks">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="36729" article="a" name="spectral saddle" plural="spectral saddles">
+		<attribute key="weight" value="270"/>
+	</item>
+	<item id="36759" article="a" name="Srezz' eye">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="36731" name="the skull of a beast">
+		<attribute key="description" value="Unleash the beast"/>
+		<attribute key="weight" value="230"/>
+	</item>
+	<item id="36757" article="an" name="Utua's poison">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="36758" article="a" name="Yirkas' egg">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="36801" article="a" name="capricious robe" plural="capricious robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="36803" article="a" name="hazardous robe" plural="hazardous robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+		<item id="36434" article="a" name="raw watermelon tourmaline" plural="raw watermelon tourmalines">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="36435" article="a" name="watermelon tourmaline" plural="watermelon tourmalines">
+		<attribute key="weight" value="110"/>
+	</item>
+	<item id="36436" article="a" name="watermelon tourmaline" plural="watermelon tourmalines">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="36733" name="chopped lion mane petals">
+		<attribute key="description" value="They are red and orange and exhale a faint stench of incense"/>
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="36802" article="an" name="infernal robe" plural="infernal robes">
+		<attribute key="showCount" value="0"/>
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="36591" article="a" name="crown" plural="crowns">
+		<attribute key="weight" value="1900"/>
+	</item>
+	<item id="36585" article="a" name="rod" plural="rods">
+		<attribute key="weight" value="90"/>
+	</item>
+	<item id="36765" article="a" name="bag you desire">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item id="36914" name="red silk flower">
+		<attribute key="description" value="The petals are made of silk, the buds and pistil of rubies. The werelions of the Darama Desert often use such flowers as decorations for bravery and valour"/>
+		<attribute key="weight" value="300"/>
+	</item>
+	<item id="36606" name="cleansed sanity">
+		<attribute key="description" value="Can be used to douse Goshnar's madness"/>
+		<attribute key="weight" value="101"/>
+	</item>
+	<item id="36449" article="a" name="sorrow">
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="38248" article="a" name="bladespark figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="38247" article="a" name="mossmasher figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="38246" article="a" name="sandscourge figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+		<item id="38245" article="a" name="snowbash figurine">
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="38270" article="a" name="cheesy membership card" plural="cheesy membership cards">
+		<attribute key="weight" value="270"/>
+	</item>
+	<item id="5800" article="a" name="grappling hook">
+		<attribute key="weight" value="620"/>
+	</item>
+	<item id="38252" name="mouldy powder">
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="38269" name="Ratmiral's hat" plural="Ratmiral's hats">
+		<attribute key="weight" value="270"/>
+	</item>
+	<item id="38230" name="shark fins">
+		<attribute key="weight" value="620"/>
+	</item>
+	<item id="38267" article="a" name="tentacle of Tentugly" plural="tentacles of Tentugly">
+		<attribute key="weight" value="480"/>
+	</item>
+	<item id="38266" article="a" name="Tentugly's eye" plural="Tentugly's eyes">
+		<attribute key="weight" value="120"/>
+	</item>
+	<item id="38268" name="Tentugly's jaws">
+		<attribute key="weight" value="320"/>
+	</item>
+	<item id="37992" article="a" name="ballistic boulder">
+		<attribute key="weight" value="2500"/>
+	</item>
+	<item id="38164" article="a" name="cheesy key">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="38237" article="a" name="golden cheese wedge" plural="golden cheese wedges">
+		<attribute key="weight" value="280"/>
+	</item>
+	<item id="38235" article="a" name="golden dustbin" plural="golden dustbins">
+		<attribute key="weight" value="720"/>
+	</item>
+	<item id="38236" article="a" name="golden skull" plural="golden skulls">
+		<attribute key="weight" value="430"/>
+	</item>
+	<item id="38351" article="a" name="scrubbing brush" plural="scrubbing brushes">
+		<attribute key="weight" value="350"/>
+	</item>
+	<item id="38251" article="a" name="soap" plural="soaps">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="38234" article="a" name="tiara" plural="tiaras">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="37993" article="a" name="greenish flintstone">
+		<attribute key="weight" value="375"/>
+	</item>
 </items>
