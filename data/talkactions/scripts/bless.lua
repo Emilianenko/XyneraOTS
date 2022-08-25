@@ -7,13 +7,13 @@ function onSay(player, words, param)
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
     else
         local playerBlessCost
-        if player:getLevel() < 50 then
+        if player:getLevel() < 150 then
             -- under level 50 it's free
             playerBlessCost = 0
         else
             -- from level 50 cost 36k + 200 gold coins for each level
             -- limit to maximum 120k
-            playerBlessCost = math.min(120000, 36000 + (player:getLevel() - 50) * 1200)
+            playerBlessCost = math.min(150000, 100000 + (player:getLevel() - 150) * 1200)
         end
 
         if player:removeMoney(playerBlessCost) then
