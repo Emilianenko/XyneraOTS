@@ -286,6 +286,7 @@ function Item:canBeImbuedWith(imbuId)
 	end
 
 	-- deny imbuement by element type
+	local abilities = itemType:getAbilities()
 	if imbuType == IMBUING_TYPE_DAMAGE then
 		local elementType = baseImbu:primaryValue()
 		if elementType == abilities.elementType then
