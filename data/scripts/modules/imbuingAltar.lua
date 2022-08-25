@@ -63,7 +63,7 @@ local imbuingTiersConfig = {
 	},
 }
 
-local imbuingAltar = {
+ImbuingAltar = {
 	-- iterates using #
 	-- do not remove elements from the middle
 	-- remove/comment categories if you wish to disable the imbuement from altar
@@ -252,7 +252,7 @@ LastImbuingPosCache = {}
 
 -- quick and easy to access list of products that are being used in imbuing
 ImbuingProducts = {}
-for _, imbuData in pairs(imbuingAltar) do
+for _, imbuData in pairs(ImbuingAltar) do
 	if imbuData.products then
 		for _, product in pairs(imbuData.products) do
 			if not table.contains(ImbuingProducts, product[1]) then
@@ -278,7 +278,7 @@ function Item:canBeImbuedWith(imbuId)
 	end
 
 	-- imbuable by id	
-	local altarData = imbuingAltar[altarId]
+	local altarData = ImbuingAltar[altarId]
 	if altarData then
 		if altarData.items and table.contains(altarData.items, itemId) then
 			return true
@@ -349,8 +349,8 @@ function Item:getAvailableImbuements()
 	local tierMap = 7
 	local tierCount = 3
 			
-	for i = 1, #imbuingAltar do
-		local altarData = imbuingAltar[i]
+	for i = 1, #ImbuingAltar do
+		local altarData = ImbuingAltar[i]
 		if altarData then
 			-- imbuable by id
 			if altarData.items and table.contains(altarData.items, itemId) then
@@ -417,7 +417,7 @@ function NetworkMessage:addImbuementInfo(imbuId, tier, maxDuration)
 	local name = imbuType:name() or string.format("%s %s", ImbuLevels[tier-1], "Unnamed Imbuement")
 	local description = imbuType:description() or "Missing effect description."
 	local altarId = math.floor((imbuId + 3 - tier) / 3)
-	local altarInfo = imbuingAltar[altarId]
+	local altarInfo = ImbuingAltar[altarId]
 	local products = altarInfo and altarInfo.products or {}
 	local productCount = math.min(tier, #products)
 	local tierMeta = imbuingTiersConfig[tier]
@@ -697,9 +697,9 @@ do
 		
 		-- check ingredients
 		local altarId = math.floor((imbuId - (imbuId - 1) % 3) / 3) + 1
-		if imbuingAltar[altarId] then
+		if ImbuingAltar[altarId] then
 			for tierId = 1, tier do
-				local product = imbuingAltar[altarId].products[tierId]
+				local product = ImbuingAltar[altarId].products[tierId]
 				if product then
 					if player:getItemCount(product[1]) < product[2] then
 						player:closeImbuingUI()
@@ -717,7 +717,7 @@ do
 		-- consume ingredients and money
 		player:removeTotalMoney(imbuPrice)
 		for tierId = 1, tier do
-			local product = imbuingAltar[altarId].products[tierId]
+			local product = ImbuingAltar[altarId].products[tierId]
 			if product then
 				player:removeItem(product[1], product[2])
 			end
