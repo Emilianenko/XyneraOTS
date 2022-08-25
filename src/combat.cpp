@@ -1128,7 +1128,7 @@ void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage) const
 {
 	//onGetPlayerMinMaxValues(...)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("ValueCallback::getMinMaxValues");
+		reportOverflow();
 		return;
 	}
 
@@ -1213,7 +1213,7 @@ void TileCallback::onTileCombat(Creature* creature, Tile* tile) const
 {
 	//onTileCombat(creature, pos)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("TileCallback::onTileCombat");
+		reportOverflow();
 		return;
 	}
 
@@ -1243,7 +1243,7 @@ void TargetCallback::onTargetCombat(Creature* creature, Creature* target) const
 {
 	//onTargetCombat(creature, target)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("TargetCallback::onTargetCombat");
+		reportOverflow();
 		return;
 	}
 

@@ -131,7 +131,7 @@ void Monster::onCreatureAppear(Creature* creature, bool isLogin)
 		// onCreatureAppear(self, creature)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			console::reportOverflow("Monster::onCreatureAppear");
+			reportOverflow();
 			return;
 		}
 
@@ -173,7 +173,7 @@ void Monster::onRemoveCreature(Creature* creature, bool isLogout)
 		// onCreatureDisappear(self, creature)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			console::reportOverflow("Monster::onCreatureDisappear");
+			reportOverflow();
 			return;
 		}
 
@@ -214,7 +214,7 @@ void Monster::onCreatureMove(Creature* creature, const Tile* newTile, const Posi
 		// onCreatureMove(self, creature, oldPosition, newPosition)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			console::reportOverflow("Monster::onCreatureMove");
+			reportOverflow();
 			return;
 		}
 
@@ -296,7 +296,7 @@ void Monster::onCreatureSay(Creature* creature, MessageClasses type, const std::
 		// onCreatureSay(self, creature, type, message)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			console::reportOverflow("Monster::onCreatureSay");
+			reportOverflow();
 			return;
 		}
 
@@ -741,7 +741,7 @@ void Monster::onThink(uint32_t interval)
 		// onThink(self, interval)
 		LuaScriptInterface* scriptInterface = mType->info.scriptInterface;
 		if (!scriptInterface->reserveScriptEnv()) {
-			console::reportOverflow("Monster::onThink");
+			reportOverflow();
 			return;
 		}
 

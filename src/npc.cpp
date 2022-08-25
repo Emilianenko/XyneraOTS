@@ -1142,7 +1142,7 @@ void NpcEventsHandler::onCreatureAppear(Creature* creature)
 
 	//onCreatureAppear(creature)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onCreatureAppear");
+		reportOverflow();
 		return;
 	}
 
@@ -1165,7 +1165,7 @@ void NpcEventsHandler::onCreatureDisappear(Creature* creature)
 
 	//onCreatureDisappear(creature)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onCreatureDisappear");
+		reportOverflow();
 		return;
 	}
 
@@ -1188,7 +1188,7 @@ void NpcEventsHandler::onCreatureMove(Creature* creature, const Position& oldPos
 
 	//onCreatureMove(creature, oldPos, newPos)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onCreatureMove");
+		reportOverflow();
 		return;
 	}
 
@@ -1213,7 +1213,7 @@ void NpcEventsHandler::onCreatureSay(Creature* creature, MessageClasses type, co
 
 	//onCreatureSay(creature, type, msg)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onCreatureSay");
+		reportOverflow();
 		return;
 	}
 
@@ -1239,7 +1239,7 @@ void NpcEventsHandler::onPlayerTrade(Player* player, int32_t callback, uint16_t 
 
 	//onBuy(player, itemid, subType, amount, ignore, inbackpacks)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onPlayerTrade");
+		reportOverflow();
 		return;
 	}
 
@@ -1267,7 +1267,7 @@ void NpcEventsHandler::onPlayerCloseChannel(Player* player)
 
 	//onPlayerCloseChannel(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onPlayerCloseChannel");
+		reportOverflow();
 		return;
 	}
 
@@ -1290,7 +1290,7 @@ void NpcEventsHandler::onPlayerEndTrade(Player* player)
 
 	//onPlayerEndTrade(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onPlayerEndTrade");
+		reportOverflow();
 		return;
 	}
 
@@ -1313,7 +1313,7 @@ void NpcEventsHandler::onThink()
 
 	//onThink()
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("NpcScript::onThink");
+		reportOverflow();
 		return;
 	}
 

@@ -4201,7 +4201,7 @@ void LuaEnvironment::executeTimerEvent(uint32_t eventIndex)
 		env->setScriptId(timerEventDesc.scriptId, this);
 		callFunction(timerEventDesc.parameters.size());
 	} else {
-		console::reportOverflow("LuaScriptInterface::executeTimerEvent");
+		reportOverflow();
 	}
 
 	//free resources

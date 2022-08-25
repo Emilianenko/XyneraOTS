@@ -556,7 +556,7 @@ bool ScriptEvent::executeEvent()
 {
 	//onRaid()
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("ScriptEvent::onRaid");
+		reportOverflow();
 		return false;
 	}
 

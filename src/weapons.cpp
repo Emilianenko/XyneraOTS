@@ -517,7 +517,7 @@ bool Weapon::executeUseWeapon(Player* player, const LuaVariant& var) const
 {
 	//onUseWeapon(player, var)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("Weapon::executeUseWeapon");
+		reportOverflow();
 		return false;
 	}
 

@@ -271,7 +271,7 @@ bool CreatureEvent::executeOnLogin(Player* player) const
 {
 	//onLogin(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnLogin");
+		reportOverflow();
 		return false;
 	}
 
@@ -290,7 +290,7 @@ bool CreatureEvent::executeOnLogout(Player* player) const
 {
 	//onLogout(player)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnLogout");
+		reportOverflow();
 		return false;
 	}
 
@@ -309,7 +309,7 @@ bool CreatureEvent::executeOnThink(Creature* creature, uint32_t interval)
 {
 	//onThink(creature, interval)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnThink");
+		reportOverflow();
 		return false;
 	}
 
@@ -330,7 +330,7 @@ bool CreatureEvent::executeOnPrepareDeath(Creature* creature, Creature* killer)
 {
 	//onPrepareDeath(creature, killer)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnPrepareDeath");
+		reportOverflow();
 		return false;
 	}
 
@@ -358,7 +358,7 @@ bool CreatureEvent::executeOnDeath(Creature* creature, Item* corpse, Creature* k
 {
 	//onDeath(creature, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnDeath");
+		reportOverflow();
 		return false;
 	}
 
@@ -398,7 +398,7 @@ bool CreatureEvent::executeAdvance(Player* player, skills_t skill, uint32_t oldL
 {
 	//onAdvance(player, skill, oldLevel, newLevel)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeAdvance");
+		reportOverflow();
 		return false;
 	}
 
@@ -421,7 +421,7 @@ void CreatureEvent::executeOnKill(Creature* creature, Creature* target)
 {
 	//onKill(creature, target)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeOnKill");
+		reportOverflow();
 		return;
 	}
 
@@ -442,7 +442,7 @@ void CreatureEvent::executeModalWindow(Player* player, uint32_t modalWindowId, u
 {
 	//onModalWindow(player, modalWindowId, buttonId, choiceId)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeModalWindow");
+		reportOverflow();
 		return;
 	}
 
@@ -466,7 +466,7 @@ bool CreatureEvent::executeTextEdit(Player* player, Item* item, const std::strin
 {
 	//onTextEdit(player, item, text)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeTextEdit");
+		reportOverflow();
 		return false;
 	}
 
@@ -489,7 +489,7 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 {
 	//onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isBeforeManaShield)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeHealthChange");
+		reportOverflow();
 		return;
 	}
 
@@ -528,7 +528,7 @@ void CreatureEvent::executeHealthChange(Creature* creature, Creature* attacker, 
 void CreatureEvent::executeManaChange(Creature* creature, Creature* attacker, CombatDamage& damage) {
 	//onManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeManaChange");
+		reportOverflow();
 		return;
 	}
 
@@ -566,7 +566,7 @@ void CreatureEvent::executeExtendedOpcode(Player* player, uint8_t opcode, const 
 {
 	//onExtendedOpcode(player, opcode, buffer)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CreatureEvent::executeExtendedOpcode");
+		reportOverflow();
 		return;
 	}
 

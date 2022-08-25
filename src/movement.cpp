@@ -976,7 +976,7 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos)
 	//onStepIn(creature, item, pos, fromPosition)
 	//onStepOut(creature, item, pos, fromPosition)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("MoveEvent::executeStep");
+		reportOverflow();
 		return false;
 	}
 
@@ -1014,7 +1014,7 @@ bool MoveEvent::executeEquip(Player* player, Item* item, slots_t slot, bool isCh
 	//onEquip(player, item, slot, isCheck)
 	//onDeEquip(player, item, slot, isCheck)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("MoveEvent::executeEquip");
+		reportOverflow();
 		return false;
 	}
 
@@ -1046,7 +1046,7 @@ bool MoveEvent::executeAddRemItem(Item* item, Item* tileItem, const Position& po
 	//onaddItem(moveitem, tileitem, pos)
 	//onRemoveItem(moveitem, tileitem, pos)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("MoveEvent::executeAddRemItem");
+		reportOverflow();
 		return false;
 	}
 

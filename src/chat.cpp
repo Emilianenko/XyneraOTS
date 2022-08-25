@@ -151,7 +151,7 @@ bool ChatChannel::executeCanJoinEvent(const Player& player)
 	//canJoin(player)
 	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CanJoinChannelEvent::execute");
+		reportOverflow();
 		return false;
 	}
 
@@ -176,7 +176,7 @@ bool ChatChannel::executeOnJoinEvent(const Player& player)
 	//onJoin(player)
 	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("OnJoinChannelEvent::execute");
+		reportOverflow();
 		return false;
 	}
 
@@ -201,7 +201,7 @@ bool ChatChannel::executeOnLeaveEvent(const Player& player)
 	//onLeave(player)
 	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("OnLeaveChannelEvent::execute");
+		reportOverflow();
 		return false;
 	}
 
@@ -226,7 +226,7 @@ bool ChatChannel::executeOnSpeakEvent(const Player& player, MessageClasses& type
 	//onSpeak(player, type, message)
 	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("OnSpeakChannelEvent::execute");
+		reportOverflow();
 		return false;
 	}
 

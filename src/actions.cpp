@@ -585,7 +585,7 @@ bool Action::executeUse(Player* player, Item* item, const Position& fromPosition
 {
 	//onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("Actions::executeUse");
+		reportOverflow();
 		return false;
 	}
 

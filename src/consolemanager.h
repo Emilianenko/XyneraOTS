@@ -92,7 +92,7 @@ void printWorldInfo(const std::string& key, const std::string& value, bool isSta
 
 //// error reporting functions
 // output: [Error - location] Call stack overflow!
-void reportOverflow(const std::string location);
+void callOverflow(const std::string location);
 
 // output: [Error - location] text
 void reportError(const std::string location, const std::string text);
@@ -116,4 +116,6 @@ std::string setColor(Color color, const std::string& text);
 const std::string& getLastMessage();
 
 } // namespace console
+
+#define reportOverflow() { console::callOverflow(__FUNCTION__); };
 #endif

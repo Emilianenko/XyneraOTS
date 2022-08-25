@@ -336,7 +336,7 @@ bool CombatSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 {
 	//onCastSpell(creature, var)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("CombatSpell::executeCastSpell");
+		reportOverflow();
 		return false;
 	}
 
@@ -1059,7 +1059,7 @@ bool InstantSpell::executeCastSpell(Creature* creature, const LuaVariant& var)
 {
 	//onCastSpell(creature, var)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("InstantSpell::executeCastSpell");
+		reportOverflow();
 		return false;
 	}
 
@@ -1243,7 +1243,7 @@ bool RuneSpell::executeCastSpell(Creature* creature, const LuaVariant& var, bool
 {
 	//onCastSpell(creature, var, isHotkey)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("RuneSpell::executeCastSpell");
+		reportOverflow();
 		return false;
 	}
 

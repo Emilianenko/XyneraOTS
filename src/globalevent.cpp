@@ -319,7 +319,7 @@ bool GlobalEvent::executeRecord(uint32_t current, uint32_t old)
 {
 	//onRecord(current, old)
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("GlobalEvent::executeRecord");
+		reportOverflow();
 		return false;
 	}
 
@@ -337,7 +337,7 @@ bool GlobalEvent::executeRecord(uint32_t current, uint32_t old)
 bool GlobalEvent::executeEvent() const
 {
 	if (!scriptInterface->reserveScriptEnv()) {
-		console::reportOverflow("GlobalEvent::executeEvent");
+		reportOverflow();
 		return false;
 	}
 
