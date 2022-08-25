@@ -31,6 +31,33 @@ ec.onLook = function(self, thing, position, distance, description)
 			if decayId ~= -1 then
 				description = string.format("%s\nDecays to: %d", description, decayId)
 			end
+			
+			if itemType:isDoor() then
+				local doorId = thing:getAttribute(ITEM_ATTRIBUTE_DOORID)
+				if doorId ~= 0 then
+					description = string.format("%s\nDoor id: %d", description, doorId)
+				end
+				
+				local actionId = thing:getActionId()
+				if actionId ~= 0 then
+					local itemId = itemType:getId()
+					if table.contains(closedQuestDoors, itemId) then
+						description = string.format("%s\n[Storage: %d]", description, actionId)
+					elseif table.contains(lockedDoors, itemId) or table.contains(openDoors, itemId) or table.contains(closedDoors, itemId) then
+						description = string.format("%s\n[Key: %.4d]", description, actionId)
+					end
+				elseif table.contains(lockedDoors, itemId) then
+					description = string.format("%s\n[Key: none]", description)
+				end
+			end
+			
+			local topParent = thing:getTopParent()
+			if topParent and topParent:isTile() then
+				local house = topParent:getHouse()
+				if house then
+					description = string.format("%s\nHouse id: %d", description, house:getId())
+				end
+			end
 		elseif thing:isCreature() then
 			local str = "%s\nHealth: %d / %d"
 			if thing:isPlayer() and thing:getMaxMana() > 0 then
