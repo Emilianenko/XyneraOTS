@@ -5,7 +5,8 @@
 -- local labelDefaultLeft = "<h2>|NPCNAME| |ARROWDOWN|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>"
 -- local labelDefaultRight = "<h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|ARROWDOWN| |NPCNAME|</h2>"
 
-local labelDefault = '<font color="#f7df05" size="5">|NPCNAME|<br />|CENTERARROW||ARROWDOWN|</font>'
+local labelDefault = '<font color="#f7df05" size="5">|NPCNAME|<br />|CENTERARROW|</font><font color="#baa802" size="5">|ARROWDOWN|</font>'
+local labelDefaultAlt = '<font color="#f7df05" size="5">|NPCNAME|<br />|CENTERARROWALT|</font><font color="#baa802" size="5">|ARROWDOWN|</font>'
 
 local markers = {
 	["Monsters"] = {
@@ -36,7 +37,7 @@ local markers = {
 		itemId = 1387,
 		-- destination = Position(968, 1059, 7),
 		effect = 178,
-		label = labelDefault,
+		label = labelDefaultAlt,
 	},
 	["Cassino"] = {
 		itemId = 1387,
@@ -53,9 +54,10 @@ local markers = {
 }
 
 local macros = {
-	["|ARROWDOWN|"] = function(creature, pos) return string.char(25) end,
+	["|ARROWDOWN|"] = function(creature, pos) return "v" end,
 	["|NPCNAME|"] = function(creature, pos) return creature:getName() end,
-	["|CENTERARROW|"] = function(creature, pos) return string.rep("&nbsp;", math.floor(creature:getName():len() * 0.85)) end,
+	["|CENTERARROW|"] = function(creature, pos) return string.rep("&nbsp;", math.floor(creature:getName():len() * 0.80)) end,
+	["|CENTERARROWALT|"] = function(creature, pos) return string.rep("&nbsp;", math.floor(creature:getName():len() * 0.80)+1) end,
 }
 
 local init = false
