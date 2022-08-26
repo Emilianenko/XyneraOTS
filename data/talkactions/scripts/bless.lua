@@ -1,5 +1,5 @@
 -- 5 or 6 [twist of fate] ?
-local totalBlessCount = 5
+local totalBlessCount = 8
 
 function onSay(player, words, param)
     if player:hasBlessing(1) then
@@ -7,16 +7,18 @@ function onSay(player, words, param)
         player:getPosition():sendMagicEffect(CONST_ME_POFF)
     else
         local playerBlessCost
-        if player:getLevel() < 150 then
+        if player:getLevel() < 200 then
             -- under level 50 it's free
             playerBlessCost = 0
         else
             -- from level 50 cost 36k + 200 gold coins for each level
             -- limit to maximum 120k
-            playerBlessCost = math.min(150000, 100000 + (player:getLevel() - 150) * 1200)
+            playerBlessCost = math.min(200000, 100000 + (player:getLevel() - 200) * 1200)
+            
         end
+        
 
-        if player:removeMoney(playerBlessCost) then
+        if player:removeTotalMoney(playerBlessCost) then
             for blessId = 1, totalBlessCount do
                 player:addBlessing(blessId)
             end

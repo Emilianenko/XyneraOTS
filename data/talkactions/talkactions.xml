@@ -47,6 +47,7 @@
 	<talkaction words="!online;/online" script="online.lua" />
 	<talkaction words="!serverinfo" script="serverinfo.lua" />
 	<talkaction words="!bless" script="bless.lua" />
+	<talkaction words="!blessing" script="bless.lua" />
 
 	<!-- test talkactions -->
 	<talkaction words="!z" separator=" " script="magiceffect.lua" />
