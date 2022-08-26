@@ -262,6 +262,18 @@ function Item:getSocketCount()
 	return count or self:getType():getSocketCount()
 end
 
+-- sets custom amount of slots to an item
+-- if you set slots to 2, but slot 4 is imbued
+-- slot 3 will be imbuable until slot 4 expires
+function Item:setSocketCount(count)
+	return self:setCustomAttribute(CUSTOM_ATTRIBUTE_SOCKETCOUNT, count)
+end
+
+-- resets slots count to default
+function Item:resetSocketCount()
+	return self:removeCustomAttribute(CUSTOM_ATTRIBUTE_SOCKETCOUNT)
+end
+
 -- returns imbuement name pushed for description
 local function internalGetImbuementName(imbuId)
 	local name = imbuId ~= 0 and ImbuementType(imbuId):name() or "Empty Slot"
