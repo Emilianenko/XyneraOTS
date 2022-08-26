@@ -352,7 +352,7 @@ bool Spawn::spawnMonster(uint32_t spawnId, spawnBlock_t sb, bool startup/* = fal
 	}
 
 	// Spawn is blocked, warn about upcoming fight
-	if (sb.spawnTries < 2) {
+	if (sb.spawnTries < 3) {
 		++sb.spawnTries;
 		g_game.addMagicEffect(sb.pos, CONST_ME_TELEPORT);
 		g_scheduler.addEvent(createSchedulerTask(2000, [=]() { spawnMonster(spawnId, sb, false); }));
