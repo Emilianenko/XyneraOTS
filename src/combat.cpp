@@ -903,6 +903,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_LIFELEECHAMOUNT);
 				if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
 					leechCombat.primary.value = std::round(totalDamage * (skill / 100.));
+					leechCombat.primary.type = COMBAT_HEALING;
 					g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
 					casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
 				}
@@ -1093,6 +1094,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_LIFELEECHAMOUNT);
 					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
 						leechCombat.primary.value = std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
+						leechCombat.primary.type = COMBAT_HEALING;
 						g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
 						casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
 					}
