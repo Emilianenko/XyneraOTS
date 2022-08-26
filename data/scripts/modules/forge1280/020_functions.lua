@@ -206,12 +206,14 @@ do
 		if self:getFreeCapacity() < ItemType(ITEM_FORGE_CHEST):getWeight() then
 			-- no cap to carry the chest with forge output
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCAP)	
+			return
 		end
 		
 		local playerBP = self:getSlotItem(CONST_SLOT_BACKPACK)
 		if not playerBP or playerBP:getEmptySlots(true) < 1 then
 			-- unable to carry the chest
-			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHROOM)	
+			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHROOM)
+			return
 		end
 
 		-- roll bonus
@@ -378,13 +380,15 @@ do
 		
 		if self:getFreeCapacity() < ItemType(ITEM_FORGE_CHEST):getWeight() then
 			-- no cap to carry the chest with forge output
-			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCAP)	
+			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCAP)
+			return
 		end
 		
 		local playerBP = self:getSlotItem(CONST_SLOT_BACKPACK)
 		if not playerBP or playerBP:getEmptySlots(true) < 1 then
 			-- unable to carry the chest
-			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHROOM)	
+			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHROOM)
+			return
 		end
 		
 		-- generate chest
@@ -479,6 +483,7 @@ do
 		if not playerBP then
 			-- player lost his backpack
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHITEMS)
+			return
 		end
 		
 		local itemType = fromItemType
@@ -530,6 +535,7 @@ do
 		if tier < 2 then
 			-- selected item has unsupported tier
 			self:sendDefaultForgeError(FORGE_ERROR_NOTUPGRADEABLE)
+			return
 		end
 		
 		-- check if player has bp
@@ -537,6 +543,7 @@ do
 		if not playerBP then
 			-- player lost his backpack
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHITEMS)
+			return
 		end
 		
 		-- check if item classes are eligible
