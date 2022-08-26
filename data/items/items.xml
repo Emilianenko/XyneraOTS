@@ -29217,11 +29217,11 @@
 		<attribute key="type" value="teleport" />
 		<attribute key="effect" value="teleport" />
 	</item>
-	<item id="22678" article="an" name="arcane staff">
-		<attribute key="attack" value="50"/>
-		<attribute key="defense" value="30"/>
-		<attribute key="weight" value="4000"/>
-		<attribute key="weaponType" value="club" />
+	<item id="22678" article="a" name="sprite wand">
+		<attribute key="weight" value="3200"/>
+		<attribute key="weaponType" value="wand" />
+		<attribute key="range" value="7" />
+		<attribute key="description" value="The wand resists any modification attempts, but it seems to be more thirsty when wielded by powerful wizards, as if it was sentient on its own." />
 	</item>
 	<item id="22686" article="a" name="dead draptor">
 		<attribute key="containerSize" value="10" />

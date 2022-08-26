@@ -336,6 +336,7 @@ local weapons_magic = {
 	[18411] = { level = 65, vocs = {2}, mana = 17, damage = {75, 95}, element = "earth" }, -- muck rod
 	[18412] = { level = 65, vocs = {2}, mana = 17, damage = {75, 95}, element = "ice" }, -- glacial rod
 	[19391] = { level = 1, vocs = {0}, mana = 2, damage = {8, 18}, element = "energy" }, -- sorcerer and druid staff
+	[22678] = { level = 400, vocs = {1, 2}, callback = generateSpriteWand }, -- sprite wand
 	[23719] = { level = 1, vocs = {1}, mana = 1, damage = {3, 7}, element = "fire" }, -- scorcher
 	[23721] = { level = 1, vocs = {2}, mana = 1, damage = {3, 7}, element = "ice" }, -- chiller
 	[24839] = { level = 37, vocs = {2}, mana = 13, damage = {56, 74}, element = "earth", sockets = 2 }, -- ogre scepta
@@ -888,7 +889,6 @@ local weapons = {
 	[22413] = { level = 75, vocs = {4} }, -- crude umbral hammer
 	[22414] = { level = 120, vocs = {4}, sockets = 1 }, -- umbral hammer
 	[22415] = { level = 250, vocs = {4}, sockets = 2 }, -- umbral master hammer
-	[22678] = {}, -- arcane staff
 	[22690] = {}, -- light rapier	
 	[23542] = { level = 55 }, -- metal bat
 	[23543] = { level = 25, sockets = 2 }, -- glooth whip

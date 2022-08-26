@@ -132,7 +132,7 @@ do
 		local weapon = Weapon(weaponType)
 		weapon:id(itemId)
 		
-		local itemInfo = Equippables.weapons_magic[itemId]
+		local itemInfo = Equippables.weapons[itemId]
 		if itemInfo then
 			-- required voc + autogenerate promos
 			if itemInfo.vocs then
@@ -184,7 +184,7 @@ do
 		local weapon = Weapon(WEAPON_DISTANCE)
 		weapon:id(itemId)
 		
-		local itemInfo = Equippables.weapons_magic[itemId]
+		local itemInfo = Equippables.weapons_distance[itemId]
 		if itemInfo then
 			-- required voc + autogenerate promos
 			if itemInfo.vocs then
@@ -381,5 +381,134 @@ do
 		missile:range(itemType:getShootRange())
 		missile:maxHitChance(75)
 		missile:register()
+	end
+end
+
+-- SPRITE WAND
+do
+	local clientId = ItemType(22678):getClientId()
+	-- PURPLE FRAME
+	local ec = EventCallback
+	function ec.onConnect(player, isLogin)
+		local msg = NetworkMessage()
+		msg:addByte(0xCD)
+		msg:addU16(1)
+		msg:addU16(clientId)
+		msg:addU64(100000)
+		msg:sendToPlayer(player)
+	end
+	ec:register()
+
+	local function formulaMin(level, ml)
+		return (level * 0.1) + (ml / 2)
+	end
+
+	local function formulaMax(level, ml)
+		return (level * 0.15) + (ml / 2)
+	end
+
+	local function getManaCost(player)
+		if player then
+			local level = player:getLevel()
+			local ml = player:getMagicLevel()
+			return math.ceil((formulaMin(level, ml) + formulaMax(level, ml)) * 0.08)
+		end
+
+		return 0
+	end
+
+	local combat = Combat()
+	combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+	combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_FAEEXPLOSION)
+	combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SMALLHOLY)
+
+	function onGetFormulaValues(player, level, magicLevel)
+		local crit = 1
+		local target = player:getTarget()
+		if target and math.random(100) < 30 then
+			crit = 1.5
+			local effect = math.random(CONST_ME_FAECOMING, CONST_ME_FAEGOING)
+			local tpos = target:getPosition()
+			tpos:sendMagicEffect(CONST_ME_CRITICAL_DAMAGE)
+			if effect == CONST_ME_FAECOMING then
+				tpos.x = tpos.x + math.random(1, 2) - 1
+				tpos.y = tpos.y + math.random(1, 2) - 1
+			else
+				tpos.x = tpos.x + math.random(1, 3) - 2
+				tpos.y = tpos.y + math.random(1, 3) - 2
+			end
+			tpos:sendMagicEffect(effect)
+		end
+		
+		return math.floor(-formulaMin(level, magicLevel)) * crit, math.floor(-formulaMax(level, magicLevel)) * crit
+	end
+
+	combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+	function generateSpriteWand(itemId)
+		local itemInfo = Equippables.weapons_magic[itemId]
+		if itemInfo then
+			local wand = Weapon(WEAPON_WAND)
+			wand:id(itemId)
+			
+			-- required voc + autogenerate promos
+			if itemInfo.vocs then
+				local vocPromoData = {}
+				local realVocs = {}
+				local lastVocId = -1
+				for a, vocId in pairs(itemInfo.vocs) do
+					vocPromoData[vocId] = true
+					realVocs[#realVocs + 1] = vocId
+					lastVocId = vocId
+					local promos = Vocation(vocId):getAllPromotions()
+					if promos then
+						for b, promoVocId in pairs(promos) do
+							vocPromoData[promoVocId] = false
+							realVocs[#realVocs + 1] = promoVocId
+						end
+					end
+				end
+			
+				for _, vocId in pairs(realVocs) do
+					wand:vocation(Vocation(vocId):getName(), vocPromoData[vocId], vocId == lastVocId)
+				end
+			end
+			
+			-- required level
+			if itemInfo.level then
+				wand:level(itemInfo.level)
+				wand:wieldUnproperly(true)
+			end
+		
+			--[[ HANDLED BY SCRIPT, DO NOT TYPE INTO CONFIG
+			-- required mana
+			if itemInfo.mana then
+				wand:mana(itemInfo.mana)
+			end
+			
+			-- damage
+			if itemInfo.damage then
+				wand:damage(itemInfo.damage[1], itemInfo.damage[2]) 
+			end
+			
+			-- element
+			if itemInfo.element then
+				wand:element(itemInfo.element)
+			end
+			]]
+			
+			wand.onUseWeapon = function(player, variant)
+				local cost = getManaCost(player)
+				if player:getMana() < cost then
+					return false
+				end
+				
+				player:addMana(-cost)
+				player:addManaSpent(cost * configManager.getNumber(configKeys.RATE_MAGIC))
+				return combat:execute(player, variant)
+			end
+			
+			wand:register()
+		end
 	end
 end

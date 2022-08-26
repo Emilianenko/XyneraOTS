@@ -296,7 +296,7 @@ function Item:canBeImbuedWith(imbuId)
 	elseif imbuType == IMBUING_TYPE_PROTECTION then
 		local elementType = baseImbu:primaryValue()
 		for element, amount in pairs(abilities.absorbPercent) do
-			if elementType == 2^(element-1) then
+			if elementType == 2^(element-1) and amount ~= 0 then
 				-- armor already blocks this kind of damage
 				return false
 			end
@@ -486,6 +486,14 @@ function Player:sendImbuingUI(item, altar, relativePos)
 	
 	socketCount = math.max(item:getSocketCount(), #rawImbuements)
 	if socketCount == 0 then
+		if item:getId() == 22678 then
+			local altarPos = altar:getPosition()
+			item:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT, self)
+			altarPos:sendMagicEffect(CONST_ME_FAEEXPLOSION, self)
+			self:say("The wand curls and twists itself around, as if it itself does not want to be imbued.", TALKTYPE_MONSTER_SAY, true, self, altarPos)
+			return
+		end
+		
 		self:sendCancelMessage("This item is not imbuable.")
 		return
 	end
