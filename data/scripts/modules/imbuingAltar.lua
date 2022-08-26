@@ -480,6 +480,11 @@ function NetworkMessage:addImbuables(item)
 end
 
 function Player:sendImbuingUI(item, altar, relativePos)
+	if not relativePos then
+		player:closeImbuingUI()
+		return
+	end
+	
 	-- check if item has imbuing slots
 	local socketCount = item:getSocketCount()
 	local rawImbuements = item:getImbuements()
@@ -664,7 +669,8 @@ do
 	local ec = EventCallback
 	function ec.onImbuementApply(player, slotId, imbuId, luckProtection)
 		-- check if altar is still nearby
-		if not player:getImbuementAltar() then
+		local altar = player:getImbuementAltar()
+		if not altar then
 			player:closeImbuingUI()
 			player:sendInfoBox("Error")
 			return
@@ -681,14 +687,12 @@ do
 		
 		-- check socket
 		if item:getImbuement(slotId) then
-			player:closeImbuingUI()
 			player:sendInfoBox("Error: slot already occupied")
 			return
 		end
 		
 		-- check if item is eligible
 		if not item:canBeImbuedWith(imbuId) then
-			player:closeImbuingUI()
 			player:sendInfoBox("This item cannot hold this imbuement.")
 			return
 		end
@@ -711,7 +715,6 @@ do
 				local product = ImbuingAltar[altarId].products[tierId]
 				if product then
 					if player:getItemCount(product[1]) < product[2] then
-						player:closeImbuingUI()
 						player:sendInfoBox("You do not have required items.")
 						return
 					end
@@ -731,18 +734,18 @@ do
 				player:removeItem(product[1], product[2])
 			end
 		end
+		cache.itemPos = item:getRelativePosition(player)
 		
 		-- roll for success
 		if not luckProtection and math.random(1, 100) > imbuingTiersConfig[tier].successChance then
-			player:closeImbuingUI()
+			player:sendImbuingUI(item, altar, item:getRelativePosition(player))
 			player:sendInfoBox("Imbuing attempt unsuccessful.")
 			return
 		end
 		
 		-- imbue
 		item:setImbuement(slotId, imbuId, IMBUING_DEFAULT_DURATION)
-		player:closeImbuingUI()
-		player:sendInfoBox('Imbuing complete.')
+		player:sendImbuingUI(item, altar, item:getRelativePosition(player))
 	end
 	ec:register()
 end
@@ -769,7 +772,7 @@ do
 		
 		-- check socket
 		if not item:getImbuement(slotId) then
-			player:closeImbuingUI()
+			player:sendImbuingUI(item, altar, item:getRelativePosition(player))
 			player:sendInfoBox("Error: selected slot is not imbued")
 			return
 		end
@@ -777,10 +780,9 @@ do
 		if player:getTotalMoney() >= IMBUING_DEFAULT_REMOVECOST then
 			if item:removeImbuement(slotId) then
 				player:removeTotalMoney(IMBUING_DEFAULT_REMOVECOST)
-				player:closeImbuingUI()
-				player:sendInfoBox("Imbuement removed.")
+				player:sendImbuingUI(item, altar, item:getRelativePosition(player))
 			else
-				player:closeImbuingUI()
+				player:sendImbuingUI(item, altar, item:getRelativePosition(player))
 				player:sendInfoBox("Error: failed to remove imbuement")
 			end
 		else

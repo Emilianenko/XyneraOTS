@@ -2,6 +2,10 @@ function Tile:isCreature()
 	return false
 end
 
+function Tile:isPlayer()
+	return false
+end
+
 function Tile:isItem()
 	return false
 end
