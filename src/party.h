@@ -43,6 +43,9 @@ class Party
 		size_t getInvitationCount() const {
 			return inviteList.size();
 		}
+		uint32_t getUniqueId() const {
+			return uniqueId;
+		}
 
 		void disband();
 		bool invitePlayer(Player& player);
@@ -76,6 +79,8 @@ class Party
 		void updatePlayerTicks(Player* player, uint32_t points);
 		void clearPlayerPoints(Player* player);
 
+		static uint32_t partyAutoUID;
+
 	private:
 		SharedExpStatus_t getSharedExperienceStatus();
 
@@ -85,6 +90,7 @@ class Party
 		PlayerVector inviteList;
 
 		Player* leader;
+		uint32_t uniqueId = 0;
 
 		bool sharedExpActive = false;
 		bool sharedExpEnabled = false;

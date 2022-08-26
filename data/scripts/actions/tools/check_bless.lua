@@ -1,10 +1,12 @@
 local blessings = {
-	"Spiritual Shielding",
-	"Embrace of the World",
-	"Fire of the Suns",
-	"Spark of the Phoenix",
-	"Wisdom of Solitude",
-	"Twist of Fate"
+	[BLESSING_WISDOM] = "Wisdom of Solitude",
+	[BLESSING_SPARK] = "Spark of the Phoenix",
+	[BLESSING_FIRE] = "Fire of the Suns",
+	[BLESSING_SPIRITUAL] = "Spiritual Shielding",
+	[BLESSING_EMBRACE] = "Embrace of the World",
+	[BLESSING_TWIST] = "Twist of Fate",
+	[BLESSING_HEART] = "Heart of the Mountain",
+	[BLESSING_BLOOD] = "Blood of the Mountain"
 }
 
 local checkBless = Action()

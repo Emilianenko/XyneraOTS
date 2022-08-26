@@ -5360,6 +5360,22 @@ void Game::broadcastMessage(const std::string& text, MessageClasses type) const
 	}
 }
 
+void Game::restorePlayerParty(uint32_t playerId, uint32_t partyId)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	for (const auto& playerData : getPlayers()) {
+		Party* party = playerData.second->getParty();
+		if (party && party->getUniqueId() == partyId) {
+			party->joinParty(*player);
+			return;
+		}
+	}
+}
+
 void Game::updateCreatureWalkthrough(const Creature* creature)
 {
 	//send to clients

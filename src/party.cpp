@@ -12,9 +12,12 @@ extern Game g_game;
 extern ConfigManager g_config;
 extern Events* g_events;
 
+uint32_t Party::partyAutoUID = 0;
+
 Party::Party(Player* leader) : leader(leader)
 {
 	leader->setParty(this);
+	this->uniqueId = ++partyAutoUID;
 }
 
 void Party::disband()

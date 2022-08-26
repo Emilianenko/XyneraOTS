@@ -208,6 +208,7 @@ class ProtocolGame final : public Protocol
 		void sendMagicEffect(const Position& pos, uint8_t type);
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
+		void sendBlessings();
 		void sendPing();
 		void sendPingBack();
 		void sendCreatureTurn(const Creature* creature, uint32_t stackPos);
@@ -372,6 +373,8 @@ class ProtocolGame final : public Protocol
 		bool acceptPackets = false;
 
 		// player data which is still needed after player object destruction
+		std::vector<uint32_t> savedChannels;
+		uint32_t lastPartyId = 0;
 		std::string lastName;
 		uint32_t lastAccountId = 0;
 		OperatingSystem_t lastOperatingSystem = CLIENTOS_NONE;

@@ -334,6 +334,7 @@ class Game
 		void internalCloseTrade(Player* player, bool sendCancel = true);
 		bool playerBroadcastMessage(Player* player, const std::string& text) const;
 		void broadcastMessage(const std::string& text, MessageClasses type) const;
+		void restorePlayerParty(uint32_t playerId, uint32_t partyId);
 
 		//Implementation of player invoked events
 		void playerMoveThing(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos,

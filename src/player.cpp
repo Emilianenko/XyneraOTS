@@ -2366,14 +2366,22 @@ void Player::death(Creature* lastHitCreature)
 			}
 		}
 
+		if (deathLossPercent > 0) {
+			sendTextMessage(MESSAGE_EVENT_ADVANCE, fmt::format("You had lost {:.{}f} percent of your total experience and skills.", deathLossPercent * 100., 2));
+		}
+
+		// Twist of Fate
 		if (blessings.test(5)) {
 			if (lastHitPlayer) {
+				// PvP death - remove ToF only
 				blessings.reset(5);
 			} else {
+				// PvE death - keep ToF only
 				blessings.reset();
 				blessings.set(5);
 			}
 		} else {
+			// no ToF - consume blessings regrdless of death type
 			blessings.reset();
 		}
 
@@ -2383,8 +2391,18 @@ void Player::death(Creature* lastHitCreature)
 		// send death screen
 		sendReLoginWindow(unfairFightReduction);
 
-		// 30 seconds to answer the death screen
-		client->lastDeathTime = OTSYS_TIME() + 30000;
+		if (client) {
+			// save player channels
+			storeChannelIDs();
+
+			// save player party
+			if (party) {
+				client->lastPartyId = party->getUniqueId();
+			}
+
+			// 30 seconds to answer the death screen
+			client->lastDeathTime = OTSYS_TIME() + 30000;
+		}
 
 		if (getSkull() == SKULL_BLACK) {
 			health = 40;
@@ -2521,6 +2539,20 @@ void Player::fastRelog(const std::string& otherCharName)
 {
 	if (client) {
 		g_dispatcher.addTask(createTask([=]() { client->fastRelog(otherCharName); }));
+	}
+}
+
+void Player::storeChannelIDs(bool isFastRelog)
+{
+	if (client) {
+		g_chat->storeUserChannels(*this, client->savedChannels, isFastRelog);
+	}
+}
+
+void Player::restoreChannelIDs()
+{
+	if (client) {
+		g_chat->restoreUserChannels(*this, client->savedChannels);
 	}
 }
 
@@ -4370,32 +4402,46 @@ bool Player::isPromoted() const
 	return promotedVocation == VOCATION_NONE && vocation->getId() != promotedVocation;
 }
 
+// exp/skill loss formula
 double Player::getLostPercent() const
 {
+	std::bitset<8> blessingsWithoutTOF = blessings;
+	blessingsWithoutTOF.reset(5);
+
 	int32_t deathLosePercent = g_config.getNumber(ConfigManager::DEATH_LOSE_PERCENT);
 	if (deathLosePercent != -1) {
 		if (isPromoted()) {
 			deathLosePercent -= 3;
 		}
 
-		deathLosePercent -= blessings.count();
+		deathLosePercent -= blessingsWithoutTOF.count();
 		return std::max<int32_t>(0, deathLosePercent) / 100.;
 	}
 
 	double lossPercent;
-	if (level >= 25) {
-		double tmpLevel = level + (levelPercent / 100.);
-		lossPercent = static_cast<double>((tmpLevel + 50) * 50 * ((tmpLevel * tmpLevel) - (5 * tmpLevel) + 8)) / experience;
+	if (level > 23) {
+		if (level < 30600) {
+			double tmpLevel = level + (levelPercent / 100.);
+			lossPercent = static_cast<double>((tmpLevel + 50.) * 50. * ((tmpLevel * tmpLevel) - (5. * tmpLevel) + 8.)) / experience;
+		} else {
+			// mathematically the formula always gives 3 past this breakpoint
+			// might as well skip calculating
+			lossPercent = 3.;
+		}
 	} else {
-		lossPercent = 10;
+		lossPercent = 10.;
 	}
 
-	double percentReduction = 0;
-	if (isPromoted()) {
-		percentReduction += 30;
-	}
-	percentReduction += blessings.count() * 8;
-	return lossPercent * (1 - (percentReduction / 100.)) / 100.;
+	// promotion: -3% from death penalty
+	double percentReduction = isPromoted() ? 30. : 0;
+
+	// blessings reduction
+	percentReduction += (blessingsWithoutTOF.count() * 8.);
+
+	// calculating real loss percent
+	lossPercent *= (1. - (percentReduction / 100.)) / 100.;
+
+	return lossPercent;
 }
 
 void Player::learnInstantSpell(const std::string& spellName)

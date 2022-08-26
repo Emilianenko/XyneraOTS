@@ -324,9 +324,15 @@ class Player final : public Creature, public Cylinder
 
 		void addBlessing(uint8_t blessing) {
 			blessings.set(blessing);
+			if (client) {
+				client->sendBlessings();
+			}
 		}
 		void removeBlessing(uint8_t blessing) {
 			blessings.reset(blessing);
+			if (client) {
+				client->sendBlessings();
+			}
 		}
 		bool hasBlessing(uint8_t blessing) const {
 			return blessings.test(blessing);
@@ -586,6 +592,9 @@ class Player final : public Creature, public Cylinder
 			onSell = saleCallback;
 			return shopOwner;
 		}
+
+		void storeChannelIDs(bool isFastRelog = false);
+		void restoreChannelIDs();
 
 		// account resources (store and tournament coins)
 		int32_t getAccountResource(AccountResourceTypes_t resourceType);
@@ -1505,7 +1514,7 @@ class Player final : public Creature, public Cylinder
 		uint16_t maxWriteLen = 0;
 
 		uint8_t soul = 0;
-		std::bitset<6> blessings;
+		std::bitset<8> blessings;
 		uint8_t levelPercent = 0;
 		uint8_t magLevelPercent = 0;
 

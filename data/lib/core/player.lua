@@ -70,8 +70,7 @@ function Player:hasFlag(flag)
 	return self:getGroup():hasFlag(flag)
 end
 
-function Player:getLossPercent()
-	local blessings = 0
+do
 	local lossPercent = {
 		[0] = 100,
 		[1] = 70,
@@ -80,13 +79,17 @@ function Player:getLossPercent()
 		[4] = 10,
 		[5] = 0
 	}
+	local lossPercentLast = #lossPercent
 
-	for i = 1, 5 do
-		if self:hasBlessing(i) then
-			blessings = blessings + 1
+	function Player:getLossPercent()
+		local blessings = 0
+		for i = 1, 8 do
+			if self:hasBlessing(i) and i ~= 6 then
+				blessings = math.min(blessings + 1, lossPercentLast)
+			end
 		end
+		return lossPercent[blessings]
 	end
-	return lossPercent[blessings]
 end
 
 function Player:getTotalMoney()

@@ -8,7 +8,8 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 	end
 
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are dead.")
-
+	
+	---- DETERMINE REAL OWNER OF THE LAST HIT
 	local byPlayer = 0
 	local killerName
 	local killerIsPlayer = false
@@ -29,6 +30,7 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 		killerName = "field item"
 	end
 
+	---- DETERMINE MOST DAMAGE DEALT
 	local byPlayerMostDamage = 0
 	local mostDamageKillerName
 	if mostDamageKiller then
@@ -45,8 +47,104 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 	else
 		mostDamageName = "field item"
 	end
+	
+	---- DETERMINE THE KILLERS
+	local messageKillerName = killer and killer:isMonster() and killer:getType():nameDescription() or killerName
+	local messageMostDamageName = mostDamageKiller and mostDamageKiller:isMonster() and mostDamageKiller:getType():nameDescription() or mostDamageName
+	
+	if killerName == mostDamageName then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You were killed by %s.", messageKillerName))
+	else
+		if killer and mostDamageKiller then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You were killed by %s and %s.", messageKillerName, messageMostDamageName))
+		elseif killer then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You were killed by %s.", messageKillerName))
+		elseif mostDamageKiller then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You were killed by %s.", messageMostDamageName))
+		end
+	end
+	
+	---- BLESSINGS CHECK (consuption happens in sources)
+	local blessCount = 0
+	for i = BLESSING_FIRST, BLESSING_LAST do
+		if i ~= BLESSING_TWIST and player:hasBlessing(i) then
+			blessCount = blessCount + 1
+		end
+	end
+	
+	if player:hasBlessing(BLESSING_TWIST) then
+		if killerIsPlayer then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You blessings were protected by Twist of Fate which was consumed in the process.")
+		else
+			if blessCount > 0 then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have lost your blessings.")
+			else
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You did not have any blessings.")
+			end
+		end
+	else
+		if blessCount > 0 then
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You have lost your blessings.")
+		else
+			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You did not have any blessings.")
+		end
+	end
+		
+	---- PLAYER DROP EQ
+	if player:hasFlag(PlayerFlag_NotGenerateLoot) or player:getVocation():getId() == VOCATION_NONE then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You did not lose any equipment.")
+	else
+		local amulet = player:getSlotItem(CONST_SLOT_NECKLACE)
+		local isRedOrBlack = table.contains({SKULL_RED, SKULL_BLACK}, player:getSkull())
+		if amulet and amulet.itemid == ITEM_AMULETOFLOSS and not isRedOrBlack then
+			local isPlayer = false
+			if killer then
+				if killer:isPlayer() then
+					isPlayer = true
+				else
+					local master = killer:getMaster()
+					if master and master:isPlayer() then
+						isPlayer = true
+					end
+				end
+			end
 
-	-- trigger screenshot events
+			if not isPlayer or not player:hasBlessing(6) then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You were protected by an amulet of loss.")
+				player:removeItem(ITEM_AMULETOFLOSS, 1, -1, false)
+			end
+		else
+			if isRedOrBlack then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your amulet of loss did not work due to excessive amount of unjustified kills.")
+			elseif not amulet then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You did not wear an amulet of loss.")			
+			end
+
+			local itemsLost = 0
+			for i = CONST_SLOT_HEAD, CONST_SLOT_AMMO do
+				local item = player:getSlotItem(i)
+				local lossPercent = player:getLossPercent()
+				if item then
+					if isRedOrBlack or math.random(item:isContainer() and 100 or 1000) <= lossPercent then
+						if (isRedOrBlack or lossPercent ~= 0) and not item:moveTo(corpse) then
+							itemsLost = itemsLost + 1
+							item:remove()
+						end
+					end
+				end
+			end
+			
+			if itemsLost > 0 then
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("You dropped %d items.", itemsLost))	
+			end
+		end
+
+		if not player:getSlotItem(CONST_SLOT_BACKPACK) then
+			player:addItem(ITEM_BAG, 1, false, CONST_SLOT_BACKPACK)
+		end
+	end
+
+	---- TAKE SCREENSHOT
 	player:takeScreenshot(killerIsPlayer and SCREENSHOT_TYPE_DEATHPVP or SCREENSHOT_TYPE_DEATHPVE)
 	if killerIsPlayer then
 		killer:takeScreenshot(SCREENSHOT_TYPE_PLAYERKILL)
@@ -57,6 +155,7 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 		end
 	end
 
+	---- ADD DEATH LIST ENTRY
 	if not deathListEnabled then
 		return
 	end

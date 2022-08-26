@@ -221,6 +221,17 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 		lastAccountId = accountId;
 		lastOperatingSystem = operatingSystem;
 
+		// send blessings
+		sendBlessings();
+
+		// restore player channels
+		player->restoreChannelIDs();
+
+		// restore player party
+		if (lastPartyId != 0) {
+			addGameTask(([=, playerID = player->getID(), partyID = lastPartyId]() { g_game.restorePlayerParty(playerID, partyID); }));
+		}
+
 		addGameTask(([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); }));
 	} else {
 		if (eventConnect != 0 || !g_config.getBoolean(ConfigManager::REPLACE_KICK_ON_LOGIN)) {
@@ -243,6 +254,9 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 		lastName = name;
 		lastAccountId = accountId;
 		lastOperatingSystem = operatingSystem;
+
+		//send blessings
+		sendBlessings();
 
 		addGameTask(([=, playerID = foundPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); }));
 	}
@@ -389,6 +403,17 @@ void ProtocolGame::fastRelog(const std::string& otherPlayerName)
 		otherPlayer->disconnect();
 	}
 
+	// memorize player channels
+	player->storeChannelIDs(true);
+
+	// unlink player-specific channels
+	player->sendClosePrivate(CHANNEL_PARTY);
+	player->sendClosePrivate(CHANNEL_GUILD);
+	player->sendClosePrivate(CHANNEL_GUILD_LEADER);
+
+	// unlink party
+	lastPartyId = 0;
+
 	// logout (already done in relog situation)
 	if (!isRelog) {
 		// send logout effect
@@ -484,6 +509,17 @@ void ProtocolGame::fastRelog(const std::string& otherPlayerName)
 
 	// remember last relog
 	lastName = otherPlayerName;
+
+	// update blessings
+	sendBlessings();
+
+	// restore player channels
+	player->restoreChannelIDs();
+
+	// restore player party (if applicable)
+	if (lastPartyId != 0) {
+		addGameTask(([=, playerID = player->getID(), partyID = lastPartyId]() { g_game.restorePlayerParty(playerID, partyID); }));
+	}
 
 	// event onConnect
 	addGameTask(([=, playerID = otherPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); }));
@@ -2998,6 +3034,60 @@ void ProtocolGame::sendSkills()
 {
 	NetworkMessage msg;
 	AddPlayerSkills(msg);
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendBlessings()
+{
+	if (!player) {
+		return;
+	}
+
+	// client blessings:
+	/*
+		1 - adventurer (glowing slots + info in bless panel)
+		2 - twist of fate
+		3 - wisdom
+		4 - spark
+		5 - fire
+		6 - spirit
+		7 - embrace
+		8 - heart
+		9 - blood
+		10-16 - (nothing happens)
+	*/
+	NetworkMessage msg;
+	uint8_t blessCount = 0;
+	uint16_t clientBlessings = 0;
+
+	for (int i = 0; i < 8; i++) {
+		if (i == 5) {
+			// move original 5 blessings to proper positions
+			clientBlessings = clientBlessings << 2;
+		}
+
+		if (player->hasBlessing(i)) {
+			if (i < 5) {
+				// classic blessing
+				clientBlessings |= 1 << i;
+			} else if (i == 5) {
+				// twist of fate
+				clientBlessings |= 1 << 1;
+			} else {
+				// mountain blessings
+				clientBlessings |= ((1 << i) << 1);
+			}
+
+			if (i != 5) {
+				++blessCount;
+			}
+		}
+	}
+
+	msg.addByte(0x9C);
+	msg.add<uint16_t>(clientBlessings);
+	msg.addByte((blessCount >= 7) ? 3 : ((blessCount >= 5) ? 2 : 1)); // 1 = Disabled | 2 = normal | 3 = green
+
 	writeToOutputBuffer(msg);
 }
 

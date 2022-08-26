@@ -11,6 +11,8 @@
 extern Chat* g_chat;
 extern Game g_game;
 
+uint32_t ChatChannel::channelAutoUID = 0;
+
 bool PrivateChatChannel::isInvited(uint32_t guid) const
 {
 	if (guid == getOwner()) {
@@ -472,6 +474,61 @@ void Chat::removeUserFromAllChannels(const Player& player)
 			it = privateChannels.erase(it);
 		} else {
 			++it;
+		}
+	}
+}
+
+void Chat::storeUserChannels(Player& player, std::vector<uint32_t>& channelList, bool isFastRelog)
+{
+	for (auto& it : normalChannels) {
+		if (it.second.hasUser(player)) {
+			channelList.push_back(it.second.getUniqueId());
+		}
+	}
+
+	for (auto& it : privateChannels) {
+		if (it.second.hasUser(player)) {
+			if (!isFastRelog) {
+				channelList.push_back(it.second.getUniqueId());
+			} else {
+				g_chat->removeUserFromChannel(player, it.second.getId());
+			}
+		}
+	}
+}
+
+void Chat::restoreUserChannels(Player& player, std::vector<uint32_t>& channelList)
+{
+	for (auto& it : normalChannels) {
+		if (std::find(channelList.begin(), channelList.end(), it.second.getUniqueId()) != channelList.end()) {
+			it.second.addUser(player);
+		}
+	}
+
+	for (auto& it : privateChannels) {
+		if (std::find(channelList.begin(), channelList.end(), it.second.getUniqueId()) != channelList.end()) {
+			it.second.addUser(player);
+		}
+	}
+
+	// restore guild channel (if opened)
+	if (player.getGuild()) {
+		ChatChannel* channel = getChannel(player, CHANNEL_GUILD);
+		if (channel) {
+			channel->addUser(player);
+		} else {
+			player.sendClosePrivate(CHANNEL_GUILD);
+			player.sendClosePrivate(CHANNEL_GUILD_LEADER);
+		}
+	}
+
+	// restore party channel (if opened)
+	if (player.getParty()) {
+		ChatChannel* channel = getChannel(player, CHANNEL_PARTY);
+		if (channel) {
+			channel->addUser(player);
+		} else {
+			player.sendClosePrivate(CHANNEL_PARTY);
 		}
 	}
 }

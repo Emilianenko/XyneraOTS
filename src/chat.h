@@ -18,7 +18,9 @@ class ChatChannel
 	public:
 		ChatChannel() = default;
 		ChatChannel(uint16_t channelId, std::string channelName):
-			id{channelId}, name{std::move(channelName)} {}
+			id{channelId}, name{std::move(channelName)} {
+			this->uniqueId = ++channelAutoUID;
+		}
 
 		virtual ~ChatChannel() = default;
 
@@ -34,6 +36,9 @@ class ChatChannel
 		}
 		uint16_t getId() const {
 			return id;
+		}
+		uint32_t getUniqueId() const {
+			return uniqueId;
 		}
 		const UsersMap& getUsers() const {
 			return users;
@@ -53,10 +58,13 @@ class ChatChannel
 		bool executeOnLeaveEvent(const Player& player);
 		bool executeOnSpeakEvent(const Player& player, MessageClasses& type, const std::string& message);
 
+		static uint32_t channelAutoUID;
+
 	protected:
 		UsersMap users;
 
 		uint16_t id;
+		uint32_t uniqueId;
 
 	private:
 		std::string name;
@@ -120,6 +128,8 @@ class Chat
 		ChatChannel* addUserToChannel(Player& player, uint16_t channelId);
 		bool removeUserFromChannel(const Player& player, uint16_t channelId);
 		void removeUserFromAllChannels(const Player& player);
+		void storeUserChannels(Player& player, std::vector<uint32_t>& channelList, bool isFastRelog = false);
+		void restoreUserChannels(Player& player, std::vector<uint32_t>& channelList);
 
 		bool talkToChannel(const Player& player, MessageClasses type, const std::string& text, uint16_t channelId);
 
