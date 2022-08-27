@@ -19,7 +19,7 @@ local markers = {
 		itemId = 1387,
 		destination = Position(1121, 959, 7),
 		effect = 178,
-		label = labelDefault,
+		label = labelDefaultAlt,
 	},
 	["Quests"] = {
 		itemId = 1387,
@@ -64,6 +64,12 @@ local init = false
 local selfPos
 local effect
 
+-- tymczasowa przechowalnia na npcki
+if not TP_MARKERS_TECHPOS then
+	TP_MARKERS_TECHPOS = Position(0, 0, 15)
+	Game.createTile(TP_MARKERS_TECHPOS)
+end
+
 if not TP_MARKERS_RELOAD_GUARD then
 	TP_MARKERS_RELOAD_GUARD = {}
 end
@@ -90,7 +96,6 @@ local function onInit(npcId)
 	self:setHiddenHealth(true)
 	self:setPhantom(true)
 	
-	
 	if TP_MARKERS_RELOAD_GUARD[npcId] then
 		-- handle reload
 		effect = tpInfo.effect
@@ -104,6 +109,13 @@ local function onInit(npcId)
 				end
 			end
 		end
+	else
+		-- force technical npc on top of real one to hide context menu
+		self:teleportTo(TP_MARKERS_TECHPOS)
+		Game.createNpc("TpFilter", selfPos, false, true)
+		self:teleportTo(selfPos)
+		-- force a second npc to hide look
+		Game.createNpc("TpFilter", selfPos, false, true)
 	end
 
 	-- initialize

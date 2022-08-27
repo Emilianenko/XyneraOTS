@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- context menu fix for teleporters -->
+<npc name="a magic forcefield" script="tpmarkerhelper.lua" walkinterval="0" speechbubble="0" >
+	<health now="100" max="100" />
+	<look typeex="1548"/>
+</npc>
