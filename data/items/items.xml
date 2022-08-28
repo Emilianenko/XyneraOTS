@@ -34492,6 +34492,7 @@
 		<attribute key="weight" value="1800"/>
 	</item>
 	<item id="32088" article="a" name="hireling lamp">
+		<attribute key="type" value="hirelinglamp" />
 		<attribute key="description" value="This mysterious lamp summons your very own personal hireling."/>
 	</item>
 	<item id="32837" article="a" name="shield of endless search">

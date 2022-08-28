@@ -21,12 +21,12 @@ Attr_ReadValue Teleport::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 void Teleport::serializeAttr(PropWriteStream& propWriteStream) const
 {
-	Item::serializeAttr(propWriteStream);
-
 	propWriteStream.write<uint8_t>(ATTR_TELE_DEST);
 	propWriteStream.write<uint16_t>(destPos.x);
 	propWriteStream.write<uint16_t>(destPos.y);
 	propWriteStream.write<uint8_t>(destPos.z);
+
+	Item::serializeAttr(propWriteStream);
 }
 
 ReturnValue Teleport::queryAdd(int32_t, const Thing&, uint32_t, uint32_t, Creature*) const

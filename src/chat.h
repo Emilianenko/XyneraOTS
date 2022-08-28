@@ -31,6 +31,8 @@ class ChatChannel
 		bool talk(const Player& fromPlayer, MessageClasses type, const std::string& text);
 		void sendToAll(const std::string& message, MessageClasses type) const;
 
+		void sendChannelSystemMessage(const std::string& message, MessageClasses type) const;
+
 		const std::string& getName() const {
 			return name;
 		}

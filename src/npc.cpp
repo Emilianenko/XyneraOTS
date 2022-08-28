@@ -91,7 +91,9 @@ void Npc::reset()
 	attackable = false;
 	ignoreHeight = false;
 	focusCreature = 0;
-	speechBubble = SPEECHBUBBLE_NONE;
+	if (speechBubble != SPEECHBUBBLE_HIRELING) {
+		speechBubble = SPEECHBUBBLE_NONE;
+	}
 
 	delete npcEventHandler;
 	npcEventHandler = nullptr;
@@ -140,7 +142,9 @@ bool Npc::loadFromXml()
 		return false;
 	}
 
-	name = npcNode.attribute("name").as_string();
+	if (speechBubble != SPEECHBUBBLE_HIRELING) {
+		name = npcNode.attribute("name").as_string();
+	}
 	attackable = npcNode.attribute("attackable").as_bool();
 	floorChange = npcNode.attribute("floorchange").as_bool();
 

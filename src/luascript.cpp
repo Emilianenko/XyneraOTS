@@ -1766,7 +1766,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_TYPE_KEY)
 	registerEnum(ITEM_TYPE_RUNE)
 	registerEnum(ITEM_TYPE_PODIUM)
-
+	registerEnum(ITEM_TYPE_HIRELINGLAMP)
+	
 	registerEnum(ITEM_GROUP_GROUND)
 	registerEnum(ITEM_GROUP_CONTAINER)
 	registerEnum(ITEM_GROUP_WEAPON)
@@ -1853,6 +1854,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(ITEM_AMULETOFLOSS)
 	registerEnum(ITEM_DECORATION_KIT)
+	registerEnum(ITEM_HIRELING_LAMP)
 	
 	registerEnum(ITEM_DOCUMENT_RO)
 
@@ -1894,6 +1896,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(PlayerFlag_SetMaxSpeed)
 	registerEnum(PlayerFlag_SpecialVIP)
 	registerEnum(PlayerFlag_NotGenerateLoot)
+	registerEnum(PlayerFlag_CanTalkRedChannelAnonymous)
 	registerEnum(PlayerFlag_IgnoreProtectionZone)
 	registerEnum(PlayerFlag_IgnoreSpellCheck)
 	registerEnum(PlayerFlag_IgnoreWeaponCheck)

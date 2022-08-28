@@ -137,6 +137,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 	if (!receivedLastChar && connectionState == CONNECTION_STATE_GAMEWORLD_AUTH) {
 		uint8_t* msgBuffer = msg.getBuffer();
 
+		// read world name
 		if (!receivedName && msgBuffer[1] == 0x00) {
 			receivedLastChar = true;
 		} else {
@@ -147,6 +148,7 @@ void Connection::parseHeader(const boost::system::error_code& error)
 				return;
 			}
 
+			// header of next expected packet
 			if (msgBuffer[0] == 0x0A) {
 				receivedLastChar = true;
 			}
@@ -217,7 +219,7 @@ void Connection::parsePacket(const boost::system::error_code& error)
 				return;
 			}
 		} else {
-			msg.skipBytes(1); // Skip protocol ID
+			msg.skipBytes(1); // 0x0A - client introduction
 		}
 
 		protocol->onRecvFirstMessage(msg);

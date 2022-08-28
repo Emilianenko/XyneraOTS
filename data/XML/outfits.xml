@@ -219,4 +219,30 @@
 	<outfit type="1" looktype="1500" name="Nordic Chieftain" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1569" name="Fire-Fighter" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1575" name="Fencer" premium="no" unlocked="no" enabled="yes" />
+	
+	<!-- to do: register from lua? reserve a different range? -->
+	<!-- hireling female -->
+	<outfit type="100" looktype="1107" name="Apprentice" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="100" looktype="1109" name="Banker" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="100" looktype="1111" name="Trader" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="100" looktype="1113" name="Cook" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="100" looktype="1115" name="Steward" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="100" looktype="1117" name="Servant" premium="no" unlocked="no" enabled="yes" />
+
+	<!-- hireling male -->
+	<outfit type="101" looktype="1108" name="Apprentice" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="101" looktype="1110" name="Banker" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="101" looktype="1112" name="Trader" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="101" looktype="1114" name="Cook" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="101" looktype="1116" name="Steward" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="101" looktype="1118" name="Servant" premium="no" unlocked="no" enabled="yes" />
+	
+	<!-- hireling unisex -->
+	<!-- note: 1124, 1126, 1130 and 1132 are identical to these looktypes -->
+	<outfit type="102" looktype="1123" name="Bonelord" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="102" looktype="1125" name="Dragon" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="102" looktype="1129" name="Hydra" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="102" looktype="1131" name="Ferumbras" premium="no" unlocked="no" enabled="yes" />
+
+
 </outfits>

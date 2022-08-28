@@ -218,7 +218,8 @@ const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {
 	{"door", ITEM_TYPE_DOOR},
 	{"bed", ITEM_TYPE_BED},
 	{"rune", ITEM_TYPE_RUNE},
-	{"podium", ITEM_TYPE_PODIUM}
+	{"podium", ITEM_TYPE_PODIUM},
+	{"hirelinglamp", ITEM_TYPE_HIRELINGLAMP},
 };
 
 const std::unordered_map<std::string, tileflags_t> TileStatesMap = {

@@ -533,13 +533,7 @@ Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 void Door::serializeAttr(PropWriteStream& propWriteStream) const
 {
-	uint16_t actionId = getActionId();
-	if (actionId != 0) {
-		propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
-		propWriteStream.write<uint16_t>(actionId);
-	}
-
-	return Item::serializeAttr(propWriteStream);
+	Item::serializeAttr(propWriteStream);
 }
 
 void Door::setHouse(House* house)

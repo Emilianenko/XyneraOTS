@@ -125,6 +125,9 @@ class Npc final : public Creature
 		const std::string& getNameDescription() const override {
 			return name;
 		}
+		void setName(const std::string& newName) {
+			this->name = newName;
+		}
 
 		CreatureType_t getType() const override {
 			return CREATURETYPE_NPC;
@@ -136,6 +139,14 @@ class Npc final : public Creature
 		void setSpeechBubble(const uint8_t bubble) {
 			speechBubble = bubble;
 		}
+
+		// used for hirelings
+		PlayerSex_t getSex() const {
+			return sex;
+		}
+		void setSex(PlayerSex_t sex) {
+			this->sex = sex;
+		};
 
 		void doSay(const std::string& text);
 		void doSayToPlayer(Player* player, const std::string& text);
@@ -214,6 +225,9 @@ class Npc final : public Creature
 		NpcEventsHandler* npcEventHandler;
 
 		Position masterPos;
+
+		// hireling npcs
+		PlayerSex_t sex = PLAYERSEX_FEMALE;
 
 		uint32_t walkTicks;
 		int32_t focusCreature;

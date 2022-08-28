@@ -15,6 +15,7 @@
 #include "depotchest.h"
 #include "events.h"
 #include "game.h"
+#include "hirelinglamp.h"
 #include "housetile.h"
 #include "inbox.h"
 #include "iologindata.h"

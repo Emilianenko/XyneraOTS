@@ -83,8 +83,7 @@ std::size_t clientLogin(const Player& player)
 	while (it != waitList.end()) {
 		if ((it->first - time) <= 0) {
 			it = waitList.erase(it);
-		}
-		else {
+		} else {
 			++it;
 		}
 	}
@@ -833,28 +832,28 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	// cases commented as "(scripted)" are being handled by lua scripts
 	switch (recvbyte) {
-		// 0x00-0x09 - empty
-		// 0x0A - connection (already handled)
-		// 0x0B - connection (already handled)
-		// 0x0C-0x0E - empty
+		// 0x00-0x09 (0-9) - empty
+		// 0x0A - client introduction (parsed in onRecvFirstMessage)
+		// 0x0B - login / characterlist (?)
+		// 0x0C-0x0E (12-14) - empty
 		case 0x0F: break; // login
-		// 0x10-0x13 - empty
+		// 0x10-0x13 (16-19) - empty
 		case 0x14: addGameTask([thisPtr = getThis()]() { thisPtr->logout(true, false); }); break;
-		// 0x15-0x1B - empty
+		// 0x15-0x1B (21-27) - empty
 		case 0x1C: break; // ping check
 		case 0x1D: addGameTask([playerID = player->getID()]() { g_game.playerReceivePingBack(playerID); }); break;
 		case 0x1E: addGameTask([playerID = player->getID()]() { g_game.playerReceivePing(playerID); }); break;
 		//case 0x1F: break; // client performance logs (deprecated?)
-		// 0x20-0x27 - empty
+		// 0x20-0x27 (32-39) - empty
 		//case 0x28: break; // stash withdraw
 		//case 0x29: break; // stash action
 		//case 0x2A: break; // bestiary tracker
 		//case 0x2A: break; // party hunt analyzer
 		//case 0x2C: break; // team finder (leader)
 		//case 0x2D: break; // team finder (member)
-		// 0x2E-0x31 - empty
+		// 0x2E-0x31 (46-49) - empty
 		case 0x32: parseExtendedOpcode(msg); break; // otclient extended opcode
-		// 0x33-0x63 - empty
+		// 0x33-0x63 (51-99) - empty
 		case 0x64: parseAutoWalk(msg); break;
 		case 0x65: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTH); }); break;
 		case 0x66: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_EAST); }); break;
@@ -931,7 +930,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xAF: break; // boss slots ui
 		// 0xB0 - empty
 		//case 0xB1: break; // request highscores
-		// 0xB2-0xBD - empty
+		// 0xB2-0xBD (178-189) - empty
 		case 0xBE: addGameTask([playerID = player->getID()]() { g_game.playerCancelAttackAndFollow(playerID); }); break;
 		case 0xBF: parseForgeAction(msg); break;
 		case 0xC0: parseForgeBrowseHistory(msg); break;
@@ -984,7 +983,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF0: g_dispatcher.addTask(createTask((DISPATCHER_TASK_EXPIRATION, ([playerID = player->getID()]() { g_game.playerShowQuestLog(playerID); })))); break;
 		case 0xF1: parseQuestLine(msg); break;
 		case 0xF2: parseRuleViolationReport(msg); break;
-		case 0xF3: /* get object info */ break;
+		case 0xF3: /* get object info (automatic request sent when item is on action bar) */ break;
 		case 0xF4: parseMarketLeave(); break;
 		case 0xF5: parseMarketBrowse(msg); break;
 		case 0xF6: parseMarketCreateOffer(msg); break;
@@ -1482,7 +1481,6 @@ void ProtocolGame::parseSay(NetworkMessage& msg)
 			channelId = 0;
 			break;
 	}
-
 	std::string text = msg.getString();
 	if (text.length() > 255) {
 		return;
