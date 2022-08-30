@@ -134,6 +134,7 @@ class ProtocolGame final : public Protocol
 		void parseMarketAcceptOffer(NetworkMessage& msg);
 
 		// Outfits
+		void parseRequestOutfit(NetworkMessage& msg);
 		void parseSetOutfit(NetworkMessage& msg);
 		void parseToggleMount(NetworkMessage& msg);
 		void parseEditPodiumRequest(NetworkMessage& msg);
@@ -255,8 +256,8 @@ class ProtocolGame final : public Protocol
 		void sendTextWindow(uint32_t windowTextId, Item* item, uint16_t maxlen, bool canWrite);
 		void sendTextWindow(uint32_t windowTextId, uint32_t itemId, const std::string& text);
 		void sendHouseWindow(uint32_t windowTextId, const std::string& text);
-		void sendOutfitWindow();
 
+		void sendOutfitWindow();
 		void sendPodiumWindow(const Item* item);
 
 		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
@@ -285,6 +286,9 @@ class ProtocolGame final : public Protocol
 		void sendAddTileItem(const Position& pos, uint32_t stackpos, const Item* item);
 		void sendUpdateTileItem(const Position& pos, uint32_t stackpos, const Item* item);
 		void sendRemoveTileThing(const Position& pos, uint32_t stackpos);
+		void forgetCreatureID(uint32_t creatureId) {
+			knownCreatureMap.erase(creatureId);
+		}
 		void sendUpdateTileCreature(const Position& pos, uint32_t stackpos, const Creature* creature);
 		void sendRemoveTileCreature(const Creature* creature, const Position& pos, uint32_t stackpos);
 		void sendUpdateTile(const Tile* tile, const Position& pos);

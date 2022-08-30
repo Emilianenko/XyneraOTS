@@ -161,6 +161,12 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 							return true;
 						}
 
+						if (HouseTile* houseTile = dynamic_cast<HouseTile*>(tile)) {
+							if (House* house = houseTile->getHouse()) {
+								npc->setOwner(house->getOwner());
+							}
+						}
+
 						hirelingLamp->exportNPC(npc); // export lamp stats to the npc
 						g_game.placeCreature(npc, tile->getPosition(), false, true); // place the npc
 						delete item; // hireling was placed successfully, hide his lamp

@@ -160,7 +160,7 @@ function sendCraftedOutfitWindow(player, param)
 	m:sendToPlayer(player)
 end
 
-local t = TalkAction("/secretmenu", "/looktype")
+local t = TalkAction("/secretmenu")
 t.onSay = function(player, words, param)
 	sendCraftedOutfitWindow(player, param)
 end

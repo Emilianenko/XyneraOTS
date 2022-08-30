@@ -1,5 +1,7 @@
-local podiumRune = Action()
+-- click on anything: memorizes an item
+-- click on podium: sets an item to clicked podium
 
+local podiumRune = Action()
 function podiumRune.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if target and target:isItem() then
 		if target:isPodium() then
@@ -25,6 +27,5 @@ function podiumRune.onUse(player, item, fromPosition, target, toPosition, isHotk
 
 	return true
 end
-
 podiumRune:id(2282)
 podiumRune:register()

@@ -459,6 +459,18 @@ function Player:onImbuementExit()
 	end
 end
 
+function Player:onDressOtherCreatureRequest(target)
+	if EventCallback.onDressOtherCreatureRequest then
+		EventCallback.onDressOtherCreatureRequest(self, target)
+	end
+end
+
+function Player:onDressOtherCreature(target, outfit)
+	if EventCallback.onDressOtherCreature then
+		EventCallback.onDressOtherCreature(self, target, outfit)
+	end
+end
+	
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)

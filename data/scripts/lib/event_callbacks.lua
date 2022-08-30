@@ -74,6 +74,8 @@ ec.onBestiaryRaceView = {}
 ec.onImbuementApply = {}
 ec.onImbuementClear = {}
 ec.onImbuementExit = {}
+ec.onDressOtherCreatureRequest = {}
+ec.onDressOtherCreature = {}
 ec.onConnect = {}
 
 -- Monster

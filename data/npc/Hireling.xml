@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- This is a file that is used to spawn all hirelings in houses -->
 <!-- Hireling.xml is hardcoded - do not rename the file -->
-<npc name="Hireling" walkinterval="0" script="default.lua">
- 	<look type="128"/>
+<npc name="Hireling" walkinterval="0" script="hireling.lua">
+ 	<look type="1107"/>
 </npc>

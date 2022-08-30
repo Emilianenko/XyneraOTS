@@ -842,6 +842,11 @@ class Player final : public Creature, public Cylinder
 				client->sendRemoveTileThing(pos, stackpos);
 			}
 		}
+		void forgetCreatureID(uint32_t creatureId) {
+			if (client) {
+				client->forgetCreatureID(creatureId);
+			}
+		}
 		void sendUpdateTileCreature(const Creature* creature) const {
 			if (client) {
 				client->sendUpdateTileCreature(creature->getPosition(), creature->getTile()->getClientIndexOfCreature(this, creature), creature);
@@ -1250,7 +1255,6 @@ class Player final : public Creature, public Cylinder
 				client->sendCloseContainer(cid);
 			}
 		}
-
 		void sendChannel(uint16_t channelId, const std::string& channelName, const UsersMap* channelUsers, const InvitedMap* invitedUsers, bool ownChannel) {
 			if (client) {
 				client->sendChannel(channelId, channelName, channelUsers, invitedUsers, ownChannel);

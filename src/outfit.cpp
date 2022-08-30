@@ -32,7 +32,7 @@ bool Outfits::loadFromXml()
 		}
 
 		uint16_t type = pugi::cast<uint16_t>(attr.value());
-		if (type > PLAYERSEX_LAST) {
+		if (type > 0xFF) {
 			warnings.push_back(fmt::format("Invalid outfit type {:d}!", type));
 			continue;
 		}

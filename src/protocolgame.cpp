@@ -950,7 +950,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xCF: break; // blessings UI
 		case 0xD0: parseQuestTracker(msg); break;
 		// 0xD1 - empty/unknown
-		case 0xD2: addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); }); break;
+		case 0xD2: parseRequestOutfit(msg); break;
 		case 0xD3: parseSetOutfit(msg); break;
 		case 0xD4: parseToggleMount(msg); break;
 		case 0xD5: parseImbuingApply(msg); break; // apply imbu
@@ -1300,10 +1300,19 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 	addGameTask(([playerID = player->getID(), path = std::move(path)]() { g_game.playerAutoWalk(playerID, path); }));
 }
 
+void ProtocolGame::parseRequestOutfit(NetworkMessage& msg)
+{
+	uint8_t creatureType = msg.getByte(); // 2 = npc/hireling
+	if (creatureType == CREATURETYPE_NPC) {
+		addGameTask(([=, playerID = player->getID(), creatureID = msg.get<uint32_t>()]() { g_game.playerRequestOutfit(playerID, creatureID); }));
+		return;
+	}
+	addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); });
+}
+
 void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 {
 	uint8_t outfitType = msg.getByte();
-
 	Outfit_t newOutfit;
 	newOutfit.lookType = msg.get<uint16_t>();
 	newOutfit.lookHead = msg.getByte();
@@ -1335,16 +1344,9 @@ void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
 		addGameTask(([=, playerID = player->getID(), lookFamiliar = msg.get<uint16_t>()]() { g_game.playerSelectFamiliar(playerID, lookFamiliar); }));
 		addGameTask(([=, playerID = player->getID(), outfitRandomized = msg.getByte() == 0x01]() { g_game.playerChangeOutfit(playerID, newOutfit, outfitRandomized); }));
 
-	// Store "try outfit" window
+	// Customise hireling
 	} else if (outfitType == 1) {
-		newOutfit.lookMount = 0;
-		// mount colors or store offerId (needs testing)
-		newOutfit.lookMountHead = msg.getByte();
-		newOutfit.lookMountBody = msg.getByte();
-		newOutfit.lookMountLegs = msg.getByte();
-		newOutfit.lookMountFeet = msg.getByte();
-		//player->? (open store?)
-
+		addGameTask(([=, playerID = player->getID(), targetId = msg.get<uint32_t>(), outfit = newOutfit]() { g_game.playerDressOtherCreature(playerID, targetId, outfit); }));
 	// Podium interaction
 	} else if (outfitType == 2) {
 		Position pos = msg.getPosition();
@@ -3221,10 +3223,8 @@ void ProtocolGame::sendUpdateTileCreature(const Position& pos, uint32_t stackpos
 	msg.addPosition(pos);
 	msg.addByte(stackpos);
 
-	bool known;
-	uint32_t removedKnown;
-	checkCreatureAsKnown(creature->getID(), known, removedKnown);
-	AddCreature(msg, creature, false, removedKnown);
+	// send creature as "new" (known: false, cache id to overwrite: creature id)
+	AddCreature(msg, creature, false, creature->getID());
 
 	writeToOutputBuffer(msg);
 }
@@ -3714,7 +3714,7 @@ void ProtocolGame::sendOutfitWindow()
 		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
 	}
 
-	msg.addByte(0x00); // Try outfit mode (?)
+	msg.addByte(0x00); // outfit window mode (0 = edit player outfit)
 	msg.addByte(mounted ? 0x01 : 0x00);
 	msg.addByte(player->hasRandomizedMount() ? 0x01 : 0x00); // randomize mount (bool)
 	writeToOutputBuffer(msg);

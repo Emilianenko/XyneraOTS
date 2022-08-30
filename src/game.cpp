@@ -3694,7 +3694,7 @@ void Game::playerTurn(uint32_t playerId, Direction dir)
 	internalCreatureTurn(player, dir);
 }
 
-void Game::playerRequestOutfit(uint32_t playerId)
+void Game::playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId)
 {
 	if (!g_config.getBoolean(ConfigManager::ALLOW_CHANGEOUTFIT)) {
 		return;
@@ -3703,6 +3703,13 @@ void Game::playerRequestOutfit(uint32_t playerId)
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
 		return;
+	}
+
+	if (otherCreatureId != 0) {
+		if (Creature* target = g_game.getCreatureByID(otherCreatureId)) {
+			g_events->eventPlayerOnDressOtherCreatureRequest(player, target);
+			return;
+		}
 	}
 
 	player->sendOutfitWindow();
@@ -3796,10 +3803,18 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRand
 		return;
 	}
 
+	bool isAdmin = player->isAccessPlayer();
+
 	// prevent setting a mount to unmountable looktypes
 	const Outfit* playerOutfit = Outfits::getInstance().getOutfitByLookType(player->getSex(), outfit.lookType);
 	if (!playerOutfit) {
-		outfit.lookMount = 0;
+		if (!isAdmin) {
+			outfit.lookMount = 0;
+		} else {
+			if (!Outfits::getInstance().getOutfitByLookType(PLAYERSEX_FEMALE, outfit.lookType) && !Outfits::getInstance().getOutfitByLookType(PLAYERSEX_MALE, outfit.lookType)) {
+				outfit.lookMount = 0;
+			}
+		}
 	}
 
 	// check if the player has a mount
@@ -3808,7 +3823,7 @@ void Game::playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRand
 		if (!player->hasMount(mount)) {
 			outfit.lookMount = 0;
 		}
-	} else {
+	} else if (!isAdmin) {
 		outfit.lookMount = 0;
 	}
 
@@ -3872,6 +3887,21 @@ void Game::playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar)
 	if (requestedFamiliar && player->canUseFamiliar(requestedFamiliar)) {
 		player->setCurrentFamiliar(requestedFamiliar->id);
 	}
+}
+
+void Game::playerDressOtherCreature(uint32_t playerId, uint32_t targetId, Outfit_t outfit)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	Creature* target = getCreatureByID(targetId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnDressOtherCreature(player, target, outfit);
 }
 
 void Game::playerShowQuestLog(uint32_t playerId)

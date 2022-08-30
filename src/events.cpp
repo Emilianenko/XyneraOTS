@@ -159,6 +159,10 @@ bool Events::load()
 				info.playerOnImbuementClear = event;
 			} else if (methodName == "onImbuementExit") {
 				info.playerOnImbuementExit = event;
+			} else if (methodName == "onDressOtherCreatureRequest") {
+				info.playerOnDressOtherCreatureRequest = event;
+			} else if (methodName == "onDressOtherCreature") {
+				info.playerOnDressOtherCreature = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -1888,6 +1892,67 @@ void Events::eventPlayerOnImbuementExit(Player* player)
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
 	scriptInterface.callVoidFunction(1);
+}
+
+void Events::eventPlayerOnDressOtherCreatureRequest(Player* player, Creature* target)
+{
+	// Player:onDressOtherCreatureRequest(target)
+	if (info.playerOnDressOtherCreatureRequest == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnDressOtherCreatureRequest, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnDressOtherCreatureRequest);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// target
+	LuaScriptInterface::pushUserdata<Creature>(L, target);
+	LuaScriptInterface::setMetatable(L, -1, "Creature");
+
+	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnDressOtherCreature(Player* player, Creature* target, const Outfit_t& outfit)
+{
+	// Player:onDressOtherCreature(target)
+	if (info.playerOnDressOtherCreature == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnDressOtherCreature, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnDressOtherCreature);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// target
+	LuaScriptInterface::pushUserdata<Creature>(L, target);
+	LuaScriptInterface::setMetatable(L, -1, "Creature");
+
+	// outfit
+	LuaScriptInterface::pushOutfit(L, outfit);
+
+	scriptInterface.callVoidFunction(3);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)

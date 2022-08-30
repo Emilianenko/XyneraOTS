@@ -77,19 +77,7 @@
     <ClCompile Include="..\src\lua_combat.cpp">
       <Filter>luascript</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\actions.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ban.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\baseevents.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\bed.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\chat.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\combat.cpp">
@@ -98,70 +86,16 @@
     <ClCompile Include="..\src\condition.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\configmanager.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\consolemanager.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\container.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\creature.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\creatureevent.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\database.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\cylinder.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\depotlocker.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\depotchest.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\databasetasks.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\databasemanager.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\events.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\fileloader.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\familiars.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\game.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\globalevent.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\house.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\guild.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\groups.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\housetile.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\imbuing.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\inbox.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\iologindata.cpp">
@@ -176,61 +110,13 @@
     <ClCompile Include="..\src\iomarket.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\item.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\items.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mailbox.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\map.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\monster.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\monsters.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mounts.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\movement.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\party.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\outfit.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\otpch.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\npc.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\player.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\podium.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\position.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\quests.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\raids.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\rsa.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\scheduler.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\script.cpp">
@@ -239,52 +125,10 @@
     <ClCompile Include="..\src\scriptmanager.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\signals.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\spawn.cpp">
       <Filter>other</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\spells.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\stats.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\storeinbox.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\talkaction.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tasks.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\teleport.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\thing.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tile.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\tools.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\trashholder.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\vocation.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\weapons.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\wildcardtree.cpp">
-      <Filter>other</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\xtea.cpp">
       <Filter>other</Filter>
     </ClCompile>
     <ClCompile Include="..\src\protocol.cpp">
@@ -357,25 +201,175 @@
     <ClCompile Include="..\src\lua_weapon.cpp">
       <Filter>luascript</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\creature.cpp">
+      <Filter>creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\monster.cpp">
+      <Filter>creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\npc.cpp">
+      <Filter>creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\player.cpp">
+      <Filter>creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bed.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\container.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\depotchest.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\depotlocker.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\item.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\imbuing.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\items.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mailbox.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\podium.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\storeinbox.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\teleport.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\trashholder.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\monsters.cpp">
+      <Filter>creature</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\actions.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\baseevents.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\chat.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\creatureevent.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\events.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\globalevent.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\movement.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\raids.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\spells.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\talkaction.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\weapons.cpp">
+      <Filter>events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\inbox.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\cylinder.cpp">
+      <Filter>cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\housetile.cpp">
+      <Filter>cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\thing.cpp">
+      <Filter>cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tile.cpp">
+      <Filter>cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\configmanager.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\consolemanager.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\databasemanager.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\databasetasks.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fileloader.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\otpch.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rsa.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scheduler.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\signals.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\stats.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tasks.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tools.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\xtea.cpp">
+      <Filter>server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\hirelinglamp.cpp">
+      <Filter>item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lua_hirelinglamp.cpp">
+      <Filter>luascript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\familiars.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mounts.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\groups.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\outfit.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\quests.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\vocation.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\luascript.h" />
     <ClInclude Include="..\src\account.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\actions.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ban.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\baseevents.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\bed.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\chat.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\combat.h">
@@ -384,58 +378,16 @@
     <ClInclude Include="..\src\condition.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\configmanager.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\const.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\consolemanager.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\container.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\creature.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\creatureevent.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\cylinder.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\depotlocker.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\depotchest.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\definitions.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\databasetasks.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\database.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\databasemanager.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\enums.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\familiars.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\events.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\fileloader.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\groups.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\guild.h">
@@ -444,22 +396,10 @@
     <ClInclude Include="..\src\house.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\globalevent.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\game.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\housetile.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\imbuing.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\iologindata.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\inbox.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\iomap.h">
@@ -471,73 +411,16 @@
     <ClInclude Include="..\src\iomarket.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\item.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\itemloader.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\items.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\lockfree.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\luavariant.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mailbox.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\map.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\monster.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\monsters.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mounts.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\movement.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\npc.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\otpch.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\party.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\outfit.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\player.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\position.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\podium.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\pugicast.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\quests.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\raids.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\rsa.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\scheduler.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\script.h">
@@ -546,58 +429,13 @@
     <ClInclude Include="..\src\scriptmanager.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\signals.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\spectators.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\spawn.h">
       <Filter>other</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\spells.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\stats.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\storeinbox.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\talkaction.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\teleport.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tasks.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\thing.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\thread_holder_base.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tile.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\tools.h">
-      <Filter>other</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\town.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\trashholder.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\vocation.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\weapons.h">
-      <Filter>other</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\xtea.h">
       <Filter>other</Filter>
     </ClInclude>
     <ClInclude Include="..\src\wildcardtree.h">
@@ -630,21 +468,210 @@
     <ClInclude Include="..\src\server.h">
       <Filter>network</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\creature.h">
+      <Filter>creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\monster.h">
+      <Filter>creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\npc.h">
+      <Filter>creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\player.h">
+      <Filter>creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\bed.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\container.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\depotchest.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\depotlocker.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\item.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\imbuing.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\items.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\itemloader.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mailbox.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\podium.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\storeinbox.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\teleport.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\trashholder.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\monsters.h">
+      <Filter>creature</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\actions.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\baseevents.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\chat.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\creatureevent.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\events.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\globalevent.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\movement.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\raids.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\spells.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\talkaction.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\weapons.h">
+      <Filter>events</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\inbox.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\cylinder.h">
+      <Filter>cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\housetile.h">
+      <Filter>cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\thing.h">
+      <Filter>cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tile.h">
+      <Filter>cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\configmanager.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\consolemanager.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\databasemanager.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\databasetasks.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fileloader.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\lockfree.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\otpch.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\pugicast.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\rsa.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scheduler.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\signals.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\stats.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tasks.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\thread_holder_base.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tools.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xtea.h">
+      <Filter>server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\hirelinglamp.h">
+      <Filter>item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\familiars.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\mounts.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\groups.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\outfit.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\quests.h">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\vocation.h">
+      <Filter>xml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="network">
-      <UniqueIdentifier>{7c5ad075-d376-4335-8ace-a733c60ea93a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="luascript">
       <UniqueIdentifier>{110d56dc-481b-4366-8c4b-d17ba23fc484}</UniqueIdentifier>
     </Filter>
     <Filter Include="other">
       <UniqueIdentifier>{6517082e-6445-4bd8-9d89-1ef8505efa01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="creature">
+      <UniqueIdentifier>{38a3aebc-829e-4d83-9ec3-2b180af0ee4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="item">
+      <UniqueIdentifier>{d12d576d-4d44-4896-9995-c5185c973f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cylinder">
+      <UniqueIdentifier>{db89ca45-303a-4670-9c12-e64284dcb698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="server">
+      <UniqueIdentifier>{01790cde-ee43-4a1b-a005-00bd5e502b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="events">
+      <UniqueIdentifier>{b45b74c9-a91d-4880-bc32-40bf2180def3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xml">
+      <UniqueIdentifier>{a81977fa-f25f-4cdd-9837-f30fe9ad54db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{7c5ad075-d376-4335-8ace-a733c60ea93a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="theforgottenserver.rc">
-      <Filter>other</Filter>
+      <Filter>server</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

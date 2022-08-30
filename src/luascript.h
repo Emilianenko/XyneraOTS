@@ -912,6 +912,9 @@ class LuaScriptInterface
 		static int luaCreatureSetIconValue(lua_State* L);
 		static int luaCreatureRemoveIcon(lua_State* L);
 
+		static int luaCreatureGetSpeechBubble(lua_State* L);
+		static int luaCreatureSetSpeechBubble(lua_State* L);
+
 		// Player
 		static int luaPlayerCreate(lua_State* L);
 
@@ -1168,11 +1171,16 @@ class LuaScriptInterface
 		static int luaNpcCreate(lua_State* L);
 
 		static int luaNpcIsNpc(lua_State* L);
+		static int luaNpcSetName(lua_State* L);
 
 		static int luaNpcSetMasterPos(lua_State* L);
+		static int luaNpcGetMasterPos(lua_State* L);
 
-		static int luaNpcGetSpeechBubble(lua_State* L);
-		static int luaNpcSetSpeechBubble(lua_State* L);
+		static int luaNpcSetOwnerGUID(lua_State* L);
+		static int luaNpcGetOwnerGUID(lua_State* L);
+
+		static int luaNpcSetSex(lua_State* L);
+		static int luaNpcGetSex(lua_State* L);
 
 		// Guild
 		static int luaGuildCreate(lua_State* L);

@@ -404,7 +404,7 @@ class Game
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		void playerRequestEditVip(uint32_t playerId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
 		void playerTurn(uint32_t playerId, Direction dir);
-		void playerRequestOutfit(uint32_t playerId);
+		void playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId = 0);
 		void playerRequestEditPodium(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
 		void playerEditPodium(uint32_t playerId, Outfit_t outfit, const Position& position, uint8_t stackPos, const uint16_t spriteId, bool podiumVisible, Direction direction);
 		void playerShowQuestLog(uint32_t playerId);
@@ -414,6 +414,7 @@ class Game
 		               const std::string& receiver, const std::string& text);
 		void playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRandomized);
 		void playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar);
+		void playerDressOtherCreature(uint32_t playerId, uint32_t targetId, Outfit_t outfit);
 		void playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		void playerJoinParty(uint32_t playerId, uint32_t leaderId);
 		void playerRevokePartyInvitation(uint32_t playerId, uint32_t invitedId);

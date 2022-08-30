@@ -2942,6 +2942,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "setIconValue", LuaScriptInterface::luaCreatureSetIconValue);
 	registerMethod("Creature", "removeIcon", LuaScriptInterface::luaCreatureRemoveIcon);
 
+	registerMethod("Creature", "getSpeechBubble", LuaScriptInterface::luaCreatureGetSpeechBubble);
+	registerMethod("Creature", "setSpeechBubble", LuaScriptInterface::luaCreatureSetSpeechBubble);
+
 	// Player
 	registerClass("Player", "Creature", LuaScriptInterface::luaPlayerCreate);
 	registerMetaMethod("Player", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -3201,11 +3204,16 @@ void LuaScriptInterface::registerFunctions()
 	registerMetaMethod("Npc", "__eq", LuaScriptInterface::luaUserdataCompare);
 
 	registerMethod("Npc", "isNpc", LuaScriptInterface::luaNpcIsNpc);
+	registerMethod("Npc", "setName", LuaScriptInterface::luaNpcSetName);
 
 	registerMethod("Npc", "setMasterPos", LuaScriptInterface::luaNpcSetMasterPos);
+	registerMethod("Npc", "getMasterPos", LuaScriptInterface::luaNpcGetMasterPos);
 
-	registerMethod("Npc", "getSpeechBubble", LuaScriptInterface::luaNpcGetSpeechBubble);
-	registerMethod("Npc", "setSpeechBubble", LuaScriptInterface::luaNpcSetSpeechBubble);
+	registerMethod("Npc", "setOwnerGUID", LuaScriptInterface::luaNpcSetOwnerGUID);
+	registerMethod("Npc", "getOwnerGUID", LuaScriptInterface::luaNpcGetOwnerGUID);
+
+	registerMethod("Npc", "setSex", LuaScriptInterface::luaNpcSetSex);
+	registerMethod("Npc", "getSex", LuaScriptInterface::luaNpcGetSex);
 
 	// Guild
 	registerClass("Guild", "", LuaScriptInterface::luaGuildCreate);
