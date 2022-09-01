@@ -72,6 +72,14 @@ ec.onLook = function(self, thing, position, distance, description)
 			description, position.x, position.y, position.z
 		)
 
+		if thing:isTeleport() then
+			position = thing:getDestination()
+			description = string.format(
+			"%s\nDestination: %d, %d, %d",
+			description, position.x, position.y, position.z
+		)
+		end
+		
 		if thing:isCreature() then
 			local outfit = thing:getOutfit()
 			if outfit.lookTypeEx == 0 then

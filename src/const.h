@@ -788,14 +788,6 @@ enum PodiumFlags : uint8_t {
 	PODIUM_SHOW_MOUNT = 1 << 2 // show mount
 };
 
-// note: signed int because it is saved as storage value
-enum HirelingFeatures : int32_t {
-	HIRELING_FEATURE_BANK = 1 << 0,
-	HIRELING_FEATURE_FOOD = 1 << 1,
-	HIRELING_FEATURE_STASH = 1 << 2,
-	HIRELING_FEATURE_SHOP = 1 << 3,
-};
-
 enum ReloadTypes_t : uint8_t {
 	RELOAD_TYPE_ALL,
 	RELOAD_TYPE_ACTIONS,

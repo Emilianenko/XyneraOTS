@@ -3,6 +3,7 @@ function sexToString(sex)
 	return sex == PLAYERSEX_MALE and "male" or "female"
 end
 
+-- unlock hireling outfit
 function Player:addHirelingOutfit(hirelingId, count)
 	if hirelingId <= 1 or hirelingId > 0xFFFF then
 		-- id 1 is unlimited

@@ -137,6 +137,10 @@ function ItemType:isTeleport()
 	return self:getGroup() == ITEM_GROUP_TELEPORT or self:getType() == ITEM_TYPE_TELEPORT
 end
 
+function ItemType:isHirelingLamp()
+	return self:getType() == ITEM_TYPE_HIRELINGLAMP
+end
+
 do
 	local realSlot = {
 		isHelmet = CONST_SLOT_HEAD,

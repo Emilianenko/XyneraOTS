@@ -231,6 +231,11 @@ Thing* Game::internalGetThing(Player* player, const Position& pos, int32_t index
 			return nullptr;
 		}
 
+		if (type == STACKPOS_USEITEM && spriteId == 99) {
+			// special case: dismissing a hireling
+			type = STACKPOS_USETARGET;
+		}
+
 		Thing* thing;
 		switch (type) {
 			case STACKPOS_LOOK: {
@@ -2281,6 +2286,17 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 
 	Thing* thing = internalGetThing(player, pos, stackPos, spriteId, STACKPOS_USEITEM);
 	if (!thing) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+	if (spriteId == 99) {
+		// special case: dismiss a hireling
+		if (Creature* creature = thing->getCreature()) {
+			g_events->eventPlayerOnUseCreature(player, creature);
+			return;
+		}
+
 		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
 		return;
 	}

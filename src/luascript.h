@@ -588,6 +588,8 @@ class LuaScriptInterface
 		static int luaGameSendConsoleMessage(lua_State* L);
 		static int luaGameGetLastConsoleMessage(lua_State* L);
 
+		static int luaGamePlayerHirelingFeatures(lua_State* L);
+
 		// Variant
 		static int luaVariantCreate(lua_State* L);
 
@@ -810,6 +812,15 @@ class LuaScriptInterface
 		static int luaPodiumSetFlag(lua_State* L);
 		static int luaPodiumGetDirection(lua_State* L);
 		static int luaPodiumSetDirection(lua_State* L);
+
+		// HirelingLamp
+		static int luaHirelingLampCreate(lua_State* L);
+		static int luaHirelingLampName(lua_State* L);
+		static int luaHirelingLampSex(lua_State* L);
+		static int luaHirelingLampOutfit(lua_State* L);
+		static int luaHirelingLampFlags(lua_State* L);
+		static int luaHirelingLampDirection(lua_State* L);
+		static int luaHirelingLampUnpacked(lua_State* L);
 
 		// Creature
 		static int luaCreatureCreate(lua_State* L);

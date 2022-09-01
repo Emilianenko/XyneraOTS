@@ -470,7 +470,13 @@ function Player:onDressOtherCreature(target, outfit)
 		EventCallback.onDressOtherCreature(self, target, outfit)
 	end
 end
-	
+
+function Player:onUseCreature(target)
+	if EventCallback.onUseCreature then
+		EventCallback.onUseCreature(self, target)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)

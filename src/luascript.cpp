@@ -2607,6 +2607,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "sendConsoleMessage", LuaScriptInterface::luaGameSendConsoleMessage);
 	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
 
+	registerMethod("Game", "playerHirelingFeatures", LuaScriptInterface::luaGamePlayerHirelingFeatures);
+
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
 
@@ -2838,6 +2840,17 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Podium", "setFlag", LuaScriptInterface::luaPodiumSetFlag);
 	registerMethod("Podium", "getDirection", LuaScriptInterface::luaPodiumGetDirection);
 	registerMethod("Podium", "setDirection", LuaScriptInterface::luaPodiumSetDirection);
+	
+	// HirelingLamp
+	registerClass("HirelingLamp", "", LuaScriptInterface::luaHirelingLampCreate);
+	registerMetaMethod("HirelingLamp", "__eq", LuaScriptInterface::luaUserdataCompare);
+
+	registerMethod("HirelingLamp", "hirelingName", LuaScriptInterface::luaHirelingLampName);
+	registerMethod("HirelingLamp", "sex", LuaScriptInterface::luaHirelingLampSex);
+	registerMethod("HirelingLamp", "outfit", LuaScriptInterface::luaHirelingLampOutfit);
+	registerMethod("HirelingLamp", "flags", LuaScriptInterface::luaHirelingLampFlags);
+	registerMethod("HirelingLamp", "direction", LuaScriptInterface::luaHirelingLampDirection);
+	registerMethod("HirelingLamp", "unpacked", LuaScriptInterface::luaHirelingLampUnpacked);
 
 	// Creature
 	registerClass("Creature", "", LuaScriptInterface::luaCreatureCreate);

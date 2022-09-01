@@ -76,6 +76,7 @@ ec.onImbuementClear = {}
 ec.onImbuementExit = {}
 ec.onDressOtherCreatureRequest = {}
 ec.onDressOtherCreature = {}
+ec.onUseCreature = {}
 ec.onConnect = {}
 
 -- Monster

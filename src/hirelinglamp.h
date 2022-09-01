@@ -6,6 +6,7 @@
 
 #include "item.h"
 
+#include "game.h"
 #include "npc.h"
 
 class HirelingLamp final : public Item
@@ -23,7 +24,7 @@ class HirelingLamp final : public Item
 		Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream) override;
 		void serializeAttr(PropWriteStream& propWriteStream) const override;
 
-		void setHirelingName(std::string& hirelingName) {
+		void setHirelingName(const std::string& hirelingName) {
 			this->hirelingName = hirelingName;
 		}
 		const std::string& getHirelingName() {
@@ -37,15 +38,25 @@ class HirelingLamp final : public Item
 			return outfit;
 		}
 
-		bool hasFlag(HirelingFeatures flag) const {
+		uint8_t getSex() const {
+			return sex;
+		}
+		void setSex(uint8_t sex) {
+			this->sex = sex;
+		};
+
+		bool hasFlag(int32_t flag) const {
 			return (this->flags & flag) != 0;
 		}
-		void setFlagValue(HirelingFeatures flag, bool value) {
+		void setFlagValue(int32_t flag, bool value) {
 			if (value) {
 				this->flags |= flag;
 				return;
 			}
 			this->flags &= ~flag;
+		}
+		int32_t getFlags() {
+			return flags;
 		}
 		void setFlags(int32_t flags) {
 			this->flags = flags;
@@ -70,7 +81,7 @@ class HirelingLamp final : public Item
 			this->sex = npc->getSex();
 			this->direction = npc->getDirection();
 			this->outfit = npc->getCurrentOutfit();
-			this->flags = 0; // pull from GUID->flags map (pass guid in argument)
+			this->flags = g_game.getHirelingFeatures(npc->getOwner()); // pull from GUID->flags map (pass guid in argument)
 			this->unpacked = true;
 		}
 
@@ -81,7 +92,7 @@ class HirelingLamp final : public Item
 			npc->setSex(static_cast<PlayerSex_t>(sex));
 			npc->setDirection(direction);
 			npc->setCurrentOutfit(outfit);
-			// unpack flags to map if not loaded earlier
+			// npc->flags // handled by another function
 			npc->setSpeechBubble(SPEECHBUBBLE_HIRELING);
 			npc->setPhantom(true);
 			this->unpacked = false;

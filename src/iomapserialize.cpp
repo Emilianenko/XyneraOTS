@@ -148,6 +148,7 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 				if (tile) {
 					HirelingLamp* hirelingLamp = item->getHirelingLamp();
 					if (hirelingLamp && hirelingLamp->isUnpacked()) {
+						// load npc
 						Npc* npc = Npc::createNpc("Hireling");
 						if (!npc) {
 							// npc failed to load - show warning
@@ -161,14 +162,28 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 							return true;
 						}
 
+						// set npc attributes
 						if (HouseTile* houseTile = dynamic_cast<HouseTile*>(tile)) {
 							if (House* house = houseTile->getHouse()) {
 								npc->setOwner(house->getOwner());
 							}
 						}
-
+						g_game.registerHirelingFeatures(npc->getOwner(), hirelingLamp->getFlags());
 						hirelingLamp->exportNPC(npc); // export lamp stats to the npc
-						g_game.placeCreature(npc, tile->getPosition(), false, true); // place the npc
+
+						// place the npc
+						if (!g_game.placeCreature(npc, tile->getPosition(), false, true)) {
+							// failed to place the npc
+							const Position& tilePos = tile->getPosition();
+							console::reportWarning(__FUNCTION__, fmt::format("Unable to spawn hireling \"{:s}\" at position: {:d}, {:d}, {:d})! Hireling will return to lamp.", hirelingLamp->getHirelingName(), tilePos.x, tilePos.y, tilePos.z));
+
+							// send npc back to lamp
+							hirelingLamp->setUnpacked(false);
+							parent->internalAddThing(item);
+							item->startDecaying();
+							return true;
+						};
+
 						delete item; // hireling was placed successfully, hide his lamp
 						return true; // action was successful, show no errors
 					}

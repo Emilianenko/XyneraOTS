@@ -569,6 +569,34 @@ class Game
 			tilesToClean.clear();
 		}
 
+		void registerHirelingFeatures(uint32_t playerGuid, int32_t flags) {
+			if (playerGuid == 0) {
+				// no player to register
+				return;
+			}
+
+			const auto& it = hirelingFeatures.find(playerGuid);
+			if (it != hirelingFeatures.end()) {
+				// already registered
+				return;
+			}
+
+			hirelingFeatures[playerGuid] = flags;
+		}
+		int32_t getHirelingFeatures(uint32_t playerGuid) {
+			if (playerGuid == 0){
+				return 0;
+			}
+			return hirelingFeatures[playerGuid];
+		}
+		void setHirelingFeatures(uint32_t playerGuid, int32_t flags) {
+			if (playerGuid == 0) {
+				return;
+			}
+
+			hirelingFeatures[playerGuid] = flags;
+		}
+
 	private:
 		bool playerSaySpell(Player* player, MessageClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);

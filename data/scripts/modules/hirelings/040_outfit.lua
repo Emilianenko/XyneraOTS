@@ -193,7 +193,7 @@ do
 			outfit.lookMount = 0
 			outfit.lookAddons = 0
 			local lookType = outfit.lookType
-			local outfitId = getHirelingOutfitIdByLookType[lookType]
+			local outfitId = getHirelingOutfitIdByLookType(lookType)
 			if not outfitId then
 				player:sendCancelMessage("Your hireling cannot wear this outfit.")
 				return
@@ -217,7 +217,7 @@ do
 			
 			-- unregister old outfit
 			local prevLookType = npc:getOutfit().lookType
-			local prevOutfitId = getHirelingOutfitIdByLookType[prevLookType]
+			local prevOutfitId = getHirelingOutfitIdByLookType(prevLookType)
 			if prevOutfitId then
 				unregisterHirelingOutfit(owner, prevOutfitId)
 			end
