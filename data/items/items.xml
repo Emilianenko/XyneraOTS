@@ -35335,7 +35335,7 @@
 	</item>
 	<item id="36765" article="a" name="bag you desire">
 		<attribute key="weight" value="150" />
-		<attribute key="description" value="It contains the most powerful artifacts from the depths of Zarganash's darkest realms." />
+		<!-- <attribute key="description" value="It contains the most powerful artifacts from the depths of Zarganash's darkest realms." /> -->
 	</item>
 	<item id="36806" article="a" name="lion longbow">
 		<attribute key="weaponType" value="distance"/>
@@ -41936,8 +41936,9 @@
 		<attribute key="weight" value="100"/>
 	</item>
 	<item id="44577" article="a" name="primal bag">
-		<attribute key="description" value="A small gift from the gnomes of gnomprona"/>
-		<attribute key="weight" value="16000"/>
+	    <attribute key="containersize" value="8"/>
+		<!-- <attribute key="description" value="A small gift from the gnomes of gnomprona"/> -->
+		<attribute key="weight" value="1000"/>
 	</item>
 	<item id="44414" article="a" name="prehemoth claw">
 		<attribute key="weight" value="850"/>
@@ -43875,9 +43876,6 @@
 	</item>
 	<item id="36585" article="a" name="rod" plural="rods">
 		<attribute key="weight" value="90"/>
-	</item>
-	<item id="36765" article="a" name="bag you desire">
-		<attribute key="weight" value="30"/>
 	</item>
 	<item id="36914" name="red silk flower">
 		<attribute key="description" value="The petals are made of silk, the buds and pistil of rubies. The werelions of the Darama Desert often use such flowers as decorations for bravery and valour"/>
