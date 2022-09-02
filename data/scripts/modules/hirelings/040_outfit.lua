@@ -201,8 +201,9 @@ do
 			
 			-- check if player has enough copies of this outfit available
 			local owner = player:getGuid()
+			local outfitCount = HirelingsUsageCache[owner][outfitId] or 0
 			if not (lookType == HIRELING_BASE_MALE or lookType == HIRELING_BASE_FEMALE) then
-				if player:getStorageValue(HIRELING_UNLOCK_BASE_STORAGE + outfitId) < HirelingsUsageCache[owner][outfitId] + 1 then
+				if player:getStorageValue(HIRELING_UNLOCK_BASE_STORAGE + outfitId) < outfitCount + 1 then
 					player:sendCancelMessage("You do not have enough copies of this outfit.")
 					return
 				end
@@ -222,7 +223,7 @@ do
 				unregisterHirelingOutfit(owner, prevOutfitId)
 			end
 			
-			HirelingsUsageCache[owner][outfitId] = HirelingsUsageCache[owner][outfitId] + 1
+			HirelingsUsageCache[owner][outfitId] = outfitCount + 1
 			target:setOutfit(outfit)
 			return
 		end
