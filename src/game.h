@@ -329,6 +329,7 @@ class Game
 		void playerDebugAssert(uint32_t playerId, const std::string& assertLine, const std::string& date, const std::string& description, const std::string& comment);
 		void playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, uint8_t button, uint8_t choice);
 		void playerReportRuleViolation(uint32_t playerId, const std::string& targetName, uint8_t reportType, uint8_t reportReason, const std::string& comment, const std::string& translation);
+		void playerEditName(uint32_t playerId, uint32_t targetId, const std::string& newName);
 
 		bool internalStartTrade(Player* player, Player* tradePartner, Item* tradeItem);
 		void internalCloseTrade(Player* player, bool sendCancel = true);
@@ -404,7 +405,7 @@ class Game
 		void playerRequestRemoveVip(uint32_t playerId, uint32_t guid);
 		void playerRequestEditVip(uint32_t playerId, uint32_t guid, const std::string& description, uint32_t icon, bool notify);
 		void playerTurn(uint32_t playerId, Direction dir);
-		void playerRequestOutfit(uint32_t playerId);
+		void playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId = 0);
 		void playerRequestEditPodium(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId);
 		void playerEditPodium(uint32_t playerId, Outfit_t outfit, const Position& position, uint8_t stackPos, const uint16_t spriteId, bool podiumVisible, Direction direction);
 		void playerShowQuestLog(uint32_t playerId);
@@ -414,6 +415,7 @@ class Game
 		               const std::string& receiver, const std::string& text);
 		void playerChangeOutfit(uint32_t playerId, Outfit_t outfit, bool mountRandomized);
 		void playerSelectFamiliar(uint32_t playerId, uint16_t lookFamiliar);
+		void playerDressOtherCreature(uint32_t playerId, uint32_t targetId, Outfit_t outfit);
 		void playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		void playerJoinParty(uint32_t playerId, uint32_t leaderId);
 		void playerRevokePartyInvitation(uint32_t playerId, uint32_t invitedId);
@@ -518,6 +520,7 @@ class Game
 
 		void addPlayer(Player* player);
 		void removePlayer(Player* player);
+		void renamePlayer(Player* player, const std::string& newName);
 
 		void addNpc(Npc* npc);
 		void removeNpc(Npc* npc);
@@ -568,6 +571,34 @@ class Game
 			tilesToClean.clear();
 		}
 
+		void registerHirelingFeatures(uint32_t playerGuid, int32_t flags) {
+			if (playerGuid == 0) {
+				// no player to register
+				return;
+			}
+
+			const auto& it = hirelingFeatures.find(playerGuid);
+			if (it != hirelingFeatures.end()) {
+				// already registered
+				return;
+			}
+
+			hirelingFeatures[playerGuid] = flags;
+		}
+		int32_t getHirelingFeatures(uint32_t playerGuid) {
+			if (playerGuid == 0){
+				return 0;
+			}
+			return hirelingFeatures[playerGuid];
+		}
+		void setHirelingFeatures(uint32_t playerGuid, int32_t flags) {
+			if (playerGuid == 0) {
+				return;
+			}
+
+			hirelingFeatures[playerGuid] = flags;
+		}
+
 	private:
 		bool playerSaySpell(Player* player, MessageClasses type, const std::string& text);
 		void playerWhisper(Player* player, const std::string& text);
@@ -585,7 +616,7 @@ class Game
 		std::unordered_map<uint16_t, Item*> uniqueItems;
 		std::map<uint32_t, uint32_t> stages;
 		std::unordered_map<uint32_t, std::unordered_map<uint32_t, int32_t>> accountStorageMap;
-
+		std::unordered_map<uint32_t, int32_t> hirelingFeatures;
 		std::list<Item*> decayItems[EVENT_DECAY_BUCKETS];
 		std::list<Creature*> checkCreatureLists[EVENT_CREATURECOUNT];
 

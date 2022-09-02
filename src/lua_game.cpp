@@ -743,3 +743,21 @@ int LuaScriptInterface::luaGameGetLastConsoleMessage(lua_State* L)
 	lua_pushstring(L, console::getLastMessage().c_str());
 	return 1;
 }
+
+int LuaScriptInterface::luaGamePlayerHirelingFeatures(lua_State* L)
+{
+	// get: Game.playerHirelingFeatures(playerGuid)
+	// set: Game.playerHirelingFeatures(playerGuid, values)
+	if (lua_gettop(L) > 0) {
+		uint32_t playerGuid = getNumber<uint32_t>(L, 1);
+		if (lua_gettop(L) == 1) {
+			lua_pushnumber(L, g_game.getHirelingFeatures(playerGuid));
+		} else {
+			g_game.setHirelingFeatures(playerGuid, getNumber<int32_t>(L, 2));
+			pushBoolean(L, true);
+		}
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}

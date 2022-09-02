@@ -588,6 +588,8 @@ class LuaScriptInterface
 		static int luaGameSendConsoleMessage(lua_State* L);
 		static int luaGameGetLastConsoleMessage(lua_State* L);
 
+		static int luaGamePlayerHirelingFeatures(lua_State* L);
+
 		// Variant
 		static int luaVariantCreate(lua_State* L);
 
@@ -811,6 +813,15 @@ class LuaScriptInterface
 		static int luaPodiumGetDirection(lua_State* L);
 		static int luaPodiumSetDirection(lua_State* L);
 
+		// HirelingLamp
+		static int luaHirelingLampCreate(lua_State* L);
+		static int luaHirelingLampName(lua_State* L);
+		static int luaHirelingLampSex(lua_State* L);
+		static int luaHirelingLampOutfit(lua_State* L);
+		static int luaHirelingLampFlags(lua_State* L);
+		static int luaHirelingLampDirection(lua_State* L);
+		static int luaHirelingLampUnpacked(lua_State* L);
+
 		// Creature
 		static int luaCreatureCreate(lua_State* L);
 
@@ -912,10 +923,15 @@ class LuaScriptInterface
 		static int luaCreatureSetIconValue(lua_State* L);
 		static int luaCreatureRemoveIcon(lua_State* L);
 
+		static int luaCreatureGetSpeechBubble(lua_State* L);
+		static int luaCreatureSetSpeechBubble(lua_State* L);
+
 		// Player
 		static int luaPlayerCreate(lua_State* L);
 
 		static int luaPlayerIsPlayer(lua_State* L);
+
+		static int luaPlayerSetName(lua_State* L);
 
 		static int luaPlayerGetGuid(lua_State* L);
 		static int luaPlayerGetIp(lua_State* L);
@@ -1168,11 +1184,16 @@ class LuaScriptInterface
 		static int luaNpcCreate(lua_State* L);
 
 		static int luaNpcIsNpc(lua_State* L);
+		static int luaNpcSetName(lua_State* L);
 
 		static int luaNpcSetMasterPos(lua_State* L);
+		static int luaNpcGetMasterPos(lua_State* L);
 
-		static int luaNpcGetSpeechBubble(lua_State* L);
-		static int luaNpcSetSpeechBubble(lua_State* L);
+		static int luaNpcSetOwnerGUID(lua_State* L);
+		static int luaNpcGetOwnerGUID(lua_State* L);
+
+		static int luaNpcSetSex(lua_State* L);
+		static int luaNpcGetSex(lua_State* L);
 
 		// Guild
 		static int luaGuildCreate(lua_State* L);

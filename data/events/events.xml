@@ -43,6 +43,12 @@
 	<event class="Player" method="onGainExperience" enabled="1" />
 	<event class="Player" method="onLoseExperience" enabled="0" />
 	<event class="Player" method="onGainSkillTries" enabled="1" />
+
+	<!-- player - hireling -->
+	<event class="Player" method="onDressOtherCreatureRequest" enabled="1" />
+	<event class="Player" method="onDressOtherCreature" enabled="1" />
+	<event class="Player" method="onUseCreature" enabled="1" />
+	<event class="Player" method="onEditName" enabled="1" />
 	
 	<!-- Player - trade -->
 	<event class="Player" method="onTradeRequest" enabled="1" />

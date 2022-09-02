@@ -1766,7 +1766,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_TYPE_KEY)
 	registerEnum(ITEM_TYPE_RUNE)
 	registerEnum(ITEM_TYPE_PODIUM)
-
+	registerEnum(ITEM_TYPE_HIRELINGLAMP)
+	
 	registerEnum(ITEM_GROUP_GROUND)
 	registerEnum(ITEM_GROUP_CONTAINER)
 	registerEnum(ITEM_GROUP_WEAPON)
@@ -1853,6 +1854,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerEnum(ITEM_AMULETOFLOSS)
 	registerEnum(ITEM_DECORATION_KIT)
+	registerEnum(ITEM_HIRELING_LAMP)
 	
 	registerEnum(ITEM_DOCUMENT_RO)
 
@@ -1894,6 +1896,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(PlayerFlag_SetMaxSpeed)
 	registerEnum(PlayerFlag_SpecialVIP)
 	registerEnum(PlayerFlag_NotGenerateLoot)
+	registerEnum(PlayerFlag_CanTalkRedChannelAnonymous)
 	registerEnum(PlayerFlag_IgnoreProtectionZone)
 	registerEnum(PlayerFlag_IgnoreSpellCheck)
 	registerEnum(PlayerFlag_IgnoreWeaponCheck)
@@ -2604,6 +2607,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "sendConsoleMessage", LuaScriptInterface::luaGameSendConsoleMessage);
 	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
 
+	registerMethod("Game", "playerHirelingFeatures", LuaScriptInterface::luaGamePlayerHirelingFeatures);
+
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
 
@@ -2835,6 +2840,17 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Podium", "setFlag", LuaScriptInterface::luaPodiumSetFlag);
 	registerMethod("Podium", "getDirection", LuaScriptInterface::luaPodiumGetDirection);
 	registerMethod("Podium", "setDirection", LuaScriptInterface::luaPodiumSetDirection);
+	
+	// HirelingLamp
+	registerClass("HirelingLamp", "", LuaScriptInterface::luaHirelingLampCreate);
+	registerMetaMethod("HirelingLamp", "__eq", LuaScriptInterface::luaUserdataCompare);
+
+	registerMethod("HirelingLamp", "hirelingName", LuaScriptInterface::luaHirelingLampName);
+	registerMethod("HirelingLamp", "sex", LuaScriptInterface::luaHirelingLampSex);
+	registerMethod("HirelingLamp", "outfit", LuaScriptInterface::luaHirelingLampOutfit);
+	registerMethod("HirelingLamp", "flags", LuaScriptInterface::luaHirelingLampFlags);
+	registerMethod("HirelingLamp", "direction", LuaScriptInterface::luaHirelingLampDirection);
+	registerMethod("HirelingLamp", "unpacked", LuaScriptInterface::luaHirelingLampUnpacked);
 
 	// Creature
 	registerClass("Creature", "", LuaScriptInterface::luaCreatureCreate);
@@ -2939,11 +2955,16 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "setIconValue", LuaScriptInterface::luaCreatureSetIconValue);
 	registerMethod("Creature", "removeIcon", LuaScriptInterface::luaCreatureRemoveIcon);
 
+	registerMethod("Creature", "getSpeechBubble", LuaScriptInterface::luaCreatureGetSpeechBubble);
+	registerMethod("Creature", "setSpeechBubble", LuaScriptInterface::luaCreatureSetSpeechBubble);
+
 	// Player
 	registerClass("Player", "Creature", LuaScriptInterface::luaPlayerCreate);
 	registerMetaMethod("Player", "__eq", LuaScriptInterface::luaUserdataCompare);
 
 	registerMethod("Player", "isPlayer", LuaScriptInterface::luaPlayerIsPlayer);
+
+	registerMethod("Player", "setName", LuaScriptInterface::luaPlayerSetName);
 
 	registerMethod("Player", "getGuid", LuaScriptInterface::luaPlayerGetGuid);
 	registerMethod("Player", "getIp", LuaScriptInterface::luaPlayerGetIp);
@@ -3198,11 +3219,16 @@ void LuaScriptInterface::registerFunctions()
 	registerMetaMethod("Npc", "__eq", LuaScriptInterface::luaUserdataCompare);
 
 	registerMethod("Npc", "isNpc", LuaScriptInterface::luaNpcIsNpc);
+	registerMethod("Npc", "setName", LuaScriptInterface::luaNpcSetName);
 
 	registerMethod("Npc", "setMasterPos", LuaScriptInterface::luaNpcSetMasterPos);
+	registerMethod("Npc", "getMasterPos", LuaScriptInterface::luaNpcGetMasterPos);
 
-	registerMethod("Npc", "getSpeechBubble", LuaScriptInterface::luaNpcGetSpeechBubble);
-	registerMethod("Npc", "setSpeechBubble", LuaScriptInterface::luaNpcSetSpeechBubble);
+	registerMethod("Npc", "setOwnerGUID", LuaScriptInterface::luaNpcSetOwnerGUID);
+	registerMethod("Npc", "getOwnerGUID", LuaScriptInterface::luaNpcGetOwnerGUID);
+
+	registerMethod("Npc", "setSex", LuaScriptInterface::luaNpcSetSex);
+	registerMethod("Npc", "getSex", LuaScriptInterface::luaNpcGetSex);
 
 	// Guild
 	registerClass("Guild", "", LuaScriptInterface::luaGuildCreate);

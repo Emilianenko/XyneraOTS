@@ -42,6 +42,7 @@ Npc* Npc::createNpc(const std::string& name)
 Npc::Npc(const std::string& name) :
 	Creature(),
 	filename("data/npc/" + name + ".xml"),
+	defaultName(name),
 	npcEventHandler(nullptr),
 	masterRadius(-1),
 	loaded(false)
@@ -91,7 +92,9 @@ void Npc::reset()
 	attackable = false;
 	ignoreHeight = false;
 	focusCreature = 0;
-	speechBubble = SPEECHBUBBLE_NONE;
+	if (speechBubble != SPEECHBUBBLE_HIRELING) {
+		speechBubble = SPEECHBUBBLE_NONE;
+	}
 
 	delete npcEventHandler;
 	npcEventHandler = nullptr;
@@ -140,7 +143,9 @@ bool Npc::loadFromXml()
 		return false;
 	}
 
-	name = npcNode.attribute("name").as_string();
+	if (speechBubble != SPEECHBUBBLE_HIRELING) {
+		name = npcNode.attribute("name").as_string();
+	}
 	attackable = npcNode.attribute("attackable").as_bool();
 	floorChange = npcNode.attribute("floorchange").as_bool();
 
@@ -195,22 +200,24 @@ bool Npc::loadFromXml()
 		}
 	}
 
-	pugi::xml_node lookNode = npcNode.child("look");
-	if (lookNode) {
-		pugi::xml_attribute lookTypeAttribute = lookNode.attribute("type");
-		if (lookTypeAttribute) {
-			defaultOutfit.lookType = pugi::cast<uint16_t>(lookTypeAttribute.value());
-			defaultOutfit.lookHead = pugi::cast<uint16_t>(lookNode.attribute("head").value());
-			defaultOutfit.lookBody = pugi::cast<uint16_t>(lookNode.attribute("body").value());
-			defaultOutfit.lookLegs = pugi::cast<uint16_t>(lookNode.attribute("legs").value());
-			defaultOutfit.lookFeet = pugi::cast<uint16_t>(lookNode.attribute("feet").value());
-			defaultOutfit.lookAddons = pugi::cast<uint16_t>(lookNode.attribute("addons").value());
-		} else if ((attr = lookNode.attribute("typeex"))) {
-			defaultOutfit.lookTypeEx = pugi::cast<uint16_t>(attr.value());
-		}
-		defaultOutfit.lookMount = pugi::cast<uint16_t>(lookNode.attribute("mount").value());
+	if (speechBubble != SPEECHBUBBLE_HIRELING) {
+		pugi::xml_node lookNode = npcNode.child("look");
+		if (lookNode) {
+			pugi::xml_attribute lookTypeAttribute = lookNode.attribute("type");
+			if (lookTypeAttribute) {
+				defaultOutfit.lookType = pugi::cast<uint16_t>(lookTypeAttribute.value());
+				defaultOutfit.lookHead = pugi::cast<uint16_t>(lookNode.attribute("head").value());
+				defaultOutfit.lookBody = pugi::cast<uint16_t>(lookNode.attribute("body").value());
+				defaultOutfit.lookLegs = pugi::cast<uint16_t>(lookNode.attribute("legs").value());
+				defaultOutfit.lookFeet = pugi::cast<uint16_t>(lookNode.attribute("feet").value());
+				defaultOutfit.lookAddons = pugi::cast<uint16_t>(lookNode.attribute("addons").value());
+			} else if ((attr = lookNode.attribute("typeex"))) {
+				defaultOutfit.lookTypeEx = pugi::cast<uint16_t>(attr.value());
+			}
+			defaultOutfit.lookMount = pugi::cast<uint16_t>(lookNode.attribute("mount").value());
 
-		currentOutfit = defaultOutfit;
+			currentOutfit = defaultOutfit;
+		}
 	}
 
 	for (auto parameterNode : npcNode.child("parameters").children()) {

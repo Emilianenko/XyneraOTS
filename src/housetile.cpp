@@ -70,7 +70,7 @@ ReturnValue HouseTile::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 			return RETURNVALUE_NOTPOSSIBLE;
 		}
 	} else if (const Item* item = thing.getItem()) {
-		if (item->isStoreItem() && !item->hasAttribute(ITEM_ATTRIBUTE_WRAPID)) {
+		if (item->isStoreItem() && !item->hasAttribute(ITEM_ATTRIBUTE_WRAPID) && !hasBitSet(FLAG_IGNORESTOREATTR, flags)) {
 			// store item, but not furniture
 			return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 		}

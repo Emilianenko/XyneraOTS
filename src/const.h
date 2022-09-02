@@ -277,6 +277,9 @@ enum MonsterIcon_t : uint8_t {
 };
 
 enum MessageClasses : uint8_t {
+	// internal use (ChatChannel::talk)
+	TALKTYPE_NONE = 0,
+
 	// creature:say(...)
 	TALKTYPE_SAY = 1,
 	TALKTYPE_WHISPER = 2,
@@ -673,7 +676,7 @@ enum item_t : uint16_t {
 	// other
 	ITEM_AMULETOFLOSS = 2173,
 	ITEM_DECORATION_KIT = 26054,
-
+	ITEM_HIRELING_LAMP = 32088,
 	ITEM_DOCUMENT_RO = 1968, //read-only
 };
 
@@ -769,7 +772,7 @@ enum PlayerFlags : uint64_t {
 	PlayerFlag_SetMaxSpeed = 1 << 29,
 	PlayerFlag_SpecialVIP = 1 << 30,
 	PlayerFlag_NotGenerateLoot = static_cast<uint64_t>(1) << 31,
-	// PlayerFlag with exponent 32 existed but was deprecated (feature dropped from client).
+	PlayerFlag_CanTalkRedChannelAnonymous = static_cast<uint64_t>(1) << 32,
 	PlayerFlag_IgnoreProtectionZone = static_cast<uint64_t>(1) << 33,
 	PlayerFlag_IgnoreSpellCheck = static_cast<uint64_t>(1) << 34,
 	PlayerFlag_IgnoreWeaponCheck = static_cast<uint64_t>(1) << 35,
@@ -859,7 +862,7 @@ static constexpr int32_t PSTRG_RESERVED_RANGE_START = 10000000;
 static constexpr int32_t PSTRG_RESERVED_RANGE_SIZE = 10000000;
 // [1000 - 1500];
 static constexpr int32_t PSTRG_OUTFITS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 1000);
-static constexpr int32_t PSTRG_OUTFITS_RANGE_SIZE = 500;
+static constexpr int32_t PSTRG_OUTFITS_RANGE_SIZE = 1000;
 // [2001 - 2011];
 static constexpr int32_t PSTRG_MOUNTS_RANGE_START = (PSTRG_RESERVED_RANGE_START + 2001);
 static constexpr int32_t PSTRG_MOUNTS_RANGE_SIZE = 10;

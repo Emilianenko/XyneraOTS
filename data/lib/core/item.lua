@@ -38,6 +38,10 @@ function Item:isPodium()
 	return false
 end
 
+function Item:isHirelingLamp()
+	return self:getType():isHirelingLamp()
+end
+
 function Item:isTile()
 	return false
 end
@@ -244,6 +248,15 @@ do
 		[CONDITION_FREEZING] = "warm",
 		[CONDITION_DAZZLED] = "dazzle immunity",
 		[CONDITION_CURSED] = "curse immunity"
+	}
+	
+	-- items that will show special description at any distance
+	local playerCorpses = {
+		-- corpse m
+		3058, 3059, 3060,
+		
+		-- corpse f
+		3064, 3065, 3066,
 	}
 	
 	-- first argument: Item, itemType or item id
@@ -800,8 +813,7 @@ do
 			end
 		end
 		
-		-- imbuements (to do)
-		-- \nImbuements: (Basic Strike 2:30h, Basic Void 2:30h, Empty Slot).
+		-- imbuements
 		if ImbuingSystem then
 			response[#response + 1] = item:getImbuementsDescription()
 		end
@@ -924,6 +936,14 @@ do
 			end
 		end
 		
+		-- add hireling lamp desc if module installed
+		if HirelingsUsageCache and not isVirtual then
+			local hirelingDesc = item:getHirelingLampDescription()
+			if hirelingDesc then
+				response[#response + 1] = string.format("\n%s", hirelingDesc)
+			end
+		end
+		
 		if lookDistance <= 1 then
 			local weight = item:getWeight()
 			if isPickupable and not isUnique then
@@ -961,7 +981,7 @@ do
 		end
 		
 		-- item description
-		if lookDistance <= 1 or (not isVirtual and (isDoor or isBed)) then
+		if lookDistance <= 1 or (not isVirtual and (isDoor or isBed or table.contains(playerCorpses, item:getId()))) then
 			-- custom item description
 			local desc = not isVirtual and item:getSpecialDescription()
 			

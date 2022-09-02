@@ -125,17 +125,24 @@ class Npc final : public Creature
 		const std::string& getNameDescription() const override {
 			return name;
 		}
+		void setName(const std::string& newName) {
+			this->name = newName;
+		}
+		const std::string& getDefaultName() const {
+			return defaultName;
+		}
 
 		CreatureType_t getType() const override {
 			return CREATURETYPE_NPC;
 		}
 
-		uint8_t getSpeechBubble() const override {
-			return speechBubble;
+		// used for hirelings
+		PlayerSex_t getSex() const {
+			return sex;
 		}
-		void setSpeechBubble(const uint8_t bubble) {
-			speechBubble = bubble;
-		}
+		void setSex(PlayerSex_t sex) {
+			this->sex = sex;
+		};
 
 		void doSay(const std::string& text);
 		void doSayToPlayer(Player* player, const std::string& text);
@@ -154,6 +161,13 @@ class Npc final : public Creature
 			if (masterRadius == -1) {
 				masterRadius = radius;
 			}
+		}
+
+		uint32_t getOwner() const {
+			return owner;
+		}
+		void setOwner(uint32_t owner) {
+			this->owner = owner;
 		}
 
 		void onPlayerCloseChannel(Player* player);
@@ -209,17 +223,20 @@ class Npc final : public Creature
 		std::set<Player*> spectators;
 
 		std::string name;
+		std::string defaultName;
 		std::string filename;
 
 		NpcEventsHandler* npcEventHandler;
 
 		Position masterPos;
 
+		// hireling npcs
+		PlayerSex_t sex = PLAYERSEX_FEMALE;
+		uint32_t owner = 0;
+
 		uint32_t walkTicks;
 		int32_t focusCreature;
 		int32_t masterRadius;
-
-		uint8_t speechBubble;
 
 		bool floorChange;
 		bool attackable;

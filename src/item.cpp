@@ -9,6 +9,7 @@
 #include "combat.h"
 #include "container.h"
 #include "game.h"
+#include "hirelinglamp.h"
 #include "house.h"
 #include "mailbox.h"
 #include "podium.h"
@@ -56,6 +57,8 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new BedItem(type);
 		} else if (it.isPodium()) {
 			newItem = new Podium(type);
+		} else if (it.isHirelingLamp()) {
+			newItem = new HirelingLamp(type);
 		} else if (it.id >= 2210 && it.id <= 2212) { // magic rings
 			newItem = new Item(type - 3, count);
 		} else if (it.id == 2215 || it.id == 2216) { // magic rings
@@ -752,6 +755,20 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			return ATTR_READ_ERROR;
 		}
 
+		// HirelingLamp class
+		case ATTR_HIRELINGDATA: {
+			std::string name;
+			if (!propStream.readString(name)) {
+				return ATTR_READ_ERROR;
+			}
+
+			if (!propStream.skip(22)) {
+				return ATTR_READ_ERROR;
+			}
+
+			break;
+		}
+
 		case ATTR_CUSTOM_ATTRIBUTES: {
 			uint64_t size;
 			if (!propStream.read<uint64_t>(size)) {
@@ -816,12 +833,10 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 		propWriteStream.write<uint16_t>(charges);
 	}
 
-	if (it.moveable) {
-		uint16_t actionId = getActionId();
-		if (actionId != 0) {
-			propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
-			propWriteStream.write<uint16_t>(actionId);
-		}
+	uint16_t actionId = getActionId();
+	if (actionId != 0) {
+		propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
+		propWriteStream.write<uint16_t>(actionId);
 	}
 
 	const std::string& text = getText();

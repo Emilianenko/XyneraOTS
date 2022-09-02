@@ -1237,3 +1237,43 @@ int LuaScriptInterface::luaCreatureRemoveIcon(lua_State* L)
 	lua_pushnil(L);
 	return 1;
 }
+
+int LuaScriptInterface::luaCreatureGetSpeechBubble(lua_State* L)
+{
+	// creature:getSpeechBubble()
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (creature) {
+		lua_pushnumber(L, creature->getSpeechBubble());
+	}
+	else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaCreatureSetSpeechBubble(lua_State* L)
+{
+	// creature:setSpeechBubble(speechBubble)
+	Creature* creature = getUserdata<Creature>(L, 1);
+	if (!creature) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	if (!isNumber(L, 2)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	uint8_t speechBubble = getNumber<uint8_t>(L, 2);
+	bool success = speechBubble <= SPEECHBUBBLE_LAST;
+	if (success) {
+		creature->setSpeechBubble(speechBubble);
+
+		// refresh speech bubble
+		creature->refreshInClient();
+	}
+
+	pushBoolean(L, success);
+	return 1;
+}

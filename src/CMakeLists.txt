@@ -26,6 +26,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
 	${CMAKE_CURRENT_LIST_DIR}/guild.cpp
 	${CMAKE_CURRENT_LIST_DIR}/groups.cpp
+	${CMAKE_CURRENT_LIST_DIR}/hirelinglamp.cpp
 	${CMAKE_CURRENT_LIST_DIR}/house.cpp
 	${CMAKE_CURRENT_LIST_DIR}/housetile.cpp
 	${CMAKE_CURRENT_LIST_DIR}/imbuing.cpp
@@ -49,6 +50,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/lua_globalevent.cpp
 	${CMAKE_CURRENT_LIST_DIR}/lua_group.cpp
 	${CMAKE_CURRENT_LIST_DIR}/lua_guild.cpp
+	${CMAKE_CURRENT_LIST_DIR}/lua_hirelinglamp.cpp
 	${CMAKE_CURRENT_LIST_DIR}/lua_house.cpp
 	${CMAKE_CURRENT_LIST_DIR}/lua_imbuementtype.cpp
 	${CMAKE_CURRENT_LIST_DIR}/lua_item.cpp

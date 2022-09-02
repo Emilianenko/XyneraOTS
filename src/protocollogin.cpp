@@ -139,7 +139,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 * Skipped bytes:
 	 * 4 bytes: protocolVersion
 	 * 12 bytes: dat, spr, pic signatures (4 bytes each)
-	 * 1 byte: 0
+	 * 1 byte: gamemaster flag (?)
 	 */
 
 	if (!Protocol::RSA_decrypt(msg)) {

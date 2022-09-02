@@ -354,8 +354,11 @@ class Creature : virtual public Thing
 			return 1.0f;
 		}
 
-		virtual uint8_t getSpeechBubble() const {
-			return SPEECHBUBBLE_NONE;
+		uint8_t getSpeechBubble() const {
+			return speechBubble;
+		}
+		void setSpeechBubble(const uint8_t bubble) {
+			speechBubble = bubble;
 		}
 
 		bool addCondition(Condition* condition, bool force = false);
@@ -588,6 +591,7 @@ class Creature : virtual public Thing
 		int32_t health = 1000;
 		int32_t healthMax = 1000;
 		uint8_t drunkenness = 0;
+		uint8_t speechBubble = SPEECHBUBBLE_NONE;
 		CreatureDisplayModes_t displayMode = CREATURE_DISPLAY_MODE_NONE;
 
 		Outfit_t currentOutfit;

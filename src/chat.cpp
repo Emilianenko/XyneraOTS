@@ -124,10 +124,58 @@ void ChatChannel::sendToAll(const std::string& message, MessageClasses type) con
 	}
 }
 
-bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std::string& text)
+void ChatChannel::sendChannelSystemMessage(const std::string& message, MessageClasses type) const
+{
+	TextMessage textMsg = TextMessage(type, message);
+	textMsg.channelId = id;
+
+	for (const auto& it : users) {
+		it.second->sendTextMessage(textMsg);
+	}
+}
+
+namespace {
+const std::unordered_map<std::string, MessageClasses> chatCommands = {
+	// channel commands for staff to send anonymous messages
+	// usage: command text (eg. ^g test)
+	{"^g", MESSAGE_CHANNEL_MANAGEMENT},
+	{"^o", TALKTYPE_CHANNEL_O},
+	{"^r", TALKTYPE_CHANNEL_R1},
+	{"^w", MESSAGE_PARTY},
+	{"^y", TALKTYPE_CHANNEL_Y},
+};
+}
+
+bool ChatChannel::talk(const Player & fromPlayer, MessageClasses type, const std::string & text)
 {
 	if (users.find(fromPlayer.getID()) == users.end()) {
 		return false;
+	}
+
+	bool anonymous = false;
+
+	if (text.size() > 3 && (fromPlayer.getGroup()->flags & PlayerFlag_CanTalkRedChannelAnonymous) != 0) {
+		MessageClasses messageType = TALKTYPE_NONE;
+		std::string matchedCommand = std::string(text, 0, 2);
+		auto commandInfo = chatCommands.find(matchedCommand);
+		if (commandInfo != chatCommands.end()) {
+			messageType = commandInfo->second;
+		}
+
+		switch (messageType) {
+			case MESSAGE_CHANNEL_MANAGEMENT:
+			case MESSAGE_PARTY:
+				sendChannelSystemMessage(text.substr(3).c_str(), messageType);
+				return true;
+			case TALKTYPE_CHANNEL_O:
+			case TALKTYPE_CHANNEL_R1:
+			case TALKTYPE_CHANNEL_Y:
+				type = messageType;
+				anonymous = true;
+				break;
+			default:
+				break;
+		}
 	}
 
 	for (const auto& it : users) {
@@ -139,7 +187,7 @@ bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std:
 			}
 		}
 
-		it.second->sendToChannel(&fromPlayer, type, text, clientChannelId);
+		it.second->sendToChannel(!anonymous ? &fromPlayer : nullptr, type, text, clientChannelId);
 	}
 	return true;
 }

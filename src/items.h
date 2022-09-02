@@ -41,6 +41,7 @@ enum ItemTypes_t {
 	ITEM_TYPE_KEY,
 	ITEM_TYPE_RUNE,
 	ITEM_TYPE_PODIUM,
+	ITEM_TYPE_HIRELINGLAMP,
 	ITEM_TYPE_LAST
 };
 
@@ -315,6 +316,9 @@ class ItemType
 		}
 		bool isPodium() const {
 			return (type == ITEM_TYPE_PODIUM);
+		}
+		bool isHirelingLamp() const {
+			return (type == ITEM_TYPE_HIRELINGLAMP);
 		}
 		bool isPickupable() const {
 			return (allowPickupable || pickupable);

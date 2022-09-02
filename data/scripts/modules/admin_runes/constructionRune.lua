@@ -1,3 +1,6 @@
+-- click on item to take it to your store inbox
+-- works on EVERYTHING (can pick up floors and meta ids too)
+
 local function forceTakeItem(player, targetItem)
 	local newItem = targetItem:clone()
 	if targetItem:isTeleport() then
@@ -76,6 +79,5 @@ function constructionRune.onUse(player, item, fromPosition, target, toPosition, 
 	player:sendColorMessage("This item cannot be picked up!", MESSAGE_COLOR_PURPLE)
 	return true
 end
-
 constructionRune:id(2309)
 constructionRune:register()

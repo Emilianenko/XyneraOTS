@@ -6,7 +6,9 @@
 #include "iomapserialize.h"
 #include "bed.h"
 #include "game.h"
+#include "hirelinglamp.h"
 #include "housetile.h"
+#include "npc.h"
 
 extern Game g_game;
 
@@ -143,6 +145,49 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 					return false;
 				}
 
+				if (tile) {
+					HirelingLamp* hirelingLamp = item->getHirelingLamp();
+					if (hirelingLamp && hirelingLamp->isUnpacked()) {
+						// load npc
+						Npc* npc = Npc::createNpc("Hireling");
+						if (!npc) {
+							// npc failed to load - show warning
+							const Position& tilePos = tile->getPosition();
+							console::reportWarning(__FUNCTION__, fmt::format("Unable to spawn hireling \"{:s}\" at position: {:d}, {:d}, {:d})! Hireling will return to lamp.", hirelingLamp->getHirelingName(), tilePos.x, tilePos.y, tilePos.z));
+
+							// send npc back to lamp
+							hirelingLamp->setUnpacked(false);
+							parent->internalAddThing(item);
+							item->startDecaying();
+							return true;
+						}
+
+						// set npc attributes
+						if (HouseTile* houseTile = dynamic_cast<HouseTile*>(tile)) {
+							if (House* house = houseTile->getHouse()) {
+								npc->setOwner(house->getOwner());
+							}
+						}
+						g_game.registerHirelingFeatures(npc->getOwner(), hirelingLamp->getFlags());
+						hirelingLamp->exportNPC(npc); // export lamp stats to the npc
+
+						// place the npc
+						if (!g_game.placeCreature(npc, tile->getPosition(), false, true)) {
+							// failed to place the npc
+							const Position& tilePos = tile->getPosition();
+							console::reportWarning(__FUNCTION__, fmt::format("Unable to spawn hireling \"{:s}\" at position: {:d}, {:d}, {:d})! Hireling will return to lamp.", hirelingLamp->getHirelingName(), tilePos.x, tilePos.y, tilePos.z));
+
+							// send npc back to lamp
+							hirelingLamp->setUnpacked(false);
+							parent->internalAddThing(item);
+							item->startDecaying();
+							return true;
+						};
+
+						delete item; // hireling was placed successfully, hide his lamp
+						return true; // action was successful, show no errors
+					}
+				}
 				parent->internalAddThing(item);
 				item->startDecaying();
 			} else {
@@ -243,15 +288,52 @@ void IOMapSerialize::saveTile(PropWriteStream& stream, const Tile* tile)
 		++count;
 	}
 
-	if (!items.empty()) {
+	std::vector<Item*> lampsToSave;
+
+	if (const CreatureVector* creatures = tile->getCreatures()) {
+		for (int32_t i = creatures->size(); --i >= 0;) {
+			Npc* npc = (*creatures)[i]->getNpc();
+			if (npc && npc->getSpeechBubble() == SPEECHBUBBLE_HIRELING) {
+				Item* hirelingItem = Item::CreateItem(ITEM_HIRELING_LAMP);
+				if (hirelingItem) {
+					HirelingLamp* hirelingLamp = hirelingItem->getHirelingLamp();
+					if (hirelingLamp) {
+						hirelingLamp->importNPC(npc); // send NPC to lamp
+						hirelingLamp->setStoreItem(true); // enable store protection
+						lampsToSave.push_back(hirelingLamp);
+						++count;
+					} else {
+						const Position& tilePos = tile->getPosition();
+						console::reportError(__FUNCTION__, fmt::format("Failed to save hireling \"{:s}\" at position: {:d}, {:d}, {:d})!", npc->getName(), tilePos.x, tilePos.y, tilePos.z));
+					}
+				} else {
+					const Position& tilePos = tile->getPosition();
+					console::reportError(__FUNCTION__, fmt::format("Failed to save hireling \"{:s}\" at position: {:d}, {:d}, {:d})!", npc->getName(), tilePos.x, tilePos.y, tilePos.z));
+				}
+			}
+		}
+	}
+
+	if (count > 0) {
 		const Position& tilePosition = tile->getPosition();
 		stream.write<uint16_t>(tilePosition.x);
 		stream.write<uint16_t>(tilePosition.y);
 		stream.write<uint8_t>(tilePosition.z);
 
 		stream.write<uint32_t>(count);
-		for (const Item* item : items) {
-			saveItem(stream, item);
+		if (!items.empty()) {
+			for (const Item* item : items) {
+				saveItem(stream, item);
+			}
+		}
+
+		if (!lampsToSave.empty()) {
+			auto it = lampsToSave.begin();
+			while (it != lampsToSave.end()) {
+				saveItem(stream, *it);
+				delete* it;
+				++it;
+			}
 		}
 	}
 }

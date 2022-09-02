@@ -7,9 +7,11 @@
 #include "bed.h"
 #include "configmanager.h"
 #include "game.h"
+#include "hirelinglamp.h"
 #include "housetile.h"
 #include "inbox.h"
 #include "iologindata.h"
+#include "npc.h"
 #include "pugicast.h"
 
 extern ConfigManager g_config;
@@ -184,7 +186,7 @@ void House::setAccessList(uint32_t listId, const std::string& textlist)
 
 bool House::transferToDepot() const
 {
-	if (townId == 0 || owner == 0) {
+	if (owner == 0) {
 		return false;
 	}
 
@@ -205,7 +207,7 @@ bool House::transferToDepot() const
 
 bool House::transferToDepot(Player* player) const
 {
-	if (townId == 0 || owner == 0) {
+	if (owner == 0) {
 		return false;
 	}
 
@@ -229,6 +231,38 @@ bool House::transferToDepot(Player* player) const
 						Item* newItem = g_game.transformItem(item, ITEM_DECORATION_KIT, item->getSubType());
 						newItem->setIntAttr(ITEM_ATTRIBUTE_WRAPID, unwrapId);
 						moveItemList.push_back(newItem);
+					}
+				}
+			}
+		}
+
+		// pack hirelings into lamps
+		if (const CreatureVector* creatures = tile->getCreatures()) {
+			for (int32_t i = creatures->size(); --i >= 0;) {
+				Npc* npc = (*creatures)[i]->getNpc();
+				if (npc && npc->getSpeechBubble() == SPEECHBUBBLE_HIRELING) {
+					bool moved = false;
+
+					Item* hirelingItem = Item::CreateItem(ITEM_HIRELING_LAMP);
+					if (hirelingItem) {
+						// save npc attrs
+						HirelingLamp* hirelingLamp = hirelingItem->getHirelingLamp();
+						if (hirelingLamp) {
+							hirelingLamp->importNPC(npc); // send NPC to lamp
+							hirelingLamp->setStoreItem(true); // enable store protection
+						}
+
+						// move the lamp to depot
+						if (g_game.internalAddItem(tile, hirelingItem, INDEX_WHEREEVER, FLAG_NOLIMIT | FLAG_IGNORESTOREATTR) == RETURNVALUE_NOERROR) {
+							g_game.removeCreature(npc); // remove hireling
+							moveItemList.push_back(hirelingItem);
+							moved = true;
+						}
+					}
+
+					if (!moved) {
+						const Position& tilePos = tile->getPosition();
+						console::reportError(__FUNCTION__, fmt::format("Failed to save hireling \"{:s}\" at position: {:d}, {:d}, {:d})!", npc->getName(), tilePos.x, tilePos.y, tilePos.z));
 					}
 				}
 			}
@@ -533,13 +567,7 @@ Attr_ReadValue Door::readAttr(AttrTypes_t attr, PropStream& propStream)
 
 void Door::serializeAttr(PropWriteStream& propWriteStream) const
 {
-	uint16_t actionId = getActionId();
-	if (actionId != 0) {
-		propWriteStream.write<uint8_t>(ATTR_ACTION_ID);
-		propWriteStream.write<uint16_t>(actionId);
-	}
-
-	return Item::serializeAttr(propWriteStream);
+	Item::serializeAttr(propWriteStream);
 }
 
 void Door::setHouse(House* house)

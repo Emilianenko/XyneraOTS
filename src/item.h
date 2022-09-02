@@ -14,6 +14,7 @@
 class BedItem;
 class Container;
 class Door;
+class HirelingLamp;
 class MagicField;
 class Mailbox;
 class Player;
@@ -47,52 +48,54 @@ enum ItemDecayState_t : uint8_t {
 	DECAYING_PENDING,
 };
 
+// database/OTBM attributes (NOT for setAttribute / for item attributes see itemAttrTypes)
 enum AttrTypes_t {
-	//ATTR_DESCRIPTION = 1,
-	//ATTR_EXT_FILE = 2,
-	ATTR_TILE_FLAGS = 3,
+	//ATTR_DESCRIPTION = 1, // OTBM header
+	//ATTR_EXT_FILE = 2, // unused
+	ATTR_TILE_FLAGS = 3, // OTBM tile info
 	ATTR_ACTION_ID = 4,
 	ATTR_UNIQUE_ID = 5,
 	ATTR_TEXT = 6,
 	ATTR_DESC = 7,
 	ATTR_TELE_DEST = 8,
-	ATTR_ITEM = 9,
-	ATTR_DEPOT_ID = 10,
-	//ATTR_EXT_SPAWN_FILE = 11,
-	ATTR_RUNE_CHARGES = 12,
-	//ATTR_EXT_HOUSE_FILE = 13,
+	ATTR_ITEM = 9, // OTBM "item" node
+	ATTR_DEPOT_ID = 10, // depot townid (semi-deprecated)
+	//ATTR_EXT_SPAWN_FILE = 11, // OTBM spawn
+	ATTR_RUNE_CHARGES = 12, // deprecated
+	//ATTR_EXT_HOUSE_FILE = 13, // OTBM house
 	ATTR_HOUSEDOORID = 14,
 	ATTR_COUNT = 15,
 	ATTR_DURATION = 16,
 	ATTR_DECAYING_STATE = 17,
-	ATTR_WRITTENDATE = 18,
-	ATTR_WRITTENBY = 19,
-	ATTR_SLEEPERGUID = 20,
-	ATTR_SLEEPSTART = 21,
+	ATTR_WRITTENDATE = 18, // scroll/book
+	ATTR_WRITTENBY = 19, // scroll/book
+	ATTR_SLEEPERGUID = 20, // bed
+	ATTR_SLEEPSTART = 21, // bed
 	ATTR_CHARGES = 22,
-	ATTR_CONTAINER_ITEMS = 23,
+	ATTR_CONTAINER_ITEMS = 23, // items inside container
 	ATTR_NAME = 24,
 	ATTR_ARTICLE = 25,
 	ATTR_PLURALNAME = 26,
 	ATTR_WEIGHT = 27,
 	ATTR_ATTACK = 28,
 	ATTR_DEFENSE = 29,
-	ATTR_EXTRADEFENSE = 30,
+	ATTR_EXTRADEFENSE = 30, // defense you get when no shield is equipped
 	ATTR_ARMOR = 31,
 	ATTR_HITCHANCE = 32,
 	ATTR_SHOOTRANGE = 33,
 	ATTR_CUSTOM_ATTRIBUTES = 34,
 	ATTR_DECAYTO = 35,
 	ATTR_WRAPID = 36,
-	ATTR_STOREITEM = 37,
+	ATTR_STOREITEM = 37, // store item protection (bool)
 	ATTR_ATTACK_SPEED = 38,
-	ATTR_OPENCONTAINER = 39,
+	ATTR_OPENCONTAINER = 39, // saved opened containers marker
 	ATTR_PODIUMOUTFIT = 40,
 	ATTR_TIER = 41, // item tier (12.80)
-	ATTR_REFLECT = 42,
-	ATTR_BOOST = 43,
-	ATTR_LOOTCONTAINER = 44,
-	ATTR_IMBUEMENTS = 45,
+	ATTR_REFLECT = 42, // element damage reflection (in %)
+	ATTR_BOOST = 43, // element damage boost (in %)
+	ATTR_LOOTCONTAINER = 44, // quick loot marker
+	ATTR_IMBUEMENTS = 45, // applied imbuements
+	ATTR_HIRELINGDATA = 46, // hireling lamp data
 };
 
 enum Attr_ReadValue {
@@ -639,6 +642,12 @@ class Item : virtual public Thing
 			return nullptr;
 		}
 		virtual const Podium* getPodium() const {
+			return nullptr;
+		}
+		virtual HirelingLamp* getHirelingLamp() {
+			return nullptr;
+		}
+		virtual const HirelingLamp* getHirelingLamp() const {
 			return nullptr;
 		}
 
