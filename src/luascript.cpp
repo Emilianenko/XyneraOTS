@@ -2964,6 +2964,8 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Player", "isPlayer", LuaScriptInterface::luaPlayerIsPlayer);
 
+	registerMethod("Player", "setName", LuaScriptInterface::luaPlayerSetName);
+
 	registerMethod("Player", "getGuid", LuaScriptInterface::luaPlayerGetGuid);
 	registerMethod("Player", "getIp", LuaScriptInterface::luaPlayerGetIp);
 	registerMethod("Player", "getAccountId", LuaScriptInterface::luaPlayerGetAccountId);

@@ -80,6 +80,7 @@ class Events
 		int32_t playerOnDressOtherCreatureRequest = -1;
 		int32_t playerOnDressOtherCreature = -1;
 		int32_t playerOnUseCreature = -1;
+		int32_t playerOnEditName = -1;
 		int32_t playerOnConnect = -1;
 		int32_t playerOnExtendedProtocol = -1;
 
@@ -153,6 +154,7 @@ class Events
 		void eventPlayerOnDressOtherCreatureRequest(Player* player, Creature* target);
 		void eventPlayerOnDressOtherCreature(Player* player, Creature* target, const Outfit_t& outfit);
 		void eventPlayerOnUseCreature(Player* player, Creature* target);
+		void eventPlayerOnEditName(Player* player, Creature* target, const std::string& name);
 
 		void eventPlayerOnConnect(Player* player, bool isLogin);
 

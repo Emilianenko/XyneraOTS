@@ -5745,6 +5745,28 @@ void Game::playerDebugAssert(uint32_t playerId, const std::string& assertLine, c
 	}
 }
 
+void Game::playerEditName(uint32_t playerId, uint32_t targetId, const std::string& newName)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	// prevent request spam
+	if (player->canDoHeavyUIAction()) {
+		player->setNextHeavyUIAction();
+	} else {
+		return;
+	}
+
+	Creature* target = getCreatureByID(targetId);
+	if (!target) {
+		return;
+	}
+
+	g_events->eventPlayerOnEditName(player, target, newName);
+}
+
 void Game::playerLeaveMarket(uint32_t playerId)
 {
 	Player* player = getPlayerByID(playerId);
@@ -6646,6 +6668,21 @@ void Game::removePlayer(Player* player)
 	players.erase(player->getID());
 }
 
+void Game::renamePlayer(Player* player, const std::string& newName)
+{
+	// unreference old name
+	const std::string& lowercase_name = asLowerCaseString(player->getName());
+	mappedPlayerNames.erase(lowercase_name);
+	wildcardTree.remove(lowercase_name);
+
+	// set new name
+	player->setName(newName);
+
+	// reference new name
+	const std::string& lowercase_new = asLowerCaseString(newName);
+	mappedPlayerNames[lowercase_new] = player;
+	wildcardTree.insert(lowercase_new);
+}
 void Game::addNpc(Npc* npc)
 {
 	npcs[npc->getID()] = npc;

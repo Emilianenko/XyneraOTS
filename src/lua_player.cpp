@@ -65,6 +65,38 @@ int LuaScriptInterface::luaPlayerIsPlayer(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerSetName(lua_State* L)
+{
+	// player:setName(newName)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	std::string name = getString(L, 2);
+	if (name.empty()) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	g_game.renamePlayer(player, name);
+
+	// make sure new name will be sent when viewing the player again
+	uint32_t cid = player->getID();
+	for (auto& it : g_game.getPlayers()) {
+		if (Player* onlinePlayer = it.second) {
+			onlinePlayer->forgetCreatureID(cid);
+		}
+	}
+
+	// update creature on screen
+	player->refreshInClient();
+
+	pushBoolean(L, true);
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetGuid(lua_State* L)
 {
 	// player:getGuid()

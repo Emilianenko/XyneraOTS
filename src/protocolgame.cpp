@@ -973,10 +973,10 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you */ break;
 		case 0xE8: parseDebugAssert(msg); break;
-		// 0xE9 - unknown
-		// 0xEA - unknown
+		// 0xE9 - store ui click
+		// 0xEA - store (?)
 		// 0xEB - prey
-		// 0xEC - rename hireling
+		case 0xEC: parseNameChange(msg); break;
 		case 0xED: /* request resource balance (handled server side) */ break;
 		case 0xEE: addGameTask([playerID = player->getID()]() { g_game.playerSay(playerID, 0, TALKTYPE_SAY, "", "hi"); }); break;
 		//case 0xEF: break; // request store coins transfer
@@ -1732,6 +1732,17 @@ void ProtocolGame::parseDebugAssert(NetworkMessage& msg)
 	std::string comment = msg.getString();
 	addGameTask(([playerID = player->getID(), assertLine = std::move(assertLine), date = std::move(date), description = std::move(description), comment = std::move(comment)]() {
 		g_game.playerDebugAssert(playerID, assertLine, date, description, comment);
+	}));
+}
+
+void ProtocolGame::parseNameChange(NetworkMessage& msg)
+{
+	std::string desiredName = msg.getString();
+	uint32_t target = msg.get<uint32_t>();
+	// msg.get<uint32_t>(); // unknown
+
+	addGameTask(([playerID = player->getID(), targetID = target, newName = std::move(desiredName)]() {
+		g_game.playerEditName(playerID, targetID, newName);
 	}));
 }
 

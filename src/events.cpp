@@ -165,6 +165,8 @@ bool Events::load()
 				info.playerOnDressOtherCreature = event;
 			} else if (methodName == "onUseCreature") {
 				info.playerOnUseCreature = event;
+			} else if (methodName == "onEditName") {
+				info.playerOnEditName = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -1984,6 +1986,38 @@ void Events::eventPlayerOnUseCreature(Player* player, Creature* target)
 	LuaScriptInterface::setMetatable(L, -1, "Creature");
 
 	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnEditName(Player* player, Creature* target, const std::string& name)
+{
+	// Player:onEditName(target, newName)
+	if (info.playerOnEditName == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnEditName, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnEditName);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// target
+	LuaScriptInterface::pushUserdata<Creature>(L, target);
+	LuaScriptInterface::setMetatable(L, -1, "Creature");
+
+	// newName
+	LuaScriptInterface::pushString(L, name);
+
+	scriptInterface.callVoidFunction(3);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)

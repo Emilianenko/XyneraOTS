@@ -66,9 +66,10 @@ int LuaScriptInterface::luaNpcSetName(lua_State* L)
 	npc->setName(name);
 
 	// make sure new name will be sent when viewing npc again
+	uint32_t cid = npc->getID();
 	for (auto& it : g_game.getPlayers()) {
 		if (Player* player = it.second) {
-			player->forgetCreatureID(npc->getID());
+			player->forgetCreatureID(cid);
 		}
 	}
 

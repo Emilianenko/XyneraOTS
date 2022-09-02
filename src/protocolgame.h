@@ -160,6 +160,9 @@ class ProtocolGame final : public Protocol
 		void parseDebugAssert(NetworkMessage& msg);
 		void parseRuleViolationReport(NetworkMessage& msg);
 
+		// Store
+		void parseNameChange(NetworkMessage& msg);
+
 		// Trade (with players)
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);

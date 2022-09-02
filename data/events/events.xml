@@ -48,6 +48,7 @@
 	<event class="Player" method="onDressOtherCreatureRequest" enabled="1" />
 	<event class="Player" method="onDressOtherCreature" enabled="1" />
 	<event class="Player" method="onUseCreature" enabled="1" />
+	<event class="Player" method="onEditName" enabled="1" />
 	
 	<!-- Player - trade -->
 	<event class="Player" method="onTradeRequest" enabled="1" />

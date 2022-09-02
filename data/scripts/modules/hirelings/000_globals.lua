@@ -2,6 +2,10 @@
 HIRELING_BASE_MALE = 1108
 HIRELING_BASE_FEMALE = 1107
 
+-- hireling items (ITEM_HIRELING_LAMP is declared in sources)
+ITEM_HIRELING_SCROLL = 32604
+ITEM_HIRELING_RUNE = 32605
+
 -- storage range for unlocked hirelings
 -- key: base storage + hirelingId
 -- value: amount of owned copies of the outfit

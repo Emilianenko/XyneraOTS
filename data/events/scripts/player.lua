@@ -477,6 +477,12 @@ function Player:onUseCreature(target)
 	end
 end
 
+function Player:onEditName(target, name)
+	if EventCallback.onEditName then
+		EventCallback.onEditName(self, target, name)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)
