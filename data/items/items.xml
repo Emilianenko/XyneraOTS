@@ -43953,4 +43953,297 @@
 	<item id="37993" article="a" name="greenish flintstone">
 		<attribute key="weight" value="375"/>
 	</item>
+		<item id="39483" article="a" name="drome cube">
+		<attribute key="description" value="There is something valuable inside"/>
+		<attribute key="weight" value="4500"/>
+	</item>
+		<item id="39384" article="a" name="bestiary betterment">
+		<attribute key="description" value="Drinking this potion temporarily makes kills count twice for the Bestiary"/>
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="39382" article="a" name="charm upgrade">
+		<attribute key="description" value="Drinking this potion temporarily increases offensive charm trigger chances except Cripple"/>
+		<attribute key="weight" value="210"/>
+	</item>
+		<item id="39397" article="a" name="death amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies death damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+		<item id="39390" article="a" name="death resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases death protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39394" article="a" name="earth amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies earth damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39387" article="a" name="earth resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases earth protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39395" article="a" name="energy amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies energy damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39388" article="a" name="energy resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases energy protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39392" article="a" name="fire amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies fire damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39385" article="a" name="fire resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases fire protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item fromid="36721" toid="36722" article="a" name="firewood"/>
+	<item id="39371" article="a" name="gnome pick">
+		<attribute key="weight" value="4500"/>
+	</item>
+	<item id="39396" article="a" name="holy amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies holy damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39389" article="a" name="holy resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases holy protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39393" article="a" name="ice amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies ice damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39386" article="a" name="ice resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases ice protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39379" article="a" name="kooldown-aid">
+		<attribute key="description" value="Drinking this potion temporarily resets cooldowns for all spells"/>
+		<attribute key="weight" value="210"/>
+	</item>
+	<item id="39398" article="a" name="physical amplification">
+		<attribute key="description" value="Drinking this potion temporarily amplifies physical damage against monsters"/>
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39391" article="a" name="physical resilience">
+		<attribute key="description" value="Drinking this potion temporarily increases physical protection"/>
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39381" name="stamina extension">
+		<attribute key="description" value="Drinking this potion fills up stamina by one hour"/>
+		<attribute key="weight" value="210"/>
+	</item>
+	<item id="39380" article="a" name="strike enhancement">
+		<attribute key="description" value="Drinking this potion temporarily increases critical hit chance"/>
+		<attribute key="weight" value="210"/>
+	</item>
+	<item id="39383" article="a" name="wealth duplex">
+		<attribute key="description" value="Drinking this potion temporarily doubles the loot from every regular monster you kill"/>
+		<attribute key="weight" value="210"/>
+	</item>
+	<item id="39199" article="a" name="chisel">
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="39200" article="a" name="brush">
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="39201" article="a" name="marble floor">
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="39467" article="a" name="megasylvan sapling">
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="39492" article="an" name="eldritch casket">
+		<attribute key="weight" value="1300"/>
+	</item>
+	<item id="39462" article="a" name="carnisylvan bark">
+		<attribute key="weight" value="100"/>
+	</item>
+		<item id="39461" article="a" name="carnisylvan finger">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="39463" article="a" name="human teeth">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="39448" article="an" name="Abomination's eye">
+		<attribute key="weight" value="50"/>
+	</item>
+	<item id="39447" article="an" name="Abomination's tail">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="39449" article="an" name="Abomination's tongue">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="39445" article="an" name="afflicted strider head">
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="39446" name="afflicted strider worms">
+		<attribute key="weight" value="170"/>
+	</item>
+	<item id="39476" article="a" name="bashmu fang">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="39479" article="a" name="bashmu feather">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39477" article="a" name="bashmu tongue">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39435" article="a" name="blemished spawn abdomen">
+		<attribute key="weight" value="270"/>
+	</item>
+	<item id="39434" article="a" name="blemished spawn head">
+		<attribute key="weight" value="160"/>
+	</item>
+	<item id="39436" article="a" name="blemished spawn tail">
+		<attribute key="weight" value="160"/>
+	</item>
+		<item id="39450" article="a" name="Brainstealer's tissue">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="39451" article="a" name="Brainstealer's brain">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="39452" article="a" name="Brainstealer's brainwave">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="39443" article="a" name="cave chimera head">
+		<attribute key="weight" value="190"/>
+	</item>
+	<item id="39444" article="a" name="cave chimera leg">
+		<attribute key="weight" value="110"/>
+	</item>
+		<item id="39465" article="a" name="curl of hair">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="39432" name="eyeless devourer legs">
+		<attribute key="weight" value="240"/>
+	</item>
+	<item id="39431" article="an" name="eyeless devourer maw">
+		<attribute key="weight" value="190"/>
+	</item>
+	<item id="39433" article="an" name="eyeless devourer tongue">
+		<attribute key="weight" value="60"/>
+	</item>
+	<item id="39627" article="a" name="girtablilu warrior carapace">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39441" article="a" name="lavafungus head">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="39442" article="a" name="lavafungus ring">
+		<attribute key="weight" value="40"/>
+	</item>
+	<item id="39427" article="a" name="lavaworm jaws">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="39425" name="lavaworm spike roots">
+		<attribute key="weight" value="70"/>
+	</item>
+	<item id="39426" name="lavaworm spikes">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="39628" article="a" name="old girtablilu carapace">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39464" article="an" name="old royal diary">
+		<attribute key="weight" value="130"/>
+	</item>
+	<item id="39478" article="a" name="scorpion charm">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39439" article="a" name="tremendous tyrant head">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="39440" article="a" name="tremendous tyrant shell">
+		<attribute key="weight" value="250"/>
+	</item>
+	<item id="39437" article="a" name="varnished diremaw brainpan">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="39438" name="varnished diremaw legs">
+		<attribute key="weight" value="229"/>
+	</item>
+	<item id="39532" article="a" name="blackened hand mirror">
+		<attribute key="description" value="It is blackened with soot"/>
+		<attribute key="weight" value="660"/>
+	</item>
+	<item id="39363" article="an" name="eye-shaped frame">
+		<attribute key="weight" value="500"/>
+	</item>
+	<item id="39531" article="a" name="golden hand mirror">
+		<attribute key="description" value="It has an ornate frame"/>
+		<attribute key="weight" value="650"/>
+	</item>
+	<item id="39242" article="a" name="old parchment">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="39257" article="a" name="sacramental wine">
+		<attribute key="weight" value="180"/>
+	</item>
+	<item id="39468" article="a" name="violet tulip">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="39594" article="a" name="fiery horseshoe">
+		<attribute key="weight" value="120"/>
+	</item>
+	<item id="39491" article="an" name="eldritch crystal">
+		<attribute key="weight" value="175"/>
+	</item>
+	<item id="39637" article="a" name="gnome shovel">
+		<attribute key="weight" value="2800"/>
+	</item>
+	<item id="39617" article="a" name="pot with sylvan earth">
+		<attribute key="weight" value="20"/>
+	</item>
+	<item id="39579" article="a" name="ritual notes">
+		<attribute key="weight" value="200"/>
+	</item>
+	<item id="39255" article="a" name="fiery gnomish stonesmasher">
+		<attribute key="description" value="Use it, while it's still hot"/>
+		<attribute key="weight" value="6450"/>
+	</item>
+	<item id="39256" article="a" name="gnomish stonesmasher">
+		<attribute key="description" value="If not heated up regularly, this smasher will crumble"/>
+		<attribute key="weight" value="6450"/>
+	</item>
+	<item id="39261" article="a" name="gnomish lava fishing rod">
+		<attribute key="weight" value="850"/>
+	</item>
+	<item id="39273" article="a" name="sticky elemental goo">
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="39428" name="streaked devourer eyes">
+		<attribute key="weight" value="80"/>
+	</item>
+	<item id="39430" name="streaked devourer legs">
+		<attribute key="weight" value="240"/>
+	</item>
+	<item id="39429" article="a" name="streaked devourer maw">
+		<attribute key="weight" value="190"/>
+	</item>
+	<item id="39362" article="a" name="red gem">
+		<attribute key="weight" value="30"/>
+	</item>
+	<item fromid="36712" toid="36713" article="a" name="pieces of eldritch wax">
+		<attribute key="weight" value="150"/>
+	</item>
+	<item id="39658" article="a" name="tagralt-inlaid scabbard">
+		<attribute key="weight" value="2500"/>
+	</item>
+	<item id="39659" article="a" name="eye-embroidered veil">
+		<attribute key="weight" value="100"/>
+	</item>
+	<item id="39765" article="a" name="sliver" plural="slivers">
+		<attribute key="description" value="This item can be used in the exaltation forge to create exalted cores"/>
+		<attribute key="weight" value="10"/>
+	</item>
+	<item id="40217" article="an" name="exaltation chest" plural="exaltation chests">
+		<attribute key="containersize" value="2"/>
+		<attribute key="weight" value="2000"/>
+	</item>
+	<item id="39766" article="an" name="exalted core" plural="exalted cores">
+		<attribute key="description" value="Use this item to enhance your chances at the exaltation forge"/>
+		<attribute key="weight" value="260"/>
+	</item>
 </items>
