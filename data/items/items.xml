@@ -44340,7 +44340,7 @@
 		<attribute key="weight" value="200"/>
 	</item>
 	<item id="40469" article="a" name="Tibia Coin">
-		<attribute key="weight" value="100"/>
+		<attribute key="weight" value="30"/>
 	</item>
 	<item id="40491" article="a" name="yellow skull">
 		<attribute key="weight" value="250"/>
