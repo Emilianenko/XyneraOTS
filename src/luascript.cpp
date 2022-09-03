@@ -1614,6 +1614,11 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(MONSTER_ICON_INFLUENCED)
 	registerEnum(MONSTER_ICON_FIENDISH)
 
+	registerEnum(HOUSE_NOT_INVITED)
+	registerEnum(HOUSE_GUEST)
+	registerEnum(HOUSE_SUBOWNER)
+	registerEnum(HOUSE_OWNER)
+
 	registerEnum(CONST_PROP_BLOCKSOLID)
 	registerEnum(CONST_PROP_HASHEIGHT)
 	registerEnum(CONST_PROP_BLOCKPROJECTILE)
@@ -3338,6 +3343,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("House", "getAccessList", LuaScriptInterface::luaHouseGetAccessList);
 	registerMethod("House", "setAccessList", LuaScriptInterface::luaHouseSetAccessList);
 	registerMethod("House", "isInAccessList", LuaScriptInterface::luaHouseIsInAccessList);
+	registerMethod("House", "getAccessLevel", LuaScriptInterface::luaHouseGetAccessLevel);
 
 	registerMethod("House", "kickPlayer", LuaScriptInterface::luaHouseKickPlayer);
 

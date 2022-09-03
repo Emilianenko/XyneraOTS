@@ -74,22 +74,28 @@ local illegalWords = {
 	-- list of blocked words
 	
 	-- imposting server administration
-	"owner", "gamemaster", "game master", "hoster", "account", "server", "serwer", "servidor",
+	"owner", "gamemaster", "hoster", "account", "server", "serwer", "servidor",
 	
 	-- politically incorrect
 	"hitler", "stalin", "mussolini", "zedong", "queenelizabeth", "popefrancis", "trump", "xiyingping", "putin", "zelensky", "andrzejduda",
-	"holocaust", "holodomor", "terror", "genocide",
+	"holocaust", "holodomor", "terror", "genocide", "andrzejdupa",
 	
 	-- other
 	"nigg", "fag", "fuck",
 }
 
 local function verifyName(origName)
+	-- turn lowercase for matching bad words
 	local name = origName:lower()
 	
+	-- small letter at front
+	if origName:sub(1, 1):match("%l") then
+		return "The first name should start with a capital letter."
+	end
+		
 	-- name length
-	local length = name:len()
-	if length < 3 then
+	local length = origName:len()
+	if length < 4 then
 		return "Name too short."	
 	elseif length > 21 then
 		return "Name too long."
@@ -137,7 +143,6 @@ local function verifyName(origName)
 	-- names with matched illegalPatterns
 	for _, p in pairs(illegalPatterns) do
 		if name:find(p) then
-		print(p .. ".")
 			return "Name contains invalid pattern."
 		end
 	end
