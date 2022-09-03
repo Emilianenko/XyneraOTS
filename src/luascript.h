@@ -1298,6 +1298,7 @@ class LuaScriptInterface
 		static int luaHouseGetAccessList(lua_State* L);
 		static int luaHouseSetAccessList(lua_State* L);
 		static int luaHouseIsInAccessList(lua_State* L);
+		static int luaHouseGetAccessLevel(lua_State* L);
 
 		static int luaHouseKickPlayer(lua_State* L);
 

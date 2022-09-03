@@ -476,6 +476,25 @@ int LuaScriptInterface::luaHouseIsInAccessList(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaHouseGetAccessLevel(lua_State* L)
+{
+	// house:getAccessLevel(player)
+	House* house = getUserdata<House>(L, 1);
+	if (!house) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Player* player = getUserdata<Player>(L, 2);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnumber(L, house->getHouseAccessLevel(player));
+	return 1;
+}
+
 int LuaScriptInterface::luaHouseKickPlayer(lua_State* L)
 {
 	// house:kickPlayer(player, targetPlayer)

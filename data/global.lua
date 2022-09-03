@@ -84,6 +84,10 @@ function bit.removeFlag(totalFlags, flag)
 	return bit.band(totalFlags, bit.bnot(flag))
 end
 
+function bit.hasFlag(totalFlags, flag)
+	return bit.band(totalFlags, flag) ~= 0
+end
+
 table.contains = function(array, value)
 	for _, targetColumn in pairs(array) do
 		if targetColumn == value then

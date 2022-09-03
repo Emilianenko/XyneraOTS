@@ -1,3 +1,11 @@
+HIRELING_FEATURE_BANKER = 2^0 -- bank
+HIRELING_FEATURE_TRADER = 2^1 -- potions
+HIRELING_FEATURE_COOK = 2^2 -- cooking
+HIRELING_FEATURE_STEWARD = 2^3 -- stash access
+
+HIRELING_FEATURE_FIRST = HIRELING_FEATURE_BANKER
+HIRELING_FEATURE_LAST = HIRELING_FEATURE_STEWARD
+
 -- base outfit (not counted towards limit)
 HIRELING_BASE_MALE = 1108
 HIRELING_BASE_FEMALE = 1107
@@ -5,6 +13,10 @@ HIRELING_BASE_FEMALE = 1107
 -- hireling items (ITEM_HIRELING_LAMP is declared in sources)
 ITEM_HIRELING_SCROLL = 32604
 ITEM_HIRELING_RUNE = 32605
+
+-- memorize rolling a dish of choice in case user spends his gold
+-- but ends talk before chosing
+HIRELING_COOK_STORAGE = 8999999
 
 -- storage range for unlocked hirelings
 -- key: base storage + hirelingId

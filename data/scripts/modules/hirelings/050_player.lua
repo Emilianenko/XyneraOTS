@@ -1,8 +1,3 @@
-HIRELING_FEATURE_BANKER = 2^0 -- bank
-HIRELING_FEATURE_TRADER = 2^1 -- potions
-HIRELING_FEATURE_COOK = 2^2 -- cooking
-HIRELING_FEATURE_STEWARD = 2^3 -- stash access
-
 -- register hireling features
 local creatureevent = CreatureEvent("HirelingFeatures")
 function creatureevent.onLogin(player)

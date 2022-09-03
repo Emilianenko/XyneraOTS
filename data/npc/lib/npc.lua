@@ -172,13 +172,13 @@ function isValidMoney(money)
 	return isNumber(money) and money > 0
 end
 
-function getMoneyCount(string)
-	local b, e = string:find("%d+")
-	local tonumber = tonumber(string:sub(b, e))
-	if tonumber > 2 ^ 32 - 1 then
+function getMoneyCount(msg)
+	local b, e = msg:find("%d+")
+	local amount = tonumber(msg:sub(b, e))
+	if amount > 2 ^ 32 - 1 then
 		print("Warning: Casting value to 32bit to prevent crash\n"..debug.traceback())
 	end
-	local money = b and e and math.min(2 ^ 32 - 1, tonumber) or -1
+	local money = b and e and math.min(2 ^ 32 - 1, amount) or -1
 	if isValidMoney(money) then
 		return money
 	end
