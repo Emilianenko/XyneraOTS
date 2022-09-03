@@ -406,7 +406,7 @@ function creatureSayCallback(cid, type, msg)
 
 		-- npc: do you want food for 15k?
 		if npcHandler.topic[cid] == topicList.FOOD_CONSENT then
-			if msgcontains(msg, "yes") and player:removeMoney(dishPrice) then
+			if msgcontains(msg, "yes") and player:removeTotalMoney(dishPrice) then
 				local roll = math.random(#dishes + 1)
 				if dishes[roll] then
 					player:addStoreItem(dishes[roll][1], 1)
