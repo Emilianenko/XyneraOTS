@@ -1326,6 +1326,14 @@ class Player final : public Creature, public Cylinder
 		}
 		uint32_t getNextActionTime() const;
 
+		// throw cooldown
+		uint32_t hasThrowCooldown() const {
+			return (nextThrow - OTSYS_TIME()) > 0;
+		}
+		void setThrowCooldown() {
+			nextThrow = OTSYS_TIME() + 50;
+		}
+
 		// ui click exhaust
 		void setNextLightUIAction() {
 			if (UI_ACTION_INTERVAL_LIGHT > nextLightUIAction) {
@@ -1459,7 +1467,10 @@ class Player final : public Creature, public Cylinder
 		int64_t lastToggleMount = 0;
 		int64_t lastPing;
 		int64_t lastPong;
+
+		// cooldowns
 		int64_t nextAction = 0;
+		int64_t nextThrow = 0;
 		int64_t nextLightUIAction = 0; // lightweight UI operations - short cooldowns
 		int64_t nextHeavyUIAction = 0; // heavy UI operations - longer cooldowns
 

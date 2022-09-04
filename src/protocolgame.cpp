@@ -1441,7 +1441,7 @@ void ProtocolGame::parseThrow(NetworkMessage& msg)
 	uint8_t count = msg.getByte();
 
 	if (toPos != fromPos) {
-		g_dispatcher.addTask(createTask((DISPATCHER_TASK_EXPIRATION, [=, playerID = player->getID()]() {
+		g_dispatcher.addTask(createTask(([=, playerID = player->getID()]() {
 			g_game.playerMoveThing(playerID, fromPos, spriteId, fromStackpos, toPos, count);
 		})));
 	}

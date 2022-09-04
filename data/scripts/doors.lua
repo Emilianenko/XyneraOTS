@@ -239,6 +239,14 @@ local function passDoorRetro(player, item)
 		return
 	end
 
+	if player:isPzLocked() then
+		local tile = Tile(topos)
+		if tile and tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+			player:sendCancelMessage(RETURNVALUE_PLAYERISPZLOCKED)
+			return
+		end
+	end
+	
 	player:teleportTo(pos)
 	topos:sendMagicEffect(CONST_ME_MAGIC_RED)
 end
@@ -253,6 +261,14 @@ do
 				if retroMode then
 					passDoorRetro(player, item)
 				else
+					if player:isPzLocked() then
+						local tile = Tile(toPosition)
+						if tile and tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+							player:sendCancelMessage(RETURNVALUE_PLAYERISPZLOCKED)
+							return true
+						end
+					end
+					
 					item:transform(itemId + 1)
 					player:teleportTo(toPosition, true)
 				end
@@ -265,6 +281,14 @@ do
 				if retroMode then
 					passDoorRetro(player, item)
 				else
+					if player:isPzLocked() then
+						local tile = Tile(toPosition)
+						if tile and tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+							player:sendCancelMessage(RETURNVALUE_PLAYERISPZLOCKED)
+							return true
+						end
+					end
+					
 					item:transform(itemId + 1)
 					player:teleportTo(toPosition, true)
 				end
@@ -354,6 +378,13 @@ do
 						if retroMode then
 							passDoorRetro(player, item)
 						else
+							if player:isPzLocked() then
+								if tile:hasFlag(TILESTATE_PROTECTIONZONE) then
+									player:sendCancelMessage(RETURNVALUE_PLAYERISPZLOCKED)
+									return true
+								end
+							end
+							
 							item:transform(transformTo)
 							player:teleportTo(toPosition, true)
 						end

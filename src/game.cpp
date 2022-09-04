@@ -929,7 +929,7 @@ void Game::playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, 
 void Game::playerMoveItem(Player* player, const Position& fromPos,
                           uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder)
 {
-	if (!player->canDoAction()) {
+	if (player->hasThrowCooldown()) {
 		uint32_t delay = player->getNextActionTime();
 		SchedulerTask* task = createSchedulerTask(delay, ([=, playerID = player->getID()]() {
 			playerMoveItemByPlayerID(playerID, fromPos, spriteId, fromStackPos, toPos, count);
@@ -937,7 +937,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		player->setNextActionTask(task);
 		return;
 	}
-
+	player->setThrowCooldown();
 	player->setNextActionTask(nullptr);
 
 	if (!item) {
