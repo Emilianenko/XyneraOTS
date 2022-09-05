@@ -44349,4 +44349,34 @@
 	<item id="40762" article="a" name="Morshabaal's brain">
 		<attribute key="weight" value="3300"/>
 	</item>
+		<item id="31208" article="an" name="exercise sword">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="31209" article="an" name="exercise axe">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="31210" article="an" name="exercise club">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="31211" article="an" name="exercise bow">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="31212" article="an" name="exercise rod">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
+	<item id="31213" article="an" name="exercise wand">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="1000"/>
+	</item>
 </items>
