@@ -3071,6 +3071,8 @@ void ProtocolGame::sendBlessings()
 	uint8_t blessCount = 0;
 	uint16_t clientBlessings = 0;
 
+	bool hasToF = false;
+
 	for (int i = 0; i < 8; i++) {
 		if (i == 5) {
 			// move original 5 blessings to proper positions
@@ -3084,6 +3086,7 @@ void ProtocolGame::sendBlessings()
 			} else if (i == 5) {
 				// twist of fate
 				clientBlessings |= 1 << 1;
+				hasToF = true;
 			} else {
 				// mountain blessings
 				clientBlessings |= ((1 << i) << 1);
@@ -3097,7 +3100,7 @@ void ProtocolGame::sendBlessings()
 
 	msg.addByte(0x9C);
 	msg.add<uint16_t>(clientBlessings);
-	msg.addByte((blessCount >= 7) ? 3 : ((blessCount >= 5) ? 2 : 1)); // 1 = Disabled | 2 = normal | 3 = green
+	msg.addByte((blessCount >= 7 && hasToF) ? 3 : ((blessCount >= 5) ? 2 : 1)); // 1 = Disabled | 2 = normal | 3 = green
 
 	writeToOutputBuffer(msg);
 }
