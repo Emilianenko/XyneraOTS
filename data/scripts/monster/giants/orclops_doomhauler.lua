@@ -84,6 +84,7 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -215},
 	{name ="combat", interval = 2000, chance = 100, minDamage = -175, maxDamage = -220, range = 5, radius = 1, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_EXPLOSIONAREA, shootEffect = CONST_ANI_LARGEROCK, target = true},
+	-- bleeding area attack 
 }
 
 monster.defenses = {
