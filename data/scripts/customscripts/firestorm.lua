@@ -505,14 +505,14 @@ if EventCallback then
                 if toPosition.x ~= CONTAINER_POSITION or fromPosition.x ~= CONTAINER_POSITION then
                     if player:getStorageValue(config.players.storage) == 1 then
                         player:sendCancelMessage("It is not allowed to move items in the event.")
-                        return false
+                        return RETURNVALUE_SCRIPT
                     end
                 end
             end
         end
-        return true
+        return RETURNVALUE_NOERROR
     end
-    ec:register(-1)
+    ec:register()
 
 elseif config.state.debug then
     _FSE.debug("Your current version does not support EventCallback functionalities.")

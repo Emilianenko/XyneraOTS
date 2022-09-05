@@ -38,7 +38,7 @@ do
 			return RETURNVALUE_NOTENOUGHROOM
 		end
 	
-		return true
+		return RETURNVALUE_NOERROR
 	end
 	ec:register()
 end
