@@ -12,6 +12,8 @@
 		<parameter key="module_shop" value="1"/>
 		<parameter key="shop_buyable" value="
             backpack, 1988, 20;
+            light shovel, 5710, 450;
+            elvenhair rope, 7731, 350;
             beach backpack, 5949, 20;
             blue backpack, 2002, 20;
 			brocade backpack, 9774, 20;
@@ -23,7 +25,7 @@
 			festive backpack, 32853, 10000;
 			fishing rod, 2580, 150;
 			fur backpack, 7342, 20;
-			glooth backpack, 23666, 10000;
+			glooth backpack, 23666, 2000;
 			golden backpack, 2004, 20;
 			green backpack, 1998, 20;
 			grey backpack, 2003, 20;
@@ -34,7 +36,6 @@
 			moon backpack, 10521, 10000;
 			mug, 2012, 4, 0;
 			mushroom backpack, 18393, 10000;
-			net, 34145, 50;
 			orange backpack, 10519, 20;
 			pick, 2553, 50;
 			pirate backpack, 5926, 20;

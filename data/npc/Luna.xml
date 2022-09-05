@@ -6,7 +6,6 @@
 		<parameter key="module_shop" value="1"/>
 		<parameter key="shop_buyable" value="
 			brown mushroom, 2789, 10;
-			fern, 2801, 24;
 			dark mushroom, 2792, 120;
 			red mushroom, 2788, 12;
 			fire mushroom, 2795, 230;
