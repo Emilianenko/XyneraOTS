@@ -2643,9 +2643,11 @@
 		<attribute key="weight" value="70" />
 		<attribute key="charges" value="3" />
 	</item>
-	<item id="2294" article="a" name="spell rune">
+	<item id="2294" article="a" name="mana rune">
 		<attribute key="type" value="rune" />
+		<attribute key="runeSpellName" value="adura max vis" />
 		<attribute key="weight" value="120" />
+		<attribute key="charges" value="3" />
 	</item>
 	<item id="2295" article="a" name="holy missile rune">
 		<attribute key="type" value="rune" />
