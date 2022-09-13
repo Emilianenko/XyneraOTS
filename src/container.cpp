@@ -233,7 +233,7 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 		return RETURNVALUE_NOERROR;
 	}
 
-	if (!unlocked) {
+	if (!unlocked && !hasBitSet(FLAG_NOLIMIT, flags)) {
 		return RETURNVALUE_NOTPOSSIBLE;
 	}
 
@@ -401,7 +401,7 @@ ReturnValue Container::queryRemove(const Thing& thing, uint32_t count, uint32_t 
 Cylinder* Container::queryDestination(int32_t& index, const Thing& thing, Item** destItem,
 		uint32_t& flags)
 {
-	if (!unlocked) {
+	if (!unlocked && !hasBitSet(FLAG_NOLIMIT, flags)) {
 		*destItem = nullptr;
 		return this;
 	}

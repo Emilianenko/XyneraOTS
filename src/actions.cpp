@@ -351,14 +351,55 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 	}
 
 	if (Container* container = item->getContainer()) {
-		Container* openContainer;
+		Container* openContainer = nullptr;
 
-		// depot container
 		if (DepotLocker* depot = container->getDepotLocker()) {
 			DepotLocker& myDepotLocker = player->getDepotLocker();
 			myDepotLocker.setParent(depot->getParent()->getTile());
 			openContainer = &myDepotLocker;
-		} else {
+		} else if (RewardChest* rewardChest = container->getRewardChest()) {
+			RewardChest& myRewardChest = player->getRewardChest();
+			for (Item* rewardBagItem : myRewardChest.getItems()) {
+				RewardBag* currentRewardBag = rewardBagItem->getRewardBag();
+				if (currentRewardBag && currentRewardBag->isExpired()) {
+					g_game.internalRemoveItem(rewardBagItem);
+				}
+			}
+
+			myRewardChest.setParent(rewardChest->getParent());
+			openContainer = &myRewardChest;
+		} else if (RewardBag* rewardBag = container->getRewardBag()) {
+			uint32_t rewardId = rewardBag->getRewardId();
+			if (rewardId != 0) {
+				if (RewardBag* openedBag = player->getRewardBagById(rewardId)) {
+					// bag already opened
+					openContainer = openedBag;
+				} else if (RewardChest* myRewardChest = &player->getRewardChest()) {
+					// try to find bag in reward chest
+					for (Item* rewardChestItem : myRewardChest->getItems()) {
+						if (RewardBag* rewardChestBag = rewardChestItem->getRewardBag()) {
+							if (rewardId == rewardChestBag->getRewardId()) {
+								RewardBag* bagCopy = rewardChestBag->clone()->getRewardBag();
+								bagCopy->setSpectatorId(player->getID());
+								bagCopy->setParent(container->getParent());
+								openContainer = bagCopy;
+								break;
+							}
+						}
+					}
+
+					// bag not found in reward chest
+					if (!openContainer) {
+						return RETURNVALUE_YOUARENOTTHEOWNER;
+					}
+				} else {
+					// failed to detect chest
+					return RETURNVALUE_YOUARENOTTHEOWNER;
+				}
+			}
+		}
+
+		if (!openContainer) {
 			openContainer = container;
 		}
 
@@ -389,11 +430,11 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 		return RETURNVALUE_NOERROR;
 	}
 
-	const ItemType& it = Item::items[item->getID()];
-	if (it.canReadText) {
-		if (it.canWriteText) {
-			player->setWriteItem(item, it.maxTextLen);
-			player->sendTextWindow(item, it.maxTextLen, true);
+	const ItemType& itemType = Item::items[item->getID()];
+	if (itemType.canReadText) {
+		if (itemType.canWriteText) {
+			player->setWriteItem(item, itemType.maxTextLen);
+			player->sendTextWindow(item, itemType.maxTextLen, true);
 		} else {
 			player->setWriteItem(nullptr);
 			player->sendTextWindow(item, 0, false);

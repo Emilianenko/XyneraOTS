@@ -420,10 +420,10 @@ end
 function Player:sendMessageColorTypes()
     local msg = NetworkMessage()
     msg:addByte(0xCD)
-    msg:addU16(MESSAGE_COLOR_LAST + 1)
-    for color = MESSAGE_COLOR_FIRST, MESSAGE_COLOR_LAST do
+    msg:addU16(MESSAGE_COLOR_COUNT)
+    for color, value in pairs(messageColorToValueMap) do
         msg:addU16(color) -- made up client id for color
-        msg:addU64(messageColorToValueMap[color]) -- price
+        msg:addU64(value) -- price
     end
     
     msg:sendToPlayer(self)

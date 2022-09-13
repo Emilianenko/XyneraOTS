@@ -31,18 +31,34 @@ function Container:getColorContentDescription(baseColor)
 	return baseColor and string.format(style, baseColor, "nothing") or "nothing"
 end
 
-function Container:createLootItem(item)
+local lootRate = configManager.getNumber(configKeys.RATE_LOOT)
+function Container:createLootItem(item, playerRank, contribution)
 	if self:getEmptySlots() == 0 then
 		return true
 	end
 
 	local itemCount = 0
-	local randvalue = getLootRandom()
 	local itemType = ItemType(item.itemId)
+	local stackable = itemType:isStackable()
+	local countMaxFactor = 1
 	
-	if randvalue < item.chance then
-		if itemType:isStackable() then
-			itemCount = randvalue % item.maxCount + 1
+	local dropChance = item.chance
+	if dropChance ~= MAX_LOOTCHANCE then
+		dropChance = dropChance * lootRate
+
+		if contribution then
+			if stackable then
+				countMaxFactor = (0.55 + 0.45 * contribution)
+				dropChance = dropChance * countMaxFactor
+			else
+				dropChance = dropChance * contribution
+			end
+		end
+	end
+	
+	if math.random(0, MAX_LOOTCHANCE) < (dropChance) and (item.top == 0 or playerRank and playerRank <= item.top) then
+		if stackable then
+			itemCount = math.random(item.maxCount * countMaxFactor)
 		else
 			itemCount = 1
 		end

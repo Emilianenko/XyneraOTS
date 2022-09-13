@@ -154,11 +154,11 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		return true
 	else
 		if potion.health then
-			doTargetCombat(player, target, COMBAT_HEALING, potion.health[1], potion.health[2])
+			doTargetCombat(player, target, COMBAT_HEALING, potion.health[1], potion.health[2], CONST_ME_NONE, ORIGIN_CONDITION)
 		end
 
 		if potion.mana then
-			doTargetCombat(player, target, COMBAT_MANADRAIN, potion.mana[1], potion.mana[2])
+			doTargetCombat(player, target, COMBAT_MANADRAIN, potion.mana[1], potion.mana[2], CONST_ME_NONE, ORIGIN_CONDITION)
 		end
 
 		if potion.antidote then

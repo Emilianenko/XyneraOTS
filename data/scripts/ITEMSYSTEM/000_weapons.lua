@@ -386,19 +386,6 @@ end
 
 -- SPRITE WAND
 do
-	local clientId = ItemType(22678):getClientId()
-	-- PURPLE FRAME
-	local ec = EventCallback
-	function ec.onConnect(player, isLogin)
-		local msg = NetworkMessage()
-		msg:addByte(0xCD)
-		msg:addU16(1)
-		msg:addU16(clientId)
-		msg:addU64(100000)
-		msg:sendToPlayer(player)
-	end
-	ec:register()
-
 	local function formulaMin(level, ml)
 		return (level * 0.1) + (ml / 2)
 	end

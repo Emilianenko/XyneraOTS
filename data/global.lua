@@ -72,10 +72,6 @@ function getFormattedWorldTime()
 	return hours .. ':' .. minutes
 end
 
-function getLootRandom()
-	return math.random(0, MAX_LOOTCHANCE) / configManager.getNumber(configKeys.RATE_LOOT)
-end
-
 function bit.addFlag(totalFlags, flag)
 	return bit.bor(totalFlags, flag)
 end

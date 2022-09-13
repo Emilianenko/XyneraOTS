@@ -495,6 +495,7 @@ int LuaScriptInterface::luaAddEvent(lua_State* L)
 				for (const auto& entry : indexes) {
 					switch (entry.second) {
 						case LuaData_Item:
+						case LuaData_RewardBag:
 						case LuaData_Container:
 						case LuaData_Teleport:
 						case LuaData_Podium: {

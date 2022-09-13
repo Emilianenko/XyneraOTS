@@ -91,9 +91,15 @@ do
 		player:sendForgeUI()
 		return true
 	end
+	
+	-- big skull
 	for i = ITEM_FORGE_PLACE_FIRST, ITEM_FORGE_PLACE_LAST do
 		forgeAction:id(i)
 	end
+	
+	-- depot chest
+	forgeAction:id(ITEM_FORGE_SMALL)
+	
 	forgeAction:register()
 end
 

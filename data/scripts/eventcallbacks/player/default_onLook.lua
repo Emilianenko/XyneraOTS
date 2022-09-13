@@ -58,6 +58,10 @@ ec.onLook = function(self, thing, position, distance, description)
 					description = string.format("%s\nHouse id: %d", description, house:getId())
 				end
 			end
+			
+			if itemType:getType() == ITEM_TYPE_REWARDBAG then
+				description = string.format("%s\nReward id: %d", description, thing:rewardId())
+			end
 		elseif thing:isCreature() then
 			local str = "%s\nHealth: %d / %d"
 			if thing:isPlayer() and thing:getMaxMana() > 0 then

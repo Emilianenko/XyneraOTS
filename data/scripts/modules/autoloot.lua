@@ -518,27 +518,35 @@ function internalLootCorpse(player, corpse, lootedItems, lootedGold, lootContain
 	local usesFallback = player:getStorageValue(PlayerStorageKeys.autoLootFallback) == 1
 	
 	for _, corpseItem in pairs(corpse:getItems()) do
-		local isCurrency = corpseItem:isCurrency()
-		if isCurrency then
-			corpseGold = corpseGold + 1
-		else
-			corpseItems = corpseItems + 1
-		end
-		
-		local ret = internalLootItem(player, corpseItem, lootContainers, usesFallback, mainContainer)
-		if ret == RETURNVALUE_NOERROR then
-			corpseItem:remove()
-			
+		if not corpseItem:isRewardBag() then
+			local isCurrency = corpseItem:isCurrency()
 			if isCurrency then
-				retrievedGold = retrievedGold + 1
-				retrievedGoldAmount = retrievedGoldAmount + corpseItem:getWorth()
+				corpseGold = corpseGold + 1
 			else
-				retrievedItems = retrievedItems + 1
+				corpseItems = corpseItems + 1
 			end
-		elseif ret == RETURNVALUE_NOTENOUGHCAPACITY or usesFallback and ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
-			-- player is unable to carry more items
-			-- might as well stop searching
-			break
+			
+			local ret = internalLootItem(player, corpseItem, lootContainers, usesFallback, mainContainer)
+			if ret == RETURNVALUE_NOERROR then
+				corpseItem:remove()
+				
+				if isCurrency then
+					retrievedGold = retrievedGold + 1
+					retrievedGoldAmount = retrievedGoldAmount + corpseItem:getWorth()
+				else
+					retrievedItems = retrievedItems + 1
+				end
+			elseif ret == RETURNVALUE_NOTENOUGHCAPACITY or usesFallback and ret == RETURNVALUE_CONTAINERNOTENOUGHROOM then
+				-- player is unable to carry more items
+				-- might as well stop searching
+				break
+			end
+		else
+			local rewardId = corpseItem:rewardId()
+			local rewardBag = player:getRewardBagById(rewardId) or player:getRewardById(rewardId)
+			if rewardBag then
+				lootedItems, lootedGold, retrievedItems, retrievedGoldAmount = internalLootCorpse(player, rewardBag, lootedItems, lootedGold, lootContainers)
+			end
 		end
 	end
 	
@@ -658,7 +666,7 @@ do
 					return
 				end
 				
-				if clickedItem:isCorpse() or clickedItem:isContainer() and not clickedItem:isPickupable() then
+				if clickedItem:isCorpse() or clickedItem:isRewardBag() or clickedItem:isContainer() and not clickedItem:isPickupable() then
 					-- clicked a corpse in browse field
 					if not player:canOpenCorpse(clickedItem) then
 						-- corpse click in browse field, owner check failed
@@ -666,7 +674,14 @@ do
 						return
 					end
 					
-					lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, player:getLootContainers())
+					if clickedItem:isRewardBag() then
+						local rewardId = clickedItem:rewardId()
+						clickedItem = player:getRewardBagById(rewardId) or player:getRewardById(rewardId)
+					end
+					
+					if clickedItem then
+						lootedItems, lootedGold, itemCount, goldCount = internalLootCorpse(player, clickedItem, lootedItems, lootedGold, player:getLootContainers())
+					end
 				else
 					-- clicked an item inside the corpse
 					local isCurrency = clickedItem:isCurrency()

@@ -16,10 +16,11 @@ struct LootBlock {
 	uint16_t id;
 	uint32_t countmax;
 	uint32_t chance;
-
+	
 	//optional
 	int32_t subType;
 	int32_t actionId;
+	uint16_t top;
 	std::string text;
 
 	std::vector<LootBlock> childLoot;
@@ -27,9 +28,10 @@ struct LootBlock {
 		id = 0;
 		countmax = 1;
 		chance = 0;
-
+		
 		subType = -1;
 		actionId = -1;
+		top = 0;
 	}
 };
 

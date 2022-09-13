@@ -322,6 +322,9 @@ class Game
 		void loadLatestLootContainerId();
 		void saveLatestLootContainerId();
 
+		void loadLatestRewardId();
+		void saveLatestRewardId();
+		
 		void sendGuildMotd(uint32_t playerId);
 		void kickPlayer(uint32_t playerId, bool displayEffect);
 		void playerConnect(uint32_t playerId, bool isLogin);

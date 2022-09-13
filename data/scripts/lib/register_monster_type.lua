@@ -223,6 +223,9 @@ registerMonsterType.loot = function(mtype, mask)
 			if loot.text or loot.description then
 				parent:setDescription(loot.text or loot.description)
 			end
+			if loot.top then
+				parent:setTop(loot.top)
+			end
 			if loot.child then
 				for _, children in pairs(loot.child) do
 					local child = Loot()
@@ -243,6 +246,9 @@ registerMonsterType.loot = function(mtype, mask)
 					end
 					if children.text or children.description then
 						child:setDescription(children.text or children.description)
+					end
+					if loot.top then
+						child:setTop(loot.top)
 					end
 					parent:addChildLoot(child)
 				end

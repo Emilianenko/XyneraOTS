@@ -598,6 +598,9 @@ int LuaScriptInterface::luaItemMoveTo(lua_State* L)
 	if (isUserdata(L, 2)) {
 		const LuaDataType type = getUserdataType(L, 2);
 		switch (type) {
+			case LuaData_RewardBag:
+				toCylinder = getUserdata<RewardBag>(L, 2);
+				break;
 			case LuaData_Container:
 				toCylinder = getUserdata<Container>(L, 2);
 				break;

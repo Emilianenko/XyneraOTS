@@ -253,7 +253,6 @@ function Player:addPartyCondition(combat, variant, condition, baseMana)
 
 	for _, member in ipairs(affectedMembers) do
 		member:addCondition(condition)
-		member:addAssist(self:getId())
 	end
 
 	for _, position in ipairs(positions) do

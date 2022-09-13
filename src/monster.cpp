@@ -123,6 +123,13 @@ void Monster::onAttackedCreatureDisappear(bool)
 	attackTicks = 0;
 }
 
+void Monster::onIdleStatus()
+{
+	if (!mType->info.isBoss) {
+		Creature::onIdleStatus();
+	}
+}
+
 void Monster::onCreatureAppear(Creature* creature, bool isLogin)
 {
 	Creature::onCreatureAppear(creature, isLogin);
@@ -1948,7 +1955,7 @@ void Monster::death(Creature*)
 Item* Monster::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
 {
 	Item* corpse = Creature::getCorpse(lastHitCreature, mostDamageCreature);
-	if (corpse) {
+	if (corpse && !mType->info.isBoss) {
 		if (mostDamageCreature) {
 			if (mostDamageCreature->getPlayer()) {
 				corpse->setCorpseOwner(mostDamageCreature->getID());

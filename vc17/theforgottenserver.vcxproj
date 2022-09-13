@@ -228,6 +228,7 @@
     <ClCompile Include="..\src\lua_player.cpp" />
     <ClCompile Include="..\src\lua_podium.cpp" />
     <ClCompile Include="..\src\lua_position.cpp" />
+    <ClCompile Include="..\src\lua_rewardbag.cpp" />
     <ClCompile Include="..\src\lua_spell.cpp" />
     <ClCompile Include="..\src\lua_table.cpp" />
     <ClCompile Include="..\src\lua_talkaction.cpp" />
@@ -265,6 +266,7 @@
     <ClCompile Include="..\src\protocolold.cpp" />
     <ClCompile Include="..\src\quests.cpp" />
     <ClCompile Include="..\src\raids.cpp" />
+    <ClCompile Include="..\src\rewardchest.cpp" />
     <ClCompile Include="..\src\rsa.cpp" />
     <ClCompile Include="..\src\scheduler.cpp" />
     <ClCompile Include="..\src\script.cpp" />
@@ -319,7 +321,7 @@
     <ClInclude Include="..\src\globalevent.h" />
     <ClInclude Include="..\src\groups.h" />
     <ClInclude Include="..\src\guild.h" />
-	<ClInclude Include="..\src\hirelinglamp.h" />
+    <ClInclude Include="..\src\hirelinglamp.h" />
     <ClInclude Include="..\src\house.h" />
     <ClInclude Include="..\src\housetile.h" />
     <ClInclude Include="..\src\imbuing.h" />
@@ -356,6 +358,7 @@
     <ClInclude Include="..\src\pugicast.h" />
     <ClInclude Include="..\src\quests.h" />
     <ClInclude Include="..\src\raids.h" />
+    <ClInclude Include="..\src\rewardchest.h" />
     <ClInclude Include="..\src\rsa.h" />
     <ClInclude Include="..\src\scheduler.h" />
     <ClInclude Include="..\src\script.h" />

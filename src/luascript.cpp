@@ -704,7 +704,9 @@ void LuaScriptInterface::setWeakMetatable(lua_State* L, int32_t index, const std
 
 void LuaScriptInterface::setItemMetatable(lua_State* L, int32_t index, const Item* item)
 {
-	if (item->getContainer()) {
+	if (item->getRewardBag()) {
+		luaL_getmetatable(L, "RewardBag");
+	} else if (item->getContainer()) {
 		luaL_getmetatable(L, "Container");
 	} else if (item->getTeleport()) {
 		luaL_getmetatable(L, "Teleport");
@@ -862,6 +864,9 @@ Thing* LuaScriptInterface::getThing(lua_State* L, int32_t arg)
 		switch(getNumber<uint32_t>(L, -1)) {
 			case LuaData_Item:
 				thing = getUserdata<Item>(L, arg);
+				break;
+			case LuaData_RewardBag:
+				thing = getUserdata<RewardBag>(L, arg);
 				break;
 			case LuaData_Container:
 				thing = getUserdata<Container>(L, arg);
@@ -1043,7 +1048,7 @@ void LuaScriptInterface::pushLoot(lua_State* L, const std::vector<LootBlock>& lo
 
 	int index = 0;
 	for (const auto& lootBlock : lootList) {
-		lua_createtable(L, 0, 7);
+		lua_createtable(L, 0, 8);
 
 		setField(L, "itemId", lootBlock.id);
 		setField(L, "chance", lootBlock.chance);
@@ -1051,6 +1056,7 @@ void LuaScriptInterface::pushLoot(lua_State* L, const std::vector<LootBlock>& lo
 		setField(L, "maxCount", lootBlock.countmax);
 		setField(L, "actionId", lootBlock.actionId);
 		setField(L, "text", lootBlock.text);
+		setField(L, "top", lootBlock.top);
 
 		pushLoot(L, lootBlock.childLoot);
 		lua_setfield(L, -2, "childLoot");
@@ -1663,6 +1669,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CREATURE_ID_MIN)
 	registerEnum(CREATURE_ID_MAX)
 
+	registerEnum(PLAYER_ID_MIN)
+	registerEnum(PLAYER_ID_MAX)
+
 	registerEnum(GAME_STATE_STARTUP)
 	registerEnum(GAME_STATE_INIT)
 	registerEnum(GAME_STATE_NORMAL)
@@ -1772,7 +1781,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_TYPE_RUNE)
 	registerEnum(ITEM_TYPE_PODIUM)
 	registerEnum(ITEM_TYPE_HIRELINGLAMP)
-	
+	registerEnum(ITEM_TYPE_REWARDCHEST)
+	registerEnum(ITEM_TYPE_REWARDBAG)
+
 	registerEnum(ITEM_GROUP_GROUND)
 	registerEnum(ITEM_GROUP_CONTAINER)
 	registerEnum(ITEM_GROUP_WEAPON)
@@ -1825,6 +1836,9 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_INBOX)
 	registerEnum(ITEM_MARKET)
 	registerEnum(ITEM_STORE_INBOX)
+	registerEnum(ITEM_REWARD_CHEST)
+	registerEnum(ITEM_REWARD_BAG)
+	registerEnum(ITEM_FORGE_SMALL)
 	registerEnum(ITEM_DEPOT_BOX_I)
 	registerEnum(ITEM_DEPOT_BOX_II)
 	registerEnum(ITEM_DEPOT_BOX_III)
@@ -2545,6 +2559,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::EXP_ANALYSER_SEND_TRUE_RAW_EXP)
 	registerEnumIn("configKeys", ConfigManager::MIN_MARKET_FEE)
 	registerEnumIn("configKeys", ConfigManager::MAX_MARKET_FEE)
+	registerEnumIn("configKeys", ConfigManager::REWARD_BAG_DURATION)
 
 	// os
 	registerMethod("os", "mtime", LuaScriptInterface::luaSystemTime);
@@ -2613,6 +2628,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
 
 	registerMethod("Game", "playerHirelingFeatures", LuaScriptInterface::luaGamePlayerHirelingFeatures);
+
+	registerMethod("Game", "addRewardByPlayerId", LuaScriptInterface::luaGameAddRewardByPlayerId);
+	registerMethod("Game", "getNextRewardId", LuaScriptInterface::luaGameGetNextRewardId);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);
@@ -2828,6 +2846,13 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Container", "isLootContainer", LuaScriptInterface::luaContainerIsLootContainer);
 	registerMethod("Container", "getLootContainerId", LuaScriptInterface::luaContainerGetLootContainerId);
 
+	// RewardBag
+	registerClass("RewardBag", "Container", LuaScriptInterface::luaRewardBagCreate);
+	registerMetaMethod("RewardBag", "__eq", LuaScriptInterface::luaUserdataCompare);
+
+	registerMethod("RewardBag", "rewardId", LuaScriptInterface::luaRewardBagRewardId);
+	registerMethod("RewardBag", "createdAt", LuaScriptInterface::luaRewardBagCreatedAt);
+
 	// Teleport
 	registerClass("Teleport", "Item", LuaScriptInterface::luaTeleportCreate);
 	registerMetaMethod("Teleport", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -2847,7 +2872,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Podium", "setDirection", LuaScriptInterface::luaPodiumSetDirection);
 	
 	// HirelingLamp
-	registerClass("HirelingLamp", "", LuaScriptInterface::luaHirelingLampCreate);
+	registerClass("HirelingLamp", "Item", LuaScriptInterface::luaHirelingLampCreate);
 	registerMetaMethod("HirelingLamp", "__eq", LuaScriptInterface::luaUserdataCompare);
 
 	registerMethod("HirelingLamp", "hirelingName", LuaScriptInterface::luaHirelingLampName);
@@ -2939,13 +2964,6 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Creature", "getDamageMap", LuaScriptInterface::luaCreatureGetDamageMap);
 	registerMethod("Creature", "resetDamageMap", LuaScriptInterface::luaCreatureResetDamageMap);
 
-	registerMethod("Creature", "getAssistMap", LuaScriptInterface::luaCreatureGetAssistMap);
-	registerMethod("Creature", "resetAssistMap", LuaScriptInterface::luaCreatureResetAssistMap);
-
-	registerMethod("Creature", "addAssist", LuaScriptInterface::luaCreatureAddAssist);
-	registerMethod("Creature", "removeAssist", LuaScriptInterface::luaCreatureRemoveAssist);
-
-
 	registerMethod("Creature", "getSummons", LuaScriptInterface::luaCreatureGetSummons);
 
 	registerMethod("Creature", "getDescription", LuaScriptInterface::luaCreatureGetDescription);
@@ -2993,6 +3011,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
 
 	registerMethod("Player", "getDepotChest", LuaScriptInterface::luaPlayerGetDepotChest);
+	registerMethod("Player", "getRewardChest", LuaScriptInterface::luaPlayerGetRewardChest);
+	registerMethod("Player", "getRewardBagById", LuaScriptInterface::luaPlayerGetRewardBagById);
+	registerMethod("Player", "getRewardById", LuaScriptInterface::luaPlayerGetRewardById);
 	registerMethod("Player", "getInbox", LuaScriptInterface::luaPlayerGetInbox);
 
 	registerMethod("Player", "getSkullTime", LuaScriptInterface::luaPlayerGetSkullTime);
@@ -3580,6 +3601,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Loot", "setChance", LuaScriptInterface::luaLootSetChance);
 	registerMethod("Loot", "setActionId", LuaScriptInterface::luaLootSetActionId);
 	registerMethod("Loot", "setDescription", LuaScriptInterface::luaLootSetDescription);
+	registerMethod("Loot", "setTop", LuaScriptInterface::luaLootSetTop);
 	registerMethod("Loot", "addChildLoot", LuaScriptInterface::luaLootAddChildLoot);
 
 	// MonsterSpell
@@ -3849,6 +3871,8 @@ void LuaScriptInterface::registerClass(const std::string& className, const std::
 	// className.metatable['t'] = type
 	if (className == "Item") {
 		lua_pushnumber(luaState, LuaData_Item);
+	} else if (className == "RewardBag") {
+		lua_pushnumber(luaState, LuaData_RewardBag);
 	} else if (className == "Container") {
 		lua_pushnumber(luaState, LuaData_Container);
 	} else if (className == "Teleport") {

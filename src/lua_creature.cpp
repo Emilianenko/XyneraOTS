@@ -990,69 +990,6 @@ int LuaScriptInterface::luaCreatureGetDamageMap(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaCreatureGetAssistMap(lua_State* L)
-{
-	// creature:getAssistMap()
-	Creature* creature = getUserdata<Creature>(L, 1);
-	if (!creature) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	lua_createtable(L, creature->assistMap.size(), 0);
-
-	for (const auto& assist : creature->assistMap) {
-		lua_pushnumber(L, assist.second);
-		lua_rawseti(L, -2, assist.first);
-	}
-
-	return 1;
-}
-
-int LuaScriptInterface::luaCreatureAddAssist(lua_State* L)
-{
-	// creature:addAssist(creatureId)
-	Creature* creature = getUserdata<Creature>(L, 1);
-	if (!creature) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint32_t creatureId = getNumber<uint32_t>(L, 2);
-	creature->addAssist(creatureId);
-	lua_pushboolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaCreatureRemoveAssist(lua_State* L)
-{
-	// creature:removeAssist(creatureId)
-	Creature* creature = getUserdata<Creature>(L, 1);
-	if (!creature) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	uint32_t creatureId = getNumber<uint32_t>(L, 2);
-	creature->removeAssist(creatureId);
-	lua_pushboolean(L, true);
-	return 1;
-}
-
-int LuaScriptInterface::luaCreatureResetAssistMap(lua_State* L)
-{
-	// creature:resetAssistMap()
-	Creature* creature = getUserdata<Creature>(L, 1);
-	if (!creature) {
-		lua_pushnil(L);
-		return 1;
-	}
-
-	creature->resetAssists();
-	lua_pushboolean(L, true);
-	return 1;
-}
-
 int LuaScriptInterface::luaCreatureResetDamageMap(lua_State* L)
 {
 	// creature:resetDamageMap()

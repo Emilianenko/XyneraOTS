@@ -1,11 +1,14 @@
 -- returns all the players who assisted in killing the creature
+-- do not remove nil checks, the map can hold both true and false
+local partyRewardRange = 40
+
 function Creature:getKillCreditsMap()
-	local assistMap = {}
+	local selfPos = self:getPosition()
 	local partyMap = {}
 	
 	local damageMap = self:getDamageMap()
 	for attackerId, _ in pairs(damageMap) do
-		if not assistMap[attackerId] then
+		if partyMap[attackerId] == nil then
 			local attacker = Creature(attackerId)
 			if attacker then
 				-- count summon contribution as player contribution
@@ -21,17 +24,17 @@ function Creature:getKillCreditsMap()
 
 				-- count player contribution
 				if attacker:isPlayer() then
-					assistMap[realAttackerId] = true
+					partyMap[realAttackerId] = true
 					
 					-- count party contribution
 					local party = attacker:getParty()
 					if party then
 						local leader = party:getLeader():getId()
-						if not partyMap[leader] then
-							partyMap[leader] = true
-							
+						if partyMap[leader] == nil then
+							partyMap[leader] = selfPos:getDistance(party:getLeader():getPosition()) < partyRewardRange
+
 							for k, partyMember in pairs(party:getActiveMembers()) do
-								assistMap[partyMember:getId()] = true
+								partyMap[partyMember:getId()] = selfPos:getDistance(partyMember:getPosition()) < partyRewardRange
 							end
 						end
 					end
@@ -40,16 +43,5 @@ function Creature:getKillCreditsMap()
 		end
 	end
 	
-	local outputAssistMap = {}
-	local ticksDuration = configManager.getNumber(configKeys.PZ_LOCKED)
-	for playerId, _ in pairs(assistMap) do
-		outputAssistMap[playerId] = true
-		for assistId, ticks in pairs(Player(playerId):getAssistMap()) do
-			if Player(assistId) and os.time() - ticks <= ticksDuration then
-				outputAssistMap[assistId] = true
-			end
-		end
-	end
-	
-	return outputAssistMap
+	return partyMap
 end

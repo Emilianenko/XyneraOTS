@@ -119,6 +119,7 @@ class Monster final : public Creature
 		bool canWalkOnFieldType(CombatType_t combatType) const;
 
 		void onAttackedCreatureDisappear(bool isLogout) override;
+		void onIdleStatus() override;
 
 		void onCreatureAppear(Creature* creature, bool isLogin) override;
 		void onRemoveCreature(Creature* creature, bool isLogout) override;

@@ -363,6 +363,70 @@ int LuaScriptInterface::luaPlayerGetDepotChest(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerGetRewardChest(lua_State* L)
+{
+	// player:getRewardChest()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	RewardChest* rewardChest = &player->getRewardChest();
+	if (rewardChest) {
+		pushUserdata<Item>(L, rewardChest);
+		setItemMetatable(L, -1, rewardChest);
+	} else {
+		pushBoolean(L, false);
+	}
+
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetRewardBagById(lua_State* L)
+{
+	// player:getRewardBagById(rewardId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t rewardId = getNumber<uint32_t>(L, 2);
+	if (rewardId != 0) {
+		if (RewardBag* rewardBag = player->getRewardBagById(rewardId)) {
+			pushUserdata<RewardBag>(L, rewardBag);
+			setItemMetatable(L, -1, rewardBag);
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetRewardById(lua_State* L)
+{
+	// player:getRewardById(rewardId)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t rewardId = getNumber<uint32_t>(L, 2);
+	if (rewardId != 0) {
+		if (RewardBag* rewardBag = player->getRewardById(rewardId)) {
+			pushUserdata<RewardBag>(L, rewardBag);
+			setItemMetatable(L, -1, rewardBag);
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetInbox(lua_State* L)
 {
 	// player:getInbox()

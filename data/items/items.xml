@@ -4164,7 +4164,7 @@
 	</item>
 	<item fromid="2589" toid="2592" article="a" name="locker">
 		<attribute key="type" value="depot" />
-		<attribute key="containerSize" value="3" />
+		<attribute key="containerSize" value="5" />
 	</item>
 	<item id="2593" article="a" name="mailbox">
 		<attribute key="description" value="Royal Mail." />
@@ -28187,6 +28187,7 @@
 		<attribute key="description" value="A very ornate key, made of solid copper." />
 	</item>
 	<item id="21518" article="a" name="reward container">
+		<attribute key="type" value="rewardbag" />
 		<attribute key="containersize" value="32" />
 		<attribute key="pickupable" value="0" />
 		<attribute key="moveable" value="0" />
@@ -28248,6 +28249,7 @@
 		<attribute key="description" value="It is frosted with tiny ice crystals and starts to melt as look at it." />
 	</item>
 	<item id="21584" article="a" name="reward chest">
+		<attribute key="type" value="rewardchest" />
 		<attribute key="description" value="This chest contains your rewards earned in battles." />
 		<attribute key="containersize" value="32" />
 		<attribute key="pickupable" value="0" />
@@ -44349,7 +44351,8 @@
 	<item id="40762" article="a" name="Morshabaal's brain">
 		<attribute key="weight" value="3300"/>
 	</item>
-		<item id="31208" article="an" name="exercise sword">
+	<item id="44562" article="an" name="exaltation forge"/>
+	<item id="31208" article="an" name="exercise sword">
 		<attribute key="showCharges" value="1"/>
 		<attribute key="charges" value="500"/>
 		<attribute key="weight" value="1000"/>

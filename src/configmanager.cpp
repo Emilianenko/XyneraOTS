@@ -288,6 +288,7 @@ bool ConfigManager::load(bool isReload)
 	integer[MIN_MARKET_FEE] = getGlobalNumber(L, "minMarketFee", 20);
 	integer[MAX_MARKET_FEE] = getGlobalNumber(L, "maxMarketFee", 100000);
 	integer[MAX_QUICK_LOOT_LIST_SIZE] = getGlobalNumber(L, "maxQuickLootListSize", 200);
+	integer[REWARD_BAG_DURATION] = getGlobalNumber(L, "rewardBagDuration", 7 * 24 * 60 * 60);
 
 	// config loaded successfully
 	console::printResult(CONSOLE_LOADING_OK);

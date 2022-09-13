@@ -891,7 +891,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			g_game.addMagicEffect(target->getPosition(), CONST_ME_CRITICAL_DAMAGE);
 		}
 
-		if (!damage.leeched && damage.primary.type != COMBAT_HEALING && casterPlayer && damage.origin != ORIGIN_CONDITION) {
+		if (!damage.leeched && damage.primary.type != COMBAT_HEALING && damage.primary.type != COMBAT_MANADRAIN && casterPlayer && damage.origin != ORIGIN_CONDITION) {
 			CombatDamage leechCombat;
 			leechCombat.origin = ORIGIN_NONE;
 			leechCombat.leeched = true;

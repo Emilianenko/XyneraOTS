@@ -7,6 +7,7 @@
 
 #include "configmanager.h"
 #include "events.h"
+#include "iologindata.h"
 #include "monster.h"
 #include "game.h"
 #include "item.h"
@@ -127,8 +128,7 @@ int LuaScriptInterface::luaGameGetExperienceForLevel(lua_State* L)
 	const uint32_t level = getNumber<uint32_t>(L, 1);
 	if (level == 0) {
 		lua_pushnumber(L, 0);
-	}
-	else {
+	} else {
 		lua_pushnumber(L, Player::getExpForLevel(level));
 	}
 	return 1;
@@ -186,8 +186,7 @@ int LuaScriptInterface::luaGameGetMountIdByLookType(lua_State* L)
 
 	if (mount) {
 		lua_pushnumber(L, mount->id);
-	}
-	else {
+	} else {
 		lua_pushnil(L);
 	}
 	return 1;
@@ -201,8 +200,7 @@ int LuaScriptInterface::luaGameGetItemTypeByClientId(lua_State* L)
 	if (itemType.id != 0) {
 		pushUserdata<const ItemType>(L, &itemType);
 		setMetatable(L, -1, "ItemType");
-	}
-	else {
+	} else {
 		lua_pushnil(L);
 	}
 
@@ -318,8 +316,7 @@ int LuaScriptInterface::luaGameGetFamiliarById(lua_State* L)
 	Familiar* familiar = g_game.familiars.getFamiliarByID(familiarId);
 	if (familiar) {
 		pushFamiliar(L, familiar);
-	}
-	else {
+	} else {
 		lua_pushnil(L);
 	}
 	return 1;
@@ -433,8 +430,7 @@ int LuaScriptInterface::luaGameCreateItem(lua_State* L)
 	uint16_t id;
 	if (isNumber(L, 1)) {
 		id = getNumber<uint16_t>(L, 1);
-	}
-	else {
+	} else {
 		id = Item::items.getItemIdByName(getString(L, 1));
 		if (id == 0) {
 			lua_pushnil(L);
@@ -463,8 +459,7 @@ int LuaScriptInterface::luaGameCreateItem(lua_State* L)
 		}
 
 		g_game.internalAddItem(tile, item, INDEX_WHEREEVER, FLAG_NOLIMIT);
-	}
-	else {
+	} else {
 		getScriptEnv()->addTempItem(item);
 		item->setParent(VirtualCylinder::virtualCylinder);
 	}
@@ -481,8 +476,7 @@ int LuaScriptInterface::luaGameCreateContainer(lua_State* L)
 	uint16_t id;
 	if (isNumber(L, 1)) {
 		id = getNumber<uint16_t>(L, 1);
-	}
-	else {
+	} else {
 		id = Item::items.getItemIdByName(getString(L, 1));
 		if (id == 0) {
 			lua_pushnil(L);
@@ -506,8 +500,7 @@ int LuaScriptInterface::luaGameCreateContainer(lua_State* L)
 		}
 
 		g_game.internalAddItem(tile, container, INDEX_WHEREEVER, FLAG_NOLIMIT);
-	}
-	else {
+	} else {
 		getScriptEnv()->addTempItem(container);
 		container->setParent(VirtualCylinder::virtualCylinder);
 	}
@@ -759,5 +752,84 @@ int LuaScriptInterface::luaGamePlayerHirelingFeatures(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaGameAddRewardByPlayerId(lua_State* L)
+{
+	// Game.addRewardByPlayerId(playerId, item)
+
+	// validate player id
+	uint32_t playerId = getNumber<uint32_t>(L, 1);
+	if (playerId <= PLAYER_ID_MIN || playerId >= PLAYER_ID_MAX) {
+		// invalid creature id
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	// validate the item
+	Item* item = getUserdata<Item>(L, 2);
+	if (!item) {
+		// item was not passed
+		lua_pushnil(L);
+		return 1;
+	}
+
+	// check if player is online
+	Player* player = g_game.getPlayerByID(playerId);
+
+	// cant convert to guid when allow clones is on
+	if (g_config.getBoolean(ConfigManager::ALLOW_CLONES)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	// player is offline, search the database by guid
+	if (!player) {
+		Player tmpPlayer(nullptr);
+		if (!IOLoginData::loadPlayerById(&tmpPlayer, playerId - PLAYER_ID_MIN)) {
+			// failed to load the player
+			// (eg. hit boss, logged out and got deleted from the database before reward distrubition)
+			pushBoolean(L, false);
+			return 1;
+		}
+
+		// copy addItemEx behaviour
+		if (item->getParent() != VirtualCylinder::virtualCylinder) {
+			reportErrorFunc(L, "Item already has a parent");
+			lua_pushnil(L);
+			return 1;
+		}
+
+		bool added = g_game.internalAddItem(&tmpPlayer.getRewardChest(), item, INDEX_WHEREEVER, FLAG_NOLIMIT | FLAG_IGNORENOTPICKUPABLE) == RETURNVALUE_NOERROR;
+		if (added) {
+			ScriptEnvironment::removeTempItem(item);
+			IOLoginData::savePlayer(&tmpPlayer);
+		}
+
+		pushBoolean(L, added);
+		return 1;
+	}
+
+	// player is online, copy addItemEx behaviour
+	if (item->getParent() != VirtualCylinder::virtualCylinder) {
+		reportErrorFunc(L, "Item already has a parent");
+		lua_pushnil(L);
+		return 1;
+	}
+
+	bool added = g_game.internalAddItem(&player->getRewardChest(), item, INDEX_WHEREEVER, FLAG_NOLIMIT | FLAG_IGNORENOTPICKUPABLE) == RETURNVALUE_NOERROR;
+	if (added) {
+		ScriptEnvironment::removeTempItem(item);
+	}
+
+	pushBoolean(L, added);
+	return 1;
+}
+
+int LuaScriptInterface::luaGameGetNextRewardId(lua_State* L)
+{
+	// Game.getNextRewardId()
+	lua_pushnumber(L, RewardBag::generateRewardId());
 	return 1;
 }

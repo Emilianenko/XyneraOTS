@@ -90,7 +90,7 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 		addByte(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		addByte(count == 0 ? count : fluidMap[count & 7]);
-	} else if (it.type == ITEM_TYPE_CONTAINER || it.type == ITEM_TYPE_DEPOT) {
+	} else if (it.type == ITEM_TYPE_CONTAINER || it.type == ITEM_TYPE_DEPOT || it.type == ITEM_TYPE_REWARDCHEST || it.type == ITEM_TYPE_REWARDBAG) {
 		addByte(0x00); // assigned loot container icon
 		addByte(0x00); // quiver ammo count
 	} else if (it.classification > 0) {
@@ -157,7 +157,7 @@ void NetworkMessage::addItem(const Item* item)
 		addByte(isUnused); // paused decay / brand-new
 	}
 
-	if (it.type == ITEM_TYPE_CONTAINER || it.type == ITEM_TYPE_DEPOT) {
+	if (it.type == ITEM_TYPE_CONTAINER || it.type == ITEM_TYPE_DEPOT || it.type == ITEM_TYPE_REWARDCHEST || it.type == ITEM_TYPE_REWARDBAG) {
 		const Container* container = item->getContainer();
 		const Player* player = item->getHoldingPlayer();
 

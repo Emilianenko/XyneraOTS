@@ -690,7 +690,7 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 						continue;
 					}
 
-					if (!item->isPickupable()) {
+					if (item->isBlocking()) {
 						return RETURNVALUE_NOTENOUGHROOM;
 					}
 

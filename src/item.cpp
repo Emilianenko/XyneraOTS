@@ -13,6 +13,7 @@
 #include "house.h"
 #include "mailbox.h"
 #include "podium.h"
+#include "rewardchest.h"
 #include "teleport.h"
 #include "trashholder.h"
 
@@ -41,6 +42,10 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 	if (it.id != 0) {
 		if (it.isDepot()) {
 			newItem = new DepotLocker(type);
+		} else if (it.isRewardChest()) {
+			newItem = new RewardChest(type);
+		} else if (it.isRewardBag()) {
+			newItem = new RewardBag(type);
 		} else if (it.isContainer()) {
 			newItem = new Container(type);
 		} else if (it.isTeleport()) {
@@ -59,18 +64,9 @@ Item* Item::CreateItem(const uint16_t type, uint16_t count /*= 0*/)
 			newItem = new Podium(type);
 		} else if (it.isHirelingLamp()) {
 			newItem = new HirelingLamp(type);
-		} else if (it.id >= 2210 && it.id <= 2212) { // magic rings
-			newItem = new Item(type - 3, count);
-		} else if (it.id == 2215 || it.id == 2216) { // magic rings
-			newItem = new Item(type - 2, count);
-		} else if (it.id >= 2202 && it.id <= 2206) { // magic rings
-			newItem = new Item(type - 37, count);
-		} else if (it.id == 2640) { // soft boots
-			newItem = new Item(6132, count);
-		} else if (it.id == 6301) { // death ring
-			newItem = new Item(6300, count);
-		} else if (it.id == 18528) { // prismatic ring
-			newItem = new Item(18408, count);
+		} else if (it.transformDeEquipTo != 0) {
+			// convert equipped items to unequipped
+			newItem = new Item(it.transformDeEquipTo, count);
 		} else {
 			newItem = new Item(type, count);
 		}
@@ -769,6 +765,14 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		// RewardBag class
+		case ATTR_REWARDBAG: {
+			if (!propStream.skip(12)) {
+				return ATTR_READ_ERROR;
+			}
+		}
+
+		// custom attributes
 		case ATTR_CUSTOM_ATTRIBUTES: {
 			uint64_t size;
 			if (!propStream.read<uint64_t>(size)) {

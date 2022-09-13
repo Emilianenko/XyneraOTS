@@ -11,6 +11,7 @@
 #include "groups.h"
 #include "guild.h"
 #include "protocolgame.h"
+#include "rewardchest.h"
 #include "town.h"
 #include "vocation.h"
 
@@ -19,7 +20,11 @@ class House;
 class NetworkMessage;
 class Npc;
 class Party;
+class RewardChest;
 class SchedulerTask;
+
+static constexpr uint32_t PLAYER_ID_MIN = 0x10000000;
+static constexpr uint32_t PLAYER_ID_MAX = 0x20000000;
 
 enum skillsid_t {
 	SKILLVALUE_LEVEL = 0,
@@ -356,6 +361,9 @@ class Player final : public Creature, public Cylinder
 		void setContainerIndex(uint8_t cid, uint16_t index);
 
 		Container* getContainerByID(uint8_t cid);
+		RewardBag* getRewardBagById(uint32_t rewardId); // returns currently opened reward bag
+		RewardBag* getRewardById(uint32_t rewardId); // returns reward chest reward bag
+
 		int8_t getContainerID(const Container* container) const;
 		uint16_t getContainerIndex(uint8_t cid) const;
 
@@ -550,6 +558,8 @@ class Player final : public Creature, public Cylinder
 		DepotLocker& getDepotLocker();
 		void onReceiveMail() const;
 		bool isNearDepotBox() const;
+
+		RewardChest& getRewardChest();
 
 		bool canSee(const Position& pos) const override;
 		bool canSeeCreature(const Creature* creature) const override;
@@ -1492,6 +1502,7 @@ class Player final : public Creature, public Cylinder
 		Vocation* vocation = nullptr;
 		StoreInbox* storeInbox = nullptr;
 		DepotLocker_ptr depotLocker = nullptr;
+		RewardChest_ptr rewardChest = nullptr;
 
 		uint32_t inventoryWeight = 0;
 		uint32_t capacity = 40000;

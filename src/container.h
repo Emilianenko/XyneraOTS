@@ -10,6 +10,8 @@
 
 class Container;
 class DepotLocker;
+class RewardBag;
+class RewardChest;
 class StoreInbox;
 
 class ContainerIterator
@@ -41,7 +43,7 @@ class Container : public Item, public Cylinder
 		Container(const Container&) = delete;
 		Container& operator=(const Container&) = delete;
 
-		Item* clone() const override final;
+		Item* clone() const override;
 
 		Container* getContainer() override final {
 			return this;
@@ -61,6 +63,20 @@ class Container : public Item, public Cylinder
 			return nullptr;
 		}
 		virtual const StoreInbox* getStoreInbox() const {
+			return nullptr;
+		}
+
+		virtual RewardChest* getRewardChest() {
+			return nullptr;
+		}
+		virtual const RewardChest* getRewardChest() const {
+			return nullptr;
+		}
+
+		virtual RewardBag* getRewardBag() {
+			return nullptr;
+		}
+		virtual const RewardBag* getRewardBag() const {
 			return nullptr;
 		}
 
@@ -114,19 +130,19 @@ class Container : public Item, public Cylinder
 		virtual ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,
 				uint32_t flags, Creature* actor = nullptr) const override;
 		ReturnValue queryMaxCount(int32_t index, const Thing& thing, uint32_t count, uint32_t& maxQueryCount,
-				uint32_t flags) const override final;
-		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags, Creature* actor = nullptr) const override final;
+				uint32_t flags) const override ;
+		ReturnValue queryRemove(const Thing& thing, uint32_t count, uint32_t flags, Creature* actor = nullptr) const override ;
 		Cylinder* queryDestination(int32_t& index, const Thing& thing, Item** destItem,
-				uint32_t& flags) override final;
+				uint32_t& flags) override ;
 
-		void addThing(Thing* thing) override final;
-		void addThing(int32_t index, Thing* thing) override final;
+		void addThing(Thing* thing) override;
+		void addThing(int32_t index, Thing* thing) override;
 		void addItemBack(Item* item);
 
-		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) override final;
-		void replaceThing(uint32_t index, Thing* thing) override final;
+		void updateThing(Thing* thing, uint16_t itemId, uint32_t count) override;
+		void replaceThing(uint32_t index, Thing* thing) override;
 
-		void removeThing(Thing* thing, uint32_t count) override final;
+		void removeThing(Thing* thing, uint32_t count) override;
 
 		int32_t getThingIndex(const Thing* thing) const override final;
 		size_t getFirstIndex() const override final;
@@ -147,6 +163,10 @@ class Container : public Item, public Cylinder
 	protected:
 		ItemDeque itemlist;
 
+		void onAddContainerItem(Item* item);
+		void onUpdateContainerItem(uint32_t index, Item* oldItem, Item* newItem);
+		void onRemoveContainerItem(uint32_t index, Item* item);
+
 	private:
 		uint32_t maxSize;
 		uint32_t totalWeight = 0;
@@ -155,10 +175,6 @@ class Container : public Item, public Cylinder
 
 		bool unlocked;
 		bool pagination;
-
-		void onAddContainerItem(Item* item);
-		void onUpdateContainerItem(uint32_t index, Item* oldItem, Item* newItem);
-		void onRemoveContainerItem(uint32_t index, Item* item);
 
 		Container* getParentContainer();
 		void updateItemWeight(int32_t diff);

@@ -141,6 +141,10 @@ function ItemType:isHirelingLamp()
 	return self:getType() == ITEM_TYPE_HIRELINGLAMP
 end
 
+function ItemType:isRewardBag()
+	return self:getType() == ITEM_TYPE_REWARDBAG
+end
+
 do
 	local realSlot = {
 		isHelmet = CONST_SLOT_HEAD,

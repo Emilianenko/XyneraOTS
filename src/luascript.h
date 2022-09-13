@@ -54,6 +54,7 @@ enum LuaDataType {
 	LuaData_Monster,
 	LuaData_Npc,
 	LuaData_Tile,
+	LuaData_RewardBag,
 };
 
 struct LuaTimerEventDesc {
@@ -590,6 +591,9 @@ class LuaScriptInterface
 
 		static int luaGamePlayerHirelingFeatures(lua_State* L);
 
+		static int luaGameAddRewardByPlayerId(lua_State* L);
+		static int luaGameGetNextRewardId(lua_State* L);
+
 		// Variant
 		static int luaVariantCreate(lua_State* L);
 
@@ -797,6 +801,12 @@ class LuaScriptInterface
 		static int luaContainerIsLootContainer(lua_State* L);
 		static int luaContainerGetLootContainerId(lua_State* L);
 
+		// RewardBag
+		static int luaRewardBagCreate(lua_State* L);
+
+		static int luaRewardBagRewardId(lua_State* L);
+		static int luaRewardBagCreatedAt(lua_State* L);
+
 		// Teleport
 		static int luaTeleportCreate(lua_State* L);
 
@@ -903,12 +913,6 @@ class LuaScriptInterface
 		static int luaCreatureGetDamageMap(lua_State* L);
 		static int luaCreatureResetDamageMap(lua_State* L);
 
-		static int luaCreatureGetAssistMap(lua_State* L);
-		static int luaCreatureResetAssistMap(lua_State* L);
-
-		static int luaCreatureAddAssist(lua_State* L);
-		static int luaCreatureRemoveAssist(lua_State* L);
-
 		static int luaCreatureGetSummons(lua_State* L);
 
 		static int luaCreatureGetDescription(lua_State* L);
@@ -955,6 +959,9 @@ class LuaScriptInterface
 		static int luaPlayerGetFreeCapacity(lua_State* L);
 
 		static int luaPlayerGetDepotChest(lua_State* L);
+		static int luaPlayerGetRewardChest(lua_State* L);
+		static int luaPlayerGetRewardBagById(lua_State* L);
+		static int luaPlayerGetRewardById(lua_State* L);
 		static int luaPlayerGetInbox(lua_State* L);
 
 		static int luaPlayerGetSkullTime(lua_State* L);
@@ -1509,6 +1516,7 @@ class LuaScriptInterface
 		static int luaLootSetChance(lua_State* L);
 		static int luaLootSetActionId(lua_State* L);
 		static int luaLootSetDescription(lua_State* L);
+		static int luaLootSetTop(lua_State* L);
 		static int luaLootAddChildLoot(lua_State* L);
 
 		// MonsterSpell

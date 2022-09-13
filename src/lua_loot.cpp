@@ -130,6 +130,19 @@ int LuaScriptInterface::luaLootSetDescription(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaLootSetTop(lua_State* L)
+{
+	// loot:setTop(top)
+	Loot* loot = getUserdata<Loot>(L, 1);
+	if (loot) {
+		loot->lootBlock.top = getNumber<uint32_t>(L, 2);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaLootAddChildLoot(lua_State* L)
 {
 	// loot:addChildLoot(loot)

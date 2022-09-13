@@ -94,6 +94,14 @@ function Player:onTurn(direction)
 end
 
 function Player:onTradeRequest(target, item)
+	local parent = item:getParent()
+	if parent and parent:isItem() and parent:isRewardBag() then
+		-- prevent item duplication through quick loot + reward bag
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
+
 	if EventCallback.onTradeRequest then
 		return EventCallback.onTradeRequest(self, target, item)
 	end
@@ -101,6 +109,13 @@ function Player:onTradeRequest(target, item)
 end
 
 function Player:onTradeAccept(target, item, targetItem)
+	local parent = item:getParent()
+	if parent and parent:isItem() and parent:isRewardBag() then
+		-- prevent item duplication through quick loot + reward bag
+		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
+		return false
+	end
+
 	if EventCallback.onTradeAccept then
 		return EventCallback.onTradeAccept(self, target, item, targetItem)
 	end

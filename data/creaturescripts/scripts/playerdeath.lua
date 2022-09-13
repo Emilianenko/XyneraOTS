@@ -1,5 +1,6 @@
 local deathListEnabled = true
 local maxDeathRecords = 5
+local ticksDuration = configManager.getNumber(configKeys.PZ_LOCKED)
 
 function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, mostDamageUnjustified)
 	local playerId = player:getId()
@@ -7,6 +8,8 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 		nextUseStaminaTime[playerId] = nil
 	end
 
+	mostDamageUnjustified = lastHitUnjustified
+	
 	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You are dead.")
 	
 	---- DETERMINE REAL OWNER OF THE LAST HIT
@@ -31,6 +34,49 @@ function onDeath(player, corpse, killer, mostDamageKiller, lastHitUnjustified, m
 	end
 
 	---- DETERMINE MOST DAMAGE DEALT
+	local rawDamageMap = player:getDamageMap()
+	
+	-- remove expired damage outputs
+	for killerId, damageData in pairs(rawDamageMap) do
+		if os.time() - damageData.ticks > ticksDuration then
+			rawDamageMap[killerId] = nil
+		end
+	end
+	
+	-- sort players by damage dealt
+	local sortedDamageMap = {}
+	for killerId, damage in pairs(rawDamageMap) do
+		if killerId ~= playerId then
+			table.insert(sortedDamageMap,{killerId,damage})
+		end
+	end
+	table.sort(sortedDamageMap, function(dmg1, dmg2) return dmg1[2].total > dmg2[2].total end)
+
+	local topMonster
+	local topPlayer
+	
+	mostDamageKiller = nil
+	for creatureId, damage in pairs(sortedDamageMap) do
+		if not topMonster then
+			topMonster = Monster(creatureId)
+		end
+
+		local currentPlayer = Player(creatureId)
+		if currentPlayer ~= player then
+			if not topPlayer then
+				topPlayer = currentPlayer
+			end
+			
+			if currentPlayer then
+				if topPlayer ~= currentPlayer then
+					break
+				end
+			end
+		end		
+	end
+	
+	mostDamageKiller = topPlayer or topMonster
+
 	local byPlayerMostDamage = 0
 	local mostDamageKillerName
 	if mostDamageKiller then

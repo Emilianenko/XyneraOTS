@@ -1,4 +1,10 @@
 function Monster:onDropLoot(corpse)
+	if RewardSystem and self:getType():isBoss() then
+		-- use reward system for bosses if installed
+		generateBossRewards(self, corpse)
+		return
+	end
+
 	local player = Player(corpse:getCorpseOwner())
 	if player then
 		player:updateKillTracker(self, corpse)

@@ -23,6 +23,8 @@ extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
 
+class Player;
+
 Creature::Creature()
 {
 	onIdleStatus();
@@ -200,7 +202,6 @@ void Creature::onIdleStatus()
 {
 	if (getHealth() > 0) {
 		damageMap.clear();
-		assistMap.clear();
 		lastHitCreatureId = 0;
 	}
 }
@@ -687,20 +688,6 @@ CreatureVector Creature::getKillers()
 	return killers;
 }
 
-CreatureVector Creature::getSupporters()
-{
-	CreatureVector assists;
-	const int64_t timeNow = OTSYS_TIME();
-	const uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
-	for (const auto& it : assistMap) {
-		Creature* supporter = g_game.getCreatureByID(it.first);
-		if (supporter && supporter != this && timeNow - it.second <= inFightTicks) {
-			assists.push_back(supporter);
-		}
-	}
-	return assists;
-}
-
 void Creature::onDeath()
 {
 	bool lastHitUnjustified = false;
@@ -1084,19 +1071,41 @@ void Creature::addDamagePoints(Creature* attacker, int32_t damagePoints)
 	}
 
 	uint32_t attackerId = attacker->id;
+	if (Creature* attackerMaster = attacker->master) {
+		attackerId = attackerMaster->id;
+	}
+
+	int64_t now = OTSYS_TIME();
 
 	auto it = damageMap.find(attackerId);
 	if (it == damageMap.end()) {
 		CountBlock_t cb;
-		cb.ticks = OTSYS_TIME();
+		cb.ticks = now;
 		cb.total = damagePoints;
 		damageMap[attackerId] = cb;
 	} else {
 		it->second.total += damagePoints;
-		it->second.ticks = OTSYS_TIME();
+		it->second.ticks = now;
 	}
 
-	lastHitCreatureId = attackerId;
+	if (Player* attackerPlayer = g_game.getPlayerByID(attackerId)) {
+		// player hits always count as last hits
+		lastHitCreatureId = attackerId;
+	} else {
+		// pve hits only count if player hits expire
+		uint32_t inFightTicks = g_config.getNumber(ConfigManager::PZ_LOCKED);
+		if (lastHitCreatureId >= PLAYER_ID_MIN && lastHitCreatureId <= PLAYER_ID_MAX) {
+			// try to overwrite PvP hit
+			auto lastHitIterator = damageMap.find(lastHitCreatureId);
+			if (lastHitIterator == damageMap.end() || now - lastHitIterator->second.ticks > inFightTicks) {
+				// last hit from player was long time ago, overwrite by monster
+				lastHitCreatureId = attackerId;
+			}
+		} else {
+			// overwrite PvE hit
+			lastHitCreatureId = attackerId;
+		}
+	}
 }
 
 void Creature::onAddCondition(ConditionType_t type)

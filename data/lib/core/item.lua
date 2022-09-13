@@ -42,6 +42,10 @@ function Item:isHirelingLamp()
 	return self:getType():isHirelingLamp()
 end
 
+function Item:isRewardBag()
+	return self:getType():isRewardBag()
+end
+
 function Item:isTile()
 	return false
 end
@@ -538,7 +542,7 @@ do
 														
 				local identicalValue = true
 				local currentValue = -1
-				
+								
 				for combatId, boost in pairs(boostInfo) do
 					if boost > 0 then
 						boosts[#boosts + 1] = {element = getCombatName(2^(combatId-1)), percent = boost}
@@ -559,16 +563,27 @@ do
 						-- all elements identical value
 						-- display short info
 						boostResponse = string.format("damage and healing %+d%%", boosts[1].percent)
-
 					else
+						local healString
+						
 						-- incomplete elements list/different values
 						-- display full info
 						local boostValues = {}
 						for i = 1, #boosts do
-							boostValues[#boostValues + 1] = string.format("%s %+d%%", boosts[i].element, boosts[i].percent)
+							if boosts[i].element ~= "healing" then
+								boostValues[#boostValues + 1] = string.format("%s %+d%%", boosts[i].element, boosts[i].percent)
+							else
+								healString = string.format("healing power %+d%%", boosts[i].percent)
+							end
 						end
 						
-						boostResponse = string.format("damage ", table.concat(boostValues, ", "))
+						local boostResponseData = {}
+						if #boostValues > 0 then
+							boostResponseData[#boostResponseData + 1] = string.format("damage %s", table.concat(boostValues, ", "))
+						end
+						
+						boostResponseData[#boostResponseData + 1] = healString
+						boostResponse = table.concat(boostResponseData, ", ")
 					end
 														
 					descriptions[#descriptions + 1] = boostResponse
@@ -977,6 +992,16 @@ do
 				end				
 			else
 				response[#response + 1] = "\nNothing is written on it."
+			end
+		end
+		
+		-- show reward bag description if module installed
+		if RewardSystem and not isVirtual and itemType:getType() == ITEM_TYPE_REWARDBAG then
+			local creationTime = item:createdAt()
+			if creationTime ~= 0 then
+				local created = os.date("%d %b %Y %X", creationTime)
+				local expires = os.date("%d %b %Y", creationTime + configManager.getNumber(configKeys.REWARD_BAG_DURATION))
+				response[#response + 1] = string.format("\nIt was created on %s and will be available until %s.", created, expires)
 			end
 		end
 		

@@ -19,6 +19,8 @@ class MagicField;
 class Mailbox;
 class Player;
 class Podium;
+class RewardChest;
+class RewardBag;
 class Teleport;
 class TrashHolder;
 
@@ -96,6 +98,7 @@ enum AttrTypes_t {
 	ATTR_LOOTCONTAINER = 44, // quick loot marker
 	ATTR_IMBUEMENTS = 45, // applied imbuements
 	ATTR_HIRELINGDATA = 46, // hireling lamp data
+	ATTR_REWARDBAG = 47, // reward bag metadata
 };
 
 enum Attr_ReadValue {
@@ -648,6 +651,12 @@ class Item : virtual public Thing
 			return nullptr;
 		}
 		virtual const HirelingLamp* getHirelingLamp() const {
+			return nullptr;
+		}
+		virtual RewardBag* getRewardBag() {
+			return nullptr;
+		}
+		virtual const RewardBag* getRewardBag() const {
 			return nullptr;
 		}
 

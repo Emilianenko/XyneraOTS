@@ -27,6 +27,7 @@
 #include "outfit.h"
 #include "party.h"
 #include "podium.h"
+#include "rewardchest.h"
 #include "scheduler.h"
 #include "script.h"
 #include "server.h"
@@ -1042,7 +1043,6 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 			        && !Position::areInRange<1, 1, 0>(mapFromPos, walkPos)) {
 				//need to pickup the item first
 				Item* moveItem = nullptr;
-
 				ReturnValue ret = internalMoveItem(fromCylinder, player, INDEX_WHEREEVER, item, count, &moveItem, 0, player, nullptr, &fromPos, &toPos);
 				if (ret != RETURNVALUE_NOERROR) {
 					player->sendCancelMessage(ret);
@@ -1158,7 +1158,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 			if (retExchangeMaxCount != RETURNVALUE_NOERROR && maxExchangeQueryCount == 0) {
 				return retExchangeMaxCount;
 			}
-
+			
 			if (toCylinder->queryRemove(*toItem, toItem->getItemCount(), flags, actor) == RETURNVALUE_NOERROR) {
 				int32_t oldToItemIndex = toCylinder->getThingIndex(toItem);
 				toCylinder->removeThing(toItem, toItem->getItemCount());
@@ -1174,7 +1174,6 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 				}
 
 				ret = toCylinder->queryAdd(index, *item, count, flags);
-
 				if (actorPlayer && fromPos && toPos && !toItem->isRemoved()) {
 					g_events->eventPlayerOnItemMoved(actorPlayer, toItem, toItem->getItemCount(), *toPos, *fromPos, toCylinder, fromCylinder);
 				}
@@ -4692,10 +4691,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			message.primary.value = realHealthChange;
 			message.primary.color = TEXTCOLOR_PASTELRED;
 
-			if (target && attacker && target->getID() != attacker->getID()) {
-				target->addAssist(attacker->getID());
-			}
-
 			SpectatorVec spectators;
 			map.getSpectators(spectators, targetPos, false, true);
 			for (Creature* spectator : spectators) {
@@ -5542,6 +5537,29 @@ void Game::saveLatestLootContainerId()
 		Items::lastSavedLootContainerAutoId = lootContainerId;
 		Database& db = Database::getInstance();
 		db.executeQuery(fmt::format("INSERT INTO `server_config` (config, value) VALUES('loot_containers', '{:d}') ON DUPLICATE KEY UPDATE config = 'loot_containers', value = '{:d}'", lootContainerId, lootContainerId));
+	}
+}
+
+void Game::loadLatestRewardId()
+{
+	Database& db = Database::getInstance();
+
+	DBResult_ptr result = db.storeQuery(fmt::format("SELECT `value` FROM `server_config` WHERE `config` = {:s}", db.escapeString("reward_bags")));
+	if (!result) {
+		saveLatestRewardId();
+		return;
+	}
+
+	RewardBag::rewardAutoId = result->getNumber<uint32_t>("value");
+}
+
+void Game::saveLatestRewardId()
+{
+	uint32_t rewardId = RewardBag::rewardAutoId;
+	if (RewardBag::lastSavedRewardId != rewardId) {
+		RewardBag::lastSavedRewardId = rewardId;
+		Database& db = Database::getInstance();
+		db.executeQuery(fmt::format("INSERT INTO `server_config` (config, value) VALUES('reward_bags', '{:d}') ON DUPLICATE KEY UPDATE config = 'reward_bags', value = '{:d}'", rewardId, rewardId));
 	}
 }
 

@@ -397,7 +397,6 @@ class Creature : virtual public Thing
 		}
 
 		CreatureVector getKillers();
-		CreatureVector getSupporters();
 		void onDeath();
 		virtual uint64_t getGainedExperience(Creature* attacker) const;
 		void addDamagePoints(Creature* attacker, int32_t damagePoints);
@@ -479,15 +478,7 @@ class Creature : virtual public Thing
 		bool isPhantom() const {
 			return phantomMode;
 		}
-		void addAssist(uint32_t creatureId) {
-			assistMap[creatureId] = OTSYS_TIME();
-		}
-		void removeAssist(uint32_t creatureId) {
-			assistMap.erase(creatureId);
-		}
-		void resetAssists() {
-			assistMap.clear();
-		}
+
 		void resetDamageMap() {
 			damageMap.clear();
 		}
@@ -559,9 +550,6 @@ class Creature : virtual public Thing
 
 		using CountMap = std::map<uint32_t, CountBlock_t>;
 		CountMap damageMap;
-
-		using AssistMap = std::map<uint32_t, int64_t>;
-		AssistMap assistMap;
 
 		std::list<Creature*> summons;
 		CreatureEventList eventsList;

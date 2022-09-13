@@ -38,8 +38,8 @@ extern Weapons* g_weapons;
 
 MuteCountMap Player::muteCountMap;
 
-uint32_t Player::playerAutoID = 0x10000000;
-uint32_t Player::playerIDLimit = 0x20000000;
+uint32_t Player::playerAutoID = PLAYER_ID_MIN;
+uint32_t Player::playerIDLimit = PLAYER_ID_MAX;
 
 Player::Player(ProtocolGame_ptr p) :
 	Creature(), lastPing(OTSYS_TIME()), lastPong(lastPing), client(std::move(p)), inbox(new Inbox(ITEM_INBOX)), storeInbox(new StoreInbox(ITEM_STORE_INBOX))
@@ -655,6 +655,7 @@ void Player::closeContainer(uint8_t cid)
 
 	OpenContainer openContainer = it->second;
 	Container* container = openContainer.container;
+
 	openContainers.erase(it);
 
 	if (container && container->getID() == ITEM_BROWSEFIELD) {
@@ -678,6 +679,34 @@ Container* Player::getContainerByID(uint8_t cid)
 		return nullptr;
 	}
 	return it->second.container;
+}
+
+RewardBag* Player::getRewardBagById(uint32_t rewardId)
+{
+	for (const auto& it : openContainers) {
+		if (Container* container = it.second.container) {
+			if (RewardBag* openedRewardBag = container->getRewardBag()) {
+				if (rewardId == openedRewardBag->getRewardId()) {
+					return openedRewardBag;
+				}
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+RewardBag* Player::getRewardById(uint32_t rewardId)
+{
+	for (Item* item : getRewardChest().getItems()) {
+		if (RewardBag* rewardBag = item->getRewardBag()) {
+			if (rewardId == rewardBag->getRewardId()) {
+				return rewardBag;
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 int8_t Player::getContainerID(const Container* container) const
@@ -942,9 +971,23 @@ DepotLocker& Player::getDepotLocker()
 {
 	if (!depotLocker) {
 		depotLocker = std::make_shared<DepotLocker>(ITEM_LOCKER);
+
+		// items appear in reverse order
+		// first added = last in container
+
+		// exaltation forge
+		depotLocker->internalAddThing(Item::CreateItem(ITEM_FORGE_SMALL));
+
+		// reward chest
+		depotLocker->internalAddThing(Item::CreateItem(ITEM_REWARD_CHEST));
+
+		// market
 		depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
+
+		// inbox
 		depotLocker->internalAddThing(inbox);
 
+		// depot chest
 		DepotChest* depotChest = new DepotChest(ITEM_DEPOT, false);
 		if (depotChest) {
 			// adding in reverse to align them from first to last
@@ -958,6 +1001,18 @@ DepotLocker& Player::getDepotLocker()
 		}
 	}
 	return *depotLocker;
+}
+
+RewardChest& Player::getRewardChest()
+{
+	if (!rewardChest) {
+		rewardChest = std::make_shared<RewardChest>(ITEM_REWARD_CHEST);
+	}
+
+	if (rewardChest->getSpectatorId() == 0) {
+		rewardChest->setSpectatorId(getID());
+	}
+	return *rewardChest;
 }
 
 void Player::sendCancelMessage(ReturnValue message) const
@@ -2666,6 +2721,21 @@ void Player::autoCloseContainers(const Container* container)
 			if (tmpContainer->isRemoved() || tmpContainer == container) {
 				closeList.push_back(it.first);
 				break;
+			} else if (const RewardBag* rewardBagToClose = container->getRewardBag()) {
+				if (const RewardBag* openedRewardBag = tmpContainer->getRewardBag()) {
+					if (rewardBagToClose->getRewardId() == openedRewardBag->getRewardId()) {
+						closeList.push_back(it.first);
+						break;
+					}
+				}
+			} else if (const RewardChest* rewardChestToClose = container->getRewardChest()) {
+				if (const RewardChest* openedRewardChest = tmpContainer->getRewardChest()) {
+					// normally this should not be happening
+					// however, if the chest gets removed by gm, this should be handled
+					// preemptively close any reward chest the player has open
+					closeList.push_back(it.first);
+					break;
+				}
 			}
 
 			tmpContainer = dynamic_cast<Container*>(tmpContainer->getParent());

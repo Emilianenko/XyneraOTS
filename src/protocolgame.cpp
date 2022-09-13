@@ -3364,9 +3364,8 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 	}
 
 	// send player stats
-	// moved to onCreatureAppear
-	//sendStats(); // hp, cap, level, xp rate, etc.
-	//sendSkills(); // skills and special skills
+	sendStats(); // hp, cap, level, xp rate, etc.
+	sendSkills(); // skills and special skills
 
 	// send active conditions
 	player->sendIcons();

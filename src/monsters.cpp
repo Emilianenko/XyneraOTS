@@ -1435,6 +1435,10 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 	if ((attr = node.attribute("text"))) {
 		lootBlock.text = attr.as_string();
 	}
+
+	if ((attr = node.attribute("top"))) {
+		lootBlock.top = pugi::cast<int32_t>(attr.value());
+	}
 	return true;
 }
 

@@ -551,6 +551,41 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 		}
 	}
 
+	//load reward chest
+	itemMap.clear();
+
+	if ((result = db.storeQuery(fmt::format("SELECT `player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes` FROM `player_rewardchest` WHERE `player_id` = {:d} ORDER BY `sid` DESC", player->getGUID())))) {
+		loadItems(itemMap, result);
+
+		for (ItemMap::const_reverse_iterator it = itemMap.rbegin(), end = itemMap.rend(); it != end; ++it) {
+			const std::pair<Item*, int32_t>& pair = it->second;
+			Item* item = pair.first;
+			if (RewardBag* rewardBag = item->getRewardBag()) {
+				if (rewardBag->isExpired()) {
+					continue;
+				}
+			}
+
+			int32_t pid = pair.second;
+
+			if (pid >= 0 && pid < 100) {
+				RewardChest* rewardChest = &player->getRewardChest();
+				rewardChest->internalAddThing(item);
+			} else {
+				ItemMap::const_iterator it2 = itemMap.find(pid);
+
+				if (it2 == itemMap.end()) {
+					continue;
+				}
+
+				Container* container = it2->second.first->getContainer();
+				if (container) {
+					container->internalAddThing(item);
+				}
+			}
+		}
+	}
+
 	//load storage map
 	if ((result = db.storeQuery(fmt::format("SELECT `key`, `value` FROM `player_storage` WHERE `player_id` = {:d}", player->getGUID())))) {
 		do {
@@ -664,6 +699,7 @@ bool IOLoginData::saveItems(const Player* player, const ItemBlockList& itemList,
 bool IOLoginData::savePlayer(Player* player)
 {
 	g_game.saveLatestLootContainerId();
+	g_game.saveLatestRewardId();
 
 	if (player->getHealth() <= 0) {
 		player->changeHealth(1);
@@ -858,6 +894,23 @@ bool IOLoginData::savePlayer(Player* player)
 	}
 
 	if (!saveItems(player, itemList, inboxQuery, propWriteStream)) {
+		return false;
+	}
+
+	//save reward chest items
+	if (!db.executeQuery(fmt::format("DELETE FROM `player_rewardchest` WHERE `player_id` = {:d}", player->getGUID()))) {
+		return false;
+	}
+
+	DBInsert rewardChestQuery("INSERT INTO `player_rewardchest` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
+	itemList.clear();
+
+	RewardChest* rewardChest = &player->getRewardChest();
+	for (Item* item : rewardChest->getItemList()) {
+		itemList.emplace_back(0, item);
+	}
+
+	if (!saveItems(player, itemList, rewardChestQuery, propWriteStream)) {
 		return false;
 	}
 
