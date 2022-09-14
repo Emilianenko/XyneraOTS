@@ -63,7 +63,7 @@ function Container:createLootItem(item, playerRank, contribution)
 		dropChance = dropChance * lootRate
 
 		if contribution then
-			dropChance = dropChanceFormula(chance, contribution)
+			dropChance = dropChanceFormula(item.chance, contribution)
 				
 			if stackable and contribution < 0.03 then
 				maxCountFactor = 0.3 + 7 * contribution
