@@ -5,12 +5,12 @@ monster.name = "Anomaly"
 monster.description = "an anomaly"
 monster.experience = 50000
 monster.outfit = {
-	lookType = 0,
-	lookHead = 0,
-	lookBody = 0,
-	lookLegs = 0,
-	lookFeet = 0,
-	lookAddons = 0,
+	lookType = 876,
+	lookHead = 38,
+	lookBody = 79,
+	lookLegs = 76,
+	lookFeet = 79,
+	lookAddons = 1,
 	lookMount = 0
 }
 
@@ -18,13 +18,13 @@ monster.health = 290000
 monster.maxHealth = 290000
 monster.runHealth = 0
 monster.race = "blood"
-monster.corpse = 0
+monster.corpse = 26220
 monster.speed = 0
 monster.summonCost = 0
 
 monster.changeTarget = {
 	interval = 2000,
-	chance = 0
+	chance = 10
 }
 
 monster.flags = {
