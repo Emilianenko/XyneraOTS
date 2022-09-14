@@ -56,23 +56,24 @@ function Container:createLootItem(item, playerRank, contribution)
 	local itemCount = 0
 	local itemType = ItemType(item.itemId)
 	local stackable = itemType:isStackable()
+	local maxCountFactor = 1
 	
 	local dropChance = item.chance
 	if dropChance ~= MAX_LOOTCHANCE then
 		dropChance = dropChance * lootRate
 
 		if contribution then
-			if stackable then
-				dropChance = dropChance
-			else
-				dropChance = dropChanceFormula(chance, contribution)
-			end
+			dropChance = dropChanceFormula(chance, contribution)
+				
+			if stackable and contribution < 0.03 then
+				maxCountFactor = 0.3 + 7 * contribution
+			end				
 		end
 	end
 	
 	if math.random(0, MAX_LOOTCHANCE) < (dropChance) and (item.top == 0 or playerRank and playerRank <= item.top) then
 		if stackable then
-			itemCount = item.maxCount
+			itemCount = math.floor(item.maxCount * maxCountFactor)
 		else
 			itemCount = 1
 		end
