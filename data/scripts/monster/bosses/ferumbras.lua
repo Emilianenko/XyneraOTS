@@ -2,10 +2,10 @@ local mType = Game.createMonsterType("Ferumbras")
 local monster = {}
 
 monster.name = "Ferumbras"
-monster.description = ""
+monster.description = "Ferumbras"
 monster.experience = 35000
 monster.outfit = {
-	lookType = 0,
+	lookType = 229,
 	lookHead = 0,
 	lookBody = 0,
 	lookLegs = 0,
@@ -18,7 +18,7 @@ monster.health = 90000
 monster.maxHealth = 90000
 monster.runHealth = 0
 monster.race = "blood"
-monster.corpse = 5931
+monster.corpse = 6078
 monster.speed = 0
 monster.summonCost = 0
 
