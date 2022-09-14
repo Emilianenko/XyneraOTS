@@ -31,7 +31,7 @@ function Container:getColorContentDescription(baseColor)
 	return baseColor and string.format(style, baseColor, "nothing") or "nothing"
 end
 
-local function dropChanceFormula(chance, contribution)
+local function dropChanceFormula(dropChance, contribution)
 	if contribution < 1 then
 		return dropChance
 	end
