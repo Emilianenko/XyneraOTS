@@ -227,7 +227,7 @@
 	<monster name="Fatality" file="monsters/fatality.xml" />
 	<monster name="Fernfang" file="monsters/fernfang.xml" />
 	<monster name="Ferumbras Mortal Shell" file="monsters/ferumbras_mortal_shell.xml" />
-	<monster name="Ferumbras" file="monsters/ferumbras.xml" />
+	<!-- <monster name="Ferumbras" file="monsters/ferumbras.xml" /> -->
 	<monster name="Feverish Citizen" file="monsters/feverish_citizen.xml" />
 	<monster name="Feversleep" file="monsters/feversleep.xml" />
 	<monster name="Filth Toad" file="monsters/filth_toad.xml" />
