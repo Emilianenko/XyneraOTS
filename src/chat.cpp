@@ -539,7 +539,11 @@ void Chat::storeUserChannels(Player& player, std::vector<uint32_t>& channelList,
 {
 	for (auto& it : normalChannels) {
 		if (it.second.hasUser(player)) {
-			channelList.push_back(it.second.getUniqueId());
+			if (!isFastRelog) {
+				channelList.push_back(it.second.getUniqueId());
+			} else {
+				g_chat->removeUserFromChannel(player, it.second.getId());
+			}
 		}
 	}
 
