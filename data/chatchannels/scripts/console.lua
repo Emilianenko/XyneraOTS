@@ -5,7 +5,7 @@ end
 local green = {CONSOLEMESSAGE_TYPE_STARTUP, CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL}
 local yellow = {CONSOLEMESSAGE_TYPE_WARNING}
 local red = {CONSOLEMESSAGE_TYPE_ERROR, CONSOLEMESSAGE_TYPE_BROADCAST}
-
+local pattern = string.format("%%%s(.-)%%m", string.char(27))
 local function showConsoleHistory(playerId)
 	local player = Player(playerId)
 	if player then
@@ -21,11 +21,12 @@ local function showConsoleHistory(playerId)
 				channelColor = TALKTYPE_CHANNEL_R1
 				say = true
 			end
-		
+
+			local msgToSend = messageData.message:gsub(pattern, "")
 			if say then
-				player:channelSay(nil, channelColor, messageData.message, CHANNEL_CONSOLE)
+				player:channelSay(nil, channelColor, msgToSend, CHANNEL_CONSOLE)
 			else
-				player:sendTextMessage(channelColor, messageData.message, CHANNEL_CONSOLE)
+				player:sendTextMessage(channelColor, msgToSend, CHANNEL_CONSOLE)
 			end
 		end
 	end

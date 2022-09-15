@@ -2608,6 +2608,7 @@ void Player::restoreChannelIDs()
 {
 	if (client) {
 		g_chat->restoreUserChannels(*this, client->savedChannels);
+		client->savedChannels.clear();
 	}
 }
 
