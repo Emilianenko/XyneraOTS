@@ -66,13 +66,13 @@ void PrivateChatChannel::closeChannel() const
 	}
 }
 
-bool ChatChannel::addUser(Player& player)
+bool ChatChannel::addUser(Player& player, bool isReload)
 {
 	if (users.find(player.getID()) != users.end()) {
 		return false;
 	}
 
-	if (!executeOnJoinEvent(player)) {
+	if (!executeOnJoinEvent(player, isReload)) {
 		return false;
 	}
 
@@ -126,6 +126,13 @@ void ChatChannel::sendToAll(const std::string& message, MessageClasses type) con
 
 void ChatChannel::sendChannelSystemMessage(const std::string& message, MessageClasses type) const
 {
+	if (type == TALKTYPE_CHANNEL_Y || type == TALKTYPE_CHANNEL_O || type == TALKTYPE_CHANNEL_R1) {
+		for (const auto& it : users) {
+			it.second->sendToChannel(nullptr, type, message, id);
+		}
+		return;
+	}
+
 	TextMessage textMsg = TextMessage(type, message);
 	textMsg.channelId = id;
 
@@ -146,7 +153,7 @@ const std::unordered_map<std::string, MessageClasses> chatCommands = {
 };
 }
 
-bool ChatChannel::talk(const Player & fromPlayer, MessageClasses type, const std::string & text)
+bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std::string& text)
 {
 	if (users.find(fromPlayer.getID()) == users.end()) {
 		return false;
@@ -217,13 +224,13 @@ bool ChatChannel::executeCanJoinEvent(const Player& player)
 	return scriptInterface->callFunction(1);
 }
 
-bool ChatChannel::executeOnJoinEvent(const Player& player)
+bool ChatChannel::executeOnJoinEvent(const Player& player, bool isReload)
 {
 	if (onJoinEvent == -1) {
 		return true;
 	}
 
-	//onJoin(player)
+	//onJoin(player, isReload)
 	LuaScriptInterface* scriptInterface = g_chat->getScriptInterface();
 	if (!scriptInterface->reserveScriptEnv()) {
 		reportOverflow();
@@ -239,7 +246,9 @@ bool ChatChannel::executeOnJoinEvent(const Player& player)
 	LuaScriptInterface::pushUserdata(L, &player);
 	LuaScriptInterface::setMetatable(L, -1, "Player");
 
-	return scriptInterface->callFunction(1);
+	lua_pushboolean(L, isReload);
+
+	return scriptInterface->callFunction(2);
 }
 
 bool ChatChannel::executeOnLeaveEvent(const Player& player)
@@ -321,7 +330,7 @@ Chat::Chat():
 	scriptInterface.initState();
 }
 
-bool Chat::load()
+bool Chat::load(bool isReload)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/chatchannels/chatchannels.xml");
@@ -355,7 +364,7 @@ bool Chat::load()
 
 			UsersMap tempUserMap = std::move(channel.users);
 			for (const auto& pair : tempUserMap) {
-				channel.addUser(*pair.second);
+				channel.addUser(*pair.second, isReload);
 			}
 			continue;
 		}
@@ -549,13 +558,13 @@ void Chat::restoreUserChannels(Player& player, std::vector<uint32_t>& channelLis
 {
 	for (auto& it : normalChannels) {
 		if (std::find(channelList.begin(), channelList.end(), it.second.getUniqueId()) != channelList.end()) {
-			it.second.addUser(player);
+			it.second.addUser(player, true);
 		}
 	}
 
 	for (auto& it : privateChannels) {
 		if (std::find(channelList.begin(), channelList.end(), it.second.getUniqueId()) != channelList.end()) {
-			it.second.addUser(player);
+			it.second.addUser(player, true);
 		}
 	}
 
@@ -563,7 +572,7 @@ void Chat::restoreUserChannels(Player& player, std::vector<uint32_t>& channelLis
 	if (player.getGuild()) {
 		ChatChannel* channel = getChannel(player, CHANNEL_GUILD);
 		if (channel) {
-			channel->addUser(player);
+			channel->addUser(player, true);
 		} else {
 			player.sendClosePrivate(CHANNEL_GUILD);
 			player.sendClosePrivate(CHANNEL_GUILD_LEADER);
@@ -574,7 +583,7 @@ void Chat::restoreUserChannels(Player& player, std::vector<uint32_t>& channelLis
 	if (player.getParty()) {
 		ChatChannel* channel = getChannel(player, CHANNEL_PARTY);
 		if (channel) {
-			channel->addUser(player);
+			channel->addUser(player, true);
 		} else {
 			player.sendClosePrivate(CHANNEL_PARTY);
 		}

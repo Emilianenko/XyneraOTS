@@ -737,6 +737,22 @@ int LuaScriptInterface::luaGameGetLastConsoleMessage(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaGameGetConsoleHistory(lua_State* L)
+{
+	// Game.getConsoleHistory()
+	console::Cache history = console::getHistory();
+	lua_createtable(L, history.size(), 0);
+	int index = 0;
+	for (const auto& consoleEntry : history) {
+		lua_createtable(L, 0, 2);
+		setField(L, "message", consoleEntry.first);
+		setField(L, "type", consoleEntry.second);
+		lua_rawseti(L, -2, ++index);
+	}
+
+	return 1;
+}
+
 int LuaScriptInterface::luaGamePlayerHirelingFeatures(lua_State* L)
 {
 	// get: Game.playerHirelingFeatures(playerGuid)
@@ -831,5 +847,16 @@ int LuaScriptInterface::luaGameGetNextRewardId(lua_State* L)
 {
 	// Game.getNextRewardId()
 	lua_pushnumber(L, RewardBag::generateRewardId());
+	return 1;
+}
+
+int LuaScriptInterface::luaGameIsDevMode(lua_State* L)
+{
+	// Game.isDevMode()
+#ifdef DEV_MODE
+	lua_pushboolean(L, true);
+#else
+	lua_pushboolean(L, false);
+#endif
 	return 1;
 }

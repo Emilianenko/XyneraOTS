@@ -109,7 +109,7 @@ void sighupHandler()
 	g_events->load();
 	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded events.");
 
-	g_chat->load();
+	g_chat->load(true);
 	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded chatchannels.");
 
 	g_luaEnvironment.loadFile("data/global.lua");

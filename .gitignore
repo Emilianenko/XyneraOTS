@@ -183,6 +183,7 @@ pip-log.txt
 #############
 ## TFS / OT
 #############
+tmp.txt
 config.lua
 /data/world/*
 vscode_functions.lua

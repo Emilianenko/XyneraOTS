@@ -1680,6 +1680,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(GAME_STATE_CLOSING)
 	registerEnum(GAME_STATE_MAINTAIN)
 
+	registerEnum(CHANNEL_CONSOLE)
+
 	registerEnum(MESSAGE_STATUS_CONSOLE_BLUE)
 	registerEnum(MESSAGE_CHANNEL_MANAGEMENT)
 	registerEnum(MESSAGE_STATUS_DEFAULT)
@@ -2626,11 +2628,14 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Game", "sendConsoleMessage", LuaScriptInterface::luaGameSendConsoleMessage);
 	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
+	registerMethod("Game", "getConsoleHistory", LuaScriptInterface::luaGameGetConsoleHistory);
 
 	registerMethod("Game", "playerHirelingFeatures", LuaScriptInterface::luaGamePlayerHirelingFeatures);
 
 	registerMethod("Game", "addRewardByPlayerId", LuaScriptInterface::luaGameAddRewardByPlayerId);
 	registerMethod("Game", "getNextRewardId", LuaScriptInterface::luaGameGetNextRewardId);
+
+	registerMethod("Game", "isDevMode", LuaScriptInterface::luaGameIsDevMode);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);

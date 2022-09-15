@@ -4,12 +4,44 @@
 #include "otpch.h"
 
 #include "consolemanager.h"
+#include "chat.h"
 
 #include <boost/algorithm/string/replace.hpp>
 
-namespace console {
+extern Chat* g_chat;
 
-std::string lastMessage;
+namespace console {
+void appendHistory(const std::string& message, ConsoleMessageType messageType) {
+	for (uint8_t i = 0; i < CONSOLE_CACHE_SIZE -1; ++i) {
+		consoleHistory[i] = consoleHistory[i+1];
+	}
+	consoleHistory[CONSOLE_CACHE_SIZE - 1] = std::make_pair(message, messageType);
+
+#ifdef DEV_MODE
+	if (g_chat) {
+		if (ChatChannel* channel = g_chat->getChannelById(CHANNEL_CONSOLE)) {
+			MessageClasses channelColor = MESSAGE_PARTY; // white
+			switch (messageType) {
+				case CONSOLEMESSAGE_TYPE_STARTUP:
+				case CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL:
+					channelColor = MESSAGE_CHANNEL_MANAGEMENT; // green
+					break;
+				case CONSOLEMESSAGE_TYPE_WARNING:
+					channelColor = TALKTYPE_CHANNEL_Y; // yellow
+					break;
+				case CONSOLEMESSAGE_TYPE_ERROR:
+				case CONSOLEMESSAGE_TYPE_BROADCAST:
+					channelColor = TALKTYPE_CHANNEL_R1; // red
+					break;
+				//case CONSOLEMESSAGE_TYPE_INFO:
+				default:
+					break;
+			}
+			channel->sendChannelSystemMessage(message, channelColor);
+		}
+	}
+#endif
+}
 
 #ifdef SHOW_CONSOLE_TIMESTAMPS
 std::string currentConsoleStamp() {
@@ -54,7 +86,20 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 			break;
 	}
 
+#ifdef SHOW_CONSOLE_TIMESTAMPS
+	std::string timePrefix = currentConsoleStamp();
+	msgToCache << fmt::format("[{:s}] ", timePrefix);
+#endif
+
+#ifdef SHOW_CONSOLE_PREFIXES
 	msgToCache << "[" << (!location.empty() ? fmt::format("{:s} - {:s}", prefix, location) : prefix) << "]: " << message;
+#else
+	if (!location.empty()) {
+		msgToCache << "[" << fmt::format("{:s} - {:s}", prefix, location) << "]: ";
+	}
+
+	msgToCache << message;
+#endif
 
 	size_t realMsgLength = prefix.size() + message.size() + location.size();
 
@@ -76,7 +121,6 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 #endif
 
 #ifdef SHOW_CONSOLE_TIMESTAMPS
-	std::string timePrefix = currentConsoleStamp();
 	realMsgLength += (timePrefix.size() + 3);
 	timePrefix = setColor(color, timePrefix);
 	prefix = fmt::format("[{:s}] {:s}", timePrefix, prefix);
@@ -108,7 +152,7 @@ void print(ConsoleMessageType messageType, const std::string& message, bool newL
 		outStr << std::flush;
 	}
 
-	lastMessage = msgToCache.str();
+	appendHistory(msgToCache.str(), messageType);
 	std::cout << outStr.str() << std::flush;
 }
 
@@ -239,7 +283,12 @@ std::string setColor(Color, const std::string& text) { return text; }
 
 const std::string& getLastMessage()
 {
-	return lastMessage;
+	return consoleHistory[CONSOLE_CACHE_SIZE-1].first;
+}
+
+console::Cache getHistory()
+{
+	return consoleHistory;
 }
 
 } // namespace console

@@ -31,7 +31,12 @@ enum ConsoleLoadingResult {
 
 namespace console {
 
+const uint8_t CONSOLE_CACHE_SIZE = 20;
+
+typedef std::array<std::pair<std::string, ConsoleMessageType>, CONSOLE_CACHE_SIZE> Cache;
 typedef fmt::color Color;
+
+static console::Cache consoleHistory;
 
 // stylesheet
 static constexpr Color
@@ -114,6 +119,9 @@ std::string setColor(Color color, const std::string& text);
 
 // returns last message sent
 const std::string& getLastMessage();
+
+// returns console history
+console::Cache getHistory();
 
 } // namespace console
 

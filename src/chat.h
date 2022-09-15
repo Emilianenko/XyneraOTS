@@ -24,7 +24,7 @@ class ChatChannel
 
 		virtual ~ChatChannel() = default;
 
-		bool addUser(Player& player);
+		bool addUser(Player& player, bool isReload = false);
 		bool removeUser(const Player& player);
 		bool hasUser(const Player& player);
 
@@ -55,7 +55,7 @@ class ChatChannel
 
 		bool isPublicChannel() const { return publicChannel; }
 
-		bool executeOnJoinEvent(const Player& player);
+		bool executeOnJoinEvent(const Player& player, bool isReload = false);
 		bool executeCanJoinEvent(const Player& player);
 		bool executeOnLeaveEvent(const Player& player);
 		bool executeOnSpeakEvent(const Player& player, MessageClasses& type, const std::string& message);
@@ -122,7 +122,7 @@ class Chat
 		Chat(const Chat&) = delete;
 		Chat& operator=(const Chat&) = delete;
 
-		bool load();
+		bool load(bool isReload = false);
 
 		ChatChannel* createChannel(const Player& player, uint16_t channelId);
 		bool deleteChannel(const Player& player, uint16_t channelId);

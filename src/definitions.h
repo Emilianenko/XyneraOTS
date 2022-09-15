@@ -22,6 +22,9 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 // enable logging execution times
 #define STATS_ENABLED
 
+// enable lua and console channels
+#define DEV_MODE
+
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
 #endif

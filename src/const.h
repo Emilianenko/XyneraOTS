@@ -855,6 +855,8 @@ static constexpr int32_t CHANNEL_PARTY = 0x01;
 static constexpr int32_t CHANNEL_GUILD_LEADER = 0x2710; // 10000
 static constexpr int32_t CHANNEL_PRIVATE = 0xFFFF;
 
+static constexpr uint16_t CHANNEL_CONSOLE = 32;
+
 // Reserved account storage key ranges;
 static constexpr int32_t ASTRG_RESERVED_RANGE_START = 1000000;
 static constexpr int32_t ASTRG_RESERVED_RANGE_SIZE = ACCOUNTRESOURCE_LAST + 1;

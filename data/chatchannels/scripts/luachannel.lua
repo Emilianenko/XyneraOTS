@@ -1,4 +1,4 @@
-local CHAT_ID = 32
+local CHAT_ID = 31
 
 function Player:sendChannelConsoleMessage(name, msg, type, chatId)
 	m = NetworkMessage()
@@ -47,7 +47,7 @@ end
 ]]
 
 function canJoin(player)
-	return player:getAccountType() >= ACCOUNT_TYPE_GOD
+	return Game.isDevMode() and player:getAccountType() >= ACCOUNT_TYPE_GOD
 end
 
 local function InteractiveConsole(env)
