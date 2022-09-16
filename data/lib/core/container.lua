@@ -46,7 +46,6 @@ local function dropChanceFormula(dropChance, contribution)
 	return math.ceil(dropChance * (0.3 * math.log(contribution * 100 - 1)^3 + 10.9) * 0.01)
 end
 
-
 local lootRate = configManager.getNumber(configKeys.RATE_LOOT)
 function Container:createLootItem(item, playerRank, contribution)
 	if self:getEmptySlots() == 0 then
@@ -64,7 +63,6 @@ function Container:createLootItem(item, playerRank, contribution)
 
 		if contribution then
 			dropChance = dropChanceFormula(item.chance, contribution)
-				
 			if stackable and contribution < 0.03 then
 				maxCountFactor = 0.3 + 7 * contribution
 			end				

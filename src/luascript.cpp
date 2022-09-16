@@ -1225,6 +1225,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONSOLEMESSAGE_TYPE_WARNING)
 	registerEnum(CONSOLEMESSAGE_TYPE_ERROR)
 	registerEnum(CONSOLEMESSAGE_TYPE_BROADCAST)
+	registerEnum(CONSOLEMESSAGE_TYPE_RESPONSE)
 
 	registerEnum(DIRECTION_NORTH)
 	registerEnum(DIRECTION_EAST)
@@ -2629,6 +2630,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "sendConsoleMessage", LuaScriptInterface::luaGameSendConsoleMessage);
 	registerMethod("Game", "getLastConsoleMessage", LuaScriptInterface::luaGameGetLastConsoleMessage);
 	registerMethod("Game", "getConsoleHistory", LuaScriptInterface::luaGameGetConsoleHistory);
+	registerMethod("Game", "appendConsoleHistory", LuaScriptInterface::luaGameAppendConsoleHistory);
 
 	registerMethod("Game", "playerHirelingFeatures", LuaScriptInterface::luaGamePlayerHirelingFeatures);
 

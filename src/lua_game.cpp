@@ -753,6 +753,22 @@ int LuaScriptInterface::luaGameGetConsoleHistory(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaGameAppendConsoleHistory(lua_State* L)
+{
+	// Game.appendConsoleHistory(type, text, send)
+	ConsoleMessageType msgType = getNumber<ConsoleMessageType>(L, 1);
+	const std::string& text = getString(L, 2);
+
+	if (msgType < CONSOLEMESSAGE_TYPE_LAST) {
+		console::appendHistory(text, msgType, getBoolean(L, 3, false));
+		lua_pushboolean(L, true);
+	} else {
+		lua_pushboolean(L, false);
+	}
+
+	return 1;
+}
+
 int LuaScriptInterface::luaGamePlayerHirelingFeatures(lua_State* L)
 {
 	// get: Game.playerHirelingFeatures(playerGuid)

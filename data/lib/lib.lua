@@ -4,6 +4,11 @@ if not PRINT_PATCHED then
 	legacyPrint = print
 	print = function(...)
 		local ret = legacyPrint(...)
+		if Game.isDevMode() then
+			local msg = table.concat({...}, "\t")
+			Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_RESPONSE, msg, false)
+			sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_O, msg)
+		end
 		refreshConsole()
 		return ret
 	end
@@ -11,6 +16,11 @@ if not PRINT_PATCHED then
 	legacyIoWrite = io.write
 	io.write = function(...)
 		local ret = legacyIoWrite(...)
+		if Game.isDevMode() then
+			local msg = table.concat({...}, "\t")
+			Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_RESPONSE, msg, false)
+			sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_O, msg)
+		end
 		refreshConsole()
 		return ret
 	end

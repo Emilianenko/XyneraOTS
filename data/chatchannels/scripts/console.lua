@@ -4,6 +4,7 @@ end
 
 local green = {CONSOLEMESSAGE_TYPE_STARTUP, CONSOLEMESSAGE_TYPE_STARTUP_SPECIAL}
 local yellow = {CONSOLEMESSAGE_TYPE_WARNING}
+local orange = {CONSOLEMESSAGE_TYPE_RESPONSE}
 local red = {CONSOLEMESSAGE_TYPE_ERROR, CONSOLEMESSAGE_TYPE_BROADCAST}
 local pattern = string.format("%%%s(.-)%%m", string.char(27))
 local function showConsoleHistory(playerId)
@@ -16,6 +17,9 @@ local function showConsoleHistory(playerId)
 				channelColor = MESSAGE_CHANNEL_MANAGEMENT
 			elseif table.contains(yellow, messageData.type) then
 				channelColor = TALKTYPE_CHANNEL_Y
+				say = true
+			elseif table.contains(orange, messageData.type) then
+				channelColor = TALKTYPE_CHANNEL_O
 				say = true
 			elseif table.contains(red, messageData.type) then
 				channelColor = TALKTYPE_CHANNEL_R1
@@ -44,9 +48,11 @@ local function executeCommand(message)
 	local messageCount = 0
 	for line in io.lines("tmp.txt") do
 		if messageCount < 100 then
+			Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_RESPONSE, line, false)
 			sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_O, line)
 			messageCount = messageCount + 1
 		else
+			Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_ERROR, line, false)
 			sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_R1, "RESULT LONGER THAN 100 LINES!")
 			return
 		end
@@ -62,7 +68,7 @@ function onSpeak(player, type, message)
 	local guid = player:getGuid()
 	local ip = Game.convertIpToString(player:getIp())
 	local logEntry = string.format("%s (ID: %d | %s): %s\n", name, guid, ip, message)
-	
+	Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_WARNING, logEntry, false)
 	sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_Y, logEntry)
 	local f = io.open("data/logs/console_channel.txt", "a+")
 	f:write(logEntry)

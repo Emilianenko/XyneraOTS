@@ -18,6 +18,7 @@ enum ConsoleMessageType : uint16_t {
 	CONSOLEMESSAGE_TYPE_WARNING,
 	CONSOLEMESSAGE_TYPE_ERROR,
 	CONSOLEMESSAGE_TYPE_BROADCAST,
+	CONSOLEMESSAGE_TYPE_RESPONSE,
 
 	CONSOLEMESSAGE_TYPE_LAST
 };
@@ -122,6 +123,9 @@ const std::string& getLastMessage();
 
 // returns console history
 console::Cache getHistory();
+
+// adds a message to console history
+void appendHistory(const std::string& message, ConsoleMessageType messageType, bool send = false);
 
 } // namespace console
 

@@ -76,7 +76,8 @@ local function InteractiveConsole(env)
 			for _, v in ipairs({...}) do
 				table.insert(r, tostring(v))
 			end
-			local s = table.concat(r, string.rep(' ', 4))
+			local s = table.concat(r, "\t")
+			print(...)
 			return out(#s > 0 and s or 'nil')
 		end		
 

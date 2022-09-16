@@ -11,14 +11,14 @@
 extern Chat* g_chat;
 
 namespace console {
-void appendHistory(const std::string& message, ConsoleMessageType messageType) {
+void appendHistory(const std::string& message, ConsoleMessageType messageType, bool send) {
 	for (uint8_t i = 0; i < CONSOLE_CACHE_SIZE -1; ++i) {
 		consoleHistory[i] = consoleHistory[i+1];
 	}
 	consoleHistory[CONSOLE_CACHE_SIZE - 1] = std::make_pair(message, messageType);
 
 #ifdef DEV_MODE
-	if (g_chat) {
+	if (send && g_chat) {
 		if (ChatChannel* channel = g_chat->getChannelById(CHANNEL_CONSOLE)) {
 			MessageClasses channelColor = MESSAGE_PARTY; // white
 			switch (messageType) {

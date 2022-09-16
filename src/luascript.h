@@ -589,6 +589,7 @@ class LuaScriptInterface
 		static int luaGameSendConsoleMessage(lua_State* L);
 		static int luaGameGetLastConsoleMessage(lua_State* L);
 		static int luaGameGetConsoleHistory(lua_State* L);
+		static int luaGameAppendConsoleHistory(lua_State* L);
 
 		static int luaGamePlayerHirelingFeatures(lua_State* L);
 
