@@ -31,19 +31,12 @@ function Container:getColorContentDescription(baseColor)
 	return baseColor and string.format(style, baseColor, "nothing") or "nothing"
 end
 
-local function dropChanceFormula(dropChance, contribution)
-	if contribution < 1 then
-		return dropChance
-	end
+local function dropChanceFormula(contribution)
+	-- escape log(0) situation
+	contribution = math.max(contribution, 0.001)
 	
-	-- 0-0.99% - x1
-	-- 1% - x1.1
-	-- 10% - x1.14
-	-- 30% - x1.22
-	-- 50% - x1.28
-	-- 75% - x1.34
-	-- 100% - x1.4
-	return math.ceil(dropChance * (0.3 * math.log(contribution * 100 - 1)^3 + 10.9) * 0.01)
+	-- apply formula
+	return math.max(0, 1 + 0.4 + 0.27 * math.log(contribution))
 end
 
 local lootRate = configManager.getNumber(configKeys.RATE_LOOT)
@@ -55,23 +48,26 @@ function Container:createLootItem(item, playerRank, contribution)
 	local itemCount = 0
 	local itemType = ItemType(item.itemId)
 	local stackable = itemType:isStackable()
-	local maxCountFactor = 1
+	local luck = 1
 	
 	local dropChance = item.chance
 	if dropChance ~= MAX_LOOTCHANCE then
 		dropChance = dropChance * lootRate
 
 		if contribution then
-			dropChance = dropChanceFormula(item.chance, contribution)
-			if stackable and contribution < 0.03 then
-				maxCountFactor = 0.3 + 7 * contribution
-			end				
+			luck = dropChanceFormula(contribution)
+			if stackable then
+				-- less harsh calculation for stackables
+				luck = math.min(0.4 + 0.6 * luck, 1)
+			end
+			
+			dropChance = math.floor(dropChance * luck)
 		end
 	end
 	
-	if math.random(0, MAX_LOOTCHANCE) < (dropChance) and (item.top == 0 or playerRank and playerRank <= item.top) then
+	if math.random(0, MAX_LOOTCHANCE) < dropChance and (item.top == 0 or playerRank and playerRank <= item.top) then
 		if stackable then
-			itemCount = math.floor(item.maxCount * maxCountFactor)
+			itemCount = math.floor(item.maxCount * luck)
 		else
 			itemCount = 1
 		end
