@@ -52,10 +52,11 @@ function generateBossRewards(monster, corpse)
 		local currentPlayerId = playerDamage[1]
 		if currentPlayerId > PLAYER_ID_MIN and currentPlayerId < PLAYER_ID_MAX then
 			realRank = realRank + 1
+			local contribution = playerDamage[2].total / totalDamageReceived
 			
 			local playerRewardBag = Game.createItem(ITEM_REWARD_BAG, 1)
 			for i = 1, #monsterLoot do
-				local item = playerRewardBag:createLootItem(monsterLoot[i], realRank, playerDamage[2].total / totalDamageReceived)
+				local item = playerRewardBag:createLootItem(monsterLoot[i], realRank, contribution)
 				if not item then
 					print("[Warning] DropLoot: Could not add loot item to corpse.")
 				end
@@ -75,7 +76,7 @@ function generateBossRewards(monster, corpse)
 				player:getRewardChest():addItemEx(playerRewardBag, -1, bit.bor(FLAG_NOLIMIT, FLAG_IGNORENOTPICKUPABLE))
 				
 				-- send loot message
-				player:sendTextMessage(MESSAGE_LOOT, string.format("Damage dealt: %d (%.2f%%)\nLoot of %s:\n%s\n\n{%d|Items added to your Reward Chest.}", playerDamage, playerDamage * 100 / mType:maxHealth(), mType:getNameDescription(), rewardBagDescription, MESSAGE_COLOR_GREEN))
+				player:sendTextMessage(MESSAGE_LOOT, string.format("Damage dealt: %d (%.2f%%)\nLoot of %s:\n%s\n\n{%d|Items added to your Reward Chest.}", playerDamage[2].total, contribution * 100, mType:getNameDescription(), rewardBagDescription, MESSAGE_COLOR_GREEN))
 			else
 				-- send to offline player
 				Game.addRewardByPlayerId(currentPlayerId, playerRewardBag)
