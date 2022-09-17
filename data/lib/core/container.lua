@@ -34,7 +34,7 @@ end
 local function dropChanceFormula(contribution)	
 	local contributionPercent = contribution * 100
 	if contributionPercent < 1 then
-		return 0.12 -- 12%
+		return 0.09 -- 9%
 	elseif contributionPercent <= 6 then
 		return 0.21
 	elseif contributionPercent <= 20 then
