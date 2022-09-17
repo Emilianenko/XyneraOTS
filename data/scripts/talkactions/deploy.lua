@@ -17,6 +17,7 @@ function checkDeploy()
 		for line in io.lines(cmakelog) do
 			if lineId > DEPLOY_LINE_COUNT_CMAKE then
 				sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_O, line)
+				Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_RESPONSE, line, false)
 				DEPLOY_LINE_COUNT_CMAKE = lineId
 			end
 			lineId = lineId + 1
@@ -28,6 +29,7 @@ function checkDeploy()
 		for line in io.lines(buildlog) do
 			if lineId > DEPLOY_LINE_COUNT_BUILD then
 				sendChannelMessage(CHANNEL_CONSOLE, TALKTYPE_CHANNEL_O, line)
+				Game.appendConsoleHistory(CONSOLEMESSAGE_TYPE_RESPONSE, line, false)
 				DEPLOY_LINE_COUNT_BUILD = lineId
 			end
 			lineId = lineId + 1
