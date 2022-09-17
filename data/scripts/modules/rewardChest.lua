@@ -75,7 +75,7 @@ function generateBossRewards(monster, corpse)
 				player:getRewardChest():addItemEx(playerRewardBag, -1, bit.bor(FLAG_NOLIMIT, FLAG_IGNORENOTPICKUPABLE))
 				
 				-- send loot message
-				player:sendTextMessage(MESSAGE_LOOT, string.format("Loot of %s:\n%s\n\n{%d|Items added to your Reward Chest.}", mType:getNameDescription(), rewardBagDescription, MESSAGE_COLOR_GREEN))
+				player:sendTextMessage(MESSAGE_LOOT, string.format("Damage dealt: %d (%.2f%%)\nLoot of %s:\n%s\n\n{%d|Items added to your Reward Chest.}", playerDamage, playerDamage * 100 / mType:maxHealth(), mType:getNameDescription(), rewardBagDescription, MESSAGE_COLOR_GREEN))
 			else
 				-- send to offline player
 				Game.addRewardByPlayerId(currentPlayerId, playerRewardBag)
