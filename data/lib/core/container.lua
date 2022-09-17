@@ -31,12 +31,23 @@ function Container:getColorContentDescription(baseColor)
 	return baseColor and string.format(style, baseColor, "nothing") or "nothing"
 end
 
-local function dropChanceFormula(contribution)
-	-- escape log(0) situation
-	contribution = math.max(contribution, 0.001)
+local function dropChanceFormula(contribution)	
+	local contributionPercent = contribution * 100
+	if contributionPercent < 1 then
+		return 0.1 -- 10%
+	elseif contributionPercent <= 6 then
+		return 0.2
+	elseif contributionPercent <= 20 then
+		return 0.3
+	elseif contributionPercent <= 50 then
+		return 0.6
+	elseif contributionPercent <= 70 then
+		return 0.7
+	elseif contributionPercent <= 90 then
+		return 0.85
+	end
 	
-	-- apply formula
-	return math.max(0, 1 + 0.4 + 0.349 * math.log(contribution))
+	return 1
 end
 
 local lootRate = configManager.getNumber(configKeys.RATE_LOOT)
