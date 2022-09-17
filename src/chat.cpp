@@ -161,6 +161,7 @@ bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std:
 
 	bool anonymous = false;
 
+	std::string textToSend = text;
 	if (text.size() > 3 && (fromPlayer.getGroup()->flags & PlayerFlag_CanTalkRedChannelAnonymous) != 0) {
 		MessageClasses messageType = TALKTYPE_NONE;
 		std::string matchedCommand = std::string(text, 0, 2);
@@ -177,6 +178,7 @@ bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std:
 			case TALKTYPE_CHANNEL_O:
 			case TALKTYPE_CHANNEL_R1:
 			case TALKTYPE_CHANNEL_Y:
+				textToSend = text.substr(3).c_str();
 				type = messageType;
 				anonymous = true;
 				break;
@@ -194,7 +196,7 @@ bool ChatChannel::talk(const Player& fromPlayer, MessageClasses type, const std:
 			}
 		}
 
-		it.second->sendToChannel(!anonymous ? &fromPlayer : nullptr, type, text, clientChannelId);
+		it.second->sendToChannel(!anonymous ? &fromPlayer : nullptr, type, textToSend, clientChannelId);
 	}
 	return true;
 }
