@@ -36,7 +36,7 @@ local function dropChanceFormula(contribution)
 	contribution = math.max(contribution, 0.001)
 	
 	-- apply formula
-	return math.max(0, 1 + 0.4 + 0.29 * math.log(contribution))
+	return math.max(0, 1 + 0.4 + 0.314 * math.log(contribution))
 end
 
 local lootRate = configManager.getNumber(configKeys.RATE_LOOT)
