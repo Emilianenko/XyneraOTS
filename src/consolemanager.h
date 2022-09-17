@@ -125,7 +125,7 @@ const std::string& getLastMessage();
 console::Cache getHistory();
 
 // adds a message to console history
-void appendHistory(const std::string& message, ConsoleMessageType messageType, bool send = false);
+void appendHistory(const std::string& message, ConsoleMessageType messageType, bool send = true);
 
 } // namespace console
 
