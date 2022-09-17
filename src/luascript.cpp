@@ -2638,6 +2638,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getNextRewardId", LuaScriptInterface::luaGameGetNextRewardId);
 
 	registerMethod("Game", "isDevMode", LuaScriptInterface::luaGameIsDevMode);
+	registerMethod("Game", "isWindows", LuaScriptInterface::luaGameIsWindows);
 
 	// Variant
 	registerClass("Variant", "", LuaScriptInterface::luaVariantCreate);

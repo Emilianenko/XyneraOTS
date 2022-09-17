@@ -597,6 +597,7 @@ class LuaScriptInterface
 		static int luaGameGetNextRewardId(lua_State* L);
 
 		static int luaGameIsDevMode(lua_State* L);
+		static int luaGameIsWindows(lua_State* L);
 
 		// Variant
 		static int luaVariantCreate(lua_State* L);

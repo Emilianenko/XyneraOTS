@@ -876,3 +876,14 @@ int LuaScriptInterface::luaGameIsDevMode(lua_State* L)
 #endif
 	return 1;
 }
+
+int LuaScriptInterface::luaGameIsWindows(lua_State* L)
+{
+	// Game.isWindows()
+#ifdef _WIN32
+	lua_pushboolean(L, true);
+#else
+	lua_pushboolean(L, false);
+#endif
+	return 1;
+}
