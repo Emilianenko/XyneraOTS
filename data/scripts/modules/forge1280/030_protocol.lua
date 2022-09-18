@@ -3,7 +3,9 @@
 do
 	local ec = EventCallback
 	ec.onFuseItems = function(self, fromItemType, fromTier, toItemType, successCore, tierLossCore)
-		self:onFusionRequest(fromItemType, fromTier, toItemType, successCore, tierLossCore)
+		if self:isInForge() then
+			self:onFusionRequest(fromItemType, fromTier, toItemType, successCore, tierLossCore)
+		end
 	end
 	ec:register()
 end
@@ -12,7 +14,9 @@ end
 do
 	local ec = EventCallback
 	ec.onTransferTier = function(self, fromItemType, fromTier, toItemType)
-		self:onForgeTransferRequest(fromItemType, fromTier, toItemType)
+		if self:isInForge() then
+			self:onForgeTransferRequest(fromItemType, fromTier, toItemType)
+		end
 	end
 	ec:register()
 end
@@ -39,11 +43,12 @@ end
 ---- send methods
 -- forge resources
 function Player:sendForgeResources()
+	local isDepot = self:isInDepotForge()
 	self:sendResourceBalance(RESOURCE_BANK_BALANCE, self:getBankBalance())
 	self:sendResourceBalance(RESOURCE_GOLD_EQUIPPED, self:getMoney())
 	self:sendResourceBalance(RESOURCE_FORGE_DUST, self:getForgeDust())
-	self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, self:getSlivers())
-	self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores())
+	self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, self:getSlivers(isDepot))
+	self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores(isDepot))
 end
 
 -- error handler
@@ -90,7 +95,7 @@ do
 	end
 
 	-- base UI
-	function Player:sendForgeUI(loadFromCache)
+	function Player:sendForgeUI(loadFromCache, isDepot)
 		-- FUSION
 		-- collect item data for fusion
 		
@@ -125,16 +130,23 @@ do
 		ForgeCache[cid] = {}
 		
 		local playerItems = self:getItemsByLocation(LOCATION_BACKPACK, not forgeData.allowCustomItemFusion)
+		if isDepot then
+			local depotItems = self:getItemsByLocation(LOCATION_DEPOT, not forgeData.allowCustomItemFusion)
+			for itemHash, itemCount in pairs(depotItems) do
+				playerItems[itemHash] = itemCount + (playerItems[itemHash] or 0)
+			end
+		end
+		
 		local fusionItems = {}
 		local fusionItemsCount = 0
-		for itemInfo, count in pairs(playerItems) do
+		for itemHash, count in pairs(playerItems) do
 			-- you need 2 items in order for them to be displayed
 			if count > 1 then
-				local itemId, tier = unhashItemInfo(itemInfo)
+				local itemId, tier = unhashItemInfo(itemHash)
 				local itemType = ItemType(itemId)
 				local class = itemType:getClassification()
 				if class > 0 and forgeMeta[class] and tier < #forgeMeta[class] then
-					fusionItems[itemInfo] = count
+					fusionItems[itemHash] = count
 					fusionItemsCount = fusionItemsCount + 1
 				end
 			end
@@ -147,13 +159,19 @@ do
 			playerItemsToTransfer = playerItems
 		else
 			playerItemsToTransfer = self:getItemsByLocation(LOCATION_BACKPACK, not forgeData.allowCustomItemTransfer)
+			if isDepot then
+				local depotItems = self:getItemsByLocation(LOCATION_DEPOT, not forgeData.allowCustomItemTransfer)
+				for itemHash, itemCount in pairs(depotItems) do
+					playerItemsToTransfer[itemHash] = itemCount + (playerItemsToTransfer[itemHash] or 0)
+				end
+			end
 		end
 		
 		local donors = {} -- items player moves the tier from		
 		local recipents = {} -- items player moves the tier to
 		
-		for itemInfo, count in pairs(playerItemsToTransfer) do
-			local itemId, tier = unhashItemInfo(itemInfo)
+		for itemHash, count in pairs(playerItemsToTransfer) do
+			local itemId, tier = unhashItemInfo(itemHash)
 			local itemType = ItemType(itemId)
 			local class = itemType:getClassification()
 			
@@ -178,8 +196,8 @@ do
 		
 		-- fusion tab
 		m:addAndCacheForgeValue(cid, fusionItemsCount, FORGE_CACHE_TYPE_U16)
-		for itemInfo, count in pairs(fusionItems) do
-			local itemId, tier = unhashItemInfo(itemInfo)
+		for itemHash, count in pairs(fusionItems) do
+			local itemId, tier = unhashItemInfo(itemHash)
 			m:addAndCacheForgeValue(cid, 1, FORGE_CACHE_TYPE_BYTE) -- number of "friend" items (unused)
 			-- 1 item to send:
 			m:addAndCacheForgeValue(cid, ItemType(itemId):getClientId(), FORGE_CACHE_TYPE_U16)
@@ -198,8 +216,8 @@ do
 				
 				-- potential donors
 				m:addAndCacheForgeValue(cid, itemCount, FORGE_CACHE_TYPE_U16)
-				for itemInfo, count in pairs(items) do
-					local itemId, tier = unhashItemInfo(itemInfo)
+				for itemHash, count in pairs(items) do
+					local itemId, tier = unhashItemInfo(itemHash)
 					m:addAndCacheForgeValue(cid, ItemType(itemId):getClientId(), FORGE_CACHE_TYPE_U16)
 					m:addAndCacheForgeValue(cid, tier, FORGE_CACHE_TYPE_BYTE)
 					m:addAndCacheForgeValue(cid, math.min(count, 0xFFFF), FORGE_CACHE_TYPE_U16)

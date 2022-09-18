@@ -87,8 +87,13 @@ end
 do
 	local forgeAction = Action()
 	function forgeAction.onUse(player, item, fromPosition, target, toPosition, isHotkey)
-		LastForgePosCache[player:getId()] = item:getPosition()
-		player:sendForgeUI()
+		local parent = item:getParent()
+		local isDepot = parent and parent:isContainer()
+		local itemPos = item:getPosition()
+		itemPos.isDepot = isDepot
+		LastForgePosCache[player:getId()] = itemPos
+		
+		player:sendForgeUI(false, isDepot)
 		return true
 	end
 	
@@ -147,30 +152,81 @@ do
 		return math.min(forgeData.maxStoredDustLimit, forgeData.minStoredDustLimit + self:getForgeDustLevel())
 	end
 	
+	-- general
+	function Player:getTotalItems(itemId, searchDepot)
+		local depotCount = 0
+		if searchDepot then
+			for boxId = 1, Game.getDepotBoxCount() do		
+				local depotBox = self:getDepotChest(boxId - 1)
+				if depotBox then
+					depotCount = depotCount + depotBox:getItemCountById(itemId)					
+				end
+			end
+		end
+	
+		return self:getItemCount(itemId) + depotCount
+	end
+	
+	function Player:removeTotalItems(itemId, searchDepot)
+		if not searchDepot then
+			return self:removeItem(itemId, amount)
+		end
+		
+		local itemCount = self:getItemCount(itemId)
+		if itemCount >= amount then
+			self:removeItem(itemId, amount)
+		else
+			self:removeItem(itemId, itemCount)
+			local amountToRemove = amount - itemCount
+			for boxId = 1, Game.getDepotBoxCount() do
+				if amountToRemove < 1 then
+					return true
+				end
+				
+				local depotBox = self:getDepotChest(boxId - 1)
+				if depotBox then
+					for _, item in pairs(depotBox:getItems()) do
+						if amountToRemove < 1 then
+							return true
+						end
+
+						if item:getId() == itemId then
+							local itemAmount = math.min(amountToRemove, item:getCount())
+							item:remove(itemAmount)
+							amountToRemove = amountToRemove - itemAmount
+						end
+					end
+				end
+			end
+		end
+		
+		return false
+	end
+	
 	-- slivers
-	function Player:getSlivers()
-		return self:getItemCount(ITEM_FORGE_SLIVERS)
+	function Player:getSlivers(isDepot)
+		return self:getTotalItems(ITEM_FORGE_SLIVERS, isDepot)
 	end
 
 	function Player:addSlivers(amount)
 		return self:addItem(ITEM_FORGE_SLIVERS, amount)
 	end
 	
-	function Player:removeSlivers(amount)
-		return self:removeItem(ITEM_FORGE_SLIVERS, amount)
+	function Player:removeSlivers(amount, isDepot)
+		return self:removeTotalItems(ITEM_FORGE_SLIVERS, isDepot)
 	end
 	
 	-- cores
-	function Player:getForgeCores()
-		return self:getItemCount(ITEM_FORGE_CORES)
+	function Player:getForgeCores(isDepot)
+		return self:getTotalItems(ITEM_FORGE_CORES, isDepot)
 	end
 	
 	function Player:addForgeCores(amount)
 		return self:addItem(ITEM_FORGE_CORES, amount)
 	end
 	
-	function Player:removeForgeCores(amount)
-		return self:removeItem(ITEM_FORGE_CORES, amount)
+	function Player:removeForgeCores(amount, isDepot)
+		return self:removeTotalItems(ITEM_FORGE_CORES, isDepot)
 	end
 end
 
@@ -208,7 +264,7 @@ do
 			dustCost = 0,
 			coresCost = 0
 		}
-	
+		
 		if self:getFreeCapacity() < ItemType(ITEM_FORGE_CHEST):getWeight() then
 			-- no cap to carry the chest with forge output
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCAP)	
@@ -222,6 +278,8 @@ do
 			return
 		end
 
+		local isDepot = self:isInDepotForge()
+		
 		-- roll bonus
 		local bonusType = rollBonus(FORGE_ACTION_FUSION)
 		
@@ -309,7 +367,7 @@ do
 			end
 			if bonusType ~= FORGE_BONUS_CORESKEPT then
 				forgeResultData.coresCost = coresCost
-				self:removeForgeCores(coresCost)
+				self:removeForgeCores(coresCost, isDepot)
 			end
 			if bonusType ~= FORGE_BONUS_GOLDKEPT then
 				forgeResultData.cost = cost
@@ -356,7 +414,7 @@ do
 		
 		-- consume resources
 		self:removeForgeDust(forgeData.fusionDustCost)
-		self:removeForgeCores(coresCost)
+		self:removeForgeCores(coresCost, isDepot)
 		self:removeTotalMoney(cost)
 		
 		-- log forge action
@@ -397,6 +455,8 @@ do
 			return
 		end
 		
+		local isDepot = self:isInDepotForge()
+
 		-- generate chest
 		local chest = Game.createItem(ITEM_FORGE_CHEST)
 		
@@ -418,7 +478,7 @@ do
 		
 		-- consume resources
 		self:removeForgeDust(forgeData.transferDustCost)
-		self:removeForgeCores(1)
+		self:removeForgeCores(1, isDepot)
 		self:removeTotalMoney(cost)
 		
 		-- log forge action
@@ -471,13 +531,53 @@ function Container:getItemsByQuery(count, queryFunc, ...)
 	return response, resultingCount
 end
 
+function Player:getItemsByQuery(count, searchDepot, queryFunc, ...)
+	local remainingCount = count
+	local foundItems = {}
+	local itemCount = 0
+
+	local playerBP = self:getSlotItem(CONST_SLOT_BACKPACK)
+	if playerBP then
+		foundItems, itemCount = playerBP:getItemsByQuery(count, queryFunc, ...)
+		remainingCount = remainingCount - itemCount
+	end
+
+	if remainingCount < 1 or not searchDepot then
+		return foundItems, itemCount
+	end
+	
+	for boxId = 1, Game.getDepotBoxCount() do
+		if remainingCount < 1 then
+			return foundItems, itemCount
+		end
+		
+		local depotBox = self:getDepotChest(boxId - 1)
+		if depotBox then
+			if remainingCount < 1 then
+				return foundItems, itemCount
+			end
+
+			local itemsToMerge, countToMerge = depotBox:getItemsByQuery(remainingCount, queryFunc, ...)
+			for index, item in pairs(itemsToMerge) do
+				foundItems[#foundItems + 1] = item
+			end
+
+			itemCount = itemCount + countToMerge
+			remainingCount = remainingCount - countToMerge
+		end
+	end
+	
+	return foundItems, itemCount
+end
+
 -- player requests processors
 do
 	---- FUSION
 	function Player:onFusionRequest(fromItemType, tier, toItemType, usesSuccessRateCore, usesTierLossCore)
 		usesSuccessRateCore = usesSuccessRateCore and 1 or 0
 		usesTierLossCore = usesTierLossCore and 1 or 0
-
+		local isDepot = self:isInDepotForge()
+		
 		if fromItemType:getId() ~= toItemType:getId() then
 			-- bad request (fusion has to be two identical items)
 			self:sendDefaultForgeError(FORGE_ERROR_BADREQUEST)
@@ -521,14 +621,14 @@ do
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHDUST)
 			return
 		end
-		if self:getForgeCores() < usesSuccessRateCore + usesTierLossCore then
+		if self:getForgeCores(isDepot) < usesSuccessRateCore + usesTierLossCore then
 			-- selected cores not available
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCORES)
 			return
 		end
 		
 		-- iterate player containers to find items
-		local itemsForFusion, itemCount = playerBP:getItemsByQuery(2, fusionSearch, itemType:getId(), tier)
+		local itemsForFusion, itemCount = player:getItemsByQuery(2, isDepot, fusionSearch, itemType:getId(), tier)
 		if itemCount >= 2 then
 			-- items found, perform the fusion
 			self:fuseItems(itemsForFusion[1], itemsForFusion[2], usesSuccessRateCore, usesTierLossCore, cost)
@@ -565,6 +665,8 @@ do
 			return
 		end
 		
+		local isDepot = self:isInDepotForge()
+		
 		-- check if player has required resources
 		local cost = forgeMeta[fromClass][tier]
 		if self:getTotalMoney() < cost then
@@ -577,16 +679,16 @@ do
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHDUST)
 			return
 		end
-		if self:getForgeCores() < 1 then -- transfer always costs 1 core
+		if self:getForgeCores(isDepot) < 1 then -- transfer always costs 1 core
 			-- not enough cores
 			self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHCORES)
 			return
 		end
 		
 		-- find the items
-		local transferItems, itemCount = playerBP:getItemsByQuery(1, transferSearch, fromItemType:getId(), tier)
+		local transferItems, itemCount = player:getItemsByQuery(1, isDepot, transferSearch, fromItemType:getId(), tier)
 		if itemCount >= 1 then
-			local targetItems, targetItemCount = playerBP:getItemsByQuery(1, transferSearch, toItemType:getId(), 0)
+			local targetItems, targetItemCount = player:getItemsByQuery(1, isDepot, transferSearch, toItemType:getId(), 0)
 			if targetItemCount >= 1 then
 				-- start the transfer
 				self:transferTier(transferItems[1], targetItems[1], cost)
@@ -605,6 +707,8 @@ do
 			success = true
 		}
 		
+		local isDepot = self:isInDepotForge()
+		
 		if forgeAction == FORGE_ACTION_DUSTTOSLIVERS then
 			-- price check
 			local cost = forgeData.sliversDustCost * forgeData.sliversPerConversion
@@ -617,7 +721,7 @@ do
 			if self:addSlivers(forgeData.sliversPerConversion) then
 				self:removeForgeDust(cost)
 				self:sendResourceBalance(RESOURCE_FORGE_DUST, dust - cost)
-				self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, self:getSlivers())
+				self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, self:getSlivers(isDepot))
 			end
 			
 			-- info for action logging
@@ -625,7 +729,7 @@ do
 			forgeResultData.gained = forgeData.sliversPerConversion
 		elseif forgeAction == FORGE_ACTION_SLIVERSTOCORES then
 			-- price check
-			local slivers = self:getSlivers()
+			local slivers = self:getSlivers(isDepot)
 			local cost = forgeData.coreSliversCost
 			if cost > slivers then
 				return self:sendDefaultForgeError(FORGE_ERROR_NOTENOUGHSLIVERS)
@@ -633,9 +737,9 @@ do
 			
 			-- conversion (slivers to cores)
 			if self:addForgeCores(1) then
-				self:removeSlivers(cost)
+				self:removeSlivers(cost, isDepot)
 				self:sendResourceBalance(RESOURCE_FORGE_SLIVERS, slivers - cost)
-				self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores())
+				self:sendResourceBalance(RESOURCE_FORGE_CORES, self:getForgeCores(isDepot))
 			end
 			
 			-- info for action logging
@@ -677,6 +781,11 @@ do
 end
 
 -- forge check
+function Player:isInDepotForge()
+	local forgePos = LastForgePosCache[self:getId()]
+	return forgePos and forgePos.isDepot
+end
+
 function Player:isInForge()
 	local forgePos = LastForgePosCache[self:getId()]
 	if not forgePos then
