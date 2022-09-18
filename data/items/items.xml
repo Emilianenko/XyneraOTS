@@ -34140,7 +34140,7 @@
 		<attribute key="defense" value="29"/>
 		<attribute key="weight" value="8500"/>
 	</item>
-	<item id="22403" article="an" name="test weapon for knights">
+	<item id="31120" article="an" name="test weapon for knights">
 		<attribute key="weight" value="5500" />
 		<attribute key="defense" value="31" />
 		<attribute key="attack" value="52" />
@@ -34148,7 +34148,7 @@
 		<attribute key="extradef" value="3" />
 		<attribute key="skillSword" value="1" />
 	</item>
-	<item id="30111" article="a" name="bow of destruction test">
+	<item id="31121" article="a" name="bow of destruction test">
 		<attribute key="weight" value="5500" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="weaponType" value="distance" />
@@ -34157,7 +34157,7 @@
 		<attribute key="hitChance" value="5" />
 		<attribute key="attack" value="5" />
 	</item>
-	<item id="28356" article="a" name="sorcerer test weapon TEST">
+	<item id="31122" article="a" name="sorcerer test weapon TEST">
 		<attribute key="description" value="It's a gnarly branch with a gleaming blue blossom."/>
 		<attribute key="weaponType" value="wand"/>
 		<attribute key="shootType" value="death"/>
