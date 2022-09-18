@@ -167,7 +167,7 @@ do
 		return self:getItemCount(itemId) + depotCount
 	end
 	
-	function Player:removeTotalItems(itemId, searchDepot)
+	function Player:removeTotalItems(itemId, amount, searchDepot)
 		if not searchDepot then
 			return self:removeItem(itemId, amount)
 		end
@@ -213,7 +213,7 @@ do
 	end
 	
 	function Player:removeSlivers(amount, isDepot)
-		return self:removeTotalItems(ITEM_FORGE_SLIVERS, isDepot)
+		return self:removeTotalItems(ITEM_FORGE_SLIVERS, amount, isDepot)
 	end
 	
 	-- cores
@@ -226,7 +226,7 @@ do
 	end
 	
 	function Player:removeForgeCores(amount, isDepot)
-		return self:removeTotalItems(ITEM_FORGE_CORES, isDepot)
+		return self:removeTotalItems(ITEM_FORGE_CORES, amount, isDepot)
 	end
 end
 
@@ -628,7 +628,7 @@ do
 		end
 		
 		-- iterate player containers to find items
-		local itemsForFusion, itemCount = player:getItemsByQuery(2, isDepot, fusionSearch, itemType:getId(), tier)
+		local itemsForFusion, itemCount = self:getItemsByQuery(2, isDepot, fusionSearch, itemType:getId(), tier)
 		if itemCount >= 2 then
 			-- items found, perform the fusion
 			self:fuseItems(itemsForFusion[1], itemsForFusion[2], usesSuccessRateCore, usesTierLossCore, cost)
@@ -686,9 +686,9 @@ do
 		end
 		
 		-- find the items
-		local transferItems, itemCount = player:getItemsByQuery(1, isDepot, transferSearch, fromItemType:getId(), tier)
+		local transferItems, itemCount = self:getItemsByQuery(1, isDepot, transferSearch, fromItemType:getId(), tier)
 		if itemCount >= 1 then
-			local targetItems, targetItemCount = player:getItemsByQuery(1, isDepot, transferSearch, toItemType:getId(), 0)
+			local targetItems, targetItemCount = self:getItemsByQuery(1, isDepot, transferSearch, toItemType:getId(), 0)
 			if targetItemCount >= 1 then
 				-- start the transfer
 				self:transferTier(transferItems[1], targetItems[1], cost)
