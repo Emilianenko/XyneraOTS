@@ -648,6 +648,37 @@ int LuaScriptInterface::luaMonsterTypeAddElement(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaMonsterTypeGetReflectList(lua_State* L)
+{
+	// monsterType:getReflectList()
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (!monsterType) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_createtable(L, monsterType->info.reflectMap.size(), 0);
+	for (const auto& elementEntry : monsterType->info.reflectMap) {
+		lua_pushnumber(L, elementEntry.second);
+		lua_rawseti(L, -2, elementEntry.first);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaMonsterTypeAddReflect(lua_State* L)
+{
+	// monsterType:addReflect(type, percent)
+	MonsterType* monsterType = getUserdata<MonsterType>(L, 1);
+	if (monsterType) {
+		CombatType_t element = getNumber<CombatType_t>(L, 2);
+		monsterType->info.reflectMap[element] = getNumber<int32_t>(L, 3);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaScriptInterface::luaMonsterTypeGetVoices(lua_State* L)
 {
 	// monsterType:getVoices()

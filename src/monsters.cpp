@@ -1271,6 +1271,34 @@ MonsterType* Monsters::loadMonster(const std::string& file, const std::string& m
 		}
 	}
 
+	if ((node = monsterNode.child("reflects"))) {
+		for (auto elementNode : node.children()) {
+			if ((attr = elementNode.attribute("physicalPercent"))) {
+				mType->info.reflectMap[COMBAT_PHYSICALDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("icePercent"))) {
+				mType->info.reflectMap[COMBAT_ICEDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("poisonPercent")) || (attr = elementNode.attribute("earthPercent"))) {
+				mType->info.reflectMap[COMBAT_EARTHDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("firePercent"))) {
+				mType->info.reflectMap[COMBAT_FIREDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("energyPercent"))) {
+				mType->info.reflectMap[COMBAT_ENERGYDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("holyPercent"))) {
+				mType->info.reflectMap[COMBAT_HOLYDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("deathPercent"))) {
+				mType->info.reflectMap[COMBAT_DEATHDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("drownPercent"))) {
+				mType->info.reflectMap[COMBAT_DROWNDAMAGE] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("lifedrainPercent"))) {
+				mType->info.reflectMap[COMBAT_LIFEDRAIN] = pugi::cast<int32_t>(attr.value());
+			} else if ((attr = elementNode.attribute("manadrainPercent"))) {
+				mType->info.reflectMap[COMBAT_MANADRAIN] = pugi::cast<int32_t>(attr.value());
+			} else {
+				console::reportWarning(location, "Unknown reflect percent! (" + file + ")");
+			}
+		}
+	}
+
 	if ((node = monsterNode.child("summons"))) {
 		if ((attr = node.attribute("maxSummons"))) {
 			mType->info.maxSummons = std::min<uint32_t>(pugi::cast<uint32_t>(attr.value()), 100);

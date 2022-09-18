@@ -66,6 +66,10 @@ monster.immunities = {
 	{type = "bleed", condition = false}
 }
 
+monster.reflects = {
+	{type = COMBAT_FIREDAMAGE, percent = 166},
+}
+
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 85},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},

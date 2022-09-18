@@ -642,6 +642,7 @@ enum CombatOrigin
 	ORIGIN_WAND,
 	ORIGIN_REFLECT,
 	ORIGIN_CONVERTED, // imbuement damage conversion
+	ORIGIN_ABSORB, // absorb
 };
 
 struct CombatDamage

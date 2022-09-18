@@ -4689,7 +4689,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			TextMessage message;
 			message.position = targetPos;
 			message.primary.value = realHealthChange;
-			message.primary.color = TEXTCOLOR_PASTELRED;
+			message.primary.color = damage.origin != ORIGIN_ABSORB ? TEXTCOLOR_PASTELRED : TEXTCOLOR_LIGHTYELLOW;
 
 			SpectatorVec spectators;
 			map.getSpectators(spectators, targetPos, false, true);
@@ -4697,7 +4697,11 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				Player* tmpPlayer = spectator->getPlayer();
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
 					message.type = MESSAGE_HEALED;
-					message.text = fmt::format("You heal {:s} for {:s}.", target->getNameDescription(), damageString);
+					if (damage.origin != ORIGIN_ABSORB) {
+						message.text = fmt::format("You heal {:s} for {:s}.", target->getNameDescription(), damageString);
+					} else {
+						message.text = fmt::format("{:s} gained {:s} from your attack.", target->getNameDescription(), damageString);
+					}
 				} else if (tmpPlayer == targetPlayer) {
 					message.type = MESSAGE_HEALED;
 					if (!attacker) {
@@ -4710,7 +4714,13 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				} else {
 					message.type = MESSAGE_HEALED_OTHERS;
 					if (spectatorMessage.empty()) {
-						if (!attacker) {
+						if (damage.origin == ORIGIN_ABSORB) {
+							if (!attacker || attacker == target) {
+								spectatorMessage = fmt::format("{:s} gained {:s}.", target->getNameDescription(), damageString);
+							} else {
+								spectatorMessage = fmt::format("{:s} gained {:s} due to an attack by {:s}.", target->getNameDescription(), damageString, attacker->getNameDescription());
+							}
+						} else if (!attacker) {
 							spectatorMessage = fmt::format("{:s} was healed for {:s}.", target->getNameDescription(), damageString);
 						} else if (attacker == target) {
 							spectatorMessage = fmt::format("{:s} healed {:s}self for {:s}.", attacker->getNameDescription(), targetPlayer ? (targetPlayer->getSex() == PLAYERSEX_FEMALE ? "her" : "him") : "it", damageString);

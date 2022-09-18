@@ -269,6 +269,15 @@ registerMonsterType.elements = function(mtype, mask)
 		end
 	end
 end
+registerMonsterType.reflects = function(mtype, mask)
+	if type(mask.reflects) == "table" then
+		for _, reflect in pairs(mask.reflects) do
+			if reflect.type and reflect.percent then
+				mtype:addReflect(reflect.type, reflect.percent)
+			end
+		end
+	end
+end
 registerMonsterType.immunities = function(mtype, mask)
 	if type(mask.immunities) == "table" then
 		for _, immunity in pairs(mask.immunities) do

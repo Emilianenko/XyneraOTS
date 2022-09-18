@@ -5,6 +5,7 @@
 
 #include "monster.h"
 
+#include "combat.h"
 #include "condition.h"
 #include "configmanager.h"
 #include "events.h"
@@ -634,6 +635,31 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
 	if (damage != 0) {
+		// monster damage reflection
+		if (attacker) {
+			int32_t reflectMod = 0;
+			auto it = mType->info.reflectMap.find(combatType);
+			if (it != mType->info.reflectMap.end()) {
+				reflectMod = it->second;
+			}
+
+			if (reflectMod != 0) {
+				CombatParams params;
+				params.combatType = combatType;
+				params.blockedByArmor = true;
+				params.blockedByShield = true;
+				params.ignoreResistances = false;
+
+				CombatDamage reflectDamage;
+				reflectDamage.origin = ORIGIN_REFLECT;
+				reflectDamage.primary.type = combatType;
+				reflectDamage.primary.value = -static_cast<int32_t>(std::round(damage * (reflectMod / 100.)));
+
+				Combat::doTargetCombat(this, attacker, reflectDamage, params);
+			}
+		}
+
+		// element damage reduction and absorption
 		int32_t elementMod = 0;
 		auto it = mType->info.elementMap.find(combatType);
 		if (it != mType->info.elementMap.end()) {
@@ -643,17 +669,20 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 		if (elementMod != 0) {
 			damage = static_cast<int32_t>(std::round(damage * ((100 - elementMod) / 100.)));
 			if (damage <= 0) {
+				blockType = BLOCK_ARMOR;
 				if (elementMod > 100) {
+					blockType = BLOCK_IMMUNITY;
+
 					// resistance above 100%, heal from received damage
 					CombatDamage absorbDamage;
-					absorbDamage.origin = ORIGIN_CONDITION;
+					absorbDamage.origin = ORIGIN_ABSORB;
 					absorbDamage.primary.type = COMBAT_HEALING;
 					absorbDamage.primary.value = damage;
-					g_game.combatChangeHealth(this, this, absorbDamage);
+					g_game.combatChangeHealth(attacker, this, absorbDamage);
+					g_game.addMagicEffect(position, CONST_ME_MAGIC_GREEN);
 				}
 
 				damage = 0;
-				blockType = BLOCK_ARMOR;
 			}
 		}
 	}

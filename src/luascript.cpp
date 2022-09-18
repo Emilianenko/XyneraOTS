@@ -2052,6 +2052,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(TEXTCOLOR_PASTELRED)
 	registerEnum(TEXTCOLOR_ORANGE)
 	registerEnum(TEXTCOLOR_YELLOW)
+	registerEnum(TEXTCOLOR_LIGHTYELLOW)
 	registerEnum(TEXTCOLOR_WHITE_EXP)
 	registerEnum(TEXTCOLOR_NONE)
 
@@ -3568,6 +3569,9 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("MonsterType", "getElementList", LuaScriptInterface::luaMonsterTypeGetElementList);
 	registerMethod("MonsterType", "addElement", LuaScriptInterface::luaMonsterTypeAddElement);
+
+	registerMethod("MonsterType", "getReflectList", LuaScriptInterface::luaMonsterTypeGetReflectList);
+	registerMethod("MonsterType", "addReflect", LuaScriptInterface::luaMonsterTypeAddReflect);
 
 	registerMethod("MonsterType", "getVoices", LuaScriptInterface::luaMonsterTypeGetVoices);
 	registerMethod("MonsterType", "addVoice", LuaScriptInterface::luaMonsterTypeAddVoice);
