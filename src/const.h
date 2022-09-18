@@ -349,7 +349,7 @@ enum MessageClasses : uint8_t {
 	// 46: undiscovered
 
 	// message used together with damage numbers
-	MESSAGE_MANA2 = 47, // White, console
+	MESSAGE_MANA_OTHERS = 47, // White, console
 
 	// player:sendTextMessage(...)
 	MESSAGE_ATTENTION = 48, // White, console only
