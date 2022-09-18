@@ -44237,7 +44237,7 @@
 		<attribute key="weight" value="100"/>
 	</item>
 	<item id="39765" article="a" name="sliver" plural="slivers">
-		<attribute key="description" value="This item can be used in the exaltation forge to create exalted cores"/>
+		<attribute key="description" value="This item can be used in the exaltation forge to create exalted cores."/>
 		<attribute key="weight" value="10"/>
 	</item>
 	<item id="40217" article="an" name="exaltation chest" plural="exaltation chests">
@@ -44245,8 +44245,13 @@
 		<attribute key="weight" value="2000"/>
 	</item>
 	<item id="39766" article="an" name="exalted core" plural="exalted cores">
-		<attribute key="description" value="Use this item to enhance your chances at the exaltation forge"/>
+		<attribute key="description" value="Use this item to enhance your chances at the exaltation forge."/>
 		<attribute key="weight" value="260"/>
+	</item>
+	<item id="39816" article="" name="dust" plural="dust">
+		<attribute key="pickupable" value="1" />
+		<attribute key="description" value="Use this item to earn 100 dust at the exaltation forge."/>
+		<attribute key="weight" value="10"/>
 	</item>
 	<item id="40613" article="a" name="balloon box">
 		<attribute key="weight" value="20"/>
