@@ -82,10 +82,10 @@ monster.elements = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350, condition = {type = CONDITION_POISON, minDamage = 210, maxDamage = 210, interval = 4000}},
-	{name ="combat", interval = 2000, chance = 23, minDamage = -210, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POISONAREA},
-	{name ="combat", interval = 2000, chance = 29, minDamage = -150, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_EXPLOSIONAREA},
-	{name ="RipperSpectreTWave", interval = 2000, chance = 20, minDamage = -80, maxDamage = -200}
+	-- {name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350, condition = {type = CONDITION_POISON, minDamage = 210, maxDamage = 210, interval = 4000}},
+	-- {name ="combat", interval = 2000, chance = 23, minDamage = -210, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_POISONAREA},
+	-- {name ="combat", interval = 2000, chance = 29, minDamage = -150, maxDamage = -300, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_EXPLOSIONAREA},
+	-- {name ="RipperSpectreTWave", interval = 2000, chance = 20, minDamage = -80, maxDamage = -200}
 
 }
 
