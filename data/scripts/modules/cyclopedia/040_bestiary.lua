@@ -1304,7 +1304,7 @@ do
 				m:addByte(statCount) -- amount of elements
 				for combatId = CLIENT_COMBAT_FIRST, CLIENT_COMBAT_LAST do
 					m:addByte(combatId) -- element client id
-					m:addU16(resistanceMap[combatId]) -- percent modifier
+					m:addI16(resistanceMap[combatId]) -- percent modifier
 				end
 					
 				m:addU16(1) -- locations block

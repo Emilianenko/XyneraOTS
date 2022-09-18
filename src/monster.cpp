@@ -643,6 +643,15 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 		if (elementMod != 0) {
 			damage = static_cast<int32_t>(std::round(damage * ((100 - elementMod) / 100.)));
 			if (damage <= 0) {
+				if (elementMod > 100) {
+					// resistance above 100%, heal from received damage
+					CombatDamage absorbDamage;
+					absorbDamage.origin = ORIGIN_CONDITION;
+					absorbDamage.primary.type = COMBAT_HEALING;
+					absorbDamage.primary.value = damage;
+					g_game.combatChangeHealth(this, this, absorbDamage);
+				}
+
 				damage = 0;
 				blockType = BLOCK_ARMOR;
 			}
