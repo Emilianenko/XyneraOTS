@@ -2714,6 +2714,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("NetworkMessage", "getU16", LuaScriptInterface::luaNetworkMessageGetU16);
 	registerMethod("NetworkMessage", "getU32", LuaScriptInterface::luaNetworkMessageGetU32);
 	registerMethod("NetworkMessage", "getU64", LuaScriptInterface::luaNetworkMessageGetU64);
+	registerMethod("NetworkMessage", "getI8", LuaScriptInterface::luaNetworkMessageGetI8);
+	registerMethod("NetworkMessage", "getI16", LuaScriptInterface::luaNetworkMessageGetI16);
+	registerMethod("NetworkMessage", "getI32", LuaScriptInterface::luaNetworkMessageGetI32);
+	registerMethod("NetworkMessage", "getI64", LuaScriptInterface::luaNetworkMessageGetI64);
 	registerMethod("NetworkMessage", "getString", LuaScriptInterface::luaNetworkMessageGetString);
 	registerMethod("NetworkMessage", "getPosition", LuaScriptInterface::luaNetworkMessageGetPosition);
 
@@ -2721,6 +2725,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("NetworkMessage", "addU16", LuaScriptInterface::luaNetworkMessageAddU16);
 	registerMethod("NetworkMessage", "addU32", LuaScriptInterface::luaNetworkMessageAddU32);
 	registerMethod("NetworkMessage", "addU64", LuaScriptInterface::luaNetworkMessageAddU64);
+	registerMethod("NetworkMessage", "addI8", LuaScriptInterface::luaNetworkMessageAddI8);
+	registerMethod("NetworkMessage", "addI16", LuaScriptInterface::luaNetworkMessageAddI16);
+	registerMethod("NetworkMessage", "addI32", LuaScriptInterface::luaNetworkMessageAddI32);
+	registerMethod("NetworkMessage", "addI64", LuaScriptInterface::luaNetworkMessageAddI64);
 	registerMethod("NetworkMessage", "addString", LuaScriptInterface::luaNetworkMessageAddString);
 	registerMethod("NetworkMessage", "addPosition", LuaScriptInterface::luaNetworkMessageAddPosition);
 	registerMethod("NetworkMessage", "addDouble", LuaScriptInterface::luaNetworkMessageAddDouble);

@@ -670,6 +670,10 @@ class LuaScriptInterface
 		static int luaNetworkMessageGetU16(lua_State* L);
 		static int luaNetworkMessageGetU32(lua_State* L);
 		static int luaNetworkMessageGetU64(lua_State* L);
+		static int luaNetworkMessageGetI8(lua_State* L);
+		static int luaNetworkMessageGetI16(lua_State* L);
+		static int luaNetworkMessageGetI32(lua_State* L);
+		static int luaNetworkMessageGetI64(lua_State* L);
 		static int luaNetworkMessageGetString(lua_State* L);
 		static int luaNetworkMessageGetPosition(lua_State* L);
 
@@ -677,6 +681,10 @@ class LuaScriptInterface
 		static int luaNetworkMessageAddU16(lua_State* L);
 		static int luaNetworkMessageAddU32(lua_State* L);
 		static int luaNetworkMessageAddU64(lua_State* L);
+		static int luaNetworkMessageAddI8(lua_State* L);
+		static int luaNetworkMessageAddI16(lua_State* L);
+		static int luaNetworkMessageAddI32(lua_State* L);
+		static int luaNetworkMessageAddI64(lua_State* L);
 		static int luaNetworkMessageAddString(lua_State* L);
 		static int luaNetworkMessageAddPosition(lua_State* L);
 		static int luaNetworkMessageAddDouble(lua_State* L);
