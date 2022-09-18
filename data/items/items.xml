@@ -29019,7 +29019,7 @@
 	<item id="22559" name="strange ruined stairs">
 		<attribute key="floorchange" value="west" />
 	</item>
-	<item id="22562" article="a" name="dead Gaz'haragoth">
+	<item id="22562" article="a" name="remains of Gaz'haragoth">
 		<attribute key="containerSize" value="40" />
 		<attribute key="decayTo" value="22563" />
 		<attribute key="duration" value="10" />
