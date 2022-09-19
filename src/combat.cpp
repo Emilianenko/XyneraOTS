@@ -841,7 +841,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				}
 			}
 
-			if (damage.primary.type != COMBAT_HEALING && damage.origin != ORIGIN_CONDITION) {
+			if (damage.primary.type != COMBAT_HEALING && !damage.reflect && damage.origin != ORIGIN_CONDITION) {
 				// roll critical hit
 				if (!damage.critical) {
 					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_CRITICALHITCHANCE);
@@ -977,7 +977,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 	int32_t fatalPrimary = 0;
 	int32_t fatalSecondary = 0;
 
-	if (damage.primary.type != COMBAT_HEALING && casterPlayer && damage.origin != ORIGIN_CONDITION) {
+	if (damage.primary.type != COMBAT_HEALING && !damage.reflect && casterPlayer && damage.origin != ORIGIN_CONDITION) {
 
 		// roll critical hit
 		if (!damage.critical) {
