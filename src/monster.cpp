@@ -693,8 +693,6 @@ CombatDamage Monster::getReflectDamage(CombatDamage& damage)
 		reflectDamage.secondary.value = reflectMod != 0 ? -static_cast<int32_t>(std::round(damage.secondary.value * (reflectMod / 100.))) : 0;
 	}
 
-	reflectDamage.critical = damage.critical;
-	reflectDamage.fatal = damage.fatal;
 	return reflectDamage;
 }
 
