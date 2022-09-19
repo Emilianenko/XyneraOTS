@@ -67,7 +67,7 @@ monster.immunities = {
 }
 
 monster.reflects = {
-	{type = COMBAT_FIREDAMAGE, percent = 166},
+	{type = COMBAT_FIREDAMAGE, percent = 56},
 }
 
 monster.elements = {
