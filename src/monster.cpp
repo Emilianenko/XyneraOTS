@@ -652,6 +652,7 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 					// resistance above 100%, heal from received damage
 					CombatDamage absorbDamage;
 					absorbDamage.origin = ORIGIN_ABSORB;
+					absorbDamage.absorb = true;
 					absorbDamage.primary.type = COMBAT_HEALING;
 					absorbDamage.primary.value = damage;
 					g_game.combatChangeHealth(attacker, this, absorbDamage);
@@ -670,6 +671,7 @@ CombatDamage Monster::getReflectDamage(CombatDamage& damage)
 {
 	CombatDamage reflectDamage;
 	reflectDamage.origin = ORIGIN_REFLECT;
+	reflectDamage.reflect = true;
 
 	if (damage.primary.value != 0) {
 		int32_t reflectMod = 0;

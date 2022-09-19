@@ -928,7 +928,7 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 	}
 
 	// damage reflection
-	if (caster && damage.origin != ORIGIN_REFLECT) {
+	if (caster && !damage.reflect) {
 		CombatDamage reflectDamage = target->getReflectDamage(damage);
 		if (reflectDamage.primary.value != 0 || reflectDamage.secondary.value != 0) {
 			CombatParams reflectParams;
@@ -1153,7 +1153,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 	}
 
 	// damage reflection
-	if (caster && damage.origin != ORIGIN_REFLECT) {
+	if (caster && !damage.reflect) {
 		for (Creature* creature : toDamageCreatures) {
 			CombatDamage reflectDamage = creature->getReflectDamage(damage);
 			if (reflectDamage.primary.value != 0 || reflectDamage.secondary.value != 0) {

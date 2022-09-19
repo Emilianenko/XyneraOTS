@@ -657,6 +657,8 @@ struct CombatDamage
 	bool critical = false;
 	bool leeched = false;
 	bool fatal = false;
+	bool absorb = false;
+	bool reflect = false;
 };
 
 struct Reflect {

@@ -4630,7 +4630,7 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 	}
 }
 
-bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage, bool isReflect)
+bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage)
 {
 	// healing can't deal damage
 	if (damage.primary.type == COMBAT_HEALING) {
@@ -4644,7 +4644,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.secondary.value = -std::abs(damage.secondary.value);
 	}
 
-	std::string reflectStr = (isReflect || damage.origin == ORIGIN_REFLECT) ? " (damage reflection)" : "";
+	std::string reflectStr = damage.reflect ? " (damage reflection)" : "";
 
 	// informs if part of the damage taken was already blocked by the mana shield
 	bool isBeforeManaShield = true;
@@ -4674,9 +4674,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					// healing
 					creatureEvent->executeHealthChange(target, attacker, damage, isBeforeManaShield);
 				}
-				isReflect = damage.origin == ORIGIN_REFLECT;
 				damage.origin = ORIGIN_NONE;
-				return combatChangeHealth(attacker, target, damage, isReflect);
+				return combatChangeHealth(attacker, target, damage);
 			}
 		}
 
@@ -4692,7 +4691,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			TextMessage message;
 			message.position = targetPos;
 			message.primary.value = realHealthChange;
-			message.primary.color = damage.origin != ORIGIN_ABSORB ? TEXTCOLOR_PASTELRED : TEXTCOLOR_LIGHTYELLOW;
+			message.primary.color = !damage.absorb ? TEXTCOLOR_PASTELRED : TEXTCOLOR_LIGHTYELLOW;
 
 			SpectatorVec spectators;
 			map.getSpectators(spectators, targetPos, false, true);
@@ -4700,7 +4699,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				Player* tmpPlayer = spectator->getPlayer();
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
 					message.type = MESSAGE_HEALED;
-					if (damage.origin != ORIGIN_ABSORB) {
+					if (!damage.absorb) {
 						message.text = fmt::format("You heal {:s} for {:s}.", target->getNameDescription(), damageString);
 					} else {
 						message.text = fmt::format("{:s} gained {:s} from your attack.", target->getNameDescription(), damageString);
@@ -4717,7 +4716,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				} else {
 					message.type = MESSAGE_HEALED_OTHERS;
 					if (spectatorMessage.empty()) {
-						if (damage.origin == ORIGIN_ABSORB) {
+						if (!damage.absorb) {
 							if (!attacker || attacker == target) {
 								spectatorMessage = fmt::format("{:s} gained {:s}.", target->getNameDescription(), damageString);
 							} else {
@@ -4858,9 +4857,8 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 					// real damage taken
 					creatureEvent->executeHealthChange(target, attacker, damage, isBeforeManaShield);
 				}
-				isReflect = damage.origin == ORIGIN_REFLECT;
 				damage.origin = ORIGIN_NONE;
-				return combatChangeHealth(attacker, target, damage, isReflect);
+				return combatChangeHealth(attacker, target, damage);
 			}
 		}
 
@@ -4957,14 +4955,14 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 	return true;
 }
 
-bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& damage, bool isReflect)
+bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& damage)
 {
 	Player* targetPlayer = target->getPlayer();
 	if (!targetPlayer) {
 		return true;
 	}
 
-	std::string reflectStr = (isReflect || damage.origin == ORIGIN_REFLECT) ? " (damage reflection)" : "";
+	std::string reflectStr = damage.reflect ? " (damage reflection)" : "";
 
 	int32_t manaChange = damage.primary.value + damage.secondary.value;
 	if (manaChange > 0) {
@@ -4981,9 +4979,8 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 				for (CreatureEvent* creatureEvent : events) {
 					creatureEvent->executeManaChange(target, attacker, damage);
 				}
-				isReflect = damage.origin == ORIGIN_REFLECT;
 				damage.origin = ORIGIN_NONE;
-				return combatChangeMana(attacker, target, damage, isReflect);
+				return combatChangeMana(attacker, target, damage);
 			}
 		}
 
@@ -5036,9 +5033,8 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 				for (CreatureEvent* creatureEvent : events) {
 					creatureEvent->executeManaChange(target, attacker, damage);
 				}
-				isReflect = damage.origin == ORIGIN_REFLECT;
 				damage.origin = ORIGIN_NONE;
-				return combatChangeMana(attacker, target, damage, isReflect);
+				return combatChangeMana(attacker, target, damage);
 			}
 		}
 

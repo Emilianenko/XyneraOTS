@@ -2303,6 +2303,7 @@ CombatDamage Player::getReflectDamage(CombatDamage& damage)
 {
 	CombatDamage reflectDamage;
 	reflectDamage.origin = ORIGIN_REFLECT;
+	reflectDamage.reflect = true;
 
 	Reflect reflectPrimary;
 	Reflect reflectSecondary;
