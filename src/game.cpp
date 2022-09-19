@@ -4982,7 +4982,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 		realManaChange = targetPlayer->getMana() - realManaChange;
 
 		if (realManaChange > 0 && !targetPlayer->isInGhostMode()) {
-			TextMessage message(MESSAGE_MANA, "You gained " + std::to_string(realManaChange) + " mana.");
+			TextMessage message(MESSAGE_HEALED, "You gained " + std::to_string(realManaChange) + " mana.");
 			message.position = target->getPosition();
 			message.primary.value = realManaChange;
 			message.primary.color = TEXTCOLOR_MAYABLUE;
@@ -5048,7 +5048,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 				message.text = fmt::format("{:s} loses {:d} mana due to your attack.", target->getNameDescription(), manaLoss);
 				message.text[0] = std::toupper(message.text[0]);
 			} else if (tmpPlayer == targetPlayer) {
-				message.type = MESSAGE_MANA;
+				message.type = MESSAGE_DAMAGE_RECEIVED;
 				if (!attacker) {
 					message.text = fmt::format("You lose {:d} mana.", manaLoss);
 				} else if (targetPlayer == attackerPlayer) {
@@ -5057,7 +5057,7 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 					message.text = fmt::format("You lose {:d} mana due to an attack by {:s}.", manaLoss, attacker->getNameDescription());
 				}
 			} else {
-				message.type = MESSAGE_MANA_OTHERS;
+				message.type = MESSAGE_DAMAGE_OTHERS;
 				if (spectatorMessage.empty()) {
 					if (!attacker) {
 						spectatorMessage = fmt::format("{:s} loses {:d} mana.", target->getNameDescription(), manaLoss);

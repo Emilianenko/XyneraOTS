@@ -1026,9 +1026,8 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		}
 	}
 
-	CombatDamage leechCombat;
-	leechCombat.origin = ORIGIN_NONE;
-	leechCombat.leeched = true;
+	int32_t leechedHealth = 0;
+	int32_t leechedMana = 0;
 
 	for (Creature* creature : toDamageCreatures) {
 		CombatDamage damageCopy = damage; // we cannot avoid copying here, because we don't know if it's player combat or not, so we can't modify the initial damage.
@@ -1093,10 +1092,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_LIFELEECHCHANCE);
 					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_LIFELEECHAMOUNT);
 					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
-						leechCombat.primary.value = std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
-						leechCombat.primary.type = COMBAT_HEALING;
-						g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
-						casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
+						leechedHealth += std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
 					}
 				}
 
@@ -1104,9 +1100,7 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHCHANCE);
 					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT);
 					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
-						leechCombat.primary.value = std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
-						g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
-						casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
+						leechedMana += std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
 					}
 				}
 			}
@@ -1121,6 +1115,25 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		if (params.targetCallback) {
 			params.targetCallback->onTargetCombat(caster, creature);
 		}
+	}
+
+	if (leechedHealth != 0) {
+		CombatDamage leechCombat;
+		leechCombat.origin = ORIGIN_NONE;
+		leechCombat.leeched = true;
+		leechCombat.primary.type = COMBAT_HEALING;
+		leechCombat.primary.value = leechedHealth;
+		g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
+		casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
+	}
+
+	if (leechedMana != 0) {
+		CombatDamage leechCombat;
+		leechCombat.origin = ORIGIN_NONE;
+		leechCombat.leeched = true;
+		leechCombat.primary.value = leechedMana;
+		g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
+		casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
 	}
 }
 
