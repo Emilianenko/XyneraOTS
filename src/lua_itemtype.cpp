@@ -615,6 +615,10 @@ int LuaScriptInterface::luaItemTypeGetAbilities(lua_State* L)
 		lua_setfield(L, -2, "boostPercent");
 
 		//// Reflect
+		// flat (100% chance)
+		lua_pushnumber(L, abilities.reflectDamage);
+		lua_setfield(L, -2, "reflectDamage");
+
 		// chance
 		lua_createtable(L, 0, COMBAT_COUNT);
 		for (int32_t i = 0; i < COMBAT_COUNT; i++) {

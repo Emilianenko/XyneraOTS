@@ -214,7 +214,7 @@ class MonsterSpell
 		ShootType_t shoot = CONST_ANI_NONE;
 		MagicEffectClasses effect = CONST_ME_NONE;
 		ConditionType_t conditionType = CONDITION_NONE;
-		CombatType_t combatType = COMBAT_UNDEFINEDDAMAGE;
+		CombatType_t combatType = COMBAT_PHYSICALDAMAGE;
 };
 
 class Monsters

@@ -94,7 +94,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"magicleveldrown", ITEM_PARSE_MAGICLEVELDROWN},
 	{"magiclevelphysical", ITEM_PARSE_MAGICLEVELPHYSICAL},
 	{"magiclevelhealing", ITEM_PARSE_MAGICLEVELHEALING},
-	{"magiclevelundefined", ITEM_PARSE_MAGICLEVELUNDEFINED},
+	{"magiclevelreflect", ITEM_PARSE_MAGICLEVELREFLECT},
 	{"criticalhitchance", ITEM_PARSE_CRITICALHITCHANCE},
 	{"criticalhitamount", ITEM_PARSE_CRITICALHITAMOUNT},
 	{"lifeleechchance", ITEM_PARSE_LIFELEECHCHANCE},
@@ -126,7 +126,8 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"absorbpercentdrown", ITEM_PARSE_ABSORBPERCENTDROWN},
 	{"absorbpercentphysical", ITEM_PARSE_ABSORBPERCENTPHYSICAL},
 	{"absorbpercenthealing", ITEM_PARSE_ABSORBPERCENTHEALING},
-	{"absorbpercentundefined", ITEM_PARSE_ABSORBPERCENTUNDEFINED},
+	{"absorbpercentreflect", ITEM_PARSE_ABSORBPERCENTREFLECT},
+	{"reflectdamage", ITEM_PARSE_REFLECTDAMAGE}, // flat damage reflection
 	{"reflectpercentall", ITEM_PARSE_REFLECTPERCENTALL},
 	{"reflectpercentallelements", ITEM_PARSE_REFLECTPERCENTALL},
 	{"reflectpercentelements", ITEM_PARSE_REFLECTPERCENTELEMENTS},
@@ -1218,8 +1219,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_MAGICLEVELUNDEFINED: {
-					abilities.specialMagicLevelSkill[combatTypeToIndex(COMBAT_UNDEFINEDDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+				case ITEM_PARSE_MAGICLEVELREFLECT: {
+					abilities.specialMagicLevelSkill[combatTypeToIndex(COMBAT_REFLECTDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 					break;
 				}
 
@@ -1331,8 +1332,15 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_ABSORBPERCENTUNDEFINED: {
-					abilities.absorbPercent[combatTypeToIndex(COMBAT_UNDEFINEDDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+				case ITEM_PARSE_ABSORBPERCENTREFLECT: {
+					abilities.absorbPercent[combatTypeToIndex(COMBAT_REFLECTDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+					break;
+				}
+
+				// flat damage reflection
+				// capped at minimum of selected value or 1% of attacker health
+				case ITEM_PARSE_REFLECTDAMAGE: {
+					abilities.reflectDamage = pugi::cast<int16_t>(valueAttribute.value());
 					break;
 				}
 

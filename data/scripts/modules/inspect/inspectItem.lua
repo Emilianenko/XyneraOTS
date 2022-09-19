@@ -301,7 +301,6 @@ function getItemDetails(item)
 	
 	-- damage reflection
 	do
-		local reflectInfo = item:getAllReflects()
 		local reflects = {}
 		
 		local allElements = true
@@ -309,18 +308,24 @@ function getItemDetails(item)
 		local identicalChance = true
 		local currentChance = -1
 												
-		for combatId, reflect in pairs(reflectInfo) do
-			if reflect.chance > 0 and reflect.percent > 0 then
-				reflects[#reflects + 1] = {element = getCombatName(2^(combatId-1)), percent = reflect.percent, chance = reflect.chance}
+		for combatId, chance in pairs(abilities.reflectChance) do
+			local amount = abilities.reflectPercent[combatId]
+			if chance > 0 and amount > 0 then
+				reflects[#reflects + 1] = {element = getCombatName(2^(combatId-1)), amount = amount, chance = chance}
 				
 				if currentChance == -1 then
-					currentChance = reflect.chance
-				elseif currentChance ~= reflect.chance then
+					currentChance = chance
+				elseif currentChance ~= chance then
 					identicalChance = false
 				end
 			else
 				allElements = false
 			end
+		end
+		
+		local reflectInfo = {}
+		if abilities.reflectDamage ~= 0 then
+			reflectInfo[#reflectInfo + 1] = tostring(abilities.reflectDamage)
 		end
 		
 		if #reflects > 0 then
@@ -330,14 +335,14 @@ function getItemDetails(item)
 				-- chance and amount are identical
 				-- display single values for chance and amount
 				local chanceInfo = reflects[1].chance ~= 100 and string.format(" (%d%% chance)", reflects[1].chance) or ""
-				reflectResponse = string.format("%+d%%%s", reflects[1].percent, chanceInfo)
+				reflectResponse = string.format("%+d%%%s", reflects[1].amount, chanceInfo)
 				
 			elseif identicalChance then
 				-- incomplete elements list (chances still identical)
 				-- display single value for chance only
 				local reflectValues = {}
 				for i = 1, #reflects do
-					reflectValues[#reflectValues + 1] = string.format("%s %+d%%", reflects[i].element, reflects[i].percent)
+					reflectValues[#reflectValues + 1] = string.format("%s %+d%%", reflects[i].element, reflects[i].amount)
 				end
 				
 				local chanceInfo = reflects[1].chance ~= 100 and string.format(" (%d%% chance)", reflects[1].chance) or ""
@@ -347,13 +352,17 @@ function getItemDetails(item)
 				-- display full info
 				local reflectValues = {}
 				for i = 1, #reflects do
-					reflectValues[#reflectValues + 1] = string.format("%s %+d%% (%d%% chance)", reflects[i].element, reflects[i].percent, reflects[i].chance)
+					reflectValues[#reflectValues + 1] = string.format("%s %+d%% (%d%% chance)", reflects[i].element, reflects[i].amount, reflects[i].chance)
 				end
 				
 				reflectResponse = table.concat(reflectValues, ", ")
 			end
-												
-			descriptions[#descriptions + 1] = {"Damage Reflection", reflectResponse}
+
+			reflectInfo[#reflectInfo + 1] = reflectResponse
+		end
+
+		if #reflectInfo > 0 then
+			descriptions[#descriptions + 1] = {"Damage Reflection", table.concat(reflectInfo, " melee, ")}
 		end
 	end
 	

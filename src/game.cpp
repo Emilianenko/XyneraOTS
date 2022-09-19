@@ -4380,8 +4380,9 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 		} else if (blockType == BLOCK_IMMUNITY) {
 			uint8_t hitEffect = 0;
 			switch (combatType) {
-				case COMBAT_UNDEFINEDDAMAGE: {
-					return;
+				case COMBAT_REFLECTDAMAGE: {
+					hitEffect = CONST_ME_BLOCKHIT;
+					break;
 				}
 				case COMBAT_ENERGYDAMAGE:
 				case COMBAT_FIREDAMAGE:
@@ -4622,6 +4623,11 @@ void Game::combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColo
 			effect = CONST_ME_MAGIC_RED;
 			break;
 		}
+		case COMBAT_REFLECTDAMAGE: {
+			color = TEXTCOLOR_LIGHTPURPLE;
+			effect = CONST_ME_REDSMOKE;
+			break;
+		}
 		default: {
 			color = TEXTCOLOR_NONE;
 			effect = CONST_ME_NONE;
@@ -4769,7 +4775,7 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		message.position = targetPos;
 
 		SpectatorVec spectators;
-		if (targetPlayer && target->hasCondition(CONDITION_MANASHIELD) && damage.primary.type != COMBAT_UNDEFINEDDAMAGE) {
+		if (targetPlayer && target->hasCondition(CONDITION_MANASHIELD)) {
 			int32_t manaDamage = std::min<int32_t>(targetPlayer->getMana(), healthChange);
 			if (manaDamage != 0) {
 				if (damage.origin != ORIGIN_NONE) {

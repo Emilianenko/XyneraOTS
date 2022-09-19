@@ -641,7 +641,7 @@ int LuaScriptInterface::luaCreatureAddHealth(lua_State* L)
 	if (damage.primary.value >= 0) {
 		damage.primary.type = COMBAT_HEALING;
 	} else {
-		damage.primary.type = COMBAT_UNDEFINEDDAMAGE;
+		damage.primary.type = COMBAT_REFLECTDAMAGE;
 	}
 	pushBoolean(L, g_game.combatChangeHealth(nullptr, creature, damage));
 	return 1;

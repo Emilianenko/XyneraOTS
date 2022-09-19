@@ -717,7 +717,7 @@ CombatTypeNames combatTypeNames = {
 	{COMBAT_ENERGYDAMAGE, 		"energy"},
 	{COMBAT_EARTHDAMAGE, 		"earth"},
 	{COMBAT_FIREDAMAGE, 		"fire"},
-	{COMBAT_UNDEFINEDDAMAGE, 	"undefined"},
+	{COMBAT_REFLECTDAMAGE, 	"reflect"},
 	{COMBAT_LIFEDRAIN, 		"lifedrain"},
 	{COMBAT_MANADRAIN, 		"manadrain"},
 	{COMBAT_HEALING, 		"healing"},
@@ -1018,7 +1018,7 @@ size_t combatTypeToIndex(CombatType_t combatType)
 			return 2;
 		case COMBAT_FIREDAMAGE:
 			return 3;
-		case COMBAT_UNDEFINEDDAMAGE:
+		case COMBAT_REFLECTDAMAGE:
 			return 4;
 		case COMBAT_LIFEDRAIN:
 			return 5;

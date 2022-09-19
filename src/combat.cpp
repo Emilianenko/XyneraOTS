@@ -927,8 +927,34 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 		}
 	}
 
+	if (params.targetCallback) {
+		params.targetCallback->onTargetCombat(caster, target);
+	}
+
 	// damage reflection
-	if (caster && !damage.reflect) {
+	if (!damage.reflect && damage.primary.type != COMBAT_HEALING && caster && target && caster != target) {
+		// flat damage reflection
+		if (Player* targetPlayer = target->getPlayer()) {
+			if (params.blockedByArmor || params.blockedByShield) {
+				int16_t dmg = targetPlayer->getReflectAmount();
+				if (dmg != 0) {
+					dmg = std::min<int32_t>(damage.primary.value + damage.secondary.value, std::min<int32_t>(static_cast<int32_t>(std::floor(caster->getMaxHealth() / 100.)), dmg));
+					if (dmg != 0) {
+						CombatDamage reflectDamage;
+						reflectDamage.origin = ORIGIN_REFLECT;
+						reflectDamage.reflect = true;
+						reflectDamage.primary.type = COMBAT_REFLECTDAMAGE;
+						reflectDamage.primary.value = dmg;
+
+						CombatParams reflectParams;
+						reflectParams.combatType = reflectDamage.primary.type;
+						doTargetCombat(target, caster, reflectDamage, reflectParams);
+					}
+				}
+			}
+		}
+
+		// percent damage reflection
 		CombatDamage reflectDamage = target->getReflectDamage(damage);
 		if (reflectDamage.primary.value != 0 || reflectDamage.secondary.value != 0) {
 			CombatParams reflectParams;
@@ -938,10 +964,6 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 			reflectParams.ignoreResistances = false;
 			doTargetCombat(target, caster, reflectDamage, reflectParams);
 		}
-	}
-
-	if (params.targetCallback) {
-		params.targetCallback->onTargetCombat(caster, target);
 	}
 }
 

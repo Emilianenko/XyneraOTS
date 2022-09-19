@@ -1004,6 +1004,8 @@ class Item : virtual public Thing
 		uint32_t getWorth() const;
 		LightInfo getLightInfo() const;
 
+		int16_t getReflectDamage() const;
+
 		void setReflect(CombatType_t combatType, const Reflect& reflect) {
 			getAttributes()->reflect[combatType] = reflect;
 		}

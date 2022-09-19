@@ -367,8 +367,14 @@ ec.onLookInMarket = function(self, itemType, tier)
 			end
 		end
 		
+		local reflectInfo = {}
+		if abilities.reflectDamage ~= 0 then
+			reflectInfo[#reflectInfo + 1] = tostring(abilities.reflectDamage)
+		end
+		
 		if #reflects > 0 then
 			local reflectResponse = ""
+			
 			if allElements and identicalChance then
 				-- chance and amount are identical
 				-- display single values for chance and amount
@@ -396,12 +402,10 @@ ec.onLookInMarket = function(self, itemType, tier)
 				reflectResponse = table.concat(reflectValues, ", ")
 			end
 			
-			-- display reflect stats
-			response:addString(reflectResponse)
-		else
-			-- no stats to display
-			response:addU16(0)
+			reflectInfo[#reflectInfo + 1] = reflectResponse
 		end
+		
+		response:addString(table.concat(reflectInfo, " melee, "))
 	end
 	
 	-- to do

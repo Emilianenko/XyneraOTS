@@ -497,6 +497,11 @@ do
 				end
 			end
 			
+			-- flat damage reflection
+			if abilities.reflectDamage ~= 0 then
+				descriptions[#descriptions + 1] = string.format("%d damage reflection", abilities.reflectDamage)
+			end
+			
 			-- special skills
 			do
 				for skill, value in pairs(abilities.specialSkills) do

@@ -2334,6 +2334,25 @@ CombatDamage Player::getReflectDamage(CombatDamage& damage)
 	return reflectDamage;
 }
 
+int16_t Player::getReflectAmount() const
+{
+	int16_t totalAmount = 0;
+	for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+		if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+			continue;
+		}
+
+		Item* item = inventory[slot];
+		if (!item) {
+			continue;
+		}
+
+		totalAmount += item->getReflectDamage();
+	}
+
+	return totalAmount;
+}
+
 void Player::consumeCharge(Item* item) const
 {
 	uint16_t newCharges = item->getCharges() - 1;

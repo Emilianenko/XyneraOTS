@@ -35681,6 +35681,7 @@
 	</item>
 	<item id="39312" article="a" name="eldritch shield">
 		<attribute key="weaponType" value="shield"/>
+		<attribute key="reflectdamage" value="42"/>
 		<attribute key="absorbpercentphysical" value="4"/>
 		<attribute key="defense" value="39"/>
 		<attribute key="weight" value="6600"/>
@@ -41747,7 +41748,7 @@
 		<attribute key="skillsword" value="3"/>
 		<attribute key="skillaxe" value="3"/>
 		<attribute key="skillclub" value="3"/>
-		<!--attribute key="damagereflection" value="13"/-->
+		<attribute key="reflectdamage" value="13"/>
 		<attribute key="armor" value="12"/>
 		<attribute key="weight" value="4400"/>
 	</item>
@@ -41793,7 +41794,7 @@
 		<attribute key="skillsword" value="4"/>
 		<attribute key="skillaxe" value="4"/>
 		<attribute key="skillclub" value="4"/>
-		<!--attribute key="damagereflection" value="19"/-->
+		<attribute key="reflectdamage" value="19"/>
 		<attribute key="armor" value="20"/>
 		<attribute key="weight" value="16000"/>
 	</item>

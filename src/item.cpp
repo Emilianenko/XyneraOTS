@@ -1168,6 +1168,12 @@ LightInfo Item::getLightInfo() const
 	return {it.lightLevel, it.lightColor};
 }
 
+int16_t Item::getReflectDamage() const
+{
+	const ItemType& it = Item::items[id];
+	return it.abilities->reflectDamage;
+}
+
 Reflect Item::getReflect(CombatType_t combatType, bool total /* = true */) const
 {
 	const ItemType& it = Item::items[id];
