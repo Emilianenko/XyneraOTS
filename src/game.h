@@ -486,8 +486,8 @@ class Game
 
 		void combatGetTypeInfo(CombatType_t combatType, Creature* target, TextColor_t& color, uint8_t& effect);
 
-		bool combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage);
-		bool combatChangeMana(Creature* attacker, Creature* target, CombatDamage& damage);
+		bool combatChangeHealth(Creature* attacker, Creature* target, CombatDamage& damage, bool isReflect = false);
+		bool combatChangeMana(Creature* attacker, Creature* target, CombatDamage& damage, bool isReflect = false);
 
 		//animation help functions
 		void addCreatureHealth(const Creature* target);

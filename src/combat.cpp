@@ -927,6 +927,19 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 		}
 	}
 
+	// damage reflection
+	if (caster && damage.origin != ORIGIN_REFLECT) {
+		CombatDamage reflectDamage = target->getReflectDamage(damage);
+		if (reflectDamage.primary.value != 0 || reflectDamage.secondary.value != 0) {
+			CombatParams reflectParams;
+			reflectParams.combatType = reflectDamage.primary.type;
+			reflectParams.blockedByArmor = true;
+			reflectParams.blockedByShield = true;
+			reflectParams.ignoreResistances = false;
+			doTargetCombat(target, caster, reflectDamage, reflectParams);
+		}
+	}
+
 	if (params.targetCallback) {
 		params.targetCallback->onTargetCombat(caster, target);
 	}
@@ -1117,23 +1130,41 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 		}
 	}
 
-	if (leechedHealth != 0) {
-		CombatDamage leechCombat;
-		leechCombat.origin = ORIGIN_NONE;
-		leechCombat.leeched = true;
-		leechCombat.primary.type = COMBAT_HEALING;
-		leechCombat.primary.value = leechedHealth;
-		g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
-		casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
+	// life/mana leech
+	if (casterPlayer) {
+		if (leechedHealth != 0) {
+			CombatDamage leechCombat;
+			leechCombat.origin = ORIGIN_NONE;
+			leechCombat.leeched = true;
+			leechCombat.primary.type = COMBAT_HEALING;
+			leechCombat.primary.value = leechedHealth;
+			g_game.combatChangeHealth(nullptr, casterPlayer, leechCombat);
+			casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_RED);
+		}
+
+		if (leechedMana != 0) {
+			CombatDamage leechCombat;
+			leechCombat.origin = ORIGIN_NONE;
+			leechCombat.leeched = true;
+			leechCombat.primary.value = leechedMana;
+			g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
+			casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
+		}
 	}
 
-	if (leechedMana != 0) {
-		CombatDamage leechCombat;
-		leechCombat.origin = ORIGIN_NONE;
-		leechCombat.leeched = true;
-		leechCombat.primary.value = leechedMana;
-		g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
-		casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
+	// damage reflection
+	if (caster && damage.origin != ORIGIN_REFLECT) {
+		for (Creature* creature : toDamageCreatures) {
+			CombatDamage reflectDamage = creature->getReflectDamage(damage);
+			if (reflectDamage.primary.value != 0 || reflectDamage.secondary.value != 0) {
+				CombatParams reflectParams;
+				reflectParams.combatType = reflectDamage.primary.type;
+				reflectParams.blockedByArmor = true;
+				reflectParams.blockedByShield = true;
+				reflectParams.ignoreResistances = false;
+				doTargetCombat(creature, caster, reflectDamage, reflectParams);
+			}
+		}
 	}
 }
 

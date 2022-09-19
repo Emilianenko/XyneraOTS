@@ -630,35 +630,11 @@ void Monster::onChangeZone(ZoneType_t zone)
 }
 
 BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */, bool /* ignoreResistances = false */, bool /* isReflect = false */)
+                              bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool /* field = false */, bool /* ignoreResistances = false */)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
 	if (damage != 0) {
-		// monster damage reflection
-		if (attacker) {
-			int32_t reflectMod = 0;
-			auto it = mType->info.reflectMap.find(combatType);
-			if (it != mType->info.reflectMap.end()) {
-				reflectMod = it->second;
-			}
-
-			if (reflectMod != 0) {
-				CombatParams params;
-				params.combatType = combatType;
-				params.blockedByArmor = true;
-				params.blockedByShield = true;
-				params.ignoreResistances = false;
-
-				CombatDamage reflectDamage;
-				reflectDamage.origin = ORIGIN_REFLECT;
-				reflectDamage.primary.type = combatType;
-				reflectDamage.primary.value = -static_cast<int32_t>(std::round(damage * (reflectMod / 100.)));
-
-				Combat::doTargetCombat(this, attacker, reflectDamage, params);
-			}
-		}
-
 		// element damage reduction and absorption
 		int32_t elementMod = 0;
 		auto it = mType->info.elementMap.find(combatType);
@@ -688,6 +664,38 @@ BlockType_t Monster::blockHit(Creature* attacker, CombatType_t combatType, int32
 	}
 
 	return blockType;
+}
+
+CombatDamage Monster::getReflectDamage(CombatDamage& damage)
+{
+	CombatDamage reflectDamage;
+	reflectDamage.origin = ORIGIN_REFLECT;
+
+	if (damage.primary.value != 0) {
+		int32_t reflectMod = 0;
+		auto it = mType->info.reflectMap.find(damage.primary.type);
+		if (it != mType->info.reflectMap.end()) {
+			reflectMod = it->second;
+		}
+
+		reflectDamage.primary.type = damage.primary.type;
+		reflectDamage.primary.value = reflectMod != 0 ? -static_cast<int32_t>(std::round(damage.primary.value * (reflectMod / 100.))) : 0;
+	}
+
+	if (damage.secondary.value != 0) {
+		int32_t reflectMod = 0;
+		auto it = mType->info.reflectMap.find(damage.secondary.type);
+		if (it != mType->info.reflectMap.end()) {
+			reflectMod = it->second;
+		}
+
+		reflectDamage.secondary.type = damage.secondary.type;
+		reflectDamage.secondary.value = reflectMod != 0 ? -static_cast<int32_t>(std::round(damage.secondary.value * (reflectMod / 100.))) : 0;
+	}
+
+	reflectDamage.critical = damage.critical;
+	reflectDamage.fatal = damage.fatal;
+	return reflectDamage;
 }
 
 bool Monster::isTarget(const Creature* creature) const

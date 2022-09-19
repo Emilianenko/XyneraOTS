@@ -2235,7 +2235,7 @@ bool Player::hasShield() const
 }
 
 BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/, bool ignoreResistances /* = false*/, bool isReflect /* = false */)
+							 bool checkDefense /* = false*/, bool checkArmor /* = false*/, bool field /* = false*/, bool ignoreResistances /* = false*/)
 {
 	BlockType_t blockType = Creature::blockHit(attacker, combatType, damage, checkDefense, checkArmor);
 
@@ -2253,10 +2253,8 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 	}
 
 	if (!ignoreResistances) {
-		Reflect reflect;
-
 		size_t combatIndex = combatTypeToIndex(combatType);
-		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_AMMO; ++slot) {
+		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
 			if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
 				continue;
 			}
@@ -2291,29 +2289,6 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 					}
 				}
 			}
-
-			// reflect chance
-			reflect += item->getReflect(combatType);
-
-			// element resistances from imbuements
-			const auto& imbuements = item->getImbuements();
-			for (const auto& imbuement : imbuements) {
-				uint8_t imbuId = imbuement.second.getImbuId();
-				if (imbuId >= IMBUEMENT_PROTECTION_FIRST && imbuId <= IMBUEMENT_PROTECTION_LAST) {
-					ImbuementType* imbuType = g_imbuements.getImbuementType(imbuId);
-					if (combatType == imbuType->getPrimaryValue()) {
-						damage -= std::round(damage * (imbuType->getSecondaryValue() / 100.));
-					}
-				}
-			}
-		}
-
-		if (!isReflect && combatType != COMBAT_MANADRAIN && attacker && reflect.chance > 0 && reflect.percent != 0 && uniform_random(1, 100) <= reflect.chance) {
-			CombatDamage reflectDamage;
-			reflectDamage.primary.type = combatType;
-			reflectDamage.primary.value = -std::round(damage * (reflect.percent / 100.));
-			reflectDamage.origin = ORIGIN_REFLECT;
-			g_game.combatChangeHealth(this, attacker, reflectDamage);
 		}
 	}
 
@@ -2322,6 +2297,40 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 		blockType = BLOCK_ARMOR;
 	}
 	return blockType;
+}
+
+CombatDamage Player::getReflectDamage(CombatDamage& damage)
+{
+	CombatDamage reflectDamage;
+	reflectDamage.origin = ORIGIN_REFLECT;
+
+	Reflect reflectPrimary;
+	Reflect reflectSecondary;
+	for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+		if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+			continue;
+		}
+
+		Item* item = inventory[slot];
+		if (!item) {
+			continue;
+		}
+
+		reflectPrimary += item->getReflect(damage.primary.type);
+		reflectSecondary += item->getReflect(damage.secondary.type);
+	}
+
+	if (reflectPrimary.chance > 0 && reflectPrimary.percent != 0 && uniform_random(1, 100) <= reflectPrimary.chance) {
+		reflectDamage.primary.type = damage.primary.type;
+		reflectDamage.primary.value = -std::round(damage.primary.value * (reflectPrimary.percent / 100.));
+	}
+
+	if (reflectSecondary.chance > 0 && reflectSecondary.percent != 0 && uniform_random(1, 100) <= reflectSecondary.chance) {
+		reflectDamage.secondary.type = damage.secondary.type;
+		reflectDamage.secondary.value = -std::round(damage.secondary.value * (reflectSecondary.percent / 100.));
+	}
+
+	return reflectDamage;
 }
 
 void Player::consumeCharge(Item* item) const
