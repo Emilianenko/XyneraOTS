@@ -65,7 +65,7 @@ monster.immunities = {
 }
 
 monster.reflects = {
-	{type = COMBAT_EARTHDAMAGE, percent = 66},
+	{type = COMBAT_EARTHDAMAGE, percent = 20},
 }
 
 monster.elements = {
