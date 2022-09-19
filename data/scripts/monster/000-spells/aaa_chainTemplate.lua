@@ -44,8 +44,8 @@ function executeChain(creature, pos, element, effect, min, max, rate, remainingT
 		-- *dirList is complete
 		-- *dir ids are 0-7
 		table.remove(dirList, lastDir + 1)
-		
-		nextPos = pos:getNextPosition(lastDir)
+		local offset = Position.directionOffset[lastDir]
+		nextPos = Position(pos.x + offset.x, pos.y + offset.y, pos.z)
 		if not nextPos:isInRange(fromPos, toPos) or not nextPos:isValidChainPos(visitedTiles) then
 			nextPos = nil
 		end
@@ -56,7 +56,9 @@ function executeChain(creature, pos, element, effect, min, max, rate, remainingT
 			local dirIndex = math.random(#dirList)
 			local dir = dirList[dirIndex]
 			table.remove(dirList, dirIndex)
-			nextPos = pos:getNextPosition(dir)
+			local offset = Position.directionOffset[dir]
+			nextPos = Position(pos.x + offset.x, pos.y + offset.y, pos.z)
+
 			if not nextPos:isInRange(fromPos, toPos) or not nextPos:isValidChainPos(visitedTiles) then
 				nextPos = nil
 				nextDir = dir
