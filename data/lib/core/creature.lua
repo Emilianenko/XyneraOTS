@@ -6,7 +6,7 @@ function Creature:isOpponent(target)
 
 	if target:isMonster() then
 		-- Monster:isOpponent(target) (from sources)
-		return true --target:isOpponent(self)
+		return target:isOpponent(self) or self:isPlayer() and self:isAdmin()
 	elseif self:isPlayer() then
 		return not self:hasSecureMode()
 	end
