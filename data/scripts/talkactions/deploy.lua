@@ -1,8 +1,3 @@
-local function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
-
 if Game.isDevMode() then
 	DEPLOY_LINE_COUNT_CMAKE = 0
 	DEPLOY_LINE_COUNT_BUILD = 0
