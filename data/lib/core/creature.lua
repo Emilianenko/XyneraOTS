@@ -1,3 +1,19 @@
+function Creature:isOpponent(target)
+	-- nil or npc
+	if not target or self:isNpc() or target:isNpc() then
+		return false
+	end
+
+	if target:isMonster() then
+		-- Monster:isOpponent(target) (from sources)
+		return true --target:isOpponent(self)
+	elseif self:isPlayer() then
+		return not self:hasSecureMode()
+	end
+	
+	return false
+end
+
 function Creature:getClosestFreePosition(position, maxRadius, mustBeReachable)
 	maxRadius = maxRadius or 1
 
