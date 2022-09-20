@@ -5477,7 +5477,12 @@ void Game::updatePlayerShield(Player* player)
 	SpectatorVec spectators;
 	map.getSpectators(spectators, player->getPosition(), true, true);
 	for (Creature* spectator : spectators) {
-		spectator->getPlayer()->sendCreatureShield(player);
+		if (Player* spectatorPlayer = spectator->getPlayer()) {
+			spectatorPlayer->sendCreatureShield(player);
+			for (Creature* summon : player->getSummons()) {
+				spectatorPlayer->sendCreatureShield(summon);
+			}
+		}
 	}
 }
 

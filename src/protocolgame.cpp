@@ -2043,7 +2043,7 @@ void ProtocolGame::sendCreatureShield(const Creature* creature)
 	NetworkMessage msg;
 	msg.addByte(0x91);
 	msg.add<uint32_t>(creature->getID());
-	msg.addByte(player->getPartyShield(creature->getPlayer()));
+	msg.addByte(player->getPartyShield(creature));
 	writeToOutputBuffer(msg);
 }
 
@@ -4053,7 +4053,7 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 	AddCreatureIcons(msg, creature);
 
 	msg.addByte(player->getSkullClient(creature));
-	msg.addByte(player->getPartyShield(otherPlayer));
+	msg.addByte(player->getPartyShield(creature));
 
 	if (!known) {
 		msg.addByte(player->getGuildEmblem(otherPlayer));

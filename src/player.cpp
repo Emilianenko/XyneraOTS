@@ -4616,12 +4616,37 @@ void Player::setPremiumTime(time_t premiumEndsAt)
 	sendBasicData();
 }
 
-PartyShields_t Player::getPartyShield(const Player* player) const
+PartyShields_t Player::getPartyShield(const Creature* creature) const
 {
-	if (!player) {
+	if (!creature) {
 		return SHIELD_NONE;
 	}
 
+	const Player* player = creature->getPlayer();
+	if (!player) {
+		// monster, possible summon
+		Creature* master = creature->getMaster();
+		if (!master) {
+			// not a summon
+			return SHIELD_NONE;
+		}
+
+		player = master->getPlayer();
+		if (!player) {
+			// not a player summon
+			return SHIELD_NONE;
+		}
+
+		if (player->party) {
+			// summon in party
+			return (player->party == party) ? SHIELD_BLUE : SHIELD_GRAY;
+		}
+
+		// not in party
+		return SHIELD_NONE;
+	}
+
+	// own party
 	if (party) {
 		if (party->getLeader() == player) {
 			if (party->isSharedExperienceActive()) {
@@ -4661,10 +4686,12 @@ PartyShields_t Player::getPartyShield(const Player* player) const
 		}
 	}
 
+	// invited to party
 	if (player->isInviting(this)) {
 		return SHIELD_WHITEYELLOW;
 	}
 
+	// other party
 	if (player->party) {
 		return SHIELD_GRAY;
 	}
@@ -4700,6 +4727,10 @@ void Player::sendPlayerPartyIcons(Player* player)
 {
 	sendCreatureShield(player);
 	sendCreatureSkull(player);
+
+	for (Creature* summon : player->getSummons()) {
+		sendCreatureShield(summon);
+	}
 }
 
 bool Player::addPartyInvitation(Party* party)

@@ -302,7 +302,7 @@ class Player final : public Creature, public Cylinder
 		Party* getParty() const {
 			return party;
 		}
-		PartyShields_t getPartyShield(const Player* player) const;
+		PartyShields_t getPartyShield(const Creature* creature) const;
 		bool isInviting(const Player* player) const;
 		bool isPartner(const Player* player) const;
 		void sendPlayerPartyIcons(Player* player);
