@@ -82,6 +82,7 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -480},
+	{name ="Cobra Chain", interval = 2000, chance = 40},
 	{name ="short explosion wave", interval = 2000, chance = 15, minDamage = -280, maxDamage = -400},
 	{name ="combat", interval = 2000, chance = 12, type = COMBAT_EARTHDAMAGE, minDamage = -350, maxDamage = -520, range = 4, radius = 4, target = true, shootEffect = CONST_ANI_SMALLEARTH, effect = CONST_ME_GREEN_RINGS}
 }

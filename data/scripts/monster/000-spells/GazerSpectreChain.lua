@@ -1,13 +1,12 @@
-local element = COMBAT_ICEDAMAGE
-local effect = CONST_ME_GHOSTSMOKE
-local targetCount = 3
-local nextTileDamageRate = 1.10
+local element = COMBAT_FIREDAMAGE
+local effect = CONST_ME_ORANGECHAIN
+local targetCount = 1 -- amount of bounces (2+ is extended)
+local nextTileDamageRate = 1
 
 -- script will take values from here
 -- do not set min/max in monster file
-local defaultMin = 4500
-local defaultMax = 4800
-
+local defaultMin = 300
+local defaultMax = 400
 
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_NONE)
@@ -17,7 +16,6 @@ function spell.onCastSpell(creature, variant)
 	if not creature then
 		return combat:execute(creature, variant)
 	end
-	
 	local targetPos = variant:getPosition()
 	if targetPos.x == 0 then
 		local cid = variant:getNumber()
@@ -49,8 +47,8 @@ function spell.onCastSpell(creature, variant)
 	return ret
 end
 
-spell:name("chain morshabaal extended")
-spell:words("###chainMorshabaalExtended")
+spell:name("Gazer Chain")
+spell:words("###chainGazer")
 spell:isAggressive(true)
 spell:blockWalls(true)
 spell:needLearn(true)
