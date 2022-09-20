@@ -22,10 +22,8 @@ t.onSay = function(player, words, param)
 	end
 	
 	local lineId = 1
-	for line in io.lines(cmakelog) do
-		if lineId > DEPLOY_LINE_COUNT_CMAKE then
-			player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("%d: %s", lineId, line))
-		end
+	for line in io.lines("log_cmake.txt") do
+		player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("%d: %s", lineId, line))
 		lineId = lineId + 1
 	end
 
