@@ -439,7 +439,7 @@ void Weapon::onUsedWeapon(Player* player, Item* item, Tile* destTile) const
 	uint32_t manaCost = getManaCost(player);
 	if (manaCost != 0) {
 		player->addManaSpent(manaCost);
-		player->changeMana(-static_cast<int32_t>(manaCost));
+		player->changeMana(-static_cast<int32_t>(manaCost), true);
 	}
 
 	uint32_t healthCost = getHealthCost(player);

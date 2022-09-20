@@ -4240,14 +4240,22 @@ void Player::changeHealth(int32_t healthChange, bool sendHealthChange/* = true*/
 	sendStats();
 }
 
-void Player::changeMana(int32_t manaChange)
+void Player::changeMana(int32_t manaChange, bool isLeech)
 {
 	if (!hasFlag(PlayerFlag_HasInfiniteMana)) {
+		if (isLeech) {
+			manaChange = manaChange + bankedMana;
+		}
+
 		if (manaChange > 0) {
 			mana += std::min<int32_t>(manaChange, getMaxMana() - mana);
 		} else {
 			mana = std::max<int32_t>(0, mana + manaChange);
 		}
+	}
+
+	if (isLeech) {
+		bankedMana = 0;
 	}
 
 	sendStats();

@@ -909,13 +909,21 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				}
 			}
 
-			if (casterPlayer->getMana() < casterPlayer->getMaxMana()) {
-				uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHCHANCE);
-				uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT);
-				if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
-					leechCombat.primary.value = std::round(totalDamage * (skill / 100.));
+			uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHCHANCE);
+			uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT);
+			if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
+				int32_t leechedMana = std::round(totalDamage * (skill / 100.));
+				if (casterPlayer->getMana() < casterPlayer->getMaxMana()) {
+					leechCombat.primary.value = leechedMana;
+					int32_t manaToBank = casterPlayer->getMana() + leechedMana - casterPlayer->getMaxMana();
+					if (manaToBank > 0) {
+						casterPlayer->bankMana(manaToBank);
+					}
+
 					g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
 					casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
+				} else {
+					casterPlayer->bankMana(leechedMana);
 				}
 			}
 		}
@@ -1131,11 +1139,14 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					}
 				}
 
-				if (casterPlayer->getMana() < casterPlayer->getMaxMana()) {
-					uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHCHANCE);
-					uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT);
-					if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
-						leechedMana += std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
+				uint16_t chance = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHCHANCE);
+				uint16_t skill = casterPlayer->getSpecialSkill(SPECIALSKILL_MANALEECHAMOUNT);
+				if (chance > 0 && skill > 0 && normal_random(1, 100) <= chance) {
+					int32_t manaToLeech = std::ceil(totalDamage * ((skill / 100.) + ((targetsCount - 1) * ((skill / 100.) / 10.))) / targetsCount);
+					if (casterPlayer->getMana() < casterPlayer->getMaxMana()) {
+						leechedMana += manaToLeech;
+					} else {
+						casterPlayer->bankMana(manaToLeech);
 					}
 				}
 			}
@@ -1169,6 +1180,11 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 			leechCombat.origin = ORIGIN_NONE;
 			leechCombat.leeched = true;
 			leechCombat.primary.value = leechedMana;
+
+			int32_t manaToBank = casterPlayer->getMana() + leechedMana - casterPlayer->getMaxMana();
+			if (manaToBank > 0) {
+				casterPlayer->bankMana(manaToBank);
+			}
 			g_game.combatChangeMana(nullptr, casterPlayer, leechCombat);
 			casterPlayer->sendMagicEffect(casterPlayer->getPosition(), CONST_ME_MAGIC_BLUE);
 		}
