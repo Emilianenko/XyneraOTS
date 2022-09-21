@@ -1,5 +1,5 @@
 local element = COMBAT_ICEDAMAGE
-local effect = CONST_ME_GHOSTSMOKE
+local effect = CONST_ME_BLUECHAIN
 local targetCount = 3
 local nextTileDamageRate = 1.10
 
