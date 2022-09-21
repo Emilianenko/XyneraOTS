@@ -2110,6 +2110,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(FLAG_IGNORENOTPICKUPABLE)
 	registerEnum(FLAG_IGNOREAUTOSTACK)
 	registerEnum(FLAG_IGNORESTOREATTR)
+	registerEnum(FLAG_CHECKMOVEABLE)
 
 	// Use with itemType:getSlotPosition
 	registerEnum(SLOTP_WHEREEVER)

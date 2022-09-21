@@ -5,8 +5,8 @@ local nextTileDamageRate = 1.15
 
 -- script will take values from here
 -- do not set min/max in monster file
-local defaultMin = 4800
-local defaultMax = 5200
+local defaultMin = -4800
+local defaultMax = -5200
 
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_NONE)

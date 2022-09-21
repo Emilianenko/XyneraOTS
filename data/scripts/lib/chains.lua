@@ -119,7 +119,7 @@ function executeSubChain(creature, pos, chainConfig, isTrail)
 	local tileCreatures = tile:getCreatures() or {}
 	for _, target in pairs(tileCreatures) do
 		if creature:isOpponent(target) then
-			doAreaCombat(creature:getId(), chainConfig.element, pos, {1}, chainConfig.min, chainConfig.max, chainConfig.effect)
+			doAreaCombat(creature:getId(), chainConfig.element, pos, {1}, chainConfig.min, chainConfig.max, chainConfig.effect, ORIGIN_SPELL)
 
 			-- direct hit, spread to neighbours
 			if not isTrail then

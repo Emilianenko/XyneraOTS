@@ -23,6 +23,7 @@ enum cylinderflags_t {
 	FLAG_IGNORENOTPICKUPABLE = 1 << 7, // Bypass pickupable check
 	FLAG_IGNOREAUTOSTACK = 1 << 8, // QueryDestination will not try to stack items together
 	FLAG_IGNORESTOREATTR = 1 << 9, // Bypass store item attribute check
+	FLAG_CHECKMOVEABLE = 1 << 10, // Stop if tile is occupied by fields or furniture
 };
 
 enum cylinderlink_t {
