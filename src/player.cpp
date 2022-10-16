@@ -2017,8 +2017,6 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 	}
 
 	uint32_t prevLevel = level;
-	bool prevHPInPercent = healthMax > std::numeric_limits<uint16_t>::max();
-	bool prevMPInPercent = manaMax > std::numeric_limits<uint16_t>::max();
 
 	while (experience >= nextLevelExp) {
 		++level;
@@ -2058,14 +2056,6 @@ void Player::addExperience(Creature* source, uint64_t exp, bool sendText/* = fal
 		g_creatureEvents->playerAdvance(this, SKILL_LEVEL, prevLevel, level);
 
 		sendTextMessage(MESSAGE_EVENT_ADVANCE, fmt::format("You advanced from Level {:d} to Level {:d}.", prevLevel, level));
-
-		if (!prevHPInPercent && healthMax > std::numeric_limits<uint16_t>::max()) {
-			sendTextMessage(MESSAGE_STATUS_WARNING, "INFO: Your maximum health has exceeded the client limits. Now it will be displayed as 1% = 100 points.");
-		}
-
-		if (!prevMPInPercent && manaMax > std::numeric_limits<uint16_t>::max()) {
-			sendTextMessage(MESSAGE_STATUS_WARNING, "INFO: Your maximum mana has exceeded the client limits. Now it will be displayed as 1% = 100 points.");
-		}
 	}
 
 	if (nextLevelExp > currLevelExp) {

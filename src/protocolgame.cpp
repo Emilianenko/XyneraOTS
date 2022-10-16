@@ -4113,13 +4113,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	if (player->getMaxHealth() < std::numeric_limits<uint16_t>::max()) {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth()));
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxHealth()));
-	} else {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getHealth() * 10000.0 / player->getMaxHealth()));
-		msg.add<uint16_t>(10000);
-	}
+	msg.add<uint32_t>(static_cast<uint32_t>(player->getHealth()));
+	msg.add<uint32_t>(static_cast<uint32_t>(player->getMaxHealth()));
 
 	msg.add<uint32_t>(player->hasFlag(PlayerFlag_HasInfiniteCapacity) ? 1000000 : player->getFreeCapacity());
 	msg.add<uint64_t>(player->getExperience());
@@ -4132,13 +4127,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(0); // xp boost
 	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
 
-	if (player->getMaxMana() < std::numeric_limits<uint16_t>::max()) {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana()));
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMaxMana()));
-	} else {
-		msg.add<uint16_t>(static_cast<uint16_t>(player->getMana() * 10000.0 / player->getMaxMana()));
-		msg.add<uint16_t>(10000);
-	}
+	msg.add<uint32_t>(static_cast<uint32_t>(player->getMana()));
+	msg.add<uint32_t>(static_cast<uint32_t>(player->getMaxMana()));
 
 	msg.addByte(player->getSoul());
 	msg.add<uint16_t>(player->getStaminaMinutes());
@@ -4152,8 +4142,8 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(0); // xp boost time (seconds)
 	msg.addByte(0x00); // enables exp boost in the store
 
-	msg.add<uint16_t>(0);  // remaining mana shield
-	msg.add<uint16_t>(0);  // total mana shield
+	msg.add<uint32_t>(0);  // remaining mana shield
+	msg.add<uint32_t>(0);  // total mana shield
 }
 
 void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)

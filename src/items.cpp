@@ -691,7 +691,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 	}
 
 	const std::string location = "Items::parseItemNode";
-
+	/*
 	it.name = itemNode.attribute("name").as_string();
 
 	if (!it.name.empty()) {
@@ -700,7 +700,7 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			nameToItems.emplace(std::move(lowerCaseName), id);
 		}
 	}
-
+	*/
 	pugi::xml_attribute articleAttribute = itemNode.attribute("article");
 	if (articleAttribute) {
 		it.article = articleAttribute.as_string();
