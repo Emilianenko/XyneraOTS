@@ -1,10 +1,15 @@
 function Player:sendItemInspection(item, descriptions, openCyclopedia, isVirtual)
 	local response = NetworkMessage()
-	response:addByte(0x76)
-	response:addByte(0x00) -- responseType 0x00 = ok
+	response:addByte(0x76) -- header
+	response:addByte(0x00) -- switch
+	-- 0x00: unknown
+	-- byte, byte, u32, does nothing
+	-- 0x01: character inspection
+	-- byte, byte, u16, u32, u16, u16, byte, u16, u16
+
 	response:addByte(openCyclopedia and 0x01 or 0x00)
-	response:addByte(0x01) --?
-	
+	response:addU32(0)
+	response:addByte(0x01)
 	if tonumber(item) then
 		local itemType = ItemType(item)
 		if not itemType then

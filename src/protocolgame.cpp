@@ -2177,7 +2177,8 @@ void ProtocolGame::sendBasicData()
 	// unlock spells on action bar
 	msg.add<uint16_t>(0xFF);
 	for (uint8_t spellId = 0x00; spellId < 0xFF; spellId++) {
-		msg.addByte(spellId);
+		// u16 since 13.10 (skill wheel)
+		msg.add<uint16_t>(spellId);
 	}
 
 	msg.addByte(0x00); // is magic shield active (bool)

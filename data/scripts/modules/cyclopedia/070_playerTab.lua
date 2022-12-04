@@ -72,25 +72,15 @@ function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 
 		local HP = creature:getHealth()
 		local maxHP = creature:getMaxHealth()
-		
-		if maxHP > 65535 then
-			HP = math.floor(HP * 100 / maxHP)
-			maxHP = 100
-		end
 
-		response:addU16(math.min(HP, maxHP))
-		response:addU16(maxHP)
+		response:addU32(math.min(HP, maxHP))
+		response:addU32(maxHP)
 
 		local MP = creature:getMana() or 0
 		local maxMP = creature:getMaxMana() or 0
 		
-		if maxMP > 65535 then
-			MP = math.floor(MP * 100 / maxMP)
-			maxMP = 100
-		end
-
-		response:addU16(math.min(MP, maxMP))
-		response:addU16(maxMP)
+		response:addU32(math.min(MP, maxMP))
+		response:addU32(maxMP)
 
 		response:addByte(creature:getSoul())
 		response:addU16(creature:getStamina())
@@ -119,7 +109,7 @@ function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:addU16(baseML)
 		response:addU16(baseML) -- loyalty bonus
 		response:addU16(progress)
-		
+
 		for skillId = SKILL_FIST, SKILL_FISHING do
 			local baseSkill = creature:getSkillLevel(skillId)
 		
@@ -172,12 +162,15 @@ function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 		response:addU16(0) -- armor
 		response:addU16(0) -- defense
 
+		-- damage mitigation (in %)
+		response:addDouble(0)
+		
 		-- element resistances count
 		response:addByte(0)
 		-- structure:
 		-- u8 clientcombat
 		-- u8 value
-		
+			
 		-- active potions count
 		response:addByte(0)
 		-- structure:
