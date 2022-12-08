@@ -363,9 +363,11 @@
     <ClCompile Include="..\src\vocation.cpp">
       <Filter>xml</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\rewardchest.cpp" />
     <ClCompile Include="..\src\lua_rewardbag.cpp">
       <Filter>luascript</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\rewardchest.cpp">
+      <Filter>item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -643,7 +645,9 @@
     <ClInclude Include="..\src\vocation.h">
       <Filter>xml</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\rewardchest.h" />
+    <ClInclude Include="..\src\rewardchest.h">
+      <Filter>item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="luascript">
