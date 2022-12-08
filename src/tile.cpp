@@ -663,7 +663,8 @@ ReturnValue Tile::queryAdd(int32_t, const Thing& thing, uint32_t, uint32_t flags
 			if (items) {
 				for (const Item* tileItem : *items) {
 					if (tileItem->isHangable()) {
-						return RETURNVALUE_NEEDEXCHANGE;
+						// something is hanging on this wall already
+						return RETURNVALUE_NOTENOUGHROOM;
 					}
 				}
 			}

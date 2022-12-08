@@ -1054,7 +1054,7 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 			}
 
 			std::vector<Direction> listDir;
-			if (player->getPathTo(walkPos, listDir, 0, 0, true, true)) {
+			if (player->getPathTo(mapToPos, listDir, 0, 1, true, true)) {
 				g_dispatcher.addTask(createTask(([=, playerID = player->getID(), listDir = std::move(listDir)]() { playerAutoWalk(playerID, listDir); })));
 				SchedulerTask* task = createSchedulerTask(RANGE_MOVE_ITEM_INTERVAL,
 					([this, playerID = player->getID(), itemPos, spriteId, itemStackPos, toPos, count]() {
