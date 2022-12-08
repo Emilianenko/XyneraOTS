@@ -6334,6 +6334,16 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 	player->sendMarketAcceptOffer(offer);
 }
 
+void Game::playerBrowseStore(uint32_t playerId, GameStoreRequest request)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnStoreBrowse(player, request);
+}
+
 void Game::playerRegisterCurrencies(uint32_t playerId)
 {
 	// initialize store and tournament coins

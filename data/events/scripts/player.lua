@@ -498,6 +498,12 @@ function Player:onEditName(target, name)
 	end
 end
 
+function Player:onStoreBrowse(request)
+	if EventCallback.onStoreBrowse then
+		EventCallback.onStoreBrowse(self, request)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)

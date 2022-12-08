@@ -385,6 +385,7 @@ class LuaScriptInterface
 		static void pushFamiliar(lua_State* L, const Familiar* familiar);
 		static void pushLoot(lua_State* L, const std::vector<LootBlock>& lootList);
 		static void pushReflect(lua_State* L, const Reflect& reflect);
+		static void pushStoreRequest(lua_State* L, const GameStoreRequest& request);
 
 		//
 		static void setField(lua_State* L, const char* index, lua_Number value)
@@ -1053,6 +1054,7 @@ class LuaScriptInterface
 		static int luaPlayerGetBankBalance(lua_State* L);
 		static int luaPlayerSetBankBalance(lua_State* L);
 		static int luaPlayerSendResourceBalance(lua_State* L);
+		static int luaPlayerSendStoreBalance(lua_State* L);
 
 		static int luaPlayerGetStorageValue(lua_State* L);
 		static int luaPlayerSetStorageValue(lua_State* L);

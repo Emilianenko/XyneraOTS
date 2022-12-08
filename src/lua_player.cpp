@@ -1301,6 +1301,20 @@ int LuaScriptInterface::luaPlayerSendResourceBalance(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerSendStoreBalance(lua_State* L)
+{
+	// player:sendStoreBalance()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	player->sendStoreBalance();
+	pushBoolean(L, true);
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetStorageValue(lua_State* L)
 {
 	// player:getStorageValue(key)

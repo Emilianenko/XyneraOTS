@@ -688,4 +688,25 @@ enum MonstersEvent_t : uint8_t {
 	MONSTERS_EVENT_SAY = 5,
 };
 
+struct GameStoreRequest
+{
+	uint32_t offerId = 0;
+	uint8_t actionType = 0;
+	uint8_t sortOrder = 0;
+	uint8_t primaryValue = 0;
+	uint8_t secondaryValue = 0;
+
+	std::string primaryText;
+	std::string secondaryText;
+};
+
+enum StoreRequestTypes_t : uint8_t {
+	STORE_REQUEST_HOME,
+	STORE_REQUEST_WINDOWID,
+	STORE_REQUEST_CATEGORY,
+	STORE_REQUEST_WINDOWID_2,
+	STORE_REQUEST_OFFERID,
+	STORE_REQUEST_SEARCH,
+};
+
 #endif

@@ -931,6 +931,11 @@ class Player final : public Creature, public Cylinder
 				client->sendResourceBalance(resourceType, amount);
 			}
 		}
+		void sendStoreBalance() {
+			if (client) {
+				client->sendStoreBalance();
+			}
+		}
 		void sendCreatureSquare(const Creature* creature, SquareColor_t color) {
 			if (client) {
 				client->sendCreatureSquare(creature, color);

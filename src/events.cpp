@@ -167,6 +167,8 @@ bool Events::load()
 				info.playerOnUseCreature = event;
 			} else if (methodName == "onEditName") {
 				info.playerOnEditName = event;
+			} else if (methodName == "onStoreBrowse") {
+				info.playerOnStoreBrowse = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -2018,6 +2020,34 @@ void Events::eventPlayerOnEditName(Player* player, Creature* target, const std::
 	LuaScriptInterface::pushString(L, name);
 
 	scriptInterface.callVoidFunction(3);
+}
+
+void Events::eventPlayerOnStoreBrowse(Player* player, GameStoreRequest& request)
+{
+	// Player:onStoreBrowse(request)
+	if (info.playerOnStoreBrowse == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnStoreBrowse, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnStoreBrowse);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// request
+	LuaScriptInterface::pushStoreRequest(L, request);
+
+	scriptInterface.callVoidFunction(2);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)

@@ -78,6 +78,7 @@ ec.onDressOtherCreatureRequest = {}
 ec.onDressOtherCreature = {}
 ec.onUseCreature = {}
 ec.onEditName = {}
+ec.onStoreBrowse = {}
 ec.onConnect = {}
 
 -- Monster

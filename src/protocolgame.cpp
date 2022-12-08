@@ -971,8 +971,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0xE4: break; // buy charm
 		case 0xE5: parseCyclopediaViewPlayerInfo(msg); break; // player stats
 		case 0xE6: parseBugReport(msg); break;
-		case 0xE7: /* thank you */ break;
-		case 0xE8: parseDebugAssert(msg); break;
+		case 0xE7: /* thank you - reads u32 statementId */ break;
+		case 0xE8: /* request store balance (?) */ break; /* 10.98: parseDebugAssert(msg); */
 		// 0xE9 - store ui click
 		// 0xEA - store (?)
 		// 0xEB - prey
@@ -990,8 +990,8 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF7: parseMarketCancelOffer(msg); break;
 		case 0xF8: parseMarketAcceptOffer(msg); break;
 		case 0xF9: parseModalWindowAnswer(msg); break;
-		//case 0xFA: break; // store window open
-		//case 0xFB: break; // store window click
+		case 0xFA: /* store currencies (?) addGameTask([playerID = player->getID()]() { g_game.playerOpenStore(playerID); }); */ break;
+		case 0xFB: parseStoreBrowse(msg); break;
 		//case 0xFC: break; // store window buy
 		//case 0xFD: break; // store window history 1
 		//case 0xFE: break; // store window history 2
@@ -1746,6 +1746,45 @@ void ProtocolGame::parseNameChange(NetworkMessage& msg)
 	}));
 }
 
+void ProtocolGame::parseStoreBrowse(NetworkMessage& msg)
+{
+	GameStoreRequest request;
+	request.actionType = msg.getByte();
+
+	switch (request.actionType) {
+		case STORE_REQUEST_WINDOWID:
+			// ?
+			request.primaryValue = msg.getByte();
+			break;
+		case STORE_REQUEST_CATEGORY:
+			// category
+			request.primaryText = msg.getString();
+			request.secondaryText = msg.getString();
+			break;
+		case STORE_REQUEST_WINDOWID_2:
+			// ?
+			//request.primaryValue = msg.getByte();
+			break;
+		case STORE_REQUEST_OFFERID:
+			// offer id
+			request.offerId = msg.get<uint32_t>();
+			break;
+		case STORE_REQUEST_SEARCH:
+			// search text
+			request.primaryText = msg.getString();
+			break;
+		default:
+			break;
+	}
+
+	if (request.actionType != STORE_REQUEST_HOME) {
+		request.sortOrder = msg.getByte();
+		request.secondaryValue = msg.getByte();
+	}
+
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerBrowseStore(playerID, request); }));
+}
+
 void ProtocolGame::parseInviteToParty(NetworkMessage& msg)
 {
 	uint32_t targetID = msg.get<uint32_t>();
@@ -2151,7 +2190,7 @@ void ProtocolGame::sendClientFeatures()
 	msg.addByte(0x00); // can change pvp framing option
 	msg.addByte(0x00); // expert mode button enabled
 
-	msg.add<uint16_t>(0x00); // store images url (string or u16 0x00)
+	msg.addString(g_config.getString(ConfigManager::STORE_IMAGES_URL)); // store images url
 	msg.add<uint16_t>(25); // premium coin package size
 
 	msg.addByte(0x00); // exiva button enabled (bool)

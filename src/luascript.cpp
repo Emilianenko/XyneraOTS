@@ -1072,6 +1072,18 @@ void LuaScriptInterface::pushReflect(lua_State* L, const Reflect& reflect)
 	setField(L, "chance", reflect.chance);
 }
 
+void LuaScriptInterface::pushStoreRequest(lua_State* L, const GameStoreRequest& request)
+{
+	lua_createtable(L, 0, 7);
+	setField(L, "actionType", request.actionType);
+	setField(L, "offerId", request.offerId);
+	setField(L, "primaryValue", request.primaryValue);
+	setField(L, "secondaryValue", request.secondaryValue);
+	setField(L, "primaryText", request.primaryText);
+	setField(L, "secondaryText", request.secondaryText);
+	setField(L, "sortOrder", request.sortOrder);
+}
+
 #define registerEnum(value) { std::string enumName = #value; registerGlobalVariable(enumName.substr(enumName.find_last_of(':') + 1), value); }
 #define registerEnumIn(tableName, value) { std::string enumName = #value; registerVariable(tableName, enumName.substr(enumName.find_last_of(':') + 1), value); }
 
@@ -2372,6 +2384,14 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(PLAYERTAB_BADGES)
 	registerEnum(PLAYERTAB_TITLES)
 
+	// store tabs
+	registerEnum(STORE_REQUEST_HOME)
+	registerEnum(STORE_REQUEST_WINDOWID)
+	registerEnum(STORE_REQUEST_CATEGORY)
+	registerEnum(STORE_REQUEST_WINDOWID_2)
+	registerEnum(STORE_REQUEST_OFFERID)
+	registerEnum(STORE_REQUEST_SEARCH)
+
 	// Imbuements system
 	registerEnum(IMBUEMENT_NONE)
 	registerEnum(IMBUEMENT_CRIT_1)
@@ -2525,6 +2545,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnumIn("configKeys", ConfigManager::MYSQL_SOCK)
 	registerEnumIn("configKeys", ConfigManager::DEFAULT_PRIORITY)
 	registerEnumIn("configKeys", ConfigManager::MAP_AUTHOR)
+	registerEnumIn("configKeys", ConfigManager::STORE_IMAGES_URL)
 
 	// integer keys
 	registerEnumIn("configKeys", ConfigManager::SQL_PORT)
@@ -3111,6 +3132,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getBankBalance", LuaScriptInterface::luaPlayerGetBankBalance);
 	registerMethod("Player", "setBankBalance", LuaScriptInterface::luaPlayerSetBankBalance);
 	registerMethod("Player", "sendResourceBalance", LuaScriptInterface::luaPlayerSendResourceBalance);
+	registerMethod("Player", "sendStoreBalance", LuaScriptInterface::luaPlayerSendStoreBalance);
 
 	registerMethod("Player", "getStorageValue", LuaScriptInterface::luaPlayerGetStorageValue);
 	registerMethod("Player", "setStorageValue", LuaScriptInterface::luaPlayerSetStorageValue);
