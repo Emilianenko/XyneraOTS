@@ -36658,7 +36658,7 @@
 	<item id="30198" article="the" name="remains of a deepworm">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
-		<attribute key="decayTo" value="10"/>
+		<attribute key="decayTo" value="0"/>
 	</item>
 	<item id="30199" article="the" name="remains of a deepworm">
 		<attribute key="corpseType" value="blood"/>
