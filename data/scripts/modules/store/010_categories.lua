@@ -92,13 +92,13 @@ StoreCategories = {
 		name = "Decorations", parent = "Houses",
 		image = "HouseDecorations",
 		offerTypes = {
-			[1] = { name = "Floor Coverings", offers = {}},
+			[1] = { name = "Floor Coverings", offers = {1}},
 			[2] = { name = "Tapestries", offers = {}},
 			[3] = { name = "Pets", offers = {}},
-			[4] = { name = "Plants", offers = {}},
+			[4] = { name = "Plants", offers = {5, 6, 7, 8}},
 			[5] = { name = "Paintings", offers = {}},
 			[6] = { name = "Busts", offers = {}},
-			[7] = { name = "Lamps", offers = {}},
+			[7] = { name = "Lamps", offers = {2, 3}},
 			[8] = { name = "Festive", offers = {}},
 			[9] = { name = "Cushions", offers = {}},
 			[10] = { name = "Skulls", offers = {}},
@@ -143,6 +143,7 @@ StoreCategories = {
 	},
 	[15] = {
 		name = "Beds", parent = "Houses",
+		offers = {4},
 	},
 	[16] = {
 		name = "Upgrades", parent = "Houses",
