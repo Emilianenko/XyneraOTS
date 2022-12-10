@@ -111,6 +111,11 @@ bool BedItem::trySleep(Player* player)
 		return false;
 	}
 
+	BedItem* nextBedItem = getNextBedItem();
+	if (!nextBedItem) {
+		return false;
+	}
+
 	if (sleeperGUID != 0) {
 		if (Item::items[id].transformToFree != 0 && house->getOwner() == player->getGUID()) {
 			wakeUp(nullptr);
