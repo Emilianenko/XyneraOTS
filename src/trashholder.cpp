@@ -45,6 +45,10 @@ void TrashHolder::addThing(int32_t, Thing* thing)
 		return;
 	}
 
+	if (item->isStoreItem() || item->hasForceSerialize()) {
+		return;
+	}
+
 	const ItemType& it = Item::items[id];
 	if (item->isHangable() && it.isGroundTile()) {
 		Tile* tile = dynamic_cast<Tile*>(getParent());

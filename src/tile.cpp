@@ -348,7 +348,7 @@ Thing* Tile::getTopVisibleThing(const Creature* creature)
 
 void Tile::onAddTileItem(Item* item)
 {
-	if (item->hasProperty(CONST_PROP_MOVEABLE) || item->getContainer()) {
+	if (item->hasProperty(CONST_PROP_MOVEABLE) || item->getContainer() || item->hasForceSerialize()) {
 		auto it = g_game.browseFields.find(this);
 		if (it != g_game.browseFields.end()) {
 			it->second->addItemBack(item);
@@ -384,7 +384,7 @@ void Tile::onAddTileItem(Item* item)
 
 void Tile::onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newItem, const ItemType& newType)
 {
-	if (newItem->hasProperty(CONST_PROP_MOVEABLE) || newItem->getContainer()) {
+	if (newItem->hasProperty(CONST_PROP_MOVEABLE) || newItem->getContainer() || newItem->hasForceSerialize()) {
 		auto it = g_game.browseFields.find(this);
 		if (it != g_game.browseFields.end()) {
 			int32_t index = it->second->getThingIndex(oldItem);
@@ -393,7 +393,7 @@ void Tile::onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newIte
 				newItem->setParent(it->second);
 			}
 		}
-	} else if (oldItem->hasProperty(CONST_PROP_MOVEABLE) || oldItem->getContainer()) {
+	} else if (oldItem->hasProperty(CONST_PROP_MOVEABLE) || oldItem->getContainer() || oldItem->hasForceSerialize()) {
 		auto it = g_game.browseFields.find(this);
 		if (it != g_game.browseFields.end()) {
 			Cylinder* oldParent = oldItem->getParent();
@@ -422,7 +422,7 @@ void Tile::onUpdateTileItem(Item* oldItem, const ItemType& oldType, Item* newIte
 
 void Tile::onRemoveTileItem(const SpectatorVec& spectators, const std::vector<int32_t>& oldStackPosVector, Item* item)
 {
-	if (item->hasProperty(CONST_PROP_MOVEABLE) || item->getContainer()) {
+	if (item->hasProperty(CONST_PROP_MOVEABLE) || item->getContainer() || item->hasForceSerialize()) {
 		auto it = g_game.browseFields.find(this);
 		if (it != g_game.browseFields.end()) {
 			it->second->removeThing(item, item->getItemCount());
