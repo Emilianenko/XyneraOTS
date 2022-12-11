@@ -6691,7 +6691,14 @@ void Game::playerAnswerModalWindow(uint32_t playerId, uint32_t modalWindowId, ui
 		if (button == offlineTrainingWindow.defaultEnterButton) {
 			if (choice == SKILL_SWORD || choice == SKILL_AXE || choice == SKILL_CLUB || choice == SKILL_DISTANCE || choice == SKILL_MAGLEVEL) {
 				BedItem* bedItem = player->getBedItem();
-				if (bedItem && bedItem->sleep(player)) {
+				if (bedItem && !bedItem->isRemoved()) {
+					BedItem* nextBedItem = bedItem->getNextBedItem();
+					if (!nextBedItem) {
+						player->setBedItem(nullptr);
+						return;
+					}
+
+					bedItem->sleep(player);
 					player->setOfflineTrainingSkill(choice);
 					return;
 				}
