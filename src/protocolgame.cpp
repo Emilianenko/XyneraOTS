@@ -3952,7 +3952,7 @@ void ProtocolGame::sendSpellCooldown(uint8_t spellId, uint32_t time)
 {
 	NetworkMessage msg;
 	msg.addByte(0xA4);
-	msg.addByte(spellId);
+	msg.add<uint16_t>(static_cast<uint16_t>(spellId));
 	msg.add<uint32_t>(time);
 	writeToOutputBuffer(msg);
 }
