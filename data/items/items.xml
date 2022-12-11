@@ -33836,6 +33836,21 @@
 		<attribute key="slotType" value="feet"/>
 		<attribute key="weight" value="600"/>
 	</item>
+	
+	<!-- wooden chair (retro) -->
+	<item id="27182">
+		<attribute key="rotateTo" value="27183" />
+	</item>
+	<item id="27184">
+		<attribute key="rotateTo" value="27181" />
+	</item>
+	<item id="27181">
+		<attribute key="rotateTo" value="27182" />
+	</item>
+	<item id="27183">
+		<attribute key="rotateTo" value="27184" />
+	</item>
+	
 	<item id="27744" name="porcelain mask">
 		<attribute key="absorbpercentmanadrain" value="10"/>
 		<attribute key="armor" value="1"/>
@@ -33845,6 +33860,67 @@
 		<attribute key="showCount" value="0"/>
 		<attribute key="weight" value="450"/>
 	</item>
+	
+	<!-- imbuing shrine -->
+	<item id="27831">
+		<attribute key="rotateTo" value="27830" />
+	</item>
+	<item id="27830">
+		<attribute key="rotateTo" value="27831" />
+	</item>
+	
+	<!-- gilded imbuing shrine -->
+	<item id="27839">
+		<attribute key="rotateTo" value="27838" />
+	</item>
+	<item id="27838">
+		<attribute key="rotateTo" value="27839" />
+	</item>
+	
+	<!-- vengothic chair -->
+	<item id="27878">
+		<attribute key="rotateTo" value="27879" />
+	</item>
+	<item id="27877">
+		<attribute key="rotateTo" value="27878" />
+	</item>
+	<item id="27879">
+		<attribute key="rotateTo" value="27880" />
+	</item>
+	<item id="27880">
+		<attribute key="rotateTo" value="27877" />
+	</item>
+	
+	<!-- vengothic table -->
+	<item id="27881">
+		<attribute key="rotateTo" value="27882" />
+	</item>
+	<item id="27882">
+		<attribute key="rotateTo" value="27881" />
+	</item>
+	
+	<!-- vengothic cabinet -->
+	<item id="27883">
+		<attribute key="rotateTo" value="27884" />
+	</item>
+	<item id="27884">
+		<attribute key="rotateTo" value="27883" />
+	</item>
+	
+	<!-- vengothic chest -->
+	<item id="27888">
+		<attribute key="rotateTo" value="27885" />
+	</item>
+	<item id="27887">
+		<attribute key="rotateTo" value="27888" />
+	</item>
+	<item id="27885">
+		<attribute key="rotateTo" value="27886" />
+	</item>
+	<item id="27886">
+		<attribute key="rotateTo" value="27887" />
+	</item>
+	
 	<item id="28354" article="a" name="butterfly ring">
 		<attribute key="slotType" value="ring"/>
 		<attribute key="absorbpercentdeath" value="3"/>
@@ -33866,6 +33942,23 @@
 		<attribute key="range" value="4"/>
 		<attribute key="weight" value="3200"/>
 	</item>
+	
+	<!-- reward shrine -->
+	<item id="28376">
+		<attribute key="rotateTo" value="28377" />
+	</item>
+	<item id="28377">
+		<attribute key="rotateTo" value="28376" />
+	</item>
+	
+	<!-- shiny reward shrine -->
+	<item id="28378">
+		<attribute key="rotateTo" value="28379" />
+	</item>
+	<item id="28379">
+		<attribute key="rotateTo" value="28378" />
+	</item>
+	
 	<item id="28385" article="a" name="dark moon mirror">
 		<attribute key="weight" value="200"/>
 	</item>
@@ -33965,6 +34058,109 @@
 		<attribute key="defense" value="0" />
 		<attribute key="weaponType" value="shield" />
 	</item>
+	
+	<!-- hrodmiran weapons rack -->
+	<item id="28737">
+		<attribute key="rotateTo" value="28738" />
+	</item>
+	<item id="28740">
+		<attribute key="rotateTo" value="28737" />
+	</item>
+	<item id="28739">
+		<attribute key="rotateTo" value="28740" />
+	</item>
+	<item id="28738">
+		<attribute key="rotateTo" value="28739" />
+	</item>
+	
+	<!-- verdant chair -->
+	<item id="28759">
+		<attribute key="rotateTo" value="28760" />
+	</item>
+	<item id="28758">
+		<attribute key="rotateTo" value="28759" />
+	</item>
+	<item id="28757">
+		<attribute key="rotateTo" value="28758" />
+	</item>
+	<item id="28760">
+		<attribute key="rotateTo" value="28757" />
+	</item>
+	
+	<!-- verdant cabinet -->
+	<item id="28761">
+		<attribute key="rotateTo" value="28762" />
+	</item>
+	<item id="28762">
+		<attribute key="rotateTo" value="28761" />
+	</item>
+	
+	<!-- verdant trunk -->
+	<item id="28763">
+		<attribute key="rotateTo" value="28764" />
+	</item>
+	<item id="28766">
+		<attribute key="rotateTo" value="28763" />
+	</item>
+	<item id="28765">
+		<attribute key="rotateTo" value="28766" />
+	</item>
+	<item id="28764">
+		<attribute key="rotateTo" value="28765" />
+	</item>
+	
+	<!-- venorean table clock -->
+	<item id="28768">
+		<attribute key="rotateTo" value="28769" />
+	</item>
+	<item id="28769">
+		<attribute key="rotateTo" value="28768" />
+	</item>
+	
+	<!-- ornate chair -->
+	<item id="28813">
+		<attribute key="rotateTo" value="28814" />
+	</item>
+	<item id="28815">
+		<attribute key="rotateTo" value="28812" />
+	</item>
+	<item id="28812">
+		<attribute key="rotateTo" value="28813" />
+	</item>
+	<item id="28814">
+		<attribute key="rotateTo" value="28815" />
+	</item>
+	
+	<!-- ornate table -->
+	<item id="28817">
+		<attribute key="rotateTo" value="28816" />
+	</item>
+	<item id="28816">
+		<attribute key="rotateTo" value="28817" />
+	</item>
+	
+	<!-- ornate cabinet -->
+	<item id="28819">
+		<attribute key="rotateTo" value="28818" />
+	</item>
+	<item id="28818">
+		<attribute key="rotateTo" value="28819" />
+	</item>
+	
+	<!-- ornate chest -->
+	<item id="28820">
+		<attribute key="rotateTo" value="28821" />
+	</item>
+	<item id="28823">
+		<attribute key="rotateTo" value="28822" />
+	</item>
+	<item id="28822">
+		<attribute key="rotateTo" value="28820" />
+	</item>
+	<item id="28821">
+		<attribute key="rotateTo" value="28823" />
+	</item>
+	
 	<item id="28843" article="a" name="leaf crown">
 		<attribute key="slotType" value="head"/>
 		<attribute key="weight" value="500"/>
@@ -34204,6 +34400,107 @@
 		<attribute key="containerSize" value="22" />
 		<attribute key="slotType" value="backpack" />
 	</item>
+	
+	<!-- alchemistic chair -->
+	<item id="30318">
+		<attribute key="rotateTo" value="30317" />
+	</item>
+	<item id="30317">
+		<attribute key="rotateTo" value="30318" />
+	</item>
+	
+	<!-- alchemistic cabinet -->
+	<item id="30320">
+		<attribute key="rotateTo" value="30319" />
+	</item>
+	<item id="30319">
+		<attribute key="rotateTo" value="30320" />
+	</item>
+	
+	<!-- alchemistic table -->
+	<item id="30321">
+		<attribute key="rotateTo" value="30322" />
+	</item>
+	<item id="30322">
+		<attribute key="rotateTo" value="30321" />
+	</item>
+	
+	<!-- monk exercise dummy -->
+	<item id="31220">
+		<attribute key="rotateTo" value="31219" />
+	</item>
+	<item id="31219">
+		<attribute key="rotateTo" value="31220" />
+	</item>
+	
+	<!-- ferumbras exercise dummy -->
+	<item id="31216">
+		<attribute key="rotateTo" value="31215" />
+	</item>
+	<item id="31215">
+		<attribute key="rotateTo" value="31216" />
+	</item>
+	
+	<!-- demon exercise dummy -->
+	<item id="31218">
+		<attribute key="rotateTo" value="31217" />
+	</item>
+	<item id="31217">
+		<attribute key="rotateTo" value="31218" />
+	</item>
+	
+	<!-- skeletal chair -->
+	<item id="31333">
+		<attribute key="rotateTo" value="31332" />
+	</item>
+	<item id="31334">
+		<attribute key="rotateTo" value="31335" />
+	</item>
+	<item id="31335">
+		<attribute key="rotateTo" value="31333" />
+	</item>
+	<item id="31332">
+		<attribute key="rotateTo" value="31334" />
+	</item>
+	
+	<!-- skeletal table -->
+	<item id="31337">
+		<attribute key="rotateTo" value="31336" />
+	</item>
+	<item id="31336">
+		<attribute key="rotateTo" value="31337" />
+	</item>
+	
+	<!-- skeletal chest -->
+	<item id="31341">
+		<attribute key="rotateTo" value="31338" />
+	</item>
+	<item id="31339">
+		<attribute key="rotateTo" value="31340" />
+	</item>
+	<item id="31340">
+		<attribute key="rotateTo" value="31341" />
+	</item>
+	<item id="31338">
+		<attribute key="rotateTo" value="31339" />
+	</item>
+	
+	<!-- skeletal cabinet -->
+	<item id="31343">
+		<attribute key="rotateTo" value="31342" />
+	</item>
+	<item id="31342">
+		<attribute key="rotateTo" value="31343" />
+	</item>
+	
+	<!-- carnivorous plant -->
+	<item id="31345">
+		<attribute key="rotateTo" value="31344" />
+	</item>
+	<item id="31344">
+		<attribute key="rotateTo" value="31345" />
+	</item>
+
 	<item id="31370" article="a" name="falcon circlet">
 		<attribute key="slotType" value="head"/>
 		<attribute key="absorbpercentfire" value="9"/>
@@ -34374,6 +34671,75 @@
 		<attribute key="defense" value="0" />
 		<attribute key="weaponType" value="shield" />
 	</item>
+	
+	<!-- stuffed bear display -->
+	<item id="31585">
+		<attribute key="rotateTo" value="31584" />
+	</item>
+	<item id="31584">
+		<attribute key="rotateTo" value="31585" />
+	</item>
+	
+	<!-- stuffed teddy display -->
+	<item id="31587">
+		<attribute key="rotateTo" value="31586" />
+	</item>
+	<item id="31586">
+		<attribute key="rotateTo" value="31587" />
+	</item>
+	
+	<!-- comfy chair -->
+	<item id="31589">
+		<attribute key="rotateTo" value="31590" />
+	</item>
+	<item id="31591">
+		<attribute key="rotateTo" value="31588" />
+	</item>
+	<item id="31588">
+		<attribute key="rotateTo" value="31589" />
+	</item>
+	<item id="31590">
+		<attribute key="rotateTo" value="31591" />
+	</item>
+	
+	<!-- comfy table -->
+	<item id="31593">
+		<attribute key="rotateTo" value="31592" />
+	</item>
+	<item id="31592">
+		<attribute key="rotateTo" value="31593" />
+	</item>
+	
+	<!-- comfy chest -->
+	<item id="31595">
+		<attribute key="rotateTo" value="31594" />
+	</item>
+	<item id="31596">
+		<attribute key="rotateTo" value="31597" />
+	</item>
+	<item id="31597">
+		<attribute key="rotateTo" value="31595" />
+	</item>
+	<item id="31594">
+		<attribute key="rotateTo" value="31596" />
+	</item>
+	
+	<!-- comfy cabinet -->
+	<item id="31599">
+		<attribute key="rotateTo" value="31598" />
+	</item>
+	<item id="31598">
+		<attribute key="rotateTo" value="31599" />
+	</item>
+	
+	<!-- chest of abundance -->
+	<item id="31602">
+		<attribute key="rotateTo" value="31601" />
+	</item>
+	<item id="31601">
+		<attribute key="rotateTo" value="31602" />
+	</item>
+	
 	<item id="31942" article="a" name="golden axe">
 		<attribute key="description" value="Forged and wielded by a long forgotten dwarf with a heart as black as an adder."/>
 		<attribute key="weaponType" value="axe"/>
@@ -34520,6 +34886,53 @@
 		<attribute key="containerSize" value="22" />
 		<attribute key="slotType" value="backpack" />
 	</item>
+	
+	<!-- festive filled shoes -->
+	<item id="32884">
+		<attribute key="rotateTo" value="32883" />
+	</item>
+	<item id="32883">
+		<attribute key="rotateTo" value="32884" />
+	</item>
+	
+	<!-- festive tree -->
+	<item id="32893">
+		<attribute key="rotateTo" value="32894" />
+	</item>
+	<item id="32894">
+		<attribute key="rotateTo" value="32893" />
+	</item>
+	
+	<!-- festive rocking chair -->
+	<item id="32897">
+		<attribute key="rotateTo" value="32898" />
+	</item>
+	<item id="32898">
+		<attribute key="rotateTo" value="32895" />
+	</item>
+	<item id="32896">
+		<attribute key="rotateTo" value="32897" />
+	</item>
+	<item id="32895">
+		<attribute key="rotateTo" value="32896" />
+	</item>
+	
+	<!-- festive sleigh -->
+	<item id="32900">
+		<attribute key="rotateTo" value="32899" />
+	</item>
+	<item id="32899">
+		<attribute key="rotateTo" value="32900" />
+	</item>
+	
+	<!-- festive pile of presents -->
+	<item id="32902">
+		<attribute key="rotateTo" value="32901" />
+	</item>
+	<item id="32901">
+		<attribute key="rotateTo" value="32902" />
+	</item>
+	
 	<item id="32931" article="the" name="crown of the percht queen">
 		<attribute key="weight" value="1900"/>
 	</item>
@@ -34671,6 +35084,83 @@
 		<attribute key="transformEquipTo" value="33058" />
 		<attribute key="weight" value="500"/>
 	</item>
+	
+	<!-- dwarven stone chair -->
+	<item id="33842">
+		<attribute key="rotateTo" value="33839" />
+	</item>
+	<item id="33840">
+		<attribute key="rotateTo" value="33841" />
+	</item>
+	<item id="33841">
+		<attribute key="rotateTo" value="33842" />
+	</item>
+	<item id="33839">
+		<attribute key="rotateTo" value="33840" />
+	</item>
+	
+	<!-- dwarven stone chest -->
+	<item id="33846">
+		<attribute key="rotateTo" value="33844" />
+	</item>
+	<item id="33844">
+		<attribute key="rotateTo" value="33843" />
+	</item>
+	<item id="33843">
+		<attribute key="rotateTo" value="33845" />
+	</item>
+	<item id="33845">
+		<attribute key="rotateTo" value="33846" />
+	</item>
+	
+	<!-- dwarven stone cabinet -->
+	<item id="33848">
+		<attribute key="rotateTo" value="33849" />
+	</item>
+	<item id="33849">
+		<attribute key="rotateTo" value="33848" />
+	</item>
+	
+	<!-- wooden bookcase -->
+	<item id="33850">
+		<attribute key="rotateTo" value="33851" />
+	</item>
+	<item id="33851">
+		<attribute key="rotateTo" value="33850" />
+	</item>
+	
+	<!-- golden minotaur skull -->
+	<item id="33865">
+		<attribute key="rotateTo" value="33879" />
+	</item>
+	<item id="33879">
+		<attribute key="rotateTo" value="33865" />
+	</item>
+	
+	<!-- minotaur skull -->
+	<item id="33866">
+		<attribute key="rotateTo" value="33880" />
+	</item>
+	<item id="33880">
+		<attribute key="rotateTo" value="33866" />
+	</item>
+	
+	<!-- golden demon skull -->
+	<item id="33867">
+		<attribute key="rotateTo" value="33881" />
+	</item>
+	<item id="33881">
+		<attribute key="rotateTo" value="33867" />
+	</item>
+	
+	<!-- demon skull -->
+	<item id="33868">
+		<attribute key="rotateTo" value="33882" />
+	</item>
+	<item id="33882">
+		<attribute key="rotateTo" value="33868" />
+	</item>
+	
 	<item id="33924" article="a" name="jade amulet">
 		<attribute key="description" value="Souvenir from Thais Museum."/>
 		<attribute key="writeable" value="1"/>
@@ -34927,6 +35417,73 @@
 		<attribute key="armor" value="4"/>
 		<attribute key="weight" value="530"/>
 	</item>
+	
+	<!-- hrodmiran chest -->
+	<item id="34346">
+		<attribute key="rotateTo" value="34344" />
+	</item>
+	<item id="34344">
+		<attribute key="rotateTo" value="34343" />
+	</item>
+	<item id="34343">
+		<attribute key="rotateTo" value="34345" />
+	</item>
+	<item id="34345">
+		<attribute key="rotateTo" value="34346" />
+	</item>
+	
+	<!-- hrodmiran chair -->
+	<item id="34350">
+		<attribute key="rotateTo" value="34347" />
+	</item>
+	<item id="34348">
+		<attribute key="rotateTo" value="34349" />
+	</item>
+	<item id="34349">
+		<attribute key="rotateTo" value="34350" />
+	</item>
+	<item id="34347">
+		<attribute key="rotateTo" value="34348" />
+	</item>
+	
+	<!-- hrodmiran cupboard -->
+	<item id="34361">
+		<attribute key="rotateTo" value="34362" />
+	</item>
+	<item id="34362">
+		<attribute key="rotateTo" value="34361" />
+	</item>
+	
+	<!-- pirate ship ballista -->
+	<item id="34587">
+		<attribute key="rotateTo" value="34588" />
+	</item>
+	<item id="34590">
+		<attribute key="rotateTo" value="34587" />
+	</item>
+	<item id="34588">
+		<attribute key="rotateTo" value="34589" />
+	</item>
+	<item id="34589">
+		<attribute key="rotateTo" value="34590" />
+	</item>
+	
+	<!-- pirate treasure chest -->
+	<item id="34591">
+		<attribute key="rotateTo" value="34592" />
+	</item>
+	<item id="34592">
+		<attribute key="rotateTo" value="34591" />
+	</item>
+	
+	<!-- mermaid figure head -->
+	<item id="34605">
+		<attribute key="rotateTo" value="34606" />
+	</item>
+	<item id="34606">
+		<attribute key="rotateTo" value="34605" />
+	</item>
+	
 	<item id="34666" article="a" name="meat hammer">
 		<attribute key="weight" value="370"/>
 	</item>
@@ -34940,6 +35497,73 @@
 	<item id="34669" article="a" name="orc hammer">
 		<attribute key="weight" value="5000"/>
 	</item>
+	
+	<!-- blue traditional chair -->
+	<item id="34779">
+		<attribute key="rotateTo" value="34784" />
+	</item>
+	<item id="34785">
+		<attribute key="rotateTo" value="34786" />
+	</item>
+	<item id="34786">
+		<attribute key="rotateTo" value="34779" />
+	</item>
+	<item id="34784">
+		<attribute key="rotateTo" value="34785" />
+	</item>
+	
+	<!-- green traditional chair -->
+	<item id="34787">
+		<attribute key="rotateTo" value="34788" />
+	</item>
+	<item id="34789">
+		<attribute key="rotateTo" value="34790" />
+	</item>
+	<item id="34790">
+		<attribute key="rotateTo" value="34787" />
+	</item>
+	<item id="34788">
+		<attribute key="rotateTo" value="34789" />
+	</item>
+	
+	<!-- red traditional chair -->
+	<item id="34791">
+		<attribute key="rotateTo" value="34792" />
+	</item>
+	<item id="34793">
+		<attribute key="rotateTo" value="34794" />
+	</item>
+	<item id="34794">
+		<attribute key="rotateTo" value="34791" />
+	</item>
+	<item id="34792">
+		<attribute key="rotateTo" value="34793" />
+	</item>
+	
+	<!-- blue traditional rack -->
+	<item id="34799">
+		<attribute key="rotateTo" value="34798" />
+	</item>
+	<item id="34798">
+		<attribute key="rotateTo" value="34799" />
+	</item>
+	
+	<!-- green traditional rack -->
+	<item id="34801">
+		<attribute key="rotateTo" value="34800" />
+	</item>
+	<item id="34800">
+		<attribute key="rotateTo" value="34801" />
+	</item>
+	
+	<!-- red traditional rack -->
+	<item id="34803">
+		<attribute key="rotateTo" value="34802" />
+	</item>
+	<item id="34802">
+		<attribute key="rotateTo" value="34803" />
+	</item>
+	
 	<item id="34749" article="a" name="schnitzel meat grinder">
 		<attribute key="weaponType" value="club"/>
 		<attribute key="attack" value="10"/>
@@ -34974,6 +35598,21 @@
 		<attribute key="description" value="A practical, classic mug which is typically used to serve beer during the Orcsoberfest."/>
 		<attribute key="weight" value="350"/>
 	</item>
+	
+	<!-- beer barrel -->
+	<item id="34806">
+		<attribute key="rotateTo" value="34805" />
+	</item>
+	<item id="34805">
+		<attribute key="rotateTo" value="34804" />
+	</item>
+	<item id="34807">
+		<attribute key="rotateTo" value="34806" />
+	</item>
+	<item id="34804">
+		<attribute key="rotateTo" value="34807" />
+	</item>
+	
 	<item id="35238" article="a" name="death knell">
 		<attribute key="weight" value="250" />
 	</item>
@@ -35136,11 +35775,149 @@
 	<item id="35430" article="a" name="cursed bone">
 		<attribute key="weight" value="650" />
 	</item>
+	
+	<!-- ice cabinet -->
+	<item id="35431">
+		<attribute key="rotateTo" value="35432" />
+	</item>
+	<item id="35432">
+		<attribute key="rotateTo" value="35431" />
+	</item>
+	
+	<!-- ice stool -->
+	<item id="35434">
+		<attribute key="rotateTo" value="35435" />
+	</item>
+	<item id="35435">
+		<attribute key="rotateTo" value="35434" />
+	</item>
+	
+	<!-- ice chest -->
+	<item id="35436">
+		<attribute key="rotateTo" value="35438" />
+	</item>
+	<item id="35437">
+		<attribute key="rotateTo" value="35436" />
+	</item>
+	<item id="35439">
+		<attribute key="rotateTo" value="35437" />
+	</item>
+	<item id="35438">
+		<attribute key="rotateTo" value="35439" />
+	</item>
+	
+	<!-- Ferumbras' snowman -->
+	<item id="35442">
+		<attribute key="rotateTo" value="35443" />
+	</item>
+	<item id="35443">
+		<attribute key="rotateTo" value="35442" />
+	</item>
+	
 	<item id="35581" name="golden crown">
 		<attribute key="slotType" value="head" />
 		<attribute key="description" value="This is a golden replica of the famous crown."/>
 		<attribute key="weight" value="2000"/>
 	</item>
+	
+	<!-- cozy couch -->
+	<item id="35605">
+		<attribute key="rotateTo" value="35602" />
+	</item>
+	<item id="35603">
+		<attribute key="rotateTo" value="35604" />
+	</item>
+	<item id="35604">
+		<attribute key="rotateTo" value="35605" />
+	</item>
+	<item id="35602">
+		<attribute key="rotateTo" value="35603" />
+	</item>
+	
+	<!-- cozy couch -->
+	<item id="35609">
+		<attribute key="rotateTo" value="35606" />
+	</item>
+	<item id="35607">
+		<attribute key="rotateTo" value="35608" />
+	</item>
+	<item id="35608">
+		<attribute key="rotateTo" value="35609" />
+	</item>
+	<item id="35606">
+		<attribute key="rotateTo" value="35607" />
+	</item>
+	
+	<!-- cozy couch -->
+	<item id="35613">
+		<attribute key="rotateTo" value="35610" />
+	</item>
+	<item id="35611">
+		<attribute key="rotateTo" value="35612" />
+	</item>
+	<item id="35612">
+		<attribute key="rotateTo" value="35613" />
+	</item>
+	<item id="35610">
+		<attribute key="rotateTo" value="35611" />
+	</item>
+	
+	<!-- cozy couch -->
+	<item id="35615">
+		<attribute key="rotateTo" value="35616" />
+	</item>
+	<item id="35614">
+		<attribute key="rotateTo" value="35615" />
+	</item>
+	<item id="35616">
+		<attribute key="rotateTo" value="35617" />
+	</item>
+	<item id="35617">
+		<attribute key="rotateTo" value="35614" />
+	</item>
+	
+	<!-- cozy couch -->
+	<item id="35621">
+		<attribute key="rotateTo" value="35618" />
+	</item>
+	<item id="35619">
+		<attribute key="rotateTo" value="35620" />
+	</item>
+	<item id="35620">
+		<attribute key="rotateTo" value="35621" />
+	</item>
+	<item id="35618">
+		<attribute key="rotateTo" value="35619" />
+	</item>
+	
+	<!-- carved table -->
+	<item id="35623">
+		<attribute key="rotateTo" value="35624" />
+	</item>
+	<item id="35625">
+		<attribute key="rotateTo" value="35622" />
+	</item>
+	<item id="35622">
+		<attribute key="rotateTo" value="35623" />
+	</item>
+	<item id="35624">
+		<attribute key="rotateTo" value="35625" />
+	</item>
+	
+	<!-- carved table -->
+	<item id="35627">
+		<attribute key="rotateTo" value="35628" />
+	</item>
+	<item id="35629">
+		<attribute key="rotateTo" value="35626" />
+	</item>
+	<item id="35626">
+		<attribute key="rotateTo" value="35627" />
+	</item>
+	<item id="35628">
+		<attribute key="rotateTo" value="35629" />
+	</item>
+
 	<item id="36672" article="a" name="lit torch">
 		<attribute key="description" value="It sparkles slightly"/>
 		<attribute key="slotType" value="ammo"/>
@@ -35151,6 +35928,139 @@
 		<attribute key="slotType" value="ammo"/>
 		<attribute key="weight" value="500"/>
 	</item>
+	
+	<!-- heart cabinet -->
+	<item id="35688">
+		<attribute key="rotateTo" value="35689" />
+	</item>
+	<item id="35689">
+		<attribute key="rotateTo" value="35688" />
+	</item>
+	
+	<!-- heart table -->
+	<item id="35690">
+		<attribute key="rotateTo" value="35691" />
+	</item>
+	<item id="35691">
+		<attribute key="rotateTo" value="35690" />
+	</item>
+	
+	<!-- heart chair -->
+	<item id="35695">
+		<attribute key="rotateTo" value="35692" />
+	</item>
+	<item id="35693">
+		<attribute key="rotateTo" value="35694" />
+	</item>
+	<item id="35694">
+		<attribute key="rotateTo" value="35695" />
+	</item>
+	<item id="35692">
+		<attribute key="rotateTo" value="35693" />
+	</item>
+	
+	<!-- heart chest -->
+	<item id="35699">
+		<attribute key="rotateTo" value="35701" />
+	</item>
+	<item id="35700">
+		<attribute key="rotateTo" value="35699" />
+	</item>
+	<item id="35702">
+		<attribute key="rotateTo" value="35700" />
+	</item>
+	<item id="35701">
+		<attribute key="rotateTo" value="35702" />
+	</item>
+	
+	<!-- artist chair -->
+	<item id="36695">
+		<attribute key="rotateTo" value="36692" />
+	</item>
+	<item id="36693">
+		<attribute key="rotateTo" value="36694" />
+	</item>
+	<item id="36694">
+		<attribute key="rotateTo" value="36695" />
+	</item>
+	<item id="36692">
+		<attribute key="rotateTo" value="36693" />
+	</item>
+	
+	<!-- artist chest -->
+	<item id="36699">
+		<attribute key="rotateTo" value="36697" />
+	</item>
+	<item id="36697">
+		<attribute key="rotateTo" value="36696" />
+	</item>
+	<item id="36696">
+		<attribute key="rotateTo" value="36698" />
+	</item>
+	<item id="36698">
+		<attribute key="rotateTo" value="36699" />
+	</item>
+	
+	<!-- sculptor chest -->
+	<item id="36713">
+		<attribute key="rotateTo" value="36711" />
+	</item>
+	<item id="36711">
+		<attribute key="rotateTo" value="36710" />
+	</item>
+	<item id="36710">
+		<attribute key="rotateTo" value="36712" />
+	</item>
+	<item id="36712">
+		<attribute key="rotateTo" value="36713" />
+	</item>
+	
+	<!-- sculptor chair -->
+	<item id="36709">
+		<attribute key="rotateTo" value="36706" />
+	</item>
+	<item id="36707">
+		<attribute key="rotateTo" value="36708" />
+	</item>
+	<item id="36708">
+		<attribute key="rotateTo" value="36709" />
+	</item>
+	<item id="36706">
+		<attribute key="rotateTo" value="36707" />
+	</item>
+	
+	<!-- demon statue -->
+	<item id="36714">
+		<attribute key="rotateTo" value="36715" />
+	</item>
+	<item id="36715">
+		<attribute key="rotateTo" value="36714" />
+	</item>
+	
+	<!-- sabretooth skull -->
+	<item id="36716">
+		<attribute key="rotateTo" value="36717" />
+	</item>
+	<item id="36717">
+		<attribute key="rotateTo" value="36716" />
+	</item>
+	
+	<!-- drawing board -->
+	<item id="36718">
+		<attribute key="rotateTo" value="36719" />
+	</item>
+	<item id="36719">
+		<attribute key="rotateTo" value="36718" />
+	</item>
+	
+	<!-- sculpture of a noblewoman -->
+	<item id="36723">
+		<attribute key="rotateTo" value="36727" />
+	</item>
+	<item id="36727">
+		<attribute key="rotateTo" value="36723" />
+	</item>
+	
 	<item id="36736" article="a" name="lion ring">
 		<attribute key="slotType" value="ring"/>
 		<attribute key="weight" value="40"/>
@@ -35442,6 +36352,43 @@
 		<attribute key="description" value="It will guide you through your adventures."/>
 		<attribute key="weight" value="250"/>
 	</item>
+	
+	<!-- cupboard -->
+	<item id="36934">
+		<attribute key="rotateTo" value="36932" />
+	</item>
+	<item id="36932">
+		<attribute key="rotateTo" value="36934" />
+	</item>
+	
+	<!-- kitchen chair -->
+	<item id="36949">
+		<attribute key="rotateTo" value="36950" />
+	</item>
+	<item id="36951">
+		<attribute key="rotateTo" value="36948" />
+	</item>
+	<item id="36948">
+		<attribute key="rotateTo" value="36949" />
+	</item>
+	<item id="36950">
+		<attribute key="rotateTo" value="36951" />
+	</item>
+	
+	<!-- kitchen chest -->
+	<item id="36955">
+		<attribute key="rotateTo" value="36952" />
+	</item>
+	<item id="36953">
+		<attribute key="rotateTo" value="36954" />
+	</item>
+	<item id="36954">
+		<attribute key="rotateTo" value="36955" />
+	</item>
+	<item id="36952">
+		<attribute key="rotateTo" value="36953" />
+	</item>
+
 	<item id="36987" article="a" name="golden magic longsword">
 		<attribute key="description" value="This is a golden replica of the famous magic longsword."/>
 		<attribute key="weight" value="4300"/>
@@ -35450,6 +36397,43 @@
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
 	</item>
+	
+	<!-- wooden stool -->
+	<item id="37826">
+		<attribute key="rotateTo" value="37825" />
+	</item>
+	<item id="37823">
+		<attribute key="rotateTo" value="37826" />
+	</item>
+	<item id="37825">
+		<attribute key="rotateTo" value="37824" />
+	</item>
+	<item id="37824">
+		<attribute key="rotateTo" value="37823" />
+	</item>
+	
+	<!-- toolbox -->
+	<item id="37830">
+		<attribute key="rotateTo" value="37827" />
+	</item>
+	<item id="37828">
+		<attribute key="rotateTo" value="37829" />
+	</item>
+	<item id="37829">
+		<attribute key="rotateTo" value="37830" />
+	</item>
+	<item id="37827">
+		<attribute key="rotateTo" value="37828" />
+	</item>
+	
+	<!-- wooden cabinet -->
+	<item id="37831">
+		<attribute key="rotateTo" value="37832" />
+	</item>
+	<item id="37832">
+		<attribute key="rotateTo" value="37831" />
+	</item>
+	
 	<item id="37882" article="a" name="rascoohan rat revealer">
 		<attribute key="description" value="The RRR is a testament of rascoohan ingenuity."/>
 		<attribute key="weight" value="4000"/>
@@ -35676,9 +36660,135 @@
 		<attribute key="attack" value="78" />
 		<attribute key="shootType" value="spectralbolt" />
 	</item>
-	<item id="39658" article="a" name="tagralt-inlaid scabbard">
-		<attribute key="weight" value="100" />
+	
+	<!-- grandiose cupboard -->
+	<item id="38567">
+		<attribute key="rotateTo" value="38568" />
 	</item>
+	<item id="38568">
+		<attribute key="rotateTo" value="38567" />
+	</item>
+	
+	<!-- grandiose table -->
+	<item id="38569">
+		<attribute key="rotateTo" value="38570" />
+	</item>
+	<item id="38570">
+		<attribute key="rotateTo" value="38569" />
+	</item>
+	
+	<!-- grandiose chair -->
+	<item id="38573">
+		<attribute key="rotateTo" value="38574" />
+	</item>
+	<item id="38571">
+		<attribute key="rotateTo" value="38573" />
+	</item>
+	<item id="38574">
+		<attribute key="rotateTo" value="38572" />
+	</item>
+	<item id="38572">
+		<attribute key="rotateTo" value="38571" />
+	</item>
+	
+	<!-- grandiose refined chest -->
+	<item id="38577">
+		<attribute key="rotateTo" value="38578" />
+	</item>
+	<item id="38576">
+		<attribute key="rotateTo" value="38577" />
+	</item>
+	<item id="38578">
+		<attribute key="rotateTo" value="38575" />
+	</item>
+	<item id="38575">
+		<attribute key="rotateTo" value="38576" />
+	</item>
+	
+	<!-- grandiose gilded chest -->
+	<item id="38581">
+		<attribute key="rotateTo" value="38582" />
+	</item>
+	<item id="38580">
+		<attribute key="rotateTo" value="38581" />
+	</item>
+	<item id="38582">
+		<attribute key="rotateTo" value="38579" />
+	</item>
+	<item id="38579">
+		<attribute key="rotateTo" value="38580" />
+	</item>
+	
+	<!-- grandiose couch -->
+	<item id="38615">
+		<attribute key="rotateTo" value="38618" />
+	</item>
+	<item id="38612">
+		<attribute key="rotateTo" value="38615" />
+	</item>
+	<item id="38618">
+		<attribute key="rotateTo" value="38583" />
+	</item>
+	<item id="38583">
+		<attribute key="rotateTo" value="38612" />
+	</item>
+	
+	<!-- grandiose couch -->
+	<item id="38619">
+		<attribute key="rotateTo" value="38610" />
+	</item>
+	<item id="38613">
+		<attribute key="rotateTo" value="38616" />
+	</item>
+	<item id="38616">
+		<attribute key="rotateTo" value="38619" />
+	</item>
+	<item id="38610">
+		<attribute key="rotateTo" value="38613" />
+	</item>
+	
+	<!-- grandiose couch -->
+	<item id="38617">
+		<attribute key="rotateTo" value="38620" />
+	</item>
+	<item id="38614">
+		<attribute key="rotateTo" value="38617" />
+	</item>
+	<item id="38620">
+		<attribute key="rotateTo" value="38611" />
+	</item>
+	<item id="38611">
+		<attribute key="rotateTo" value="38614" />
+	</item>
+
+	<!-- volcanic chest -->
+	<item id="39287">
+		<attribute key="rotateTo" value="39288" />
+	</item>
+	<item id="39288">
+		<attribute key="rotateTo" value="39289" />
+	</item>
+	<item id="39286">
+		<attribute key="rotateTo" value="39287" />
+	</item>
+	<item id="39289">
+		<attribute key="rotateTo" value="39286" />
+	</item>
+	
+	<!-- volcanic chair -->
+	<item id="39291">
+		<attribute key="rotateTo" value="39292" />
+	</item>
+	<item id="39292">
+		<attribute key="rotateTo" value="39293" />
+	</item>
+	<item id="39290">
+		<attribute key="rotateTo" value="39291" />
+	</item>
+	<item id="39293">
+		<attribute key="rotateTo" value="39290" />
+	</item>
+
 	<item id="39312" article="a" name="eldritch shield">
 		<attribute key="weaponType" value="shield"/>
 		<attribute key="reflectdamage" value="42"/>
@@ -35869,9 +36979,49 @@
 		<attribute key="description" value="This hat represents the spirit of magic and fun."/>
 		<attribute key="weight" value="630"/>
 	</item>
+	<item id="39658" article="a" name="tagralt-inlaid scabbard">
+		<attribute key="weight" value="100" />
+	</item>
 	<item id="39659" article="an" name="eye-embroidered veil">
 		<attribute key="weight" value="2500" />
 	</item>
+	
+	<!-- leaf chair -->
+	<item id="39663">
+		<attribute key="rotateTo" value="39660" />
+	</item>
+	<item id="39661">
+		<attribute key="rotateTo" value="39662" />
+	</item>
+	<item id="39662">
+		<attribute key="rotateTo" value="39663" />
+	</item>
+	<item id="39660">
+		<attribute key="rotateTo" value="39661" />
+	</item>
+
+	<!-- shroom cupboard -->
+	<item id="39665">
+		<attribute key="rotateTo" value="39666" />
+	</item>
+	<item id="39666">
+		<attribute key="rotateTo" value="39665" />
+	</item>
+	
+	<!-- log chest -->
+	<item id="39669">
+		<attribute key="rotateTo" value="39670" />
+	</item>
+	<item id="39668">
+		<attribute key="rotateTo" value="39669" />
+	</item>
+	<item id="39670">
+		<attribute key="rotateTo" value="39667" />
+	</item>
+	<item id="39667">
+		<attribute key="rotateTo" value="39668" />
+	</item>
+	
 	<item id="39708" article="a" name="bonelord tome">
 		<attribute key="description" value="Eons of wisdom are looking upon thee."/>
 		<attribute key="weight" value="4690"/>
@@ -35894,6 +37044,43 @@
 		<attribute key="description" value="This is a golden replica of the famous horned helmet."/>
 		<attribute key="weight" value="5100"/>
 	</item>
+
+	<!-- kraken chair -->
+	<item id="39832">
+		<attribute key="rotateTo" value="39833" />
+	</item>
+	<item id="39831">
+		<attribute key="rotateTo" value="39832" />
+	</item>
+	<item id="39833">
+		<attribute key="rotateTo" value="39830" />
+	</item>
+	<item id="39830">
+		<attribute key="rotateTo" value="39831" />
+	</item>
+	
+	<!-- kraken cabinet -->
+	<item id="39835">
+		<attribute key="rotateTo" value="39836" />
+	</item>
+	<item id="39836">
+		<attribute key="rotateTo" value="39835" />
+	</item>
+	
+	<!-- kraken chest -->
+	<item id="39840">
+		<attribute key="rotateTo" value="39837" />
+	</item>
+	<item id="39838">
+		<attribute key="rotateTo" value="39839" />
+	</item>
+	<item id="39839">
+		<attribute key="rotateTo" value="39840" />
+	</item>
+	<item id="39837">
+		<attribute key="rotateTo" value="39838" />
+	</item>
+	
 	<item id="40686" name="changing backpack">
 		<attribute key="weight" value="1800" />
 		<attribute key="containerSize" value="15" />
@@ -35929,10 +37116,209 @@
 		<attribute key="magiclevelearth" value="1" />
 		<attribute key="magiclevelenergy" value="1" />
 	</item>
+	
+	<!-- Zaoan paravent -->
+	<item id="40932">
+		<attribute key="rotateTo" value="40933" />
+	</item>
+	<item id="40933">
+		<attribute key="rotateTo" value="40932" />
+	</item>
+	
+	<!-- Zaoan hassock -->
+	<item id="40926">
+		<attribute key="rotateTo" value="40927" />
+	</item>
+	<item id="40929">
+		<attribute key="rotateTo" value="40926" />
+	</item>
+	<item id="40927">
+		<attribute key="rotateTo" value="40928" />
+	</item>
+	<item id="40928">
+		<attribute key="rotateTo" value="40929" />
+	</item>
+	
+	<!-- Zaoan cabinet -->
+	<item id="40930">
+		<attribute key="rotateTo" value="40931" />
+	</item>
+	<item id="40931">
+		<attribute key="rotateTo" value="40930" />
+	</item>
+	
+	<!-- wooden sandals -->
+	<item id="40949">
+		<attribute key="rotateTo" value="40950" />
+	</item>
+	<item id="40950">
+		<attribute key="rotateTo" value="40949" />
+	</item>
+	
+	<!-- katana display -->
+	<item id="40952">
+		<attribute key="rotateTo" value="40953" />
+	</item>
+	<item id="40953">
+		<attribute key="rotateTo" value="40952" />
+	</item>
+	
 	<item id="40958" name="Morshabaal's extract">
 		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="3150" />
 	</item>
+	
+	<!-- Zaoan divider -->
+	<item id="40963">
+		<attribute key="rotateTo" value="40964" />
+	</item>
+	<item id="40964">
+		<attribute key="rotateTo" value="40963" />
+	</item>
+	
+	<!-- knightly chair -->
+	<item id="44452">
+		<attribute key="rotateTo" value="44453" />
+	</item>
+	<item id="44451">
+		<attribute key="rotateTo" value="44452" />
+	</item>
+	<item id="44453">
+		<attribute key="rotateTo" value="44450" />
+	</item>
+	<item id="44450">
+		<attribute key="rotateTo" value="44451" />
+	</item>
+	
+	<!-- knightly table -->
+	<item id="44454">
+		<attribute key="rotateTo" value="44455" />
+	</item>
+	<item id="44455">
+		<attribute key="rotateTo" value="44454" />
+	</item>
+	
+	<!-- knightly cabinet -->
+	<item id="44472">
+		<attribute key="rotateTo" value="44473" />
+	</item>
+	<item id="44473">
+		<attribute key="rotateTo" value="44472" />
+	</item>
+	
+	<!-- well-laid knightly table -->
+	<item id="44456">
+		<attribute key="rotateTo" value="44457" />
+	</item>
+	<item id="44457">
+		<attribute key="rotateTo" value="44456" />
+	</item>
+
+	<!-- knightly chest -->
+	<item id="44538">
+		<attribute key="rotateTo" value="44535" />
+	</item>
+	<item id="44536">
+		<attribute key="rotateTo" value="44537" />
+	</item>
+	<item id="44537">
+		<attribute key="rotateTo" value="44538" />
+	</item>
+	<item id="44535">
+		<attribute key="rotateTo" value="44536" />
+	</item>
+	
+	<!-- knightly bench -->
+	<item id="44553">
+		<attribute key="rotateTo" value="44548" />
+	</item>
+	<item id="44548">
+		<attribute key="rotateTo" value="44553" />
+	</item>
+	
+	<!-- knightly bench -->
+	<item id="44554">
+		<attribute key="rotateTo" value="44549" />
+	</item>
+	<item id="44549">
+		<attribute key="rotateTo" value="44554" />
+	</item>
+	
+	<!-- knightly bench -->
+	<item id="44555">
+		<attribute key="rotateTo" value="44550" />
+	</item>
+	<item id="44550">
+		<attribute key="rotateTo" value="44555" />
+	</item>
+	
+	<!-- knightly bench -->
+	<item id="44556">
+		<attribute key="rotateTo" value="44551" />
+	</item>
+	<item id="44551">
+		<attribute key="rotateTo" value="44556" />
+	</item>
+	
+	<!-- knightly bench -->
+	<item id="44557">
+		<attribute key="rotateTo" value="44552" />
+	</item>
+	<item id="44552">
+		<attribute key="rotateTo" value="44557" />
+	</item>
+	
+	<!-- flower chair -->
+	<item id="44767">
+		<attribute key="rotateTo" value="44768" />
+	</item>
+	<item id="44766">
+		<attribute key="rotateTo" value="44767" />
+	</item>
+	<item id="44768">
+		<attribute key="rotateTo" value="44765" />
+	</item>
+	<item id="44765">
+		<attribute key="rotateTo" value="44766" />
+	</item>
+	
+	<!-- flower cabinet -->
+	<item id="44772">
+		<attribute key="rotateTo" value="44773" />
+	</item>
+	<item id="44773">
+		<attribute key="rotateTo" value="44772" />
+	</item>
+	
+	<!-- flower chest -->
+	<item id="44777">
+		<attribute key="rotateTo" value="44774" />
+	</item>
+	<item id="44775">
+		<attribute key="rotateTo" value="44776" />
+	</item>
+	<item id="44776">
+		<attribute key="rotateTo" value="44777" />
+	</item>
+	<item id="44774">
+		<attribute key="rotateTo" value="44775" />
+	</item>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<item id="36478" article="a" name="dead werelion">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="600"/>
@@ -44389,5 +45775,39 @@
 		<attribute key="showCharges" value="1"/>
 		<attribute key="charges" value="500"/>
 		<attribute key="weight" value="1000"/>
+	</item>
+	
+	
+	<item id="35133" article="a" name="bed">
+		<attribute key="type" value="bed" />
+		<attribute key="partnerDirection" value="south" />
+		<attribute key="maleSleeper" value="35178" />
+		<attribute key="femaleSleeper" value="35169" />
+	</item>
+	<item id="35142" article="a" name="bed">
+		<attribute key="type" value="bed" />
+		<attribute key="partnerDirection" value="north" />
+		<attribute key="maleSleeper" value="35187" />
+		<attribute key="femaleSleeper" value="35187" />
+	</item>
+	
+	<item id="35178" article="a" name="cot">
+		<attribute key="type" value="bed" />
+		<attribute key="partnerDirection" value="south" />
+		<attribute key="maleSleeper" value="35133" />
+		<attribute key="forceSerialize" value="1" />
+	</item>
+	<item id="35187" article="a" name="cot">
+		<attribute key="type" value="bed" />
+		<attribute key="partnerDirection" value="north" />
+		<attribute key="maleSleeper" value="35142" />
+		<attribute key="forceSerialize" value="1" />
+	</item>
+	
+	<item id="35169" article="a" name="cot">
+		<attribute key="type" value="bed" />
+		<attribute key="partnerDirection" value="south" />
+		<attribute key="maleSleeper" value="35133" />
+		<attribute key="forceSerialize" value="1" />
 	</item>
 </items>
