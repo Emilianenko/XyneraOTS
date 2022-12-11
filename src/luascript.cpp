@@ -1887,7 +1887,8 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_LABEL)
 
 	registerEnum(ITEM_AMULETOFLOSS)
-	registerEnum(ITEM_DECORATION_KIT)
+	registerEnum(ITEM_FURNITURE_KIT)
+	registerEnum(ITEM_STORE_KIT)
 	registerEnum(ITEM_HIRELING_LAMP)
 	
 	registerEnum(ITEM_DOCUMENT_RO)

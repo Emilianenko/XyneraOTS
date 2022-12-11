@@ -39,6 +39,13 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 	isLoaded = true;
 
 	if (owner != 0) {
+		// Remove players from beds
+		for (BedItem* bed : bedsList) {
+			if (bed->getSleeper() != 0) {
+				bed->wakeUp(nullptr);
+			}
+		}
+
 		//send items to depot
 		if (player) {
 			transferToDepot(player);
@@ -51,13 +58,6 @@ void House::setOwner(uint32_t guid, bool updateDatabase/* = true*/, Player* play
 				for (int32_t i = creatures->size(); --i >= 0;) {
 					kickPlayer(nullptr, (*creatures)[i]->getPlayer());
 				}
-			}
-		}
-
-		// Remove players from beds
-		for (BedItem* bed : bedsList) {
-			if (bed->getSleeper() != 0) {
-				bed->wakeUp(nullptr);
 			}
 		}
 
@@ -228,8 +228,9 @@ bool House::transferToDepot(Player* player) const
 					// wrap the furniture into default kits
 					if (item->isMoveable() || item->hasForceSerialize()) {
 						uint16_t unwrapId = item->getID();
-						Item* newItem = g_game.transformItem(item, ITEM_DECORATION_KIT, item->getSubType());
+						Item* newItem = g_game.transformItem(item, item->isStoreItem() ? ITEM_STORE_KIT : ITEM_FURNITURE_KIT, item->getSubType());
 						newItem->setIntAttr(ITEM_ATTRIBUTE_WRAPID, unwrapId);
+						newItem->setStrAttr(ITEM_ATTRIBUTE_DESCRIPTION, fmt::format("Use it in your house to construct {:s}.", item->getNameDescription()));
 						moveItemList.push_back(newItem);
 					}
 				}
