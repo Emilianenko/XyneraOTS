@@ -34634,6 +34634,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="28744" />
 		<attribute key="femaleSleeper" value="28748" />
+		<attribute key="rotateTo" value="28754" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="28753">
@@ -34641,6 +34642,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="28745" />
 		<attribute key="femaleSleeper" value="28749" />
+		<attribute key="rotateTo" value="28755" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="28754">
@@ -34648,6 +34650,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="28746" />
 		<attribute key="femaleSleeper" value="28750" />
+		<attribute key="rotateTo" value="28752" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="28755">
@@ -34655,6 +34658,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="28747" />
 		<attribute key="femaleSleeper" value="28751" />
+		<attribute key="rotateTo" value="28753" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<!-- end movable beds -->
@@ -37998,6 +38002,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="36968" />
 		<attribute key="femaleSleeper" value="36972" />
+		<attribute key="rotateTo" value="36978" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="36977">
@@ -38005,6 +38010,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="36969" />
 		<attribute key="femaleSleeper" value="36973" />
+		<attribute key="rotateTo" value="36979" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="36968">
@@ -38036,6 +38042,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="36970" />
 		<attribute key="femaleSleeper" value="36974" />
+		<attribute key="rotateTo" value="36976" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="36979">
@@ -38043,6 +38050,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="36971" />
 		<attribute key="femaleSleeper" value="36975" />
+		<attribute key="rotateTo" value="36977" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="36970">
@@ -39251,6 +39259,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35178" />
 		<attribute key="femaleSleeper" value="35169" />
+		<attribute key="rotateTo" value="35151" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35142">
@@ -39258,6 +39267,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35187" />
 		<attribute key="femaleSleeper" value="35187" />
+		<attribute key="rotateTo" value="35160" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35178">
@@ -39283,6 +39293,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35209" />
 		<attribute key="femaleSleeper" value="35200" />
+		<attribute key="rotateTo" value="35133" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35160">
@@ -39290,6 +39301,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35218" />
 		<attribute key="femaleSleeper" value="35218" />
+		<attribute key="rotateTo" value="35142" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35209">
@@ -39315,6 +39327,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35174" />
 		<attribute key="femaleSleeper" value="35165" />
+		<attribute key="rotateTo" value="35147" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35138">
@@ -39322,6 +39335,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35183" />
 		<attribute key="femaleSleeper" value="35183" />
+		<attribute key="rotateTo" value="35156" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35174">
@@ -39347,6 +39361,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35205" />
 		<attribute key="femaleSleeper" value="35192" />
+		<attribute key="rotateTo" value="35129" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35156">
@@ -39354,6 +39369,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35214" />
 		<attribute key="femaleSleeper" value="35214" />
+		<attribute key="rotateTo" value="35138" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35205">
@@ -39379,6 +39395,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35179" />
 		<attribute key="femaleSleeper" value="35170" />
+		<attribute key="rotateTo" value="35152" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35143">
@@ -39386,6 +39403,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35188" />
 		<attribute key="femaleSleeper" value="35188" />
+		<attribute key="rotateTo" value="35161" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35179">
@@ -39411,6 +39429,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35210" />
 		<attribute key="femaleSleeper" value="35201" />
+		<attribute key="rotateTo" value="35134" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35161">
@@ -39418,6 +39437,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35219" />
 		<attribute key="femaleSleeper" value="35219" />
+		<attribute key="rotateTo" value="35143" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35210">
@@ -39443,6 +39463,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35181" />
 		<attribute key="femaleSleeper" value="35172" />
+		<attribute key="rotateTo" value="35154" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35145">
@@ -39450,6 +39471,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35190" />
 		<attribute key="femaleSleeper" value="35190" />
+		<attribute key="rotateTo" value="35163" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35181">
@@ -39475,6 +39497,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35212" />
 		<attribute key="femaleSleeper" value="35203" />
+		<attribute key="rotateTo" value="35136" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35163">
@@ -39482,6 +39505,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35221" />
 		<attribute key="femaleSleeper" value="35221" />
+		<attribute key="rotateTo" value="35145" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35212">
@@ -39507,6 +39531,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35175" />
 		<attribute key="femaleSleeper" value="35166" />
+		<attribute key="rotateTo" value="35148" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35139">
@@ -39514,6 +39539,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35184" />
 		<attribute key="femaleSleeper" value="35184" />
+		<attribute key="rotateTo" value="35157" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35175">
@@ -39539,6 +39565,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35206" />
 		<attribute key="femaleSleeper" value="35197" />
+		<attribute key="rotateTo" value="35130" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35157">
@@ -39546,6 +39573,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35215" />
 		<attribute key="femaleSleeper" value="35215" />
+		<attribute key="rotateTo" value="35139" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35206">
@@ -39571,6 +39599,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35176" />
 		<attribute key="femaleSleeper" value="35167" />
+		<attribute key="rotateTo" value="35149" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35140">
@@ -39578,6 +39607,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35185" />
 		<attribute key="femaleSleeper" value="35185" />
+		<attribute key="rotateTo" value="35158" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35176">
@@ -39603,6 +39633,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35207" />
 		<attribute key="femaleSleeper" value="35198" />
+		<attribute key="rotateTo" value="35131" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35158">
@@ -39610,6 +39641,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35216" />
 		<attribute key="femaleSleeper" value="35216" />
+		<attribute key="rotateTo" value="35140" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35207">
@@ -39635,6 +39667,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35177" />
 		<attribute key="femaleSleeper" value="35168" />
+		<attribute key="rotateTo" value="35150" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35141">
@@ -39642,6 +39675,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35186" />
 		<attribute key="femaleSleeper" value="35186" />
+		<attribute key="rotateTo" value="35159" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35177">
@@ -39667,6 +39701,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35208" />
 		<attribute key="femaleSleeper" value="35199" />
+		<attribute key="rotateTo" value="35132" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35159">
@@ -39674,6 +39709,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35217" />
 		<attribute key="femaleSleeper" value="35217" />
+		<attribute key="rotateTo" value="35141" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35208">
@@ -39699,6 +39735,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35182" />
 		<attribute key="femaleSleeper" value="35173" />
+		<attribute key="rotateTo" value="35155" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35146">
@@ -39706,6 +39743,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35191" />
 		<attribute key="femaleSleeper" value="35224" />
+		<attribute key="rotateTo" value="35164" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35182">
@@ -39737,6 +39775,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35213" />
 		<attribute key="femaleSleeper" value="35204" />
+		<attribute key="rotateTo" value="35137" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35164">
@@ -39744,6 +39783,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35225" />
 		<attribute key="femaleSleeper" value="35222" />
+		<attribute key="rotateTo" value="35146" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35213">
@@ -39775,6 +39815,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35180" />
 		<attribute key="femaleSleeper" value="35171" />
+		<attribute key="rotateTo" value="35153" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35144">
@@ -39782,6 +39823,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35189" />
 		<attribute key="femaleSleeper" value="35189" />
+		<attribute key="rotateTo" value="35162" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35180">
@@ -39807,6 +39849,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35211" />
 		<attribute key="femaleSleeper" value="35202" />
+		<attribute key="rotateTo" value="35135" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35162">
@@ -39814,6 +39857,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35220" />
 		<attribute key="femaleSleeper" value="35220" />
+		<attribute key="rotateTo" value="35144" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35211">
@@ -40260,6 +40304,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35456" />
 		<attribute key="femaleSleeper" value="35455" />
+		<attribute key="rotateTo" value="35453" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35452">
@@ -40267,6 +40312,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35457" />
 		<attribute key="femaleSleeper" value="35457" />
+		<attribute key="rotateTo" value="35454" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35453">
@@ -40274,6 +40320,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35459" />
 		<attribute key="femaleSleeper" value="35458" />
+		<attribute key="rotateTo" value="35451" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35454">
@@ -40281,6 +40328,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35460" />
 		<attribute key="femaleSleeper" value="35460" />
+		<attribute key="rotateTo" value="35452" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="35455">
@@ -41922,6 +41970,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="37845" />
 		<attribute key="femaleSleeper" value="37849" />
+		<attribute key="rotateTo" value="37864" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="37863">
@@ -41929,6 +41978,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="37846" />
 		<attribute key="femaleSleeper" value="37859" />
+		<attribute key="rotateTo" value="37865" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="37864">
@@ -41936,6 +41986,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="37847" />
 		<attribute key="femaleSleeper" value="37860" />
+		<attribute key="rotateTo" value="37862" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="37865">
@@ -41943,6 +41994,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="37848" />
 		<attribute key="femaleSleeper" value="37861" />
+		<attribute key="rotateTo" value="37863" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<!-- end movable beds -->
@@ -42330,6 +42382,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38507" />
 		<attribute key="femaleSleeper" value="38511" />
+		<attribute key="rotateTo" value="38517" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38516">
@@ -42337,6 +42390,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38508" />
 		<attribute key="femaleSleeper" value="38512" />
+		<attribute key="rotateTo" value="38518" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38517">
@@ -42344,6 +42398,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38509" />
 		<attribute key="femaleSleeper" value="38513" />
+		<attribute key="rotateTo" value="38515" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38518">
@@ -42351,6 +42406,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38510" />
 		<attribute key="femaleSleeper" value="38514" />
+		<attribute key="rotateTo" value="38516" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38519">
@@ -42406,6 +42462,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38519" />
 		<attribute key="femaleSleeper" value="38523" />
+		<attribute key="rotateTo" value="38529" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38528">
@@ -42413,6 +42470,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38520" />
 		<attribute key="femaleSleeper" value="38524" />
+		<attribute key="rotateTo" value="38530" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38529">
@@ -42420,6 +42478,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38521" />
 		<attribute key="femaleSleeper" value="38525" />
+		<attribute key="rotateTo" value="38527" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38530">
@@ -42427,6 +42486,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38522" />
 		<attribute key="femaleSleeper" value="38526" />
+		<attribute key="rotateTo" value="38528" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38531">
@@ -42482,6 +42542,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38531" />
 		<attribute key="femaleSleeper" value="38535" />
+		<attribute key="rotateTo" value="38541" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38540">
@@ -42489,6 +42550,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38532" />
 		<attribute key="femaleSleeper" value="38536" />
+		<attribute key="rotateTo" value="38542" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38541">
@@ -42496,6 +42558,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38533" />
 		<attribute key="femaleSleeper" value="38537" />
+		<attribute key="rotateTo" value="38539" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38542">
@@ -42503,6 +42566,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38534" />
 		<attribute key="femaleSleeper" value="38538" />
+		<attribute key="rotateTo" value="38540" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<!-- end movable beds -->
@@ -42589,6 +42653,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38584" />
 		<attribute key="femaleSleeper" value="38588" />
+		<attribute key="rotateTo" value="38594" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38593">
@@ -42596,6 +42661,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38585" />
 		<attribute key="femaleSleeper" value="38589" />
+		<attribute key="rotateTo" value="38595" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38584">
@@ -42627,6 +42693,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38586" />
 		<attribute key="femaleSleeper" value="38590" />
+		<attribute key="rotateTo" value="38592" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38595">
@@ -42634,6 +42701,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38587" />
 		<attribute key="femaleSleeper" value="38591" />
+		<attribute key="rotateTo" value="38593" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="38586">
@@ -43576,6 +43644,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39679" />
 		<attribute key="femaleSleeper" value="39683" />
+		<attribute key="rotateTo" value="39689" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39688">
@@ -43583,6 +43652,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39680" />
 		<attribute key="femaleSleeper" value="39684" />
+		<attribute key="rotateTo" value="39690" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39679">
@@ -43614,6 +43684,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39681" />
 		<attribute key="femaleSleeper" value="39685" />
+		<attribute key="rotateTo" value="39687" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39690">
@@ -43621,6 +43692,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39682" />
 		<attribute key="femaleSleeper" value="39686" />
+		<attribute key="rotateTo" value="39688" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39681">
@@ -43715,6 +43787,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39849" />
 		<attribute key="femaleSleeper" value="39853" />
+		<attribute key="rotateTo" value="39859" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39858">
@@ -43722,6 +43795,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39850" />
 		<attribute key="femaleSleeper" value="39854" />
+		<attribute key="rotateTo" value="39860" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39849">
@@ -43753,6 +43827,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39851" />
 		<attribute key="femaleSleeper" value="39855" />
+		<attribute key="rotateTo" value="39857" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39860">
@@ -43760,6 +43835,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39852" />
 		<attribute key="femaleSleeper" value="39856" />
+		<attribute key="rotateTo" value="39858" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="39851">
@@ -43972,6 +44048,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="40934" />
 		<attribute key="femaleSleeper" value="40938" />
+		<attribute key="rotateTo" value="40943" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="40942">
@@ -43979,6 +44056,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="40935" />
 		<attribute key="femaleSleeper" value="40939" />
+		<attribute key="rotateTo" value="40944" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="40934">
@@ -44010,6 +44088,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="40936" />
 		<attribute key="femaleSleeper" value="40940" />
+		<attribute key="rotateTo" value="40941" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="40944">
@@ -44017,6 +44096,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="40937" />
 		<attribute key="femaleSleeper" value="40945" />
+		<attribute key="rotateTo" value="40942" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="40936">
@@ -44689,6 +44769,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44460" />
 		<attribute key="femaleSleeper" value="44464" />
+		<attribute key="rotateTo" value="44470" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44469">
@@ -44696,6 +44777,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44461" />
 		<attribute key="femaleSleeper" value="44465" />
+		<attribute key="rotateTo" value="44471" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44460">
@@ -44727,6 +44809,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44462" />
 		<attribute key="femaleSleeper" value="44466" />
+		<attribute key="rotateTo" value="44468" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44471">
@@ -44734,6 +44817,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44463" />
 		<attribute key="femaleSleeper" value="44467" />
+		<attribute key="rotateTo" value="44469" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44462">
@@ -44929,6 +45013,7 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44778" />
 		<attribute key="femaleSleeper" value="44782" />
+		<attribute key="rotateTo" value="44787" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44786">
@@ -44936,6 +45021,7 @@
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44779" />
 		<attribute key="femaleSleeper" value="44783" />
+		<attribute key="rotateTo" value="44788" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44778">
@@ -44967,6 +45053,7 @@
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44780" />
 		<attribute key="femaleSleeper" value="44784" />
+		<attribute key="rotateTo" value="44785" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44788">
@@ -44974,6 +45061,7 @@
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44781" />
 		<attribute key="femaleSleeper" value="44789" />
+		<attribute key="rotateTo" value="44786" />
 		<attribute key="forceSerialize" value="1" />
 	</item>
 	<item id="44780">
