@@ -15,7 +15,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			
 			local toTile = Tile(toCylinder:getPosition())
 			local toHouse = toTile and toTile:getHouse()
-			if toHouse and toHouse:getOwnerAccountId() ~= self:getAccountId() then
+			if toHouse and toHouse:getAccessLevel(self) < HOUSE_OWNER then
 				-- trying to put store item on the floor as house guest
 				return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE
 			end
@@ -27,7 +27,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			
 			local fromTile = Tile(fromPosition)
 			local fromHouse = fromTile and fromTile:getHouse()
-			if fromHouse and fromHouse:getOwnerAccountId() ~= self:getAccountId() then
+			if fromHouse and fromHouse:getAccessLevel(self) < HOUSE_OWNER then
 				-- trying to take the store item as house guest
 				return RETURNVALUE_NOTPOSSIBLE
 			end			
@@ -37,7 +37,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 			if fromTile and toTile then
 				local fromHouse = fromTile:getHouse()
 				local toHouse = toTile:getHouse()
-				if not (fromHouse and toHouse and fromHouse:getOwnerAccountId() == toHouse:getOwnerAccountId()) then
+				if not (fromHouse and toHouse and fromHouse:getOwnerGuid() == toHouse:getOwnerGuid()) then
 					-- trying to throw the store item out of the house
 					return RETURNVALUE_NOTPOSSIBLE
 				end

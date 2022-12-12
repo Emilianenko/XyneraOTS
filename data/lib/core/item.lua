@@ -1025,11 +1025,12 @@ do
 				desc = "Only the worthy may pass."
 			end
 			
-			if not isVirtual and itemType:getId() == ITEM_DECORATION_KIT then
+			local itemId = itemType:getId()
+			if not isVirtual and (itemId == ITEM_DECORATION_KIT or itemId == ITEM_FURNITURE_KIT) then
 				local wrapTo = item:hasAttribute(ITEM_ATTRIBUTE_WRAPID) and ItemType(item:getAttribute(ITEM_ATTRIBUTE_WRAPID)) or false
 				local kitDesc = "Unable to open. Missing attribute wrapId."
 				if wrapTo then
-					kitDesc = string.format("Unwrap it in your own house to create %s.", wrapTo:getNameDescription(subType, addArticle))
+					kitDesc = string.format("Use it in your house to construct %s.", wrapTo:getNameDescription(subType, true))
 				end
 
 				if desc and desc ~= "" then

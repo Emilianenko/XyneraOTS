@@ -2856,7 +2856,7 @@ void Game::playerWrapItem(uint32_t playerId, const Position& position, uint8_t s
 		return;
 	}
 
-	Thing* thing = internalGetThing(player, position, stackPos, 0, STACKPOS_TOPDOWN_ITEM);
+	Thing* thing = internalGetThing(player, position, stackPos, 0, STACKPOS_USEITEM);
 	if (!thing) {
 		return;
 	}

@@ -46,7 +46,7 @@ function goldenOutfitDisplay.onUse(player, item, fromPosition, target, toPositio
 	
 	-- check if house
 	local house = tile:getHouse()
-	if not house or player:getAccountId() ~= house:getOwnerAccountId() then
+	if not house or house:getAccessLevel(player) < HOUSE_OWNER then
 		-- guests cant toggle the display
 		return RETURNVALUE_CANNOTUSETHISOBJECT	
 	end

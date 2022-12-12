@@ -230,7 +230,6 @@ bool House::transferToDepot(Player* player) const
 						uint16_t unwrapId = item->getID();
 						Item* newItem = g_game.transformItem(item, item->isStoreItem() ? ITEM_STORE_KIT : ITEM_FURNITURE_KIT, item->getSubType());
 						newItem->setIntAttr(ITEM_ATTRIBUTE_WRAPID, unwrapId);
-						newItem->setStrAttr(ITEM_ATTRIBUTE_DESCRIPTION, fmt::format("Use it in your house to construct {:s}.", item->getNameDescription()));
 						moveItemList.push_back(newItem);
 					}
 				}

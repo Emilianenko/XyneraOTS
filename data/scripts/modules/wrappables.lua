@@ -25,14 +25,24 @@ for kitId, furnitureId in pairs(constructionKits) do
 	until rotateMap[tmpId]
 end
 
+local function isFurniture(itemType)
+	return ReverseCarpetMap and ReverseCarpetMap[itemType:getId()] or itemType:isMovable() and not itemType:isPickupable()
+end
+
 -- wrap/unwrap handler
 local function wrap(player, item)
 	-- determine transferability
 	local itemId = item:getId()
 	local transformId = item:hasAttribute(ITEM_ATTRIBUTE_WRAPID) and item:getAttribute(ITEM_ATTRIBUTE_WRAPID) or constructionKits[itemId] or rotateMap[itemId]
+
 	if not transformId then
-		-- unable to find transform id
-		return RETURNVALUE_CANNOTUSETHISOBJECT
+		-- unable to find transform id, check if default kit can be applied
+		if not isFurniture(item:getType()) then
+			-- not a furniture piece
+			return RETURNVALUE_CANNOTUSETHISOBJECT
+		end
+	
+		transformId = item:isStoreItem() and ITEM_STORE_KIT or ITEM_FURNITURE_KIT
 	end
 	
 	local transformItemType = ItemType(transformId)
@@ -50,16 +60,16 @@ local function wrap(player, item)
 	
 	-- check if house
 	local house = tile:getHouse()
-	if not house or player:getAccountId() ~= house:getOwnerAccountId() then
+	if not house or house:getAccessLevel(player) < HOUSE_OWNER then
 		-- not in own house
 		return RETURNVALUE_YOUCANONLYUNWRAPINOWNHOUSE	
 	end
 	
 	-- try to wrap
-	if transformItemType:isMovable() and transformItemType:isPickupable() then
+	if isFurniture(item:getType()) then
 		local itemCopy = item:clone()
-		if itemCopy:hasAttribute(ITEM_ATTRIBUTE_WRAPID) then
-			itemCopy:setAttribute(ITEM_ATTRIBUTE_WRAPID, itemId)
+		if itemCopy:hasAttribute(ITEM_ATTRIBUTE_WRAPID) or transformId == ITEM_STORE_KIT or transformId == ITEM_FURNITURE_KIT then
+			itemCopy:setAttribute(ITEM_ATTRIBUTE_WRAPID, ReverseCarpetMap and ReverseCarpetMap[itemId] or itemId)
 		end
 			
 		if player:getFreeCapacity() < itemCopy:getWeight() then
@@ -125,7 +135,8 @@ do
 	for kitId, _ in pairs(constructionKits) do
 		action:id(kitId)
 	end
-	action:id(ITEM_DECORATION_KIT)
+	action:id(ITEM_STORE_KIT)
+	action:id(ITEM_FURNITURE_KIT)
 	action:register()
 end
 
