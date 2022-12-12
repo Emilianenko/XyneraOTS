@@ -233,7 +233,7 @@ local function creatureSayCallback(cid, type, msg)
 			-- add furniture kit if the player is buying outfit
 			if currentTopic == topic.wantsArmor then
 				-- check if the kit can be created
-				local item = Game.createItem(ITEM_DECORATION_KIT, 1)
+				local item = Game.createItem(ITEM_STORE_KIT, 1)
 				if not item then
 					-- failed to create furniture kit
 					-- npc ends the conversation
