@@ -8,7 +8,7 @@ function isSparklingTile(pos)
 
 	local tile = Tile(pos)
 	if tile then
-		for _, item in pairs(tile:getItems()) do
+		for _, item in pairs(tile:getItems() or {}) do
 			local itemId = item:getId()
 			if itemId == ITEM_SPARKLING_A or itemId == ITEM_SPARKLING_B then
 				return true
