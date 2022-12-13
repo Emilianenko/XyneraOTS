@@ -77,7 +77,24 @@ BedItem* BedItem::getNextBedItem() const
 	if (!tile) {
 		return nullptr;
 	}
-	return tile->getBedItem();
+
+	BedItem* nextBedItem = tile->getBedItem();
+	if (!nextBedItem) {
+		return nullptr;
+	}
+
+	std::string firstPieceName = getName();
+	std::string secondPieceName = nextBedItem->getName();
+
+	replaceString(firstPieceName, "head", "");
+	replaceString(firstPieceName, "foot", "");
+	replaceString(secondPieceName, "head", "");
+	replaceString(secondPieceName, "foot", "");
+	if (firstPieceName.compare(secondPieceName) != 0) {
+		return nullptr;
+	}
+
+	return nextBedItem;
 }
 
 bool BedItem::canUse(Player* player)
