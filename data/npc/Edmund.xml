@@ -111,6 +111,15 @@
 			small ruby, 2147, 500;
 			small sapphire, 2146, 500;
 			wedding ring, 2121, 990;
-			white pearl, 2143, 320;"/>
+			white pearl, 2143, 320;
+			emerald bangle, 2127, 800;
+			gold nugget, 2157, 850;
+			violet gem gem, 2153, 10000;
+			yellow gem, 2154, 1000;
+			green gem, 2155, 5000;
+			red gem, 2156, 1000;
+			blue gem, 2158, 5000;
+			white gem, 35425, 12000;
+		"/>
 	</parameters>
 </npc>
