@@ -376,6 +376,34 @@ int LuaScriptInterface::luaGameGetVocations(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaGameSetStoreOutfit(lua_State* L)
+{
+	// Game.setStoreOutfit(lookType, offerId)
+	uint16_t lookType = getNumber<uint16_t>(L, 1, 0);
+	if (lookType == 0) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t offerId = getNumber<uint32_t>(L, 2, 0);
+	lua_pushboolean(L, Outfits::getInstance().setOutfitOfferId(lookType, offerId));
+	return 1;
+}
+
+int LuaScriptInterface::luaGameSetStoreMount(lua_State* L)
+{
+	// Game.setStoreMount(lookType, offerId)
+	uint16_t lookType = getNumber<uint16_t>(L, 1, 0);
+	if (lookType == 0) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t offerId = getNumber<uint32_t>(L, 2, 0);
+	lua_pushboolean(L, g_game.mounts.setMountOfferId(lookType, offerId));
+	return 1;
+}
+
 int LuaScriptInterface::luaGameGetGameState(lua_State* L)
 {
 	// Game.getGameState()

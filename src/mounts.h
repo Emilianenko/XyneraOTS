@@ -13,6 +13,7 @@ struct Mount
 	int32_t speed;
 	uint16_t clientId;
 	uint8_t id;
+	uint32_t offerId = 0;
 	bool premium;
 };
 
@@ -24,6 +25,7 @@ class Mounts
 		Mount* getMountByID(uint8_t id);
 		Mount* getMountByName(const std::string& name);
 		Mount* getMountByClientID(uint16_t clientId);
+		bool setMountOfferId(uint16_t lookType, uint32_t offerId);
 
 		const std::vector<Mount>& getMounts() const {
 			return mounts;

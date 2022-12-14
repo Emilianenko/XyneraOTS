@@ -532,6 +532,13 @@ enum MapMark_t
 	MAPMARK_GREENSOUTH = 19,
 };
 
+enum OutfitTooltip_t : uint8_t {
+	OUTFIT_TOOLTIP_NONE = 0,
+	OUTFIT_TOOLTIP_STORE = 1,
+	OUTFIT_TOOLTIP_GOLDEN = 2,
+	OUTFIT_TOOLTIP_ROYAL = 3
+};
+
 struct Outfit_t {
 	uint16_t lookType = 0;
 	uint16_t lookTypeEx = 0;

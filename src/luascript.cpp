@@ -1006,22 +1006,25 @@ void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit_t& outfit)
 
 void LuaScriptInterface::pushOutfit(lua_State* L, const Outfit* outfit)
 {
-	lua_createtable(L, 0, 4);
+	lua_createtable(L, 0, 6);
 	setField(L, "lookType", outfit->lookType);
 	setField(L, "name", outfit->name);
 	setField(L, "premium", outfit->premium);
 	setField(L, "unlocked", outfit->unlocked);
+	setField(L, "tooltip", outfit->tooltip);
+	setField(L, "offerId", outfit->offerId);
 	setMetatable(L, -1, "Outfit");
 }
 
 void LuaScriptInterface::pushMount(lua_State* L, const Mount* mount)
 {
-	lua_createtable(L, 0, 5);
+	lua_createtable(L, 0, 6);
 	setField(L, "name", mount->name);
 	setField(L, "speed", mount->speed);
 	setField(L, "clientId", mount->clientId);
 	setField(L, "id", mount->id);
 	setField(L, "premium", mount->premium);
+	setField(L, "offerId", mount->offerId);
 }
 
 void LuaScriptInterface::pushFamiliar(lua_State* L, const Familiar* familiar)
@@ -2186,6 +2189,12 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(MAPMARK_GREENNORTH)
 	registerEnum(MAPMARK_GREENSOUTH)
 
+	// outfit tooltips
+	registerEnum(OUTFIT_TOOLTIP_NONE)
+	registerEnum(OUTFIT_TOOLTIP_STORE)
+	registerEnum(OUTFIT_TOOLTIP_GOLDEN)
+	registerEnum(OUTFIT_TOOLTIP_ROYAL)
+
 	// Use with Game.getReturnMessage
 	registerEnum(RETURNVALUE_NOERROR)
 	registerEnum(RETURNVALUE_NOTPOSSIBLE)
@@ -2625,6 +2634,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Game", "getInstantSpells", LuaScriptInterface::luaGameGetInstantSpells);
 	registerMethod("Game", "getRuneSpells", LuaScriptInterface::luaGameGetRuneSpells);
 	registerMethod("Game", "getVocations", LuaScriptInterface::luaGameGetVocations);
+	registerMethod("Game", "setStoreOutfit", LuaScriptInterface::luaGameSetStoreOutfit);
+	registerMethod("Game", "setStoreMount", LuaScriptInterface::luaGameSetStoreMount);
 
 	registerMethod("Game", "getGameState", LuaScriptInterface::luaGameGetGameState);
 	registerMethod("Game", "setGameState", LuaScriptInterface::luaGameSetGameState);

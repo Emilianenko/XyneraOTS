@@ -106,3 +106,21 @@ Mount* Mounts::getMountByClientID(uint16_t clientId)
 
 	return it != mounts.end() ? &*it : nullptr;
 }
+
+bool Mounts::setMountOfferId(uint16_t lookType, uint32_t offerId)
+{
+	if (lookType == 0) {
+		return false;
+	}
+
+	auto it = std::find_if(mounts.begin(), mounts.end(), [lookType](const Mount& mount) {
+		return mount.clientId == lookType;
+	});
+
+	if (it == mounts.end()) {
+		return false;
+	}
+
+	it->offerId = offerId;
+	return true;
+}

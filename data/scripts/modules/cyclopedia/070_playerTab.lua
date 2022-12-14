@@ -381,7 +381,7 @@ function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 					if outfit then
 						response:addString(outfit.name)
 						response:addByte(displayOutfits[i][2])
-						response:addByte(outfit.unlocked == 1 and OUTFIT_TYPE_NORMAL or OUTFIT_TYPE_QUEST)
+						response:addByte(outfit.unlocked == 1 and OUTFIT_TYPE_NORMAL or outfit.offerId ~= 0 and OUTFIT_TYPE_STORE or OUTFIT_TYPE_QUEST)
 					else
 						response:addString("")
 						response:addByte(displayOutfits[i][2])
@@ -416,7 +416,7 @@ function sendCyclopediaPlayerInfo(playerId, creatureId, infoType, entriesPerPage
 				for i = 1, #displayMounts do
 					response:addU16(displayMounts[i].clientId)
 					response:addString(displayMounts[i].name)
-					response:addByte(OUTFIT_TYPE_NORMAL)
+					response:addByte(displayMounts[i].offerId ~= 0 and OUTFIT_TYPE_STORE or OUTFIT_TYPE_QUEST)
 					response:addU32(0) -- store offer id?
 				end
 				

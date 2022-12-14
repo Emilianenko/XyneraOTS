@@ -49,7 +49,7 @@ function NetworkMessage:addStoreOfferError(offerId)
 		--	self:addU16(3547)
 end
 
-function NetworkMessage:addStoreOffer(offerId, parentName)
+function NetworkMessage:addStoreOffer(offerId, parentName, player)
 -- keep the tabbing for self-documenting packet structure
 	-- string offerName
 	-- u8 priceTagsCount
@@ -161,7 +161,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 		self:addU16(offer.lookType)
 		tryOnType = 1
 	elseif offerType == STORE_OFFER_TYPE_OUTFIT then
-		self:addU16(offer.lookType)
+		self:addU16(player:getSex() == 1 and offer.lookTypeMale or offer.lookTypeFemale)
 		-- outfit colors
 		-- every outfit is using this pattern
 		self:addByte(95)
@@ -175,10 +175,10 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 		self:addByte(1) -- gender - 1 or 2
 		self:addU16(offer.lookTypeFemale)
 		self:addU16(offer.lookTypeMale)
-		self:addByte(offer.lookHead)
-		self:addByte(offer.lookBody)
-		self:addByte(offer.lookLegs)
-		self:addByte(offer.lookFeet)
+		self:addByte(95)
+		self:addByte(113)
+		self:addByte(39)
+		self:addByte(115)
 	end
 
 	self:addByte(tryOnType) -- TryOn Type
@@ -271,7 +271,7 @@ function Player:sendStoreUI(actionType, tabName)
 
 			if tabInfo.offers and #tabInfo.offers > 0 then
 				for i = 1, #tabInfo.offers do
-					msg:addStoreOffer(tabInfo.offers[i], tabInfo.name)
+					msg:addStoreOffer(tabInfo.offers[i], tabInfo.name, self)
 					descriptionsToSend[#descriptionsToSend + 1] = tabInfo.offers[i]
 				end
 			end
@@ -282,7 +282,7 @@ function Player:sendStoreUI(actionType, tabName)
 					if currentTab.offers and #currentTab.offers > 0 then
 						for offerIndex = 1, #currentTab.offers do
 							local currentOfferId = currentTab.offers[offerIndex]
-							msg:addStoreOffer(currentOfferId, currentTab.name)
+							msg:addStoreOffer(currentOfferId, currentTab.name, self)
 							descriptionsToSend[#descriptionsToSend + 1] = currentOfferId
 						end
 					end

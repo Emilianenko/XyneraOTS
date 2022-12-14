@@ -3720,7 +3720,7 @@ void ProtocolGame::sendOutfitWindow()
 	std::vector<ProtocolOutfit> protocolOutfits;
 	if (player->isAccessPlayer()) {
 		static const std::string gamemasterOutfitName = "Gamemaster";
-		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
+		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0, OUTFIT_TOOLTIP_NONE, 0);
 	}
 
 	// get other available outfits
@@ -3728,10 +3728,15 @@ void ProtocolGame::sendOutfitWindow()
 	for (const Outfit& outfit : outfits) {
 		uint8_t addons;
 		if (!player->getOutfitAddons(outfit, addons)) {
+			if (outfit.offerId != 0) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, OUTFIT_TOOLTIP_STORE, outfit.offerId);
+			} else if (outfit.tooltip != OUTFIT_TOOLTIP_NONE) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, outfit.tooltip, 0);
+			}
 			continue;
 		}
 
-		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
+		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons, OUTFIT_TOOLTIP_NONE, 0);
 	}
 
 	// add available outfits
@@ -3740,23 +3745,37 @@ void ProtocolGame::sendOutfitWindow()
 		msg.add<uint16_t>(outfit.lookType);
 		msg.addString(outfit.name);
 		msg.addByte(outfit.addons);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId), 0x02 golden outfit tooltip (hardcoded)
+		msg.addByte(outfit.tooltip);
+		if (outfit.tooltip == OUTFIT_TOOLTIP_STORE) {
+			msg.add<uint32_t>(outfit.offerId);
+		}
 	}
 
 	// get available mounts
 	std::vector<const Mount*> mounts;
+	std::vector<const Mount*> storeMounts;
 	for (const Mount& mount : g_game.mounts.getMounts()) {
 		if (player->hasMount(&mount)) {
 			mounts.push_back(&mount);
+		} else if(mount.offerId != 0) {
+			storeMounts.push_back(&mount);
 		}
 	}
 
 	// add available mounts
-	msg.add<uint16_t>(mounts.size());
+	msg.add<uint16_t>(mounts.size() + storeMounts.size());
 	for (const Mount* mount : mounts) {
 		msg.add<uint16_t>(mount->clientId);
 		msg.addString(mount->name);
 		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	}
+
+	// add store mounts
+	for (const Mount* mount : storeMounts) {
+		msg.add<uint16_t>(mount->clientId);
+		msg.addString(mount->name);
+		msg.addByte(0x01);
+		msg.add<uint32_t>(mount->offerId);
 	}
 
 	// add available familiars
@@ -3826,7 +3845,7 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 	std::vector<ProtocolOutfit> protocolOutfits;
 	if (player->isAccessPlayer()) {
 		static const std::string gamemasterOutfitName = "Gamemaster";
-		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
+		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0, OUTFIT_TOOLTIP_NONE, 0);
 	}
 
 	// fetch player addons info
@@ -3834,10 +3853,15 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 	for (const Outfit& outfit : outfits) {
 		uint8_t addons;
 		if (!player->getOutfitAddons(outfit, addons)) {
+			if (outfit.offerId != 0) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, OUTFIT_TOOLTIP_STORE, outfit.offerId);
+			} else if (outfit.tooltip != OUTFIT_TOOLTIP_NONE) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, outfit.tooltip, 0);
+			}
 			continue;
 		}
 
-		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
+		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons, OUTFIT_TOOLTIP_NONE, 0);
 	}
 
 	// select first outfit available when the one from podium is not unlocked
@@ -3845,11 +3869,15 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 		podiumOutfit.lookType = outfits.front().lookType;
 	}
 
-	// fetch player mounts
+	// get available mounts
 	std::vector<const Mount*> mounts;
+	std::vector<const Mount*> storeMounts;
 	for (const Mount& mount : g_game.mounts.getMounts()) {
 		if (player->hasMount(&mount)) {
 			mounts.push_back(&mount);
+		}
+		else if (mount.offerId != 0) {
+			storeMounts.push_back(&mount);
 		}
 	}
 
@@ -3881,15 +3909,26 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 		msg.add<uint16_t>(outfit.lookType);
 		msg.addString(outfit.name);
 		msg.addByte(outfit.addons);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId), 0x02 golden outfit tooltip (hardcoded)
+		msg.addByte(outfit.tooltip);
+		if (outfit.tooltip == OUTFIT_TOOLTIP_STORE) {
+			msg.add<uint32_t>(outfit.offerId);
+		}
 	}
 
-	// available mounts
-	msg.add<uint16_t>(mounts.size());
+	// add available mounts
+	msg.add<uint16_t>(mounts.size() + storeMounts.size());
 	for (const Mount* mount : mounts) {
 		msg.add<uint16_t>(mount->clientId);
 		msg.addString(mount->name);
 		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	}
+
+	// add store mounts
+	for (const Mount* mount : storeMounts) {
+		msg.add<uint16_t>(mount->clientId);
+		msg.addString(mount->name);
+		msg.addByte(0x01);
+		msg.add<uint32_t>(mount->offerId);
 	}
 
 	// available familiars (not used in podium mode)
