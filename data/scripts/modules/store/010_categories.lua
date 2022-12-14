@@ -8,6 +8,8 @@ StoreBanners = {
 -- STORE TABS
 StoreCategories = {
 	-- use strict indexes so Lua wont reorder it randomly
+	-- make sure it matches constants file
+	-- it is required for redirects and autoregister to work properly
 	[1] = {
 		name = "VIP Pass", -- premium time
 		image = "PremiumTime",
@@ -15,7 +17,7 @@ StoreCategories = {
 	},
 	[2] = {
 		name = "Consumables",
-		redirect = 3, -- StoreCategories[3]
+		redirect = STORE_TAB_BLESSINGS,
 	},
 	[3] = {
 		name = "Blessings", parent = "Consumables",
@@ -64,7 +66,7 @@ StoreCategories = {
 	},
 	[9] = {
 		name = "Cosmetics",
-		redirect = 10,
+		redirect = STORE_TAB_MOUNTS,
 	},
 	[10] = {
 		name = "Mounts", parent = "Cosmetics",
@@ -86,7 +88,7 @@ StoreCategories = {
 	[12] = {
 		name = "Houses",
 		image = "HouseTools",
-		redirect = 13,
+		redirect = STORE_TAB_DECORATIONS,
 	},
 	[13] = {
 		name = "Decorations", parent = "Houses",
@@ -143,7 +145,7 @@ StoreCategories = {
 	},
 	[15] = {
 		name = "Beds", parent = "Houses",
-		offers = {4},
+		offers = {},
 	},
 	[16] = {
 		name = "Upgrades", parent = "Houses",
@@ -174,7 +176,7 @@ StoreCategories = {
 	},
 	[20] = {
 		name = "Extras",
-		redirect = 21,
+		redirect = STORE_TAB_SERVICES,
 	},
 	[21] = {
 		name = "Extra Services", parent = "Extras",
@@ -186,7 +188,7 @@ StoreCategories = {
 	},
 	[23] = {
 		name = "Tournament",
-		redirect = 24,
+		redirect = STORE_TAB_TICKETS,
 	},
 	[24] = {
 		name = "Tickets", parent = "Tournament",

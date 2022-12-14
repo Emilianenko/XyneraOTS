@@ -1,27 +1,3 @@
--- autogenerate helpers for store indexing
-local categoryToIdMap = {}
-for index, categoryData in pairs(StoreCategories) do
-	-- index category
-	categoryToIdMap[categoryData.name] = index
-	
-	-- cache offer count
-	local offerCount = 0
-	if categoryData.offers then
-		offerCount = offerCount + #categoryData.offers
-	end
-	
-	local offerTypeCount = 0
-	if categoryData.offerTypes and #categoryData.offerTypes > 0 then
-		for tabId = 1, #categoryData.offerTypes do
-			offerCount = offerCount + #categoryData.offerTypes[tabId].offers
-			offerTypeCount = offerTypeCount + 1
-		end
-	end
-	
-	StoreCategories[index].offerCount = offerCount
-	StoreCategories[index].offerTypeCount = offerTypeCount
-end
-
 function Player:sendStoreMeta()
 	local msg = NetworkMessage()
 	msg:addByte(0xFB)
@@ -56,16 +32,16 @@ function NetworkMessage:addStoreOfferError(offerId)
 		self:addU32(0) --price
 		self:addByte(0) -- currency
 		self:addByte(1) -- isDisabled
-			self:addByte(0) -- reasonCount?
-			--self:addString('Failed to load the offer!')
+			self:addByte(1) -- reasonCount
+			self:addU16(STORE_REASON_ERROR)
 		self:addByte(0) -- offerStatus
-	self:addByte(3) -- offerType
+	self:addByte(STORE_OFFER_TYPE_ITEM) -- offerType
 		self:addU16(3547)
 	self:addByte(0) -- TryOn Type
 	self:addString("") -- parent name (menu or dropdown menu)
 	self:addU16(0) -- Popularity Score
 	self:addU32(0) -- Published at
-	self:addByte(0) -- 0 - buy, 1 - configure
+	self:addByte(1) -- 0 - buy, 1 - configure
 	self:addU16(0) -- "this package contains" list
 		-- package list member
 		--self:addString("Unable to load the offer!")
@@ -146,16 +122,12 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 			self:addU16(packInfo.amount)
 			self:addU32(packInfo.price)
 			self:addByte(packInfo.currency)
-			
-			if packInfo.disbaledReasons and #packInfo.disbaledReasons > 0 then
+			if packInfo.disabledReasons and #packInfo.disabledReasons > 0 then
 				self:addByte(1)
-				self:addByte(0)
-				--[[
 				self:addByte(#packInfo.disabledReasons)
 				for i = 1, #packInfo.disabledReasons do
-					self:addString(disbaledReasons[i])
+					self:addU16(packInfo.disabledReasons[i] - 1)
 				end
-				]]
 			else
 				self:addByte(0)
 			end
@@ -190,10 +162,12 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 		tryOnType = 1
 	elseif offerType == STORE_OFFER_TYPE_OUTFIT then
 		self:addU16(offer.lookType)
-		self:addU16(offer.lookHead)
-		self:addU16(offer.lookBody)
-		self:addU16(offer.lookLegs)
-		self:addU16(offer.lookFeet)
+		-- outfit colors
+		-- every outfit is using this pattern
+		self:addByte(95)
+		self:addByte(113)
+		self:addByte(39)
+		self:addByte(115)
 		tryOnType = 2
 	elseif offerType == STORE_OFFER_TYPE_ITEM then
 		self:addU16(ItemType(offer.itemId or 100):getClientId())
@@ -201,10 +175,10 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 		self:addByte(1) -- gender - 1 or 2
 		self:addU16(offer.lookTypeFemale)
 		self:addU16(offer.lookTypeMale)
-		self:addU16(offer.lookHead)
-		self:addU16(offer.lookBody)
-		self:addU16(offer.lookLegs)
-		self:addU16(offer.lookFeet)
+		self:addByte(offer.lookHead)
+		self:addByte(offer.lookBody)
+		self:addByte(offer.lookLegs)
+		self:addByte(offer.lookFeet)
 	end
 
 	self:addByte(tryOnType) -- TryOn Type
@@ -212,7 +186,24 @@ function NetworkMessage:addStoreOffer(offerId, parentName)
 	self:addU16(offer.popularity) -- Popularity Score
 	self:addU32(offer.publishedAt) -- Published at
 	self:addByte(offer.configurable) -- 0 - buy, 1 - configure
-	self:addU16(0) -- "this package contains" list
+	if offer.bed then
+		self:addU16(2) -- package items
+		
+		-- headboard
+		self:addString(offer.bed[1])
+		self:addByte(1) -- offerType item
+		self:addU16(offer.bed[2])
+		
+		-- footboard
+		self:addString(offer.bed[3])
+		self:addByte(1) -- offerType item
+		self:addU16(offer.bed[4])
+	else
+		self:addU16(0)
+	end
+	
+	
+
 		-- package list member
 		--self:addString("Unable to load the offer!")
 		--self:addByte(STORE_OFFER_TYPE_ITEM)
@@ -227,7 +218,7 @@ end
 
 function Player:sendStoreUI(actionType, tabName)
 	local isHomePage = false
-	local tabInfo = categoryToIdMap[tabName] and StoreCategories[categoryToIdMap[tabName] ]
+	local tabInfo = CategoryToIdMap[tabName] and StoreCategories[CategoryToIdMap[tabName] ]
 	if tabInfo and tabInfo.redirect then
 		tabInfo = StoreCategories[tabInfo.redirect]
 	end
@@ -262,8 +253,11 @@ function Player:sendStoreUI(actionType, tabName)
 	
 	msg:addString(tabInfo.parent and "" or tabInfo.name) -- dropdown menu position
 
-	-- ?
-	msg:addU16(0)
+	-- offer disable reasons
+	msg:addU16(StoreOfferDisableReasonsCount)
+	for _, reason in pairs(StoreOfferDisableReasons) do
+		msg:addString(reason)
+	end
 	
 	-- add available offers
 	local descriptionsToSend = {}
