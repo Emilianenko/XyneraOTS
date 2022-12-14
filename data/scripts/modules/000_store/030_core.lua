@@ -43,69 +43,9 @@ function NetworkMessage:addStoreOfferError(offerId)
 	self:addU32(0) -- Published at
 	self:addByte(1) -- 0 - buy, 1 - configure
 	self:addU16(0) -- "this package contains" list
-		-- package list member
-		--self:addString("Unable to load the offer!")
-		--self:addByte(STORE_OFFER_TYPE_ITEM)
-		--	self:addU16(3547)
 end
 
 function NetworkMessage:addStoreOffer(offerId, parentName, player)
--- keep the tabbing for self-documenting packet structure
-	-- string offerName
-	-- u8 priceTagsCount
-		-- price tag:
-			-- u32 offerId
-			-- u16 amount
-			-- u32 price
-			-- u8 currency
-			-- u8 isDisabled
-				-- u8 reasons count
-					-- reason:
-					-- string reason
-			-- u8 offerStatus
-				-- 0: normal
-				-- 1: new
-				-- 2: sale
-					-- u32: expires at?
-					-- u32: previous price
-				-- 3: blue + hourglass
-				-- 4: client crash
-	-- u8 offerType
-		-- type 0 (special):
-			-- string image link
-			-- u8 unknown
-
-			-- string parent
-			-- u8 unknown 2
-			-- u8 unknown 3
-			-- u32 published at
-			-- u8 unknown 4
-			-- ??
-		-- type 1 (mount):
-			-- u16 lookType
-		-- type 2 (outfit with all addons):
-			-- u16 lookType
-			-- 4x u8 colors
-		-- type 3 (item)
-			-- u16 clientId
-		-- type 4 (hireling)
-			-- u8 gender (1, 2 only)
-			-- u16 lookMale
-			-- u16 lookFemale
-			-- 4x u8 colors
-		-- type 5 and above:
-			-- client crashes
-	-- u8 enum try on (0 - no button, 1 and 2 - try on mode)
-	-- string tabName
-	-- u32 published at
-	-- u8 0 - buy, 1 - configure
-	
-	-- u16 product list count
-		-- product:
-		-- string name
-		-- u8 offerType
-			-- offerType data
-
 	local offer = StoreOffers[offerId]
 	if not offer then
 		self:addStoreOfferError(offerId)
@@ -161,13 +101,14 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		self:addU16(offer.lookType)
 		tryOnType = 1
 	elseif offerType == STORE_OFFER_TYPE_OUTFIT then
+		local outfit = player:getOutfit();
+
 		self:addU16(player:getSex() == 1 and offer.lookTypeMale or offer.lookTypeFemale)
 		-- outfit colors
-		-- every outfit is using this pattern
-		self:addByte(95)
-		self:addByte(113)
-		self:addByte(39)
-		self:addByte(115)
+		self:addByte(outfit.lookHead)
+		self:addByte(outfit.lookBody)
+		self:addByte(outfit.lookLegs)
+		self:addByte(outfit.lookFeet)
 		tryOnType = 2
 	elseif offerType == STORE_OFFER_TYPE_ITEM then
 		self:addU16(ItemType(offer.itemId or 100):getClientId())
@@ -175,10 +116,10 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		self:addByte(1) -- gender - 1 or 2
 		self:addU16(offer.lookTypeFemale)
 		self:addU16(offer.lookTypeMale)
-		self:addByte(95)
-		self:addByte(113)
-		self:addByte(39)
-		self:addByte(115)
+		self:addByte(outfit.lookHead)
+		self:addByte(outfit.lookBody)
+		self:addByte(outfit.lookLegs)
+		self:addByte(outfit.lookFeet)
 	end
 
 	self:addByte(tryOnType) -- TryOn Type
@@ -201,19 +142,6 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 	else
 		self:addU16(0)
 	end
-	
-	
-
-		-- package list member
-		--self:addString("Unable to load the offer!")
-		--self:addByte(STORE_OFFER_TYPE_ITEM)
-		--	self:addU16(3547)
---[[
-		-- package list member
-		self:addString("5x Kekando")
-		self:addByte(STORE_OFFER_TYPE_DEFAULT)
-			self:addU16(offer.fileName)
-]]
 end
 
 function Player:sendStoreUI(actionType, tabName)
@@ -329,12 +257,6 @@ end
 do
 	local ec = EventCallback
 	function ec.onStoreBrowse(player, request)
-		--[[
-			print("----")
-			for k, v in pairs(request) do
-				print(k, v)
-			end
-		]]
 		player:sendStoreUI(request.actionType, request.primaryText)
 	end
 	ec:register()

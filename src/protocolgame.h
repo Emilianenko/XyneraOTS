@@ -261,7 +261,7 @@ class ProtocolGame final : public Protocol
 		void sendTextWindow(uint32_t windowTextId, uint32_t itemId, const std::string& text);
 		void sendHouseWindow(uint32_t windowTextId, const std::string& text);
 
-		void sendOutfitWindow();
+		void sendOutfitWindow(uint16_t tryOutfitType = 0, uint16_t tryMountType = 0);
 		void sendPodiumWindow(const Item* item);
 
 		void sendUpdatedVIPStatus(uint32_t guid, VipStatus_t newStatus);
@@ -351,6 +351,11 @@ class ProtocolGame final : public Protocol
 
 		//shop
 		void AddShopItem(NetworkMessage& msg, const ShopInfo& item);
+
+		//outfit window
+		void AddPlayerOutfits(NetworkMessage& msg);
+		void AddPlayerMounts(NetworkMessage& msg);
+		void AddPlayerFamiliars(NetworkMessage& msg);
 
 		//otclient
 		void parseExtendedOpcode(NetworkMessage& msg);
