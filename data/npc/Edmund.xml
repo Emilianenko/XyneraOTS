@@ -7,7 +7,7 @@
 	</voices>
 	<parameters>
 		<parameter key="module_shop" value="1"/>
-		<parameter key="shop_sellable" value="
+		<!-- <parameter key="shop_sellable" value="
 			amber with a bug, 35280, 41000;
 			amber with a dragonfly, 35281, 56000;
 			amber, 35282, 20000;
@@ -103,8 +103,8 @@
 			green gem, 2155, 5000;
 			red gem, 2156, 1000;
 			blue gem, 2158, 5000;
-			white gem, 35425, 12000;"/>
-		<parameter key="shop_buyable" value="
+			white gem, 35425, 12000;"/> -->
+		<!-- <parameter key="shop_buyable" value="
 			black pearl, 2144, 560;
 			bronze goblet, 5807, 2000;
 			golden amulet, 2130, 6600;
@@ -118,6 +118,8 @@
 			small sapphire, 2146, 500;
 			wedding ring, 2121, 990;
 			white pearl, 2143, 320;
-			white gem, 35425, 24000;"/>
+			white gem, 35425, 24000;"/> -->
+			<parameter key="shop_sellable" value="black pearl, 2144, 560;"/>
+			<parameter key="shop_buyable" value="black pearl, 2144, 280;"/>
 	</parameters>
 </npc>
