@@ -34,7 +34,10 @@ function GenerateBed(bedName, price, publishedAt, headBoard, footBoard)
 	
 		type = STORE_OFFER_TYPE_DEFAULT,
 		image = string.format("%s.png", bedName:gsub(" ", "_")),
-		bed = bed
+		bed = bed,
+		
+		-- for direct offer id request
+		category = STORE_TAB_BEDS,
 	}
 	
 	table.insert(StoreCategories[STORE_TAB_BEDS].offers, productId)
@@ -61,7 +64,11 @@ function GenerateMount(name, lookType, price, publishedAt, description)
 		},
 	
 		type = STORE_OFFER_TYPE_MOUNT,
-		lookType = lookType
+		lookType = lookType,
+		
+		-- for direct offer id request
+		category = STORE_TAB_MOUNTS,
+		subCategory = tier
 	}
 	
 	table.insert(StoreCategories[STORE_TAB_MOUNTS].offerTypes[tier].offers, productId)
@@ -94,7 +101,11 @@ function GenerateOutfit(name, lookTypeM, lookTypeF, price, publishedAt, descript
 	
 		type = STORE_OFFER_TYPE_OUTFIT,
 		lookTypeMale = lookTypeM,
-		lookTypeFemale = lookTypeF
+		lookTypeFemale = lookTypeF,
+		
+		-- for direct offer id request
+		category = STORE_TAB_OUTFITS,
+		subCategory = tier
 	}
 	
 	table.insert(StoreCategories[STORE_TAB_OUTFITS].offerTypes[tier].offers, productId)

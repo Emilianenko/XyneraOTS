@@ -144,7 +144,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 	end
 end
 
-function Player:sendStoreUI(actionType, tabName)
+function Player:sendStoreUI(actionType, tabName, productId)
 	local isHomePage = false
 	local tabInfo = CategoryToIdMap[tabName] and StoreCategories[CategoryToIdMap[tabName] ]
 	if tabInfo and tabInfo.redirect then
@@ -158,9 +158,7 @@ function Player:sendStoreUI(actionType, tabName)
 		}
 	end
 
-	if isHomePage then
-		self:sendStoreMeta()
-	end
+	self:sendStoreMeta()
 	
 	local msg = NetworkMessage()
 	msg:addByte(0xFC)
@@ -168,7 +166,7 @@ function Player:sendStoreUI(actionType, tabName)
 	-- tree position
 	msg:addString(tabInfo.name)
 	
-	msg:addU32(0) -- offerId
+	msg:addU32(productId or 0) -- offerId
 	msg:addByte(0) -- sort by 0 - most popular, 1 - alphabetically, 2 - newest
 	if tabInfo.offerTypes then
 		msg:addByte(tabInfo.offerTypeCount) -- dropdown menu middle
@@ -180,7 +178,6 @@ function Player:sendStoreUI(actionType, tabName)
 	end
 	
 	msg:addString(tabInfo.parent and "" or tabInfo.name) -- dropdown menu position
-
 	-- offer disable reasons
 	msg:addU16(StoreOfferDisableReasonsCount)
 	for _, reason in pairs(StoreOfferDisableReasons) do
@@ -257,7 +254,14 @@ end
 do
 	local ec = EventCallback
 	function ec.onStoreBrowse(player, request)
-		player:sendStoreUI(request.actionType, request.primaryText)
+		if request.offerId ~= 0 then
+			local offer = StoreOffers[request.offerId]
+			if offer then
+				request.primaryText = StoreCategories[offer.category].name
+			end
+		end
+		
+		player:sendStoreUI(request.actionType, request.primaryText, request.offerId)
 	end
 	ec:register()
 end
