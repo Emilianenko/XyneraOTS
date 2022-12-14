@@ -35,7 +35,7 @@
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 	</instant>
-	<instant group="attack" spellid="124" name="Divine Caldera" words="exevo mas san" aggressive="1" level="50" mana="160" premium="1" selftarget="1" cooldown="4000" groupcooldown="2000" needlearn="0" script="attack/divine_caldera.lua">
+	<instant group="attack" spellid="124" name="Divine Caldera" words="exevo mas san" aggressive="1" level="50" mana="160" premium="1" selftarget="1" cooldown="1000" groupcooldown="1000" needlearn="0" script="attack/divine_caldera.lua">
 		<vocation name="Paladin" />
 		<vocation name="Royal Paladin" />
 	</instant>
