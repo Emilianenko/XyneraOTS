@@ -97,7 +97,7 @@
 			shimmering beetles, 28349, 150;
 			purple tome, 1982, 2000;
 			red tome, 1986, 2000;
-			white gem, 35425, 12000;"/>
+			white gem, 35425, 24000;"/>
 		<parameter key="shop_buyable" value="
 			black pearl, 2144, 560;
 			bronze goblet, 5807, 2000;
