@@ -1,3 +1,4 @@
+-- store tab constants
 STORE_TAB_HOME = 0
 STORE_TAB_PREMIUM = 1
 STORE_TAB_CONSUMABLES = 2
@@ -67,6 +68,8 @@ STORE_REASON_PREYSLOTS = 20
 STORE_REASON_XP_ACTIVE = 21
 STORE_REASON_XP_LIMIT = 22
 
+STORE_REASON_LAST = STORE_REASON_XP_LIMIT
+
 StoreOfferDisableReasons = {
 	-- errors
 	[STORE_REASON_ERROR] = "Failed to load the offer.",
@@ -111,3 +114,6 @@ StoreOfferDisableReasonsCount = 0
 for k, v in pairs(StoreOfferDisableReasons) do
 	StoreOfferDisableReasonsCount = StoreOfferDisableReasonsCount + 1
 end
+
+-- main cache for store system
+StoreOffers = {}

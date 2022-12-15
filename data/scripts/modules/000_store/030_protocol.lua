@@ -52,26 +52,40 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		return
 	end
 	
-	self:addString(offer.name)
 	if offer.packages and #offer.packages ~= 0 then
+		local offerErrors = player:getOfferStatus(offer)
+		self:addString(offer.name)
 		self:addByte(#offer.packages) -- offer amount
 		for i = 1, #offer.packages do
 			local packInfo = offer.packages[i]
-		
-			self:addU32(offerId) -- offerId(?)
+			-- price tag data
+			self:addU32(packInfo.offerId) -- offerId(?)
 			self:addU16(packInfo.amount)
 			self:addU32(packInfo.price)
 			self:addByte(packInfo.currency)
-			if packInfo.disabledReasons and #packInfo.disabledReasons > 0 then
+
+			-- offer unavailable reasons
+			local reasonCount = #offerErrors + (packInfo.disabledReasons and #packInfo.disabledReasons or 0)			
+			if reasonCount > 0 then
 				self:addByte(1)
-				self:addByte(#packInfo.disabledReasons)
-				for i = 1, #packInfo.disabledReasons do
-					self:addU16(packInfo.disabledReasons[i] - 1)
+				self:addByte(reasonCount)
+				
+				if packInfo.disabledReasons and #packInfo.disabledReasons > 0 then
+					for j = 1, #packInfo.disabledReasons do
+						self:addU16(packInfo.disabledReasons[j] - 1)
+					end
+				end
+				
+				if #offerErrors > 0 then
+					for j = 1, #offerErrors do
+						self:addU16(offerErrors[j] - 1)
+					end
 				end
 			else
 				self:addByte(0)
 			end
 			
+			-- offer status
 			self:addByte(packInfo.status)
 			if packInfo.status == STORE_CATEGORY_TYPE_DISCOUNT then
 				self:addU32(packInfo.discountUntil)
@@ -80,15 +94,8 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		end
 	else
 		-- push defaults
-		self:addByte(1) -- offer amount
-			self:addU32(offerId) -- offer id
-			self:addU16(0) -- amount
-			self:addU32(0) -- price
-			self:addByte(0) -- currency
-			self:addByte(1) -- isDisabled
-				self:addByte(0) -- reasonCount
-					--self:addString("Offer disabled.")
-			self:addByte(0) -- offerStatus
+		self:addStoreOfferError(offerId)
+		return
 	end
 
 	local offerType = offer.type or 0
@@ -102,8 +109,8 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		tryOnType = 1
 	elseif offerType == STORE_OFFER_TYPE_OUTFIT then
 		local outfit = player:getOutfit();
-
-		self:addU16(player:getSex() == 1 and offer.lookTypeMale or offer.lookTypeFemale)
+		local lookType = player:getSex() == 1 and offer.lookTypeMale or offer.lookTypeFemale
+		self:addU16(lookType)
 		-- outfit colors
 		self:addByte(outfit.lookHead)
 		self:addByte(outfit.lookBody)
@@ -180,8 +187,11 @@ function Player:sendStoreUI(actionType, tabName, productId)
 	msg:addString(tabInfo.parent and "" or tabInfo.name) -- dropdown menu position
 	-- offer disable reasons
 	msg:addU16(StoreOfferDisableReasonsCount)
-	for _, reason in pairs(StoreOfferDisableReasons) do
-		msg:addString(reason)
+	for i = 1, STORE_REASON_LAST do
+		local reason = StoreOfferDisableReasons[i]
+		if reason then
+			msg:addString(reason)
+		end
 	end
 	
 	-- add available offers
