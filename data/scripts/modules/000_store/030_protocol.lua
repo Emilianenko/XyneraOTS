@@ -59,7 +59,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		for i = 1, #offer.packages do
 			local packInfo = offer.packages[i]
 			-- price tag data
-			self:addU32(packInfo.offerId) -- offerId(?)
+			self:addU32(offerId) -- packinfo.offerId(?)
 			self:addU16(packInfo.amount)
 			self:addU32(packInfo.price)
 			self:addByte(packInfo.currency)

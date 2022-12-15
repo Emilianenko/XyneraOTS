@@ -158,6 +158,45 @@ function GenerateOutfit(name, lookTypeM, lookTypeF, price, publishedAt, descript
 	Game.setStoreOutfit(lookTypeF, lastOfferId)
 end
 
+function GenerateCarpet(itemId, price, publishedAt)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	StoreOffers[productId] = {
+		name = upAllWords(ItemType(itemId):getName()),
+		description = desc_carpet,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = 1,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+			[2] = {
+				amount = 5,
+				price = price * 5,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId + 1,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_ITEM,
+		itemId = CarpetMap[itemId],
+		
+		-- for direct offer id request
+		category = STORE_TAB_DECORATIONS,
+		subCategory = 1
+	}
+
+	-- +1 for every price tag after first
+	lastOfferId = lastOfferId + 1
+	
+	table.insert(StoreCategories[STORE_TAB_DECORATIONS].offerTypes[1].offers, productId)
+end
+
 -- permission check
 function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}

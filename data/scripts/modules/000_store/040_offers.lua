@@ -197,3 +197,39 @@ GenerateOutfit("Full Puppeteer Outfit", 697, 696, 870, 1475222391, "Are you a fa
 GenerateOutfit("Full Spirit Caller Outfit", 699, 698, 600, 1475222392, "You are in love with the deep soul of Mother Earth and prefer to walk in the shadows of her wooden children? Choose the Spirit Caller outfit to live in harmony with nature.")
 GenerateOutfit("Full Evoker Outfit", 725, 724, 840, 1475222393, "Dance around flickering fires in the Evoker outfit while singing unholy chants to praise witchcraft and wizardry. Your faithful bat will always be by your side.")
 GenerateOutfit("Full Seaweaver Outfit", 733, 732, 570, 1475222394, "The Seaweaver outfit is the perfect choice if you want to show the world that you are indeed a son or a daughter of the submarine kingdom. You can almost feel the salty taste and the rough wind of the sea when wearing it.")
+
+-- itemId, price, publishedAt
+GenerateCarpet(26087, 35, 1449565200) -- yalaharian carpet
+GenerateCarpet(26088, 30, 1449565200) -- white fur carpet
+GenerateCarpet(26087, 25, 1449565200) -- bamboo mat
+GenerateCarpet(26363, 35, 1472547600) -- crimson carpet
+GenerateCarpet(26366, 35, 1472547600) -- azure carpet
+GenerateCarpet(26367, 35, 1472547600) -- emerald carpet
+GenerateCarpet(26368, 30, 1472547600) -- light parquet carpet
+GenerateCarpet(26369, 30, 1472547600) -- dark parquet carpet
+GenerateCarpet(26370, 30, 1472547600) -- marble floor
+GenerateCarpet(27072, 35, 1484557200) -- colorful carpet
+GenerateCarpet(27073, 35, 1484557200) -- flowery carpet
+GenerateCarpet(27074, 30, 1484557200) -- striped carpet
+GenerateCarpet(27075, 30, 1484557200) -- fur carpet
+GenerateCarpet(27076, 25, 1484557200) -- diamond carpet
+GenerateCarpet(27077, 30, 1484557200) -- patterned carpet
+GenerateCarpet(27078, 25, 1484557200) -- night sky carpet
+GenerateCarpet(27079, 25, 1484557200) -- star carpet
+GenerateCarpet(28770, 30, 1500973200) -- verdant carpet
+GenerateCarpet(28772, 30, 1500973200) -- shaggy carpet
+GenerateCarpet(28774, 35, 1500973200) -- mystic carpet
+GenerateCarpet(28776, 25, 1500973200) -- stone tiles
+GenerateCarpet(28779, 25, 1500973200) -- wooden planks
+GenerateCarpet(28807, 30, 1500973200) -- wheat carpet
+GenerateCarpet(28808, 25, 1500973200) -- crested carpet
+GenerateCarpet(28810, 35, 1500973200) -- decorated carpet
+GenerateCarpet(38543, 30, 1606726800) -- lilac carpet
+GenerateCarpet(38545, 30, 1606726800) -- pom-pom carpet
+GenerateCarpet(38547, 30, 1606726800) -- natural pom-pom carpet
+GenerateCarpet(38549, 30, 1606726800) -- owig rug
+GenerateCarpet(38551, 30, 1606726800) -- panther rug
+GenerateCarpet(38553, 25, 1606726800) -- moon carpet
+GenerateCarpet(38555, 30, 1606726800) -- romantic carpet
+GenerateCarpet(39675, 30, 1626080400) -- grass
+GenerateCarpet(44794, 30, 1658134800) -- flowery grass
