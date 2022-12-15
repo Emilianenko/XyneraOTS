@@ -31,26 +31,6 @@ end
 
 -- wrap/unwrap handler
 local function wrap(player, item)
-	-- determine transferability
-	local itemId = item:getId()
-	local transformId = item:hasAttribute(ITEM_ATTRIBUTE_WRAPID) and item:getAttribute(ITEM_ATTRIBUTE_WRAPID) or constructionKits[itemId] or rotateMap[itemId]
-
-	if not transformId then
-		-- unable to find transform id, check if default kit can be applied
-		if not isFurniture(item:getType()) then
-			-- not a furniture piece
-			return RETURNVALUE_CANNOTUSETHISOBJECT
-		end
-	
-		transformId = item:isStoreItem() and ITEM_STORE_KIT or ITEM_FURNITURE_KIT
-	end
-	
-	local transformItemType = ItemType(transformId)
-	if not transformItemType then
-		-- bad transform id
-		return RETURNVALUE_CANNOTUSETHISOBJECT
-	end
-	
 	-- locate destination tile
 	local tile = item:getTile()
 	if not tile then
@@ -60,17 +40,40 @@ local function wrap(player, item)
 	
 	-- check if house
 	local house = tile:getHouse()
-	if not house or house:getAccessLevel(player) < HOUSE_OWNER then
+	if not house or house:getOwnerGuid() ~= player:getGuid() then
 		-- not in own house
 		return RETURNVALUE_YOUCANONLYUNWRAPINOWNHOUSE	
 	end
+
+	-- determine transferability
+	local itemId = item:getId()
+	itemId = ReverseCarpetMap and ReverseCarpetMap[itemId] or itemId
 	
+	local transformId = constructionKits[itemId] or rotateMap[itemId]
+	local defaultKit = false
+	local furniture = isFurniture(item:getType())
+	
+	if transformId then
+		defaultKit = true
+	else
+		local wrapId = item:getAttribute(ITEM_ATTRIBUTE_WRAPID) or 0
+		transformId = wrapId ~= 0 and wrapId or furniture and (item:isStoreItem() and ITEM_STORE_KIT or ITEM_FURNITURE_KIT)
+	end
+	
+	if not transformId then
+		-- unable to find transform id, check if default kit can be applied
+		return RETURNVALUE_CANNOTUSETHISOBJECT
+	end
+	
+	local transformItemType = ItemType(transformId)
+	if not transformItemType then
+		-- bad transform id
+		return RETURNVALUE_CANNOTUSETHISOBJECT
+	end
+
 	-- try to wrap
-	if isFurniture(item:getType()) then
+	if furniture then
 		local itemCopy = item:clone()
-		if itemCopy:hasAttribute(ITEM_ATTRIBUTE_WRAPID) or transformId == ITEM_STORE_KIT or transformId == ITEM_FURNITURE_KIT then
-			itemCopy:setAttribute(ITEM_ATTRIBUTE_WRAPID, ReverseCarpetMap and ReverseCarpetMap[itemId] or itemId)
-		end
 			
 		if player:getFreeCapacity() < itemCopy:getWeight() then
 			itemCopy:remove()
@@ -90,6 +93,9 @@ local function wrap(player, item)
 		itemCopy:transform(transformId)
 		
 		if ret == RETURNVALUE_NOERROR then
+			if not defaultKit then
+				itemCopy:setAttribute(ITEM_ATTRIBUTE_WRAPID, itemId)
+			end
 			item:remove()
 		else
 			itemCopy:remove()
