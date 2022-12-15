@@ -196,5 +196,5 @@ StoreCategories = {
 	[25] = {
 		name = "Exclusive Offers", parent = "Tournament",
 		image = "ExclusiveOffers"
-	},
+	}
 }

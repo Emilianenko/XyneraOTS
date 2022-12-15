@@ -1,4 +1,4 @@
--- OFFER LIST
+-- description macros
 local desc_premium = [[<i>Enhance your gaming experience by gaining additional abilities and advantages:</i>
 
 &#8226; access to Premium areas
@@ -39,6 +39,7 @@ local desc_decoration_useable = [[{house}
 {use}
 {backtoinbox}]]
 
+-- bed offer generator and helpers
 local function wordHelper(first, rest)
    return string.format("%s%s", first:upper(), rest:lower())
 end
@@ -84,6 +85,7 @@ function GenerateBed(bedName, price, publishedAt, headBoard, footBoard)
 	table.insert(StoreCategories[STORE_TAB_BEDS].offers, productId)
 end
 
+-- mount offer generator
 function GenerateMount(name, lookType, price, publishedAt, description)
 	local tier = price > 800 and 3 or price < 750 and 1 or 2
 
@@ -117,6 +119,7 @@ function GenerateMount(name, lookType, price, publishedAt, description)
 	Game.setStoreMount(lookType, lastOfferId)
 end
 
+-- outfit offer generator and macros
 local descOutfitColor = "{character}\n{info} colours can be changed using the Outfit dialog\n"
 local descOutfitAddons = "{info} includes basic outfit and 2 addons which can be selected individually\n"
 
@@ -155,6 +158,7 @@ function GenerateOutfit(name, lookTypeM, lookTypeF, price, publishedAt, descript
 	Game.setStoreOutfit(lookTypeF, lastOfferId)
 end
 
+-- permission check
 function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}
 
