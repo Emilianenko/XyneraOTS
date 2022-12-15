@@ -1,3 +1,7 @@
+---- automatic compilation on detecting a new version
+AUTODEPLOY = true
+AUTODEPLOY_INTERVAL = 60 * 60 * 1000 -- 1h
+
 if Game.isDevMode() then
 	DEPLOY_LINE_COUNT_CMAKE = 0
 	DEPLOY_LINE_COUNT_BUILD = 0
@@ -34,6 +38,17 @@ function checkDeploy()
 	addEvent(checkDeploy, 1000)
 end
 
+function ExecuteDeploy()
+	if IS_COMPILING then
+		return
+	end
+
+	IS_COMPILING = true
+	Game.broadcastMessage("A new server version will be deployed soon. Please log out.", MESSAGE_STATUS_WARNING)
+	addEvent(checkDeploy, 1000)
+	os.execute("./deploy.sh &")
+end
+
 local t = TalkAction("/deploy")
 t.onSay = function(player, words, param)
 	if player:getAccountType() < ACCOUNT_TYPE_GOD then
@@ -55,12 +70,53 @@ t.onSay = function(player, words, param)
 		return false
 	end
 	
-	IS_COMPILING = true
-	Game.broadcastMessage("A new server version will be deployed soon. Please log out.", MESSAGE_STATUS_WARNING)
-	player:openChannel(CHANNEL_CONSOLE)
-	addEvent(checkDeploy, 1000)
-	os.execute("./deploy.sh &")
-	
+	ExecuteDeploy()
 	return false
 end
 t:register()
+
+---- autodeploy code
+if AUTODEPLOY then
+	function deployChecker()
+		if AUTODEPLOY then
+			local handle = io.popen("git rev-parse HEAD")
+			local newRev = handle:read("*a")
+			handle:close()
+			
+			if AUTODEPLOY_GIT_REV ~= newRev then
+				ExecuteDeploy()
+				return
+			end
+			
+			addEvent(deployChecker, AUTODEPLOY_INTERVAL)
+		end
+	end
+
+	local function deployStarter()
+		if IS_COMPILING then
+			Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_ERROR, "AUTODEPLOY: Compilation already started!")
+			return
+		end
+		
+		if Game.isWindows() then
+			-- this will be annoying locally, lets just not
+			-- Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_WARNING, "AUTODEPLOY: Feature not available in Windows operating systems.")
+			return
+		end
+		
+		if not Game.isDevMode() then
+			Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_WARNING, "AUTODEPLOY: Dev mode is disabled, feature unavailable.")
+			return
+		end
+		
+		if not AUTODEPLOY_INIT then
+			local handle = io.popen("git rev-parse HEAD")
+			AUTODEPLOY_GIT_REV = handle:read("*a")
+			handle:close()
+			addEvent(deployChecker, AUTODEPLOY_INTERVAL)
+			AUTODEPLOY_INIT = true
+		end
+	end
+	
+	deployStarter()
+end
