@@ -34586,48 +34586,56 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="28752" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28745">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="28753" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28746">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="28754" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28747">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="28755" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28748">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="28752" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28749">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="28753" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28750">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="28754" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28751">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="28755" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28752">
 		<attribute key="type" value="bed" />
@@ -34636,6 +34644,7 @@
 		<attribute key="femaleSleeper" value="28748" />
 		<attribute key="rotateTo" value="28754" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28753">
 		<attribute key="type" value="bed" />
@@ -34644,6 +34653,7 @@
 		<attribute key="femaleSleeper" value="28749" />
 		<attribute key="rotateTo" value="28755" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28754">
 		<attribute key="type" value="bed" />
@@ -34652,6 +34662,7 @@
 		<attribute key="femaleSleeper" value="28750" />
 		<attribute key="rotateTo" value="28752" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="28755">
 		<attribute key="type" value="bed" />
@@ -34660,6 +34671,7 @@
 		<attribute key="femaleSleeper" value="28751" />
 		<attribute key="rotateTo" value="28753" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -38004,6 +38016,7 @@
 		<attribute key="femaleSleeper" value="36972" />
 		<attribute key="rotateTo" value="36978" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36977">
 		<attribute key="type" value="bed" />
@@ -38012,30 +38025,35 @@
 		<attribute key="femaleSleeper" value="36973" />
 		<attribute key="rotateTo" value="36979" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36968">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="36976" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36969">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="36977" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36972">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="36976" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36973">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="36977" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36978">
 		<attribute key="type" value="bed" />
@@ -38044,6 +38062,7 @@
 		<attribute key="femaleSleeper" value="36974" />
 		<attribute key="rotateTo" value="36976" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36979">
 		<attribute key="type" value="bed" />
@@ -38052,30 +38071,35 @@
 		<attribute key="femaleSleeper" value="36975" />
 		<attribute key="rotateTo" value="36977" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36970">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="36978" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36971">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="36979" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36974">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="36978" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="36975">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="36979" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -39261,6 +39285,7 @@
 		<attribute key="femaleSleeper" value="35169" />
 		<attribute key="rotateTo" value="35151" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35142">
 		<attribute key="type" value="bed" />
@@ -39269,24 +39294,28 @@
 		<attribute key="femaleSleeper" value="35187" />
 		<attribute key="rotateTo" value="35160" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35178">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35133" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35187">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35142" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35169">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35133" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35151">
 		<attribute key="type" value="bed" />
@@ -39295,6 +39324,7 @@
 		<attribute key="femaleSleeper" value="35200" />
 		<attribute key="rotateTo" value="35133" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35160">
 		<attribute key="type" value="bed" />
@@ -39303,24 +39333,28 @@
 		<attribute key="femaleSleeper" value="35218" />
 		<attribute key="rotateTo" value="35142" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35209">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35151" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35218">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35160" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35200">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35151" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35129">
 		<attribute key="type" value="bed" />
@@ -39329,6 +39363,7 @@
 		<attribute key="femaleSleeper" value="35165" />
 		<attribute key="rotateTo" value="35147" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35138">
 		<attribute key="type" value="bed" />
@@ -39337,24 +39372,28 @@
 		<attribute key="femaleSleeper" value="35183" />
 		<attribute key="rotateTo" value="35156" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35174">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35129" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35183">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35138" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35165">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35129" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35147">
 		<attribute key="type" value="bed" />
@@ -39363,6 +39402,7 @@
 		<attribute key="femaleSleeper" value="35192" />
 		<attribute key="rotateTo" value="35129" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35156">
 		<attribute key="type" value="bed" />
@@ -39371,24 +39411,28 @@
 		<attribute key="femaleSleeper" value="35214" />
 		<attribute key="rotateTo" value="35138" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35205">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35147" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35214">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35156" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35192">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35147" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35134">
 		<attribute key="type" value="bed" />
@@ -39397,6 +39441,7 @@
 		<attribute key="femaleSleeper" value="35170" />
 		<attribute key="rotateTo" value="35152" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35143">
 		<attribute key="type" value="bed" />
@@ -39405,24 +39450,28 @@
 		<attribute key="femaleSleeper" value="35188" />
 		<attribute key="rotateTo" value="35161" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35179">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35134" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35188">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35143" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35170">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35134" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35152">
 		<attribute key="type" value="bed" />
@@ -39431,6 +39480,7 @@
 		<attribute key="femaleSleeper" value="35201" />
 		<attribute key="rotateTo" value="35134" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35161">
 		<attribute key="type" value="bed" />
@@ -39439,24 +39489,28 @@
 		<attribute key="femaleSleeper" value="35219" />
 		<attribute key="rotateTo" value="35143" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35210">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35152" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35219">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35161" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35201">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35152" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35136">
 		<attribute key="type" value="bed" />
@@ -39465,6 +39519,7 @@
 		<attribute key="femaleSleeper" value="35172" />
 		<attribute key="rotateTo" value="35154" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35145">
 		<attribute key="type" value="bed" />
@@ -39473,24 +39528,28 @@
 		<attribute key="femaleSleeper" value="35190" />
 		<attribute key="rotateTo" value="35163" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35181">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35136" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35190">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35145" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35172">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35136" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35154">
 		<attribute key="type" value="bed" />
@@ -39499,6 +39558,7 @@
 		<attribute key="femaleSleeper" value="35203" />
 		<attribute key="rotateTo" value="35136" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35163">
 		<attribute key="type" value="bed" />
@@ -39507,24 +39567,28 @@
 		<attribute key="femaleSleeper" value="35221" />
 		<attribute key="rotateTo" value="35145" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35212">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35154" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35221">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35163" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35203">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35154" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35130">
 		<attribute key="type" value="bed" />
@@ -39533,6 +39597,7 @@
 		<attribute key="femaleSleeper" value="35166" />
 		<attribute key="rotateTo" value="35148" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35139">
 		<attribute key="type" value="bed" />
@@ -39541,24 +39606,28 @@
 		<attribute key="femaleSleeper" value="35184" />
 		<attribute key="rotateTo" value="35157" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35175">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35130" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35184">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35139" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35166">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35130" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35148">
 		<attribute key="type" value="bed" />
@@ -39567,6 +39636,7 @@
 		<attribute key="femaleSleeper" value="35197" />
 		<attribute key="rotateTo" value="35130" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35157">
 		<attribute key="type" value="bed" />
@@ -39575,24 +39645,28 @@
 		<attribute key="femaleSleeper" value="35215" />
 		<attribute key="rotateTo" value="35139" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35206">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35148" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35215">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35157" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35197">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35148" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35131">
 		<attribute key="type" value="bed" />
@@ -39601,6 +39675,7 @@
 		<attribute key="femaleSleeper" value="35167" />
 		<attribute key="rotateTo" value="35149" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35140">
 		<attribute key="type" value="bed" />
@@ -39609,24 +39684,28 @@
 		<attribute key="femaleSleeper" value="35185" />
 		<attribute key="rotateTo" value="35158" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35176">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35131" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35185">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35140" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35167">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35131" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35149">
 		<attribute key="type" value="bed" />
@@ -39635,6 +39714,7 @@
 		<attribute key="femaleSleeper" value="35198" />
 		<attribute key="rotateTo" value="35131" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35158">
 		<attribute key="type" value="bed" />
@@ -39643,24 +39723,28 @@
 		<attribute key="femaleSleeper" value="35216" />
 		<attribute key="rotateTo" value="35140" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35207">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35149" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35216">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35158" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35198">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35149" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35132">
 		<attribute key="type" value="bed" />
@@ -39669,6 +39753,7 @@
 		<attribute key="femaleSleeper" value="35168" />
 		<attribute key="rotateTo" value="35150" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35141">
 		<attribute key="type" value="bed" />
@@ -39677,24 +39762,28 @@
 		<attribute key="femaleSleeper" value="35186" />
 		<attribute key="rotateTo" value="35159" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35177">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35132" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35186">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35141" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35168">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35132" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35150">
 		<attribute key="type" value="bed" />
@@ -39703,6 +39792,7 @@
 		<attribute key="femaleSleeper" value="35199" />
 		<attribute key="rotateTo" value="35132" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35159">
 		<attribute key="type" value="bed" />
@@ -39711,24 +39801,28 @@
 		<attribute key="femaleSleeper" value="35217" />
 		<attribute key="rotateTo" value="35141" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35208">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35150" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35217">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35159" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35199">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35150" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35137">
 		<attribute key="type" value="bed" />
@@ -39737,6 +39831,7 @@
 		<attribute key="femaleSleeper" value="35173" />
 		<attribute key="rotateTo" value="35155" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35146">
 		<attribute key="type" value="bed" />
@@ -39745,30 +39840,35 @@
 		<attribute key="femaleSleeper" value="35224" />
 		<attribute key="rotateTo" value="35164" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35182">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35137" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35191">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35146" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35173">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35137" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35224">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35146" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35155">
 		<attribute key="type" value="bed" />
@@ -39777,6 +39877,7 @@
 		<attribute key="femaleSleeper" value="35204" />
 		<attribute key="rotateTo" value="35137" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35164">
 		<attribute key="type" value="bed" />
@@ -39785,30 +39886,35 @@
 		<attribute key="femaleSleeper" value="35222" />
 		<attribute key="rotateTo" value="35146" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35213">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35155" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35225">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35164" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35204">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35155" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35222">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35164" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35135">
 		<attribute key="type" value="bed" />
@@ -39817,6 +39923,7 @@
 		<attribute key="femaleSleeper" value="35171" />
 		<attribute key="rotateTo" value="35153" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35144">
 		<attribute key="type" value="bed" />
@@ -39825,24 +39932,28 @@
 		<attribute key="femaleSleeper" value="35189" />
 		<attribute key="rotateTo" value="35162" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35180">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35135" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35189">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35144" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35171">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35135" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35153">
 		<attribute key="type" value="bed" />
@@ -39851,6 +39962,7 @@
 		<attribute key="femaleSleeper" value="35202" />
 		<attribute key="rotateTo" value="35135" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35162">
 		<attribute key="type" value="bed" />
@@ -39859,24 +39971,28 @@
 		<attribute key="femaleSleeper" value="35220" />
 		<attribute key="rotateTo" value="35144" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35211">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35153" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35220">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35162" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35202">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35153" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 
@@ -40306,6 +40422,7 @@
 		<attribute key="femaleSleeper" value="35455" />
 		<attribute key="rotateTo" value="35453" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35452">
 		<attribute key="type" value="bed" />
@@ -40314,6 +40431,7 @@
 		<attribute key="femaleSleeper" value="35457" />
 		<attribute key="rotateTo" value="35454" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35453">
 		<attribute key="type" value="bed" />
@@ -40322,6 +40440,7 @@
 		<attribute key="femaleSleeper" value="35458" />
 		<attribute key="rotateTo" value="35451" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35454">
 		<attribute key="type" value="bed" />
@@ -40330,42 +40449,49 @@
 		<attribute key="femaleSleeper" value="35460" />
 		<attribute key="rotateTo" value="35452" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35455">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35451" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35456">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="35451" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35457">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="35452" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35458">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35453" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35459">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="35453" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="35460">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="35454" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -41922,48 +42048,56 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="37862" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37846">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="37863" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37847">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="37864" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37848">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="37865" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37849">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="37862" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37859">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="37863" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37860">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="37864" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37861">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="37865" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37862">
 		<attribute key="type" value="bed" />
@@ -41972,6 +42106,7 @@
 		<attribute key="femaleSleeper" value="37849" />
 		<attribute key="rotateTo" value="37864" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37863">
 		<attribute key="type" value="bed" />
@@ -41980,6 +42115,7 @@
 		<attribute key="femaleSleeper" value="37859" />
 		<attribute key="rotateTo" value="37865" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37864">
 		<attribute key="type" value="bed" />
@@ -41988,6 +42124,7 @@
 		<attribute key="femaleSleeper" value="37860" />
 		<attribute key="rotateTo" value="37862" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="37865">
 		<attribute key="type" value="bed" />
@@ -41996,6 +42133,7 @@
 		<attribute key="femaleSleeper" value="37861" />
 		<attribute key="rotateTo" value="37863" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -42334,48 +42472,56 @@
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38515" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38508">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38516" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38509">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38517" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38510">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38518" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38511">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38515" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38512">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38516" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38513">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38517" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38514">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38518" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38515">
 		<attribute key="type" value="bed" />
@@ -42384,6 +42530,7 @@
 		<attribute key="femaleSleeper" value="38511" />
 		<attribute key="rotateTo" value="38517" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38516">
 		<attribute key="type" value="bed" />
@@ -42392,6 +42539,7 @@
 		<attribute key="femaleSleeper" value="38512" />
 		<attribute key="rotateTo" value="38518" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38517">
 		<attribute key="type" value="bed" />
@@ -42400,6 +42548,7 @@
 		<attribute key="femaleSleeper" value="38513" />
 		<attribute key="rotateTo" value="38515" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38518">
 		<attribute key="type" value="bed" />
@@ -42408,54 +42557,63 @@
 		<attribute key="femaleSleeper" value="38514" />
 		<attribute key="rotateTo" value="38516" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38519">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38527" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38520">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38528" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38521">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38529" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38522">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38530" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38523">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38527" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38524">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38528" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38525">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38529" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38526">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38530" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38527">
 		<attribute key="type" value="bed" />
@@ -42464,6 +42622,7 @@
 		<attribute key="femaleSleeper" value="38523" />
 		<attribute key="rotateTo" value="38529" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38528">
 		<attribute key="type" value="bed" />
@@ -42472,6 +42631,7 @@
 		<attribute key="femaleSleeper" value="38524" />
 		<attribute key="rotateTo" value="38530" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38529">
 		<attribute key="type" value="bed" />
@@ -42480,6 +42640,7 @@
 		<attribute key="femaleSleeper" value="38525" />
 		<attribute key="rotateTo" value="38527" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38530">
 		<attribute key="type" value="bed" />
@@ -42488,54 +42649,63 @@
 		<attribute key="femaleSleeper" value="38526" />
 		<attribute key="rotateTo" value="38528" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38531">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38539" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38532">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38540" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38533">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38541" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38534">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38542" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38535">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38539" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38536">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38540" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38537">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38541" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38538">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38542" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38539">
 		<attribute key="type" value="bed" />
@@ -42544,6 +42714,7 @@
 		<attribute key="femaleSleeper" value="38535" />
 		<attribute key="rotateTo" value="38541" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38540">
 		<attribute key="type" value="bed" />
@@ -42552,6 +42723,7 @@
 		<attribute key="femaleSleeper" value="38536" />
 		<attribute key="rotateTo" value="38542" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38541">
 		<attribute key="type" value="bed" />
@@ -42560,6 +42732,7 @@
 		<attribute key="femaleSleeper" value="38537" />
 		<attribute key="rotateTo" value="38539" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38542">
 		<attribute key="type" value="bed" />
@@ -42568,6 +42741,7 @@
 		<attribute key="femaleSleeper" value="38538" />
 		<attribute key="rotateTo" value="38540" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -42655,6 +42829,7 @@
 		<attribute key="femaleSleeper" value="38588" />
 		<attribute key="rotateTo" value="38594" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38593">
 		<attribute key="type" value="bed" />
@@ -42663,30 +42838,35 @@
 		<attribute key="femaleSleeper" value="38589" />
 		<attribute key="rotateTo" value="38595" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38584">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38592" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38585">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38593" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38588">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="38592" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38589">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="38593" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38594">
 		<attribute key="type" value="bed" />
@@ -42695,6 +42875,7 @@
 		<attribute key="femaleSleeper" value="38590" />
 		<attribute key="rotateTo" value="38592" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38595">
 		<attribute key="type" value="bed" />
@@ -42703,30 +42884,35 @@
 		<attribute key="femaleSleeper" value="38591" />
 		<attribute key="rotateTo" value="38593" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38586">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38594" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38587">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38595" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38590">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="38594" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="38591">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="38595" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -43646,6 +43832,7 @@
 		<attribute key="femaleSleeper" value="39683" />
 		<attribute key="rotateTo" value="39689" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39688">
 		<attribute key="type" value="bed" />
@@ -43654,30 +43841,35 @@
 		<attribute key="femaleSleeper" value="39684" />
 		<attribute key="rotateTo" value="39690" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39679">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39687" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39680">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39688" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39683">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39687" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39684">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39688" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39689">
 		<attribute key="type" value="bed" />
@@ -43686,6 +43878,7 @@
 		<attribute key="femaleSleeper" value="39685" />
 		<attribute key="rotateTo" value="39687" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39690">
 		<attribute key="type" value="bed" />
@@ -43694,30 +43887,35 @@
 		<attribute key="femaleSleeper" value="39686" />
 		<attribute key="rotateTo" value="39688" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39681">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39689" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39682">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39690" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39685">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39689" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39686">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39690" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -43789,6 +43987,7 @@
 		<attribute key="femaleSleeper" value="39853" />
 		<attribute key="rotateTo" value="39859" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39858">
 		<attribute key="type" value="bed" />
@@ -43797,30 +43996,35 @@
 		<attribute key="femaleSleeper" value="39854" />
 		<attribute key="rotateTo" value="39860" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39849">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39857" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39850">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39858" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39853">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="39857" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39854">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="39858" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39859">
 		<attribute key="type" value="bed" />
@@ -43829,6 +44033,7 @@
 		<attribute key="femaleSleeper" value="39855" />
 		<attribute key="rotateTo" value="39857" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39860">
 		<attribute key="type" value="bed" />
@@ -43837,30 +44042,35 @@
 		<attribute key="femaleSleeper" value="39856" />
 		<attribute key="rotateTo" value="39858" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39851">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39859" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39852">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39860" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39855">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="39859" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="39856">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="39860" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -44050,6 +44260,7 @@
 		<attribute key="femaleSleeper" value="40938" />
 		<attribute key="rotateTo" value="40943" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40942">
 		<attribute key="type" value="bed" />
@@ -44058,30 +44269,35 @@
 		<attribute key="femaleSleeper" value="40939" />
 		<attribute key="rotateTo" value="40944" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40934">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="40941" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40935">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="40942" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40938">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="40941" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40939">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="40942" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40943">
 		<attribute key="type" value="bed" />
@@ -44090,6 +44306,7 @@
 		<attribute key="femaleSleeper" value="40940" />
 		<attribute key="rotateTo" value="40941" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40944">
 		<attribute key="type" value="bed" />
@@ -44098,30 +44315,35 @@
 		<attribute key="femaleSleeper" value="40945" />
 		<attribute key="rotateTo" value="40942" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40936">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="40943" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40937">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="40944" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40940">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="40943" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="40945">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="40944" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -44771,6 +44993,7 @@
 		<attribute key="femaleSleeper" value="44464" />
 		<attribute key="rotateTo" value="44470" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44469">
 		<attribute key="type" value="bed" />
@@ -44779,30 +45002,35 @@
 		<attribute key="femaleSleeper" value="44465" />
 		<attribute key="rotateTo" value="44471" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44460">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44468" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44461">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44469" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44464">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44468" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44465">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44469" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44470">
 		<attribute key="type" value="bed" />
@@ -44811,6 +45039,7 @@
 		<attribute key="femaleSleeper" value="44466" />
 		<attribute key="rotateTo" value="44468" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44471">
 		<attribute key="type" value="bed" />
@@ -44819,30 +45048,35 @@
 		<attribute key="femaleSleeper" value="44467" />
 		<attribute key="rotateTo" value="44469" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44462">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44470" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44463">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44471" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44466">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44470" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44467">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44471" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
@@ -45015,6 +45249,7 @@
 		<attribute key="femaleSleeper" value="44782" />
 		<attribute key="rotateTo" value="44787" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44786">
 		<attribute key="type" value="bed" />
@@ -45023,30 +45258,35 @@
 		<attribute key="femaleSleeper" value="44783" />
 		<attribute key="rotateTo" value="44788" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44778">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44785" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44779">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44786" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44782">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="south" />
 		<attribute key="maleSleeper" value="44785" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44783">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="north" />
 		<attribute key="maleSleeper" value="44786" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44787">
 		<attribute key="type" value="bed" />
@@ -45055,6 +45295,7 @@
 		<attribute key="femaleSleeper" value="44784" />
 		<attribute key="rotateTo" value="44785" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44788">
 		<attribute key="type" value="bed" />
@@ -45063,30 +45304,35 @@
 		<attribute key="femaleSleeper" value="44789" />
 		<attribute key="rotateTo" value="44786" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44780">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44787" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44781">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44788" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44784">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="east" />
 		<attribute key="maleSleeper" value="44787" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<item id="44789">
 		<attribute key="type" value="bed" />
 		<attribute key="partnerDirection" value="west" />
 		<attribute key="maleSleeper" value="44788" />
 		<attribute key="forceSerialize" value="1" />
+		<attribute key="allowpickupable" value="1" />
 	</item>
 	<!-- end movable beds -->
 	
