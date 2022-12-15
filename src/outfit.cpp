@@ -43,12 +43,21 @@ bool Outfits::loadFromXml()
 			continue;
 		}
 
-		outfits[type].emplace_back(
+		Outfit outfit = Outfit(
 			outfitNode.attribute("name").as_string(),
 			pugi::cast<uint16_t>(lookTypeAttribute.value()),
 			outfitNode.attribute("premium").as_bool(),
 			outfitNode.attribute("unlocked").as_bool(true)
 		);
+
+		if (attr = outfitNode.attribute("tooltip")) {
+			uint8_t tooltipId = pugi::cast<uint8_t>(attr.value());
+			outfit.tooltip = static_cast<OutfitTooltip_t>(tooltipId);
+		} else {
+			outfit.tooltip = OUTFIT_TOOLTIP_NONE;
+		}
+
+		outfits[type].emplace_back(outfit);
 	}
 
 	// show how many loaded
@@ -88,4 +97,18 @@ const Outfit* Outfits::getOutfitByLookType(uint16_t lookType) const
 		}
 	}
 	return nullptr;
+}
+
+bool Outfits::setOutfitOfferId(uint16_t lookType, uint32_t offerId)
+{
+	for (uint8_t sex = PLAYERSEX_FEMALE; sex <= PLAYERSEX_LAST; sex++) {
+		for (Outfit& outfit : outfits[sex]) {
+			if (outfit.lookType == lookType) {
+				outfit.offerId = offerId;
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

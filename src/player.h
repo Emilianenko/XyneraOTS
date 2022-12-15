@@ -1260,9 +1260,9 @@ class Player final : public Creature, public Cylinder
 				client->sendOpenPrivateChannel(receiver);
 			}
 		}
-		void sendOutfitWindow() {
+		void sendOutfitWindow(uint16_t lookType = 0, uint16_t lookMount = 0) {
 			if (client) {
-				client->sendOutfitWindow();
+				client->sendOutfitWindow(lookType, lookMount);
 			}
 		}
 		void sendPodiumWindow(const Item* item) {

@@ -560,6 +560,8 @@ class LuaScriptInterface
 		static int luaGameGetInstantSpells(lua_State* L);
 		static int luaGameGetRuneSpells(lua_State* L);
 		static int luaGameGetVocations(lua_State* L);
+		static int luaGameSetStoreOutfit(lua_State* L);
+		static int luaGameSetStoreMount(lua_State* L);
 
 		static int luaGameGetGameState(lua_State* L);
 		static int luaGameSetGameState(lua_State* L);

@@ -3709,7 +3709,7 @@ void Game::playerTurn(uint32_t playerId, Direction dir)
 	internalCreatureTurn(player, dir);
 }
 
-void Game::playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId)
+void Game::playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId, uint16_t lookType, uint16_t lookMount)
 {
 	if (!g_config.getBoolean(ConfigManager::ALLOW_CHANGEOUTFIT)) {
 		return;
@@ -3727,7 +3727,7 @@ void Game::playerRequestOutfit(uint32_t playerId, uint32_t otherCreatureId)
 		}
 	}
 
-	player->sendOutfitWindow();
+	player->sendOutfitWindow(lookType, lookMount);
 }
 
 void Game::playerRequestEditPodium(uint32_t playerId, const Position& position, uint8_t stackPos, const uint16_t spriteId)

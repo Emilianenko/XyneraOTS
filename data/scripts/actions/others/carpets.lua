@@ -127,7 +127,7 @@ function carpets.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	if not house then
 		player:sendTextMessage(MESSAGE_STATUS_SMALL, "You may use this only inside a house.")
 		return true
-	elseif house:getAccessLevel(player) < HOUSE_OWNER then
+	elseif house:getOwnerGuid() ~= player:getGuid() then
 		player:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
 		return true
 	end

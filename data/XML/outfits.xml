@@ -70,7 +70,7 @@
 	<outfit type="0" looktype="1020" name="Herbalist" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1024" name="Sun Priest" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1043" name="Makeshift Warrior" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="0" looktype="1050" name="Siege Master" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="1051" name="Siege Master" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1057" name="Mercenary" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1070" name="Battle Mage" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1095" name="Discoverer" premium="yes" unlocked="no" enabled="yes" />
@@ -83,7 +83,7 @@
 	<outfit type="0" looktype="1203" name="Void Master" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1205" name="Veteran Paladin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1207" name="Lion of War" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="0" looktype="1211" name="Golden Outfit" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="1211" name="Golden Outfit" premium="no" unlocked="no" enabled="yes" tooltip="2" />
 	<outfit type="0" looktype="1246" name="Breezy Garb" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1244" name="Hand of the Inquisition" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1252" name="Traditionalist" premium="yes" unlocked="no" enabled="yes" />
@@ -103,7 +103,7 @@
 	<outfit type="0" looktype="1437" name="Royal Bounacean Advisor" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1445" name="Dragon Knight" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1450" name="Arbalester" premium="no" unlocked="no" enabled="yes" />
-	<outfit type="0" looktype="1456" name="Royal Costume" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="0" looktype="1456" name="Royal Costume" premium="no" unlocked="no" enabled="yes" tooltip="3" />
 	<outfit type="0" looktype="1461" name="Formal Dress" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1490" name="Ghost Blade" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="0" looktype="1501" name="Nordic Chieftain" premium="no" unlocked="no" enabled="yes" />
@@ -180,7 +180,7 @@
 	<outfit type="1" looktype="1021" name="Herbalist" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1023" name="Sun Priest" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1042" name="Makeshift Warrior" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="1" looktype="1051" name="Siege Master" premium="yes" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="1050" name="Siege Master" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1056" name="Mercenary" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1069" name="Battle Mage" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1094" name="Discoverer" premium="yes" unlocked="no" enabled="yes" />
@@ -193,7 +193,7 @@
 	<outfit type="1" looktype="1202" name="Void Master" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1204" name="Veteran Paladin" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1206" name="Lion of War" premium="yes" unlocked="no" enabled="yes" />
-	<outfit type="1" looktype="1210" name="Golden Outfit" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="1210" name="Golden Outfit" premium="no" unlocked="no" enabled="yes" tooltip="2" />
 	<outfit type="1" looktype="1245" name="Breezy Garb" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1243" name="Hand of the Inquisition" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1251" name="Traditionalist" premium="yes" unlocked="no" enabled="yes" />
@@ -213,7 +213,7 @@
 	<outfit type="1" looktype="1436" name="Royal Bounacean Advisor" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1444" name="Dragon Knight" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1449" name="Arbalester" premium="no" unlocked="no" enabled="yes" />
-	<outfit type="1" looktype="1457" name="Royal Costume" premium="no" unlocked="no" enabled="yes" />
+	<outfit type="1" looktype="1457" name="Royal Costume" premium="no" unlocked="no" enabled="yes" tooltip="3" />
 	<outfit type="1" looktype="1460" name="Formal Dress" premium="yes" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1489" name="Ghost Blade" premium="no" unlocked="no" enabled="yes" />
 	<outfit type="1" looktype="1500" name="Nordic Chieftain" premium="no" unlocked="no" enabled="yes" />

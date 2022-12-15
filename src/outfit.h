@@ -19,15 +19,26 @@ struct Outfit {
 	uint16_t lookType;
 	bool premium;
 	bool unlocked;
+
+	// 0 - default
+	// 1 - reserved for store
+	// 2 - golden outfit
+	// 3 - royal costume
+	OutfitTooltip_t tooltip = OUTFIT_TOOLTIP_NONE;
+
+	// store offerId
+	uint32_t offerId = 0;
 };
 
 struct ProtocolOutfit {
-	ProtocolOutfit(const std::string& name, uint16_t lookType, uint8_t addons) :
-		name(name), lookType(lookType), addons(addons) {}
+	ProtocolOutfit(const std::string& name, uint16_t lookType, uint8_t addons, OutfitTooltip_t tooltip, uint32_t offerId) :
+		name(name), lookType(lookType), addons(addons), tooltip(tooltip), offerId(offerId) {}
 
 	const std::string& name;
 	uint16_t lookType;
 	uint8_t addons;
+	OutfitTooltip_t tooltip;
+	uint32_t offerId;
 };
 
 class Outfits
@@ -42,6 +53,7 @@ class Outfits
 
 		const Outfit* getOutfitByLookType(PlayerSex_t sex, uint16_t lookType) const;
 		const Outfit* getOutfitByLookType(uint16_t lookType) const;
+		bool Outfits::setOutfitOfferId(uint16_t lookType, uint32_t offerId);
 		const std::vector<Outfit>& getOutfits(PlayerSex_t sex) const {
 			return outfits[sex];
 		}

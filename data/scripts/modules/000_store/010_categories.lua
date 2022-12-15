@@ -13,7 +13,7 @@ StoreCategories = {
 	[1] = {
 		name = "VIP Pass", -- premium time
 		image = "PremiumTime",
-		offers = {15, 16, 17, 18},
+		offers = {},
 	},
 	[2] = {
 		name = "Consumables",
@@ -73,7 +73,7 @@ StoreCategories = {
 		offerTypes = {
 			[1] = { name = "Bronze Mounts", offers = {}},
 			[2] = { name = "Silver Mounts", offers = {}},
-			[3] = { name = "Gold Mounts", offers = {182}}
+			[3] = { name = "Gold Mounts", offers = {}}
 		},
 	},
 	[11] = {
@@ -94,13 +94,13 @@ StoreCategories = {
 		name = "Decorations", parent = "Houses",
 		image = "HouseDecorations",
 		offerTypes = {
-			[1] = { name = "Floor Coverings", offers = {1}},
+			[1] = { name = "Floor Coverings", offers = {}},
 			[2] = { name = "Tapestries", offers = {}},
 			[3] = { name = "Pets", offers = {}},
-			[4] = { name = "Plants", offers = {5, 6, 7, 8}},
+			[4] = { name = "Plants", offers = {}},
 			[5] = { name = "Paintings", offers = {}},
 			[6] = { name = "Busts", offers = {}},
-			[7] = { name = "Lamps", offers = {2, 3}},
+			[7] = { name = "Lamps", offers = {}},
 			[8] = { name = "Festive", offers = {}},
 			[9] = { name = "Cushions", offers = {}},
 			[10] = { name = "Skulls", offers = {}},
@@ -172,7 +172,7 @@ StoreCategories = {
 	},
 	[19] = {
 		name = "Boosts",
-		offers = {314},
+		offers = {},
 	},
 	[20] = {
 		name = "Extras",
@@ -196,5 +196,5 @@ StoreCategories = {
 	[25] = {
 		name = "Exclusive Offers", parent = "Tournament",
 		image = "ExclusiveOffers"
-	},
+	}
 }

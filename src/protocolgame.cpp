@@ -1302,12 +1302,18 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 
 void ProtocolGame::parseRequestOutfit(NetworkMessage& msg)
 {
-	uint8_t creatureType = msg.getByte(); // 2 = npc/hireling
-	if (creatureType == CREATURETYPE_NPC) {
+	uint8_t requestType = msg.getByte();
+	if (requestType == 2) {
+		// edit hireling outfit
 		addGameTask(([=, playerID = player->getID(), creatureID = msg.get<uint32_t>()]() { g_game.playerRequestOutfit(playerID, creatureID); }));
 		return;
 	}
-	addGameTask([playerID = player->getID()]() { g_game.playerRequestOutfit(playerID); });
+
+	// set or try outfit
+	uint16_t lookType = requestType == 3 ? msg.get<uint16_t>() : 0;
+	uint16_t lookMount = requestType == 1 ? msg.get<uint16_t>() : 0;
+
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerRequestOutfit(playerID, 0, lookType, lookMount); }));
 }
 
 void ProtocolGame::parseSetOutfit(NetworkMessage& msg)
@@ -3650,7 +3656,7 @@ void ProtocolGame::sendHouseWindow(uint32_t windowTextId, const std::string& tex
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::sendOutfitWindow()
+void ProtocolGame::sendOutfitWindow(uint16_t tryOutfitType, uint16_t tryMountType)
 {
 	// get player outfits
 	const auto& outfits = Outfits::getInstance().getOutfits(player->getSex());
@@ -3668,6 +3674,16 @@ void ProtocolGame::sendOutfitWindow()
 		currentOutfit = newOutfit;
 	}
 
+	// determine window mode
+	uint8_t windowMode = 0;
+
+	// "try outfit" window override
+	if (tryOutfitType != 0) {
+		currentOutfit.lookType = tryOutfitType;
+		currentOutfit.lookAddons = 3;
+		windowMode = 1;
+	}
+
 	// QT client fix for unmountable looktypes
 	if (player->getOperatingSystem() < CLIENTOS_OTCLIENT_LINUX) {
 		if (!Outfits::getInstance().getOutfitByLookType(player->getSex(), currentOutfit.lookType)) {
@@ -3681,6 +3697,15 @@ void ProtocolGame::sendOutfitWindow()
 		currentOutfit.lookMount = currentMount->clientId;
 	}
 	bool mounted = currentOutfit.lookMount != 0;
+
+	// "try mount" window override
+	if (tryMountType != 0) {
+		currentOutfit.lookMount = tryMountType;
+		mounted = true;
+		if (windowMode == 0) {
+			windowMode = 2;
+		}
+	}
 
 	// start building the response
 	NetworkMessage msg;
@@ -3702,7 +3727,7 @@ void ProtocolGame::sendOutfitWindow()
 			familiars.push_back(&familiar);
 		}
 	}
-
+	
 	// add current familiar
 	if (familiars.size() > 0) {
 		const Familiar* currentFamiliar = g_game.familiars.getFamiliarByID(player->getCurrentFamiliar());
@@ -3716,60 +3741,23 @@ void ProtocolGame::sendOutfitWindow()
 		msg.add<uint16_t>(0);
 	}
 
-	// add GM outfit
-	std::vector<ProtocolOutfit> protocolOutfits;
-	if (player->isAccessPlayer()) {
-		static const std::string gamemasterOutfitName = "Gamemaster";
-		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
-	}
+	AddPlayerOutfits(msg);
+	AddPlayerMounts(msg);
+	AddPlayerFamiliars(msg);
 
-	// get other available outfits
-	protocolOutfits.reserve(outfits.size());
-	for (const Outfit& outfit : outfits) {
-		uint8_t addons;
-		if (!player->getOutfitAddons(outfit, addons)) {
-			continue;
-		}
-
-		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
-	}
-
-	// add available outfits
-	msg.add<uint16_t>(protocolOutfits.size());
-	for (const ProtocolOutfit& outfit : protocolOutfits) {
-		msg.add<uint16_t>(outfit.lookType);
-		msg.addString(outfit.name);
-		msg.addByte(outfit.addons);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId), 0x02 golden outfit tooltip (hardcoded)
-	}
-
-	// get available mounts
-	std::vector<const Mount*> mounts;
-	for (const Mount& mount : g_game.mounts.getMounts()) {
-		if (player->hasMount(&mount)) {
-			mounts.push_back(&mount);
-		}
-	}
-
-	// add available mounts
-	msg.add<uint16_t>(mounts.size());
-	for (const Mount* mount : mounts) {
-		msg.add<uint16_t>(mount->clientId);
-		msg.addString(mount->name);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
-	}
-
-	// add available familiars
-	msg.add<uint16_t>(familiars.size());
-	for (const Familiar* familiar : familiars) {
-		msg.add<uint16_t>(familiar->clientId);
-		msg.addString(familiar->name);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
-	}
-
-	msg.addByte(0x00); // outfit window mode (0 = edit player outfit)
+	// outfit window mode
+	// 0 - player outfit
+	// 1 - try outfit (doesnt take randomized mount byte)
+	// 2 - try mount (same as try outfit, different window title)
+	// 3 - hireling (handled in lua)
+	// 4 - try hireling dress (takes 3 bytes after window mode)
+	// 5 - podium (handled by method below)
+	msg.addByte(windowMode);
 	msg.addByte(mounted ? 0x01 : 0x00);
-	msg.addByte(player->hasRandomizedMount() ? 0x01 : 0x00); // randomize mount (bool)
+	if (windowMode == 0) {
+		msg.addByte(player->hasRandomizedMount() ? 0x01 : 0x00); // randomize mount (bool)
+	}
+
 	writeToOutputBuffer(msg);
 }
 
@@ -3822,35 +3810,9 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 		return;
 	}
 
-	// add GM outfit for staff members
-	std::vector<ProtocolOutfit> protocolOutfits;
-	if (player->isAccessPlayer()) {
-		static const std::string gamemasterOutfitName = "Gamemaster";
-		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0);
-	}
-
-	// fetch player addons info
-	protocolOutfits.reserve(outfits.size());
-	for (const Outfit& outfit : outfits) {
-		uint8_t addons;
-		if (!player->getOutfitAddons(outfit, addons)) {
-			continue;
-		}
-
-		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons);
-	}
-
 	// select first outfit available when the one from podium is not unlocked
 	if (!player->canWear(podiumOutfit.lookType, 0)) {
 		podiumOutfit.lookType = outfits.front().lookType;
-	}
-
-	// fetch player mounts
-	std::vector<const Mount*> mounts;
-	for (const Mount& mount : g_game.mounts.getMounts()) {
-		if (player->hasMount(&mount)) {
-			mounts.push_back(&mount);
-		}
 	}
 
 	// packet header
@@ -3875,22 +3837,8 @@ void ProtocolGame::sendPodiumWindow(const Item* item)
 	// current familiar (not used in podium mode)
 	msg.add<uint16_t>(0);
 
-	// available outfits
-	msg.add<uint16_t>(protocolOutfits.size());
-	for (const ProtocolOutfit& outfit : protocolOutfits) {
-		msg.add<uint16_t>(outfit.lookType);
-		msg.addString(outfit.name);
-		msg.addByte(outfit.addons);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId), 0x02 golden outfit tooltip (hardcoded)
-	}
-
-	// available mounts
-	msg.add<uint16_t>(mounts.size());
-	for (const Mount* mount : mounts) {
-		msg.add<uint16_t>(mount->clientId);
-		msg.addString(mount->name);
-		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
-	}
+	AddPlayerOutfits(msg);
+	AddPlayerMounts(msg);
 
 	// available familiars (not used in podium mode)
 	msg.add<uint16_t>(0);
@@ -4388,6 +4336,100 @@ void ProtocolGame::AddShopItem(NetworkMessage& msg, const ShopInfo& item)
 	msg.add<uint32_t>(it.weight);
 	msg.add<uint32_t>(item.buyPrice);
 	msg.add<uint32_t>(item.sellPrice);
+}
+
+void ProtocolGame::AddPlayerOutfits(NetworkMessage& msg)
+{
+	// get player outfits
+	const auto& outfits = Outfits::getInstance().getOutfits(player->getSex());
+	if (outfits.size() == 0) {
+		msg.add<uint16_t>(0);
+		return;
+	}
+	
+	// add GM outfit
+	std::vector<ProtocolOutfit> protocolOutfits;
+	if (player->isAccessPlayer()) {
+		static const std::string gamemasterOutfitName = "Gamemaster";
+		protocolOutfits.emplace_back(gamemasterOutfitName, 75, 0, OUTFIT_TOOLTIP_NONE, 0);
+	}
+
+	// get other available outfits
+	protocolOutfits.reserve(outfits.size());
+	for (const Outfit& outfit : outfits) {
+		uint8_t addons;
+		if (!player->getOutfitAddons(outfit, addons)) {
+			if (outfit.offerId != 0) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, OUTFIT_TOOLTIP_STORE, outfit.offerId);
+			} else if (outfit.tooltip != OUTFIT_TOOLTIP_NONE) {
+				protocolOutfits.emplace_back(outfit.name, outfit.lookType, 3, outfit.tooltip, 0);
+			}
+			continue;
+		}
+
+		protocolOutfits.emplace_back(outfit.name, outfit.lookType, addons, OUTFIT_TOOLTIP_NONE, 0);
+	}
+
+	// add available outfits
+	msg.add<uint16_t>(protocolOutfits.size());
+	for (const ProtocolOutfit& outfit : protocolOutfits) {
+		msg.add<uint16_t>(outfit.lookType);
+		msg.addString(outfit.name);
+		msg.addByte(outfit.addons);
+		msg.addByte(outfit.tooltip);
+		if (outfit.tooltip == OUTFIT_TOOLTIP_STORE) {
+			msg.add<uint32_t>(outfit.offerId);
+		}
+	}
+}
+
+void ProtocolGame::AddPlayerMounts(NetworkMessage& msg)
+{
+	// get available mounts
+	std::vector<const Mount*> mounts;
+	std::vector<const Mount*> storeMounts;
+	for (const Mount& mount : g_game.mounts.getMounts()) {
+		if (player->hasMount(&mount)) {
+			mounts.push_back(&mount);
+		} else if(mount.offerId != 0) {
+			storeMounts.push_back(&mount);
+		}
+	}
+
+	// add available mounts
+	msg.add<uint16_t>(mounts.size() + storeMounts.size());
+	for (const Mount* mount : mounts) {
+		msg.add<uint16_t>(mount->clientId);
+		msg.addString(mount->name);
+		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	}
+
+	// add store mounts
+	for (const Mount* mount : storeMounts) {
+		msg.add<uint16_t>(mount->clientId);
+		msg.addString(mount->name);
+		msg.addByte(0x01);
+		msg.add<uint32_t>(mount->offerId);
+	}
+}
+
+void ProtocolGame::AddPlayerFamiliars(NetworkMessage& msg)
+{
+	// get available familiars
+	std::vector<const Familiar*> familiars;
+	for (const Familiar& familiar : g_game.familiars.getFamiliars()) {
+		if (player->canUseFamiliar(&familiar)) {
+			familiars.push_back(&familiar);
+		}
+	}
+	
+	// add available familiars
+	msg.add<uint16_t>(familiars.size());
+	for (const Familiar* familiar : familiars) {
+		msg.add<uint16_t>(familiar->clientId);
+		msg.addString(familiar->name);
+		msg.addByte(0x00); // mode: 0x00 - available, 0x01 store (requires U32 store offerId)
+	}
 }
 
 void ProtocolGame::parseExtendedOpcode(NetworkMessage& msg)
