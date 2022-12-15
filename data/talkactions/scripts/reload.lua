@@ -74,6 +74,7 @@ function onSay(player, words, param)
 		EventCallback:clear()
 	end
 
+	local start = os.mtime()
 	Game.reload(reloadType)
 	
 	-- prevent unhooking eventCallbacks registered in data/scripts folder
@@ -83,7 +84,8 @@ function onSay(player, words, param)
 		Game.reload(RELOAD_TYPE_SCRIPTS)
 	end
 	
-	player:sendColorMessage(string.format("Reloaded %s.", param:lower()), MESSAGE_COLOR_PURPLE)
-	Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_INFO, string.format("Reloaded %s.", param:lower()))
+	local reloadMsg = string.format("Reloaded %s in %0.3fs", param:lower(), (os.mtime() - start)/1000)
+	player:sendColorMessage(reloadMsg, MESSAGE_COLOR_PURPLE)
+	Game.sendConsoleMessage(CONSOLEMESSAGE_TYPE_INFO, reloadMsg)
 	return false
 end
