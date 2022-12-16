@@ -1,4 +1,5 @@
 -- description macros
+-- to do: change prem to one char on acc
 local desc_premium = [[<i>Enhance your gaming experience by gaining additional abilities and advantages:</i>
 
 &#8226; access to Premium areas
@@ -117,6 +118,72 @@ function GenerateMount(name, lookType, price, publishedAt, description)
 	table.insert(StoreCategories[STORE_TAB_MOUNTS].offerTypes[tier].offers, productId)
 	
 	Game.setStoreMount(lookType, lastOfferId)
+end
+
+-- premium time (vip pass) generator
+function GeneratePremium(days, price, publishedAt)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	StoreOffers[productId] = {
+		name = string.format("%d days", days),
+		description = desc_premium,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = 1,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_DEFAULT,
+		image = string.format("Premium_Time_%d.png", days),
+		premDays = days,
+		-- for direct offer id request
+		category = STORE_TAB_PREMIUM,
+	}
+	
+	table.insert(StoreCategories[STORE_TAB_PREMIUM].offers, productId)
+end
+
+-- XP Boost
+function GenerateXPBoost(price)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	StoreOffers[productId] = {
+		name = "XP Boost",
+		description = [[<i>Purchase a boost that increases the experience points your character gains from hunting by 50%!</i>
+
+{character}
+{info} lasts for 1 hour hunting time
+{info} paused if stamina falls under 14 hours
+{info} can be purchased up to 5 times between 2 server saves
+{info} price increases with every purchase
+{info} cannot be purchased if an XP boost is already active]],
+
+		publishedAt = 0,
+		packages = {
+			[1] = {
+				amount = 1,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_DEFAULT,
+		image = "Product_XpBoost.png",
+		XPBoost = true,
+		
+		-- for direct offer id request
+		category = STORE_TAB_BOOSTS,
+	}
+	
+	table.insert(StoreCategories[STORE_TAB_BOOSTS].offers, productId)
 end
 
 -- outfit offer generator and macros

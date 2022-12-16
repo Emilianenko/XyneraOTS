@@ -21,6 +21,57 @@ function Player:sendStoreMeta()
 	msg:sendToPlayer(self)
 end
 
+function Player:sendStoreRequest(type, offerId)
+	local msg = NetworkMessage()
+	msg:addByte(0xE1)
+	msg:addU32(offerId)
+	msg:addByte(type)
+	
+	-- request types:
+	-- 1: player name change (no extra data needed)
+	-- 3: hireling name/sex ui (no extra data needed)
+
+	if type == 2 then
+		-- character world transfer
+		-- checkboxes
+		msg:addByte(0)
+		msg:addByte(0)
+		msg:addByte(0)
+		msg:addByte(0)
+		msg:addByte(0)
+		msg:addByte(0)
+		-- list of worlds
+		msg:addByte(0)
+	elseif type == 4 then
+		-- main character change ui
+		msg:addByte(1) -- character count
+		msg:addString("Player") -- name
+		msg:addString("Xynera") -- world
+		msg:addString("Druid") -- vocation
+		msg:addU16(100) -- level
+	elseif type == 5 then
+		-- tournament ui
+		msg:addString("Twoj Stary Pijany")
+		msg:addByte(3) -- world location
+			msg:addString("Europe")
+			msg:addString("Brazil")
+			msg:addString("United States")
+		msg:addByte(4) -- vocations
+			msg:addByte(1)
+			msg:addByte(2)
+			msg:addByte(3)
+			msg:addByte(4)
+		msg:addByte(3) -- starting town
+			msg:addString("Carlin")
+			msg:addString("Thais")
+			msg:addString("Venore")
+		msg:addByte(0) -- show warning (bool)
+	elseif type == 6 then
+		msg:addString("message")
+	end
+	msg:sendToPlayer(self)
+end
+
 function NetworkMessage:addStoreOfferError(offerId)
 -- keep the tabbing for self-documenting packet structure
 	-- error page
