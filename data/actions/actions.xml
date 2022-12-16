@@ -137,7 +137,6 @@
 	<action fromid="1843" toid="1844" script="other/wall_mirror.lua" />
 	<action fromid="1846" toid="1847" script="other/wall_mirror.lua" />
 	<action fromid="1849" toid="1850" script="other/wall_mirror.lua" />
-	<action itemid="1945" script="other/lever_buying.lua" />
 	<action itemid="2036" script="other/watch.lua" />
 	<action itemid="2093" script="other/water_pipe.lua" />
 	<action itemid="2095" script="other/bird_cage.lua" />
