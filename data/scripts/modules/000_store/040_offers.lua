@@ -1,19 +1,146 @@
--- name, price, publishedAt, headboard, footboard
-GenerateBed("Verdant Bed", 150, 1663920000, 28752, 28753)
-GenerateBed("Homely Bed", 120, 1663920000, 36976, 36977)
-GenerateBed("Wrought-Iron Bed", 150, 1663920000, 37862, 37863)
-GenerateBed("Vengothic Bed", 180, 1663920000, 38539, 38540)
-GenerateBed("Ornate Bed", 180, 1663920000, 38527, 38528)
-GenerateBed("Magnificent Bed", 180, 1663920000, 38515, 38516)
-GenerateBed("Grandiose Bed", 150, 1663920000, 38592, 38593)
-GenerateBed("Log Bed", 150, 1663920000, 39687, 39688)
-GenerateBed("Kraken Bed", 150, 1663920000, 39857, 39858)
-GenerateBed("Sleeping Mat", 120, 1663920000, 40941, 40942)
-GenerateBed("Knightly Bed", 180, 1663920000, 44468, 44469)
-GenerateBed("Flower Bed", 150, 1663920000, 44785, 44786)
+-- table of content:
+---- premium
+---- services (to do)
+---- outfits
+---- mounts
+---- beds
+---- carpets
 
--- bone bed is from quest
--- other beds should be from shop
+-- days, price, publishedAt
+GeneratePremium(30, 250, 3)
+GeneratePremium(90, 750, 2)
+GeneratePremium(180, 1500, 1)
+GeneratePremium(360, 3000, 0)
+
+-- price
+GenerateXPBoost(30)
+
+-- other boosts?
+-- stamina reset?
+-- frag remover?
+-- loot rate boost?
+-- skill rate boost?
+
+--[[
+-- services
+-- name change (character, purchase)
+-- Tired of your current character name? Purchase a new one!
+
+-- sex change (character, purchase, outfit)
+-- Turns your female character into a male one - or vice versa.
+
+-- useful
+-- prey wildcard
+5x 50
+20x 200
+Use Prey Wildcards to reroll the bonus of an active prey, to lock your active prey or to select a prey of your choice.
+
+  only usable by purchasing character
+  added directly to Prey dialog
+  maximum amount that can be owned by character: 50
+
+-- temple teleport
+15
+Teleports you instantly to your home temple.
+
+  only usable by purchasing character
+  use it to teleport you to your home temple
+  cannot be used while having a battle sign or a protection zone block
+  does not work in no-logout zones or close to a character's home temple
+
+-- gold converters?
+
+-- permanent prey slot
+900
+Get an additional prey slot to activate additional prey!
+
+  only usable by purchasing character
+  maximum amount that can be owned by character: 3
+  added directly to Prey dialog
+
+-- charm expansion
+450
+Assign as many of your unlocked Charms as you like and get a 25% discount whenever you are removing a Charm from a creature!
+
+  only usable by purchasing character
+  can only be purchased once
+
+-- gold pouch
+900
+arries as many gold, platinum or crystal coins as your capacity allows, however, no other items.
+
+  only usable by purchasing character
+  will be sent to your Store inbox and can only be stored there and in depot box
+  can only be purchased once
+  use it to open it
+  always placed on the first position of your Store inbox
+
+-- instant reward access
+30 x 100
+No matter where you are in Tibia, claim your daily reward on the spot!
+
+  only usable by purchasing character
+  added to your reward wall
+  maximum amount that can be owned by character: 90
+
+-- permanent hunting task slot
+750
+Get an additional Prey Hunting Task slot to activate additional hunting tasks!
+  only usable by purchasing character
+  maximum amount that can be owned by character: 3
+  added directly to Hunting Tasks tab in the Prey dialog
+]]
+
+-- name, lookTypeMale, lookTypeFemale, price, publishedAt, description
+GenerateOutfit("Full Fencer Outfit", 1575, 1576, 750, 1658476800, "They are skilled, they are disciplined, they wield their weapon with deadly precision as a form of art. Fencers are true masters of the blade who can cut through anything and anyone in the blink of an eye. While being feared for their lethal attacks, they are also admired for their elegant and fierce style, their dashing looks. Do not be on the fence, be a fencer, or at least dress like one with this fashionable, cutting-edge outfit.")
+GenerateOutfit("Full Nordic Chieftain Outfit", 1500, 1501, 750, 1650614400, "Where others not dare to tread due to the biting cold and freezing winds, the Nordic Chieftain feels right at home. Braving the harsh conditions is possible due to a protective layer of warm clothing, as well as suitable armament to fend off any hostile wildlife. The helmet's massive horns are a tad heavy and unwieldy, but show the chieftain's status.")
+GenerateOutfit("Full Ghost Blade Outfit", 1489, 1490, 600, 1643965200, "Being a Ghost Blade means having mastered the way of the warrior. No matter the circumstances, these fighters retain full control over their body and mind, with the sole focus of vanquishing their foe. So great is their ability that they not only control the weapons in their hands perfectly, but two floating blades following them as well.")
+GenerateOutfit("Full Arbalester Outfit", 1449, 1450, 600, 1634889600, "Armed with a powerful crossbow, and gifted with steady hands as well as a sharp eye, the Arbalester is not one to be trifled with. Requiring both skill and strength to properly wield, the arbalest is a mighty tool in the hands of an able marksman, shooting deadly bolts across great distance.")
+GenerateOutfit("Full Dragon Knight Outfit", 1444, 1445, 870, 1627027200, "A Dragon Knight is ready for everything, channeling the primordial might of the winged, ancient beasts into weapons and armour. Their imposing demeanour and impressive appearance are often enough to quell any animosity towards them, and those who still dare oppose them are not long for this world.")
+GenerateOutfit("Full Forest Warden Outfit", 1415, 1416, 750, 1622188800, "The Forest Warden watches over all living things in the woods, be they plants or beasts. They have a special connection to the earth they tread on, the air they breathe, and the wind which whispers around them. Naturally, the suit that they don is not made out of dead vegetation, but is a living being itself.")
+GenerateOutfit("Full Rune Master Outfit", 1384, 1385, 870, 1614330000, "A Rune Master has dedicated their whole life to the study and mastery of runes. They are intrigued by the ancient symbols, shrouded in mystery, and how their magic works. Rune Masters have a deep understanding of the awesome power they are wielding and can make use of the full potential of runes.")
+GenerateOutfit("Full Merry Garb Outfit", 1382, 1383, 600, 1609837200, "Are you ready for the festive season? Or feeling festive regardless of the time of year? Then the Merry Garb is perfect for you. Donning the outfit not only puts you in a mirthful mood, but spreads blitheness on your travels throughout the lands.")
+GenerateOutfit("Full Moth Cape Outfit", 1338, 1339, 600, 1601020800, "If you are fascinated by this particular group of insects and want to show your deep appreciation of these critters, the Moth Cape is for you. The wing-shaped coat and the antennae provide you with the feeling of being a moth without experiencing the downside of inevitably being drawn to light.")
+GenerateOutfit("Full Jouster Outfit", 1331, 1332, 750, 1593158400, "The Jouster is all geared up for a tournament, ready to partake in festive activities involving friendly competition to prove their chivalry. However, being well-armoured, they are also a force to be reckoned with on the battlefield, especially with a trusty steed at their service.")
+GenerateOutfit("Full Trailblazer Outfit", 1292, 1293, 600, 1585299600, "The Trailblazer is on a mission of enlightenment and carries the flame of wisdom near and far. The everlasting shine brightens the hearts and minds of all creatures its rays touch, bringing light even to the darkest corners of the world as a beacon of insight and knowledge.")
+GenerateOutfit("Full Herder Outfit", 1279, 1280, 750, 1576227600, "The Herder is one with nature, being outside all day, watching carefully over his flock. If you like to spend time on picturesque meadows and are always looking for greener pastures, then this outfit is for you.")
+GenerateOutfit("Full Breezy Garb Outfit", 1245, 1246, 600, 1564128000, "Even the most eager adventurers and toughest warriors need some time to rest and recharge. Enjoy tranquility and peace as you picnic in good company at one of your favourite places. Put on your Breezy Garb outfit, grab your walking stick, a basket filled with tasty snacks and then head out into nature!")
+GenerateOutfit("Full Guidon Bearer Outfit", 1186, 1187, 870, 1556262000, "Carrying the guidon of a unit, always marching in front, is not only an honour but also comes with great responsibility. Guidon bearers wield great power, they lead where others follow and keep the spirits of the troops up as they wave their flag against the golden suns.")
+GenerateOutfit("Full Owl Keeper Outfit", 1173, 1174, 600, 1550566800, "Owl Keepers are often referred to as spirits walking through the forest at night, mere shadows during the day. They are also said to be shamans, protecting the flora and fauna. You often see them wearing a stag's antlers on their head and in the company of an owl, for they are as wise and mysterious as these intriguing creatures.")
+GenerateOutfit("Full Pumpkin Mummy Outfit", 1127, 1128, 870, 1541149200, "If you cannot decide whether to wrap yourself up as a mummy or flaunt an enormous pumpkin head for your next hunting party, why not combine both? The Pumpkin Mummy outfit is the perfect costume for scary nights and spooky days.")
+GenerateOutfit("Full Sinister Archer Outfit", 1102, 1103, 600, 1532678400, "From an early age, the Sinister Archer has been fascinated by people's dark machinations and perversions. Sinister Archers claim that they advocate the good and that they only use their arrows to pierce the hearts of those who have committed many crimes and misdeeds. However, they are still viewed by the public with much suspicion due to their dubious appearance. To keep their identity secret, they often hide themselves behind a skull-like face guard that can easily withstand even axe and club blows.")
+GenerateOutfit("Full Mercenary Outfit", 1056, 1057, 870, 1524812400, "The Mercenary carries a powerful, razor-sharp axe on his shoulders that effortlessly cuts through any armour and bone. You should better tell your friends to keep a safe distance, since heads will roll over the blood-soaked battleground after a powerful swing of yours.\nConsidering the sheer size of this axe, it might even be possible to chop onions without shedding a tear.")
+GenerateOutfit("Full Siege Master Outfit", 1050, 1051, 600, 1519981200, "Neither thick stone walls nor heavily armoured gates can stop the Siege Master, who brings down hostile fortifications in the blink of an eye. Whenever he tenses his muscular arms to lift the powerful battering ram, his enemies' knees begin to buckle. It is the perfect outfit for those who also stand for brute strength and immense destruction.")
+GenerateOutfit("Full Sun Priest Outfit", 1023, 1024, 750, 1515229200, "Do you worship warm temperatures and are opposed to the thought of long and dark winter nights? Do you refuse to spend countless evenings in front of your chimney while ice-cold wind whistles through the cracks and niches of your house? It is time to stop freezing and to become an honourable Sun Priest! With this stylish outfit, you can finally show the world your unconditional dedication and commitment to the sun!")
+GenerateOutfit("Full Herbalist Outfit", 1021, 1020, 750, 1509091200, "The Herbalist outfit is the perfect outfit for all herbs collectors. Those of you who are aware that you do not necessarily have to reach into the mouth of a hydra to get a hydra tongue and those who know exactly where to get blood- and shadow-herbs will find a matching outfit for their daily hobby. Show the world your affinity for herbs and impress your friends with your knowledge of medicine and potions.")
+GenerateOutfit("Full Entrepreneur Outfit", 472, 471, 750, 1501228800, "Slaughter through hordes of monsters during your early morning hunt and kiss the hand of Queen Eloise later on at the evening reception in her historical residence. With the Entrepreneur outfit you will cut a fine figure on every occasion.")
+GenerateOutfit("Full Trophy Hunter Outfit", 957, 958, 870, 1498204800, "You spend hours in the woods in search of wild and rare animals? Countless stuffed skulls of deer, wolves and other creatures are decorating your walls? Now you have the chance to present your trophies in public. Become a Trophy Hunter and cover your shoulders with the finest bear skulls!")
+GenerateOutfit("Retro Noble(wo)man Outfit", 966, 967, 870, 1496995200, "The king has invited you to a summer ball and you have nothing to wear for this special event? Do not worry, the Retro Noble(wo)man outfit makes you a real eye catcher on every festive occasion.")
+GenerateOutfit("Retro Summoner Outfit", 964, 965, 870, 1496995200, "While the Retro Mage usually throws runes and mighty spells directly at the enemies, the Retro Summoner outfit might be the better choice for adventurers that prefer to send mighty summons to the battlefield to keep their enemies at distance.")
+GenerateOutfit("Retro Warrior Outfit", 962, 963, 870, 1496995200, "You are fearless and strong as a behemoth but have problems finding the right outfit for your adventures? The Retro Warrior outfit is a must-have for all fashion-conscious old-school adventurers out there.")
+GenerateOutfit("Retro Knight Outfit", 970, 971, 870, 1495785600, "Who needs a fancy looking sword with bling-bling and ornaments? Back in the days, we survived without such unnecessary accessories! Time to show those younkers what a Retro Knight is made of.")
+GenerateOutfit("Retro Hunter Outfit", 972, 973, 870, 1495785600, "Whenever you pick up your bow and spears, you walk down memory lane and think of your early days? Treat yourself with the fashionable Retro Hunter outfit and hunt some good old monsters from your childhood.")
+GenerateOutfit("Retro Mage Outfit", 968, 969, 870, 1495785600, "Dress up as a Retro Mage and you will always cut a fine figure on the battleground while eliminating your enemies with your magical powers the old-fashioned way.")
+GenerateOutfit("Retro Citizen Outfit", 974, 975, 870, 1495785600, "Do you still remember your first stroll through the streets of Thais? For old times' sake, walk the paths of Nostalgia as a Retro Citizen!")
+GenerateOutfit("Full Pharaoh Outfit", 955, 956, 750, 1488531600, "You know how to read hieroglyphs? You admire the exceptional architectural abilities and the unsolved mysteries of an ancient high culture? Next time you pay a visit to your friends, tell them to prepare a bathtub full of milk and honey for you because a Pharaoh is now walking through the streets of Ankrahmun!")
+GenerateOutfit("Full Grove Keeper Outfit", 908, 909, 870, 1480662000, "Feeling the springy grass under your feet and inhaling the spicy air of the forest is pure satisfaction for your soul? Every animal is your friend and you caringly look after trees and plants all the time? Then it is time to become one with nature: Become a Grove Keeper!")
+GenerateOutfit("Full Lupine Warden Outfit", 899, 900, 840, 1475222400, "Do you feel the adrenaline rushing through your veins when the sun goes down and a full moon lightens the night? Do you have the urge to hunt down your target no matter what? Unleash the beast inside of you and lead your friends to battle with the Lupine Warden outfit!")
+GenerateOutfit("Full Arena Champion Outfit", 884, 885, 870, 1475222399, "Fight your bloody battles in the arena and become a darling of the crowd. Once you have made it to the top and everyone is cheering your name, the fashionable outfit of an Arena Champion will show the world what you are made of.")
+GenerateOutfit("Full Philosopher Outfit", 873, 874, 750, 1475222398, "Do you feel the urge to tell people what is really going on in the world? Do you know all answers to the important questions of life? Are you a true philosopher? Then dress like one to showcase the latest fashion for all wise theorists.")
+GenerateOutfit("Full Winter Warden Outfit", 853, 852, 870, 1475222397, "The warm and cosy cloak of the Winter Warden outfit will keep you warm in every situation. Best thing, it is not only comfortable but fashionable as well. You will be the envy of any snow queen or king, guaranteed!")
+GenerateOutfit("Full Royal Pumpkin Outfit", 760, 759, 840, 1475222396, "The mutated pumpkin is too weak for your mighty weapons? Time to show that evil vegetable how to scare the living daylight out of people! Put on a scary looking pumpkin on your head and spread terror and fear amongst the population.")
+GenerateOutfit("Full Sea Dog Outfit", 750, 749,  600, 1475222395, "Ahoy mateys! Flaunt the swashbuckling Sea Dog outfit and strike a pose with your hook to impress both landlubbers and fellow pirates. Board your next ship in style!")
+GenerateOutfit("Full Champion Outfit", 633, 632, 570, 1475222385, "Protect your body with heavy armour plates and spiky bones to teach your enemies the meaning of fear! The Champion outfit perfectly suits battle-hardened warriors who rely on their trusty sword and shield.")
+GenerateOutfit("Full Conjurer Outfit", 634, 635, 720, 1475222386, "You recently graduated from the Magic Academy and want to bring your knowledge to good use? Congratulations, you are now an honourable disciple of magic! Open up a bottle of well-aged mana and treat yourself with the fashionable Conjurer outfit.")
+GenerateOutfit("Full Beastmaster Outfit", 637, 636, 870, 1475222384, "Do you have enough authority to make wild animals subservient to you? Become a Beastmaster and surround yourself with fearsome companions. When your beasts bare their teeth, your enemies will turn tails and run.")
+GenerateOutfit("Full Chaos Acolyte Outfit", 665, 664, 900, 1475222387, "You have always felt like the cat among the pigeons and have a fable for dark magic? The Chaos Acolyte outfit is a perfect way to express your inner nature. Show your commitment for the higher cause and wreak havoc on your enemies in this unique outfit.")
+GenerateOutfit("Full Death Herald Outfit", 667, 666, 600, 1475222388, "Death and decay are your ever-present companions? Your enemies are dropping like flies and your path is covered with their bodies? However, as decency demands, you want to at least give them a proper funeral? Then the Death Herald is just the right outfit for you.")
+GenerateOutfit("Full Ranger Outfit", 684, 683, 750, 1475222389, "Most of the day, the Ranger is looking over his forest. He is taking care of all animals and plants and tries to keep everything in balance. Intruders are greeted by a warning shot from his deadly longbow. It is the perfect outfit for Paladins who live in close touch with nature.")
+GenerateOutfit("Full Ceremonial Garb Outfit", 695, 694, 750, 1475222390, "If you want to make a great entrance at a costume party, the Ceremonial Garb is certainly a good choice. With a drum over your shoulder and adorned with feathers you are perfectly dressed to lead a carnival parade through the streets of Thais.")
+GenerateOutfit("Full Puppeteer Outfit", 697, 696, 870, 1475222391, "Are you a fan of puppetry? You like to travel the world together with one or two little acting fellows? Or are you simply the one who likes to pull the strings? Then the Puppeteer outfit is the right choice for you.")
+GenerateOutfit("Full Spirit Caller Outfit", 699, 698, 600, 1475222392, "You are in love with the deep soul of Mother Earth and prefer to walk in the shadows of her wooden children? Choose the Spirit Caller outfit to live in harmony with nature.")
+GenerateOutfit("Full Evoker Outfit", 725, 724, 840, 1475222393, "Dance around flickering fires in the Evoker outfit while singing unholy chants to praise witchcraft and wizardry. Your faithful bat will always be by your side.")
+GenerateOutfit("Full Seaweaver Outfit", 733, 732, 570, 1475222394, "The Seaweaver outfit is the perfect choice if you want to show the world that you are indeed a son or a daughter of the submarine kingdom. You can almost feel the salty taste and the rough wind of the sea when wearing it.")
 
 -- name, lookType, price, publishedAt, description
 GenerateMount("Parade Horse", 1578, 870, 1661500800, "A seasoned warrior knows how to make an entry, and so does his faithful companion: Fully armored! Saddle up your impressive Jousting Horse to charge into battle in style, gallop into the arena on the back of your striking Tourney Horse, and ride your distinguished Parade Horse through the streets of Thais to show off your chivalrous qualities. With a horse in full barding, nobody will ever rain on your parade again.")
@@ -147,53 +274,66 @@ GenerateMount("Desert King", 572, 450, 57, "Its roaring is piercing marrow and b
 GenerateMount("Jade Lion", 627, 450, 95, "Its roaring is piercing marrow and bone and can be heard over ten miles away. The Jade Lion is the undisputed ruler of its territory and no one messes with this animal. Show no fear and prove yourself worthy of its trust and you will get yourself a valuable companion for your adventures.")
 GenerateMount("Winter King", 631, 450, 102, "Its roaring is piercing marrow and bone and can be heard over ten miles away. The Winter King is the undisputed ruler of its territory and no one messes with this animal. Show no fear and prove yourself worthy of its trust and you will get yourself a valuable companion for your adventures.")
 
--- name, lookTypeMale, lookTypeFemale, price, publishedAt, description
-GenerateOutfit("Full Fencer Outfit", 1575, 1576, 750, 1658476800, "They are skilled, they are disciplined, they wield their weapon with deadly precision as a form of art. Fencers are true masters of the blade who can cut through anything and anyone in the blink of an eye. While being feared for their lethal attacks, they are also admired for their elegant and fierce style, their dashing looks. Do not be on the fence, be a fencer, or at least dress like one with this fashionable, cutting-edge outfit.")
-GenerateOutfit("Full Nordic Chieftain Outfit", 1500, 1501, 750, 1650614400, "Where others not dare to tread due to the biting cold and freezing winds, the Nordic Chieftain feels right at home. Braving the harsh conditions is possible due to a protective layer of warm clothing, as well as suitable armament to fend off any hostile wildlife. The helmet's massive horns are a tad heavy and unwieldy, but show the chieftain's status.")
-GenerateOutfit("Full Ghost Blade Outfit", 1489, 1490, 600, 1643965200, "Being a Ghost Blade means having mastered the way of the warrior. No matter the circumstances, these fighters retain full control over their body and mind, with the sole focus of vanquishing their foe. So great is their ability that they not only control the weapons in their hands perfectly, but two floating blades following them as well.")
-GenerateOutfit("Full Arbalester Outfit", 1449, 1450, 600, 1634889600, "Armed with a powerful crossbow, and gifted with steady hands as well as a sharp eye, the Arbalester is not one to be trifled with. Requiring both skill and strength to properly wield, the arbalest is a mighty tool in the hands of an able marksman, shooting deadly bolts across great distance.")
-GenerateOutfit("Full Dragon Knight Outfit", 1444, 1445, 870, 1627027200, "A Dragon Knight is ready for everything, channeling the primordial might of the winged, ancient beasts into weapons and armour. Their imposing demeanour and impressive appearance are often enough to quell any animosity towards them, and those who still dare oppose them are not long for this world.")
-GenerateOutfit("Full Forest Warden Outfit", 1415, 1416, 750, 1622188800, "The Forest Warden watches over all living things in the woods, be they plants or beasts. They have a special connection to the earth they tread on, the air they breathe, and the wind which whispers around them. Naturally, the suit that they don is not made out of dead vegetation, but is a living being itself.")
-GenerateOutfit("Full Rune Master Outfit", 1384, 1385, 870, 1614330000, "A Rune Master has dedicated their whole life to the study and mastery of runes. They are intrigued by the ancient symbols, shrouded in mystery, and how their magic works. Rune Masters have a deep understanding of the awesome power they are wielding and can make use of the full potential of runes.")
-GenerateOutfit("Full Merry Garb Outfit", 1382, 1383, 600, 1609837200, "Are you ready for the festive season? Or feeling festive regardless of the time of year? Then the Merry Garb is perfect for you. Donning the outfit not only puts you in a mirthful mood, but spreads blitheness on your travels throughout the lands.")
-GenerateOutfit("Full Moth Cape Outfit", 1338, 1339, 600, 1601020800, "If you are fascinated by this particular group of insects and want to show your deep appreciation of these critters, the Moth Cape is for you. The wing-shaped coat and the antennae provide you with the feeling of being a moth without experiencing the downside of inevitably being drawn to light.")
-GenerateOutfit("Full Jouster Outfit", 1331, 1332, 750, 1593158400, "The Jouster is all geared up for a tournament, ready to partake in festive activities involving friendly competition to prove their chivalry. However, being well-armoured, they are also a force to be reckoned with on the battlefield, especially with a trusty steed at their service.")
-GenerateOutfit("Full Trailblazer Outfit", 1292, 1293, 600, 1585299600, "The Trailblazer is on a mission of enlightenment and carries the flame of wisdom near and far. The everlasting shine brightens the hearts and minds of all creatures its rays touch, bringing light even to the darkest corners of the world as a beacon of insight and knowledge.")
-GenerateOutfit("Full Herder Outfit", 1279, 1280, 750, 1576227600, "The Herder is one with nature, being outside all day, watching carefully over his flock. If you like to spend time on picturesque meadows and are always looking for greener pastures, then this outfit is for you.")
-GenerateOutfit("Full Breezy Garb Outfit", 1245, 1246, 600, 1564128000, "Even the most eager adventurers and toughest warriors need some time to rest and recharge. Enjoy tranquility and peace as you picnic in good company at one of your favourite places. Put on your Breezy Garb outfit, grab your walking stick, a basket filled with tasty snacks and then head out into nature!")
-GenerateOutfit("Full Guidon Bearer Outfit", 1186, 1187, 870, 1556262000, "Carrying the guidon of a unit, always marching in front, is not only an honour but also comes with great responsibility. Guidon bearers wield great power, they lead where others follow and keep the spirits of the troops up as they wave their flag against the golden suns.")
-GenerateOutfit("Full Owl Keeper Outfit", 1173, 1174, 600, 1550566800, "Owl Keepers are often referred to as spirits walking through the forest at night, mere shadows during the day. They are also said to be shamans, protecting the flora and fauna. You often see them wearing a stag's antlers on their head and in the company of an owl, for they are as wise and mysterious as these intriguing creatures.")
-GenerateOutfit("Full Pumpkin Mummy Outfit", 1127, 1128, 870, 1541149200, "If you cannot decide whether to wrap yourself up as a mummy or flaunt an enormous pumpkin head for your next hunting party, why not combine both? The Pumpkin Mummy outfit is the perfect costume for scary nights and spooky days.")
-GenerateOutfit("Full Sinister Archer Outfit", 1102, 1103, 600, 1532678400, "From an early age, the Sinister Archer has been fascinated by people's dark machinations and perversions. Sinister Archers claim that they advocate the good and that they only use their arrows to pierce the hearts of those who have committed many crimes and misdeeds. However, they are still viewed by the public with much suspicion due to their dubious appearance. To keep their identity secret, they often hide themselves behind a skull-like face guard that can easily withstand even axe and club blows.")
-GenerateOutfit("Full Mercenary Outfit", 1056, 1057, 870, 1524812400, "The Mercenary carries a powerful, razor-sharp axe on his shoulders that effortlessly cuts through any armour and bone. You should better tell your friends to keep a safe distance, since heads will roll over the blood-soaked battleground after a powerful swing of yours.\nConsidering the sheer size of this axe, it might even be possible to chop onions without shedding a tear.")
-GenerateOutfit("Full Siege Master Outfit", 1050, 1051, 600, 1519981200, "Neither thick stone walls nor heavily armoured gates can stop the Siege Master, who brings down hostile fortifications in the blink of an eye. Whenever he tenses his muscular arms to lift the powerful battering ram, his enemies' knees begin to buckle. It is the perfect outfit for those who also stand for brute strength and immense destruction.")
-GenerateOutfit("Full Sun Priest Outfit", 1023, 1024, 750, 1515229200, "Do you worship warm temperatures and are opposed to the thought of long and dark winter nights? Do you refuse to spend countless evenings in front of your chimney while ice-cold wind whistles through the cracks and niches of your house? It is time to stop freezing and to become an honourable Sun Priest! With this stylish outfit, you can finally show the world your unconditional dedication and commitment to the sun!")
-GenerateOutfit("Full Herbalist Outfit", 1021, 1020, 750, 1509091200, "The Herbalist outfit is the perfect outfit for all herbs collectors. Those of you who are aware that you do not necessarily have to reach into the mouth of a hydra to get a hydra tongue and those who know exactly where to get blood- and shadow-herbs will find a matching outfit for their daily hobby. Show the world your affinity for herbs and impress your friends with your knowledge of medicine and potions.")
-GenerateOutfit("Full Entrepreneur Outfit", 472, 471, 750, 1501228800, "Slaughter through hordes of monsters during your early morning hunt and kiss the hand of Queen Eloise later on at the evening reception in her historical residence. With the Entrepreneur outfit you will cut a fine figure on every occasion.")
-GenerateOutfit("Full Trophy Hunter Outfit", 957, 958, 870, 1498204800, "You spend hours in the woods in search of wild and rare animals? Countless stuffed skulls of deer, wolves and other creatures are decorating your walls? Now you have the chance to present your trophies in public. Become a Trophy Hunter and cover your shoulders with the finest bear skulls!")
-GenerateOutfit("Retro Noble(wo)man Outfit", 966, 967, 870, 1496995200, "The king has invited you to a summer ball and you have nothing to wear for this special event? Do not worry, the Retro Noble(wo)man outfit makes you a real eye catcher on every festive occasion.")
-GenerateOutfit("Retro Summoner Outfit", 964, 965, 870, 1496995200, "While the Retro Mage usually throws runes and mighty spells directly at the enemies, the Retro Summoner outfit might be the better choice for adventurers that prefer to send mighty summons to the battlefield to keep their enemies at distance.")
-GenerateOutfit("Retro Warrior Outfit", 962, 963, 870, 1496995200, "You are fearless and strong as a behemoth but have problems finding the right outfit for your adventures? The Retro Warrior outfit is a must-have for all fashion-conscious old-school adventurers out there.")
-GenerateOutfit("Retro Knight Outfit", 970, 971, 870, 1495785600, "Who needs a fancy looking sword with bling-bling and ornaments? Back in the days, we survived without such unnecessary accessories! Time to show those younkers what a Retro Knight is made of.")
-GenerateOutfit("Retro Hunter Outfit", 972, 973, 870, 1495785600, "Whenever you pick up your bow and spears, you walk down memory lane and think of your early days? Treat yourself with the fashionable Retro Hunter outfit and hunt some good old monsters from your childhood.")
-GenerateOutfit("Retro Mage Outfit", 968, 969, 870, 1495785600, "Dress up as a Retro Mage and you will always cut a fine figure on the battleground while eliminating your enemies with your magical powers the old-fashioned way.")
-GenerateOutfit("Retro Citizen Outfit", 974, 975, 870, 1495785600, "Do you still remember your first stroll through the streets of Thais? For old times' sake, walk the paths of Nostalgia as a Retro Citizen!")
-GenerateOutfit("Full Pharaoh Outfit", 955, 956, 750, 1488531600, "You know how to read hieroglyphs? You admire the exceptional architectural abilities and the unsolved mysteries of an ancient high culture? Next time you pay a visit to your friends, tell them to prepare a bathtub full of milk and honey for you because a Pharaoh is now walking through the streets of Ankrahmun!")
-GenerateOutfit("Full Grove Keeper Outfit", 908, 909, 870, 1480662000, "Feeling the springy grass under your feet and inhaling the spicy air of the forest is pure satisfaction for your soul? Every animal is your friend and you caringly look after trees and plants all the time? Then it is time to become one with nature: Become a Grove Keeper!")
-GenerateOutfit("Full Lupine Warden Outfit", 899, 900, 840, 1475222400, "Do you feel the adrenaline rushing through your veins when the sun goes down and a full moon lightens the night? Do you have the urge to hunt down your target no matter what? Unleash the beast inside of you and lead your friends to battle with the Lupine Warden outfit!")
-GenerateOutfit("Full Arena Champion Outfit", 884, 885, 870, 1475222399, "Fight your bloody battles in the arena and become a darling of the crowd. Once you have made it to the top and everyone is cheering your name, the fashionable outfit of an Arena Champion will show the world what you are made of.")
-GenerateOutfit("Full Philosopher Outfit", 873, 874, 750, 1475222398, "Do you feel the urge to tell people what is really going on in the world? Do you know all answers to the important questions of life? Are you a true philosopher? Then dress like one to showcase the latest fashion for all wise theorists.")
-GenerateOutfit("Full Winter Warden Outfit", 853, 852, 870, 1475222397, "The warm and cosy cloak of the Winter Warden outfit will keep you warm in every situation. Best thing, it is not only comfortable but fashionable as well. You will be the envy of any snow queen or king, guaranteed!")
-GenerateOutfit("Full Royal Pumpkin Outfit", 760, 759, 840, 1475222396, "The mutated pumpkin is too weak for your mighty weapons? Time to show that evil vegetable how to scare the living daylight out of people! Put on a scary looking pumpkin on your head and spread terror and fear amongst the population.")
-GenerateOutfit("Full Sea Dog Outfit", 750, 749,  600, 1475222395, "Ahoy mateys! Flaunt the swashbuckling Sea Dog outfit and strike a pose with your hook to impress both landlubbers and fellow pirates. Board your next ship in style!")
-GenerateOutfit("Full Champion Outfit", 633, 632, 570, 1475222385, "Protect your body with heavy armour plates and spiky bones to teach your enemies the meaning of fear! The Champion outfit perfectly suits battle-hardened warriors who rely on their trusty sword and shield.")
-GenerateOutfit("Full Conjurer Outfit", 634, 635, 720, 1475222386, "You recently graduated from the Magic Academy and want to bring your knowledge to good use? Congratulations, you are now an honourable disciple of magic! Open up a bottle of well-aged mana and treat yourself with the fashionable Conjurer outfit.")
-GenerateOutfit("Full Beastmaster Outfit", 637, 636, 870, 1475222384, "Do you have enough authority to make wild animals subservient to you? Become a Beastmaster and surround yourself with fearsome companions. When your beasts bare their teeth, your enemies will turn tails and run.")
-GenerateOutfit("Full Chaos Acolyte Outfit", 665, 664, 900, 1475222387, "You have always felt like the cat among the pigeons and have a fable for dark magic? The Chaos Acolyte outfit is a perfect way to express your inner nature. Show your commitment for the higher cause and wreak havoc on your enemies in this unique outfit.")
-GenerateOutfit("Full Death Herald Outfit", 667, 666, 600, 1475222388, "Death and decay are your ever-present companions? Your enemies are dropping like flies and your path is covered with their bodies? However, as decency demands, you want to at least give them a proper funeral? Then the Death Herald is just the right outfit for you.")
-GenerateOutfit("Full Ranger Outfit", 684, 683, 750, 1475222389, "Most of the day, the Ranger is looking over his forest. He is taking care of all animals and plants and tries to keep everything in balance. Intruders are greeted by a warning shot from his deadly longbow. It is the perfect outfit for Paladins who live in close touch with nature.")
-GenerateOutfit("Full Ceremonial Garb Outfit", 695, 694, 750, 1475222390, "If you want to make a great entrance at a costume party, the Ceremonial Garb is certainly a good choice. With a drum over your shoulder and adorned with feathers you are perfectly dressed to lead a carnival parade through the streets of Thais.")
-GenerateOutfit("Full Puppeteer Outfit", 697, 696, 870, 1475222391, "Are you a fan of puppetry? You like to travel the world together with one or two little acting fellows? Or are you simply the one who likes to pull the strings? Then the Puppeteer outfit is the right choice for you.")
-GenerateOutfit("Full Spirit Caller Outfit", 699, 698, 600, 1475222392, "You are in love with the deep soul of Mother Earth and prefer to walk in the shadows of her wooden children? Choose the Spirit Caller outfit to live in harmony with nature.")
-GenerateOutfit("Full Evoker Outfit", 725, 724, 840, 1475222393, "Dance around flickering fires in the Evoker outfit while singing unholy chants to praise witchcraft and wizardry. Your faithful bat will always be by your side.")
-GenerateOutfit("Full Seaweaver Outfit", 733, 732, 570, 1475222394, "The Seaweaver outfit is the perfect choice if you want to show the world that you are indeed a son or a daughter of the submarine kingdom. You can almost feel the salty taste and the rough wind of the sea when wearing it.")
+-- name, price, publishedAt, headboard, footboard
+GenerateBed("Verdant Bed", 150, 1663920000, 28752, 28753)
+GenerateBed("Homely Bed", 120, 1663920000, 36976, 36977)
+GenerateBed("Wrought-Iron Bed", 150, 1663920000, 37862, 37863)
+GenerateBed("Vengothic Bed", 180, 1663920000, 38539, 38540)
+GenerateBed("Ornate Bed", 180, 1663920000, 38527, 38528)
+GenerateBed("Magnificent Bed", 180, 1663920000, 38515, 38516)
+GenerateBed("Grandiose Bed", 150, 1663920000, 38592, 38593)
+GenerateBed("Log Bed", 150, 1663920000, 39687, 39688)
+GenerateBed("Kraken Bed", 150, 1663920000, 39857, 39858)
+GenerateBed("Sleeping Mat", 120, 1663920000, 40941, 40942)
+GenerateBed("Knightly Bed", 180, 1663920000, 44468, 44469)
+GenerateBed("Flower Bed", 150, 1663920000, 44785, 44786)
+
+-- bone bed is from quest
+-- other beds should be from shop
+
+-- itemId, price, publishedAt
+GenerateCarpet(26087, 35, 1449565200) -- yalaharian carpet
+GenerateCarpet(26088, 30, 1449565200) -- white fur carpet
+GenerateCarpet(26087, 25, 1449565200) -- bamboo mat
+GenerateCarpet(26363, 35, 1472547600) -- crimson carpet
+GenerateCarpet(26366, 35, 1472547600) -- azure carpet
+GenerateCarpet(26367, 35, 1472547600) -- emerald carpet
+GenerateCarpet(26368, 30, 1472547600) -- light parquet carpet
+GenerateCarpet(26369, 30, 1472547600) -- dark parquet carpet
+GenerateCarpet(26370, 30, 1472547600) -- marble floor
+GenerateCarpet(27072, 35, 1484557200) -- colorful carpet
+GenerateCarpet(27073, 35, 1484557200) -- flowery carpet
+GenerateCarpet(27074, 30, 1484557200) -- striped carpet
+GenerateCarpet(27075, 30, 1484557200) -- fur carpet
+GenerateCarpet(27076, 25, 1484557200) -- diamond carpet
+GenerateCarpet(27077, 30, 1484557200) -- patterned carpet
+GenerateCarpet(27078, 25, 1484557200) -- night sky carpet
+GenerateCarpet(27079, 25, 1484557200) -- star carpet
+GenerateCarpet(28770, 30, 1500973200) -- verdant carpet
+GenerateCarpet(28772, 30, 1500973200) -- shaggy carpet
+GenerateCarpet(28774, 35, 1500973200) -- mystic carpet
+GenerateCarpet(28776, 25, 1500973200) -- stone tiles
+GenerateCarpet(28779, 25, 1500973200) -- wooden planks
+GenerateCarpet(28807, 30, 1500973200) -- wheat carpet
+GenerateCarpet(28808, 25, 1500973200) -- crested carpet
+GenerateCarpet(28810, 35, 1500973200) -- decorated carpet
+GenerateCarpet(38543, 30, 1606726800) -- lilac carpet
+GenerateCarpet(38545, 30, 1606726800) -- pom-pom carpet
+GenerateCarpet(38547, 30, 1606726800) -- natural pom-pom carpet
+GenerateCarpet(38549, 30, 1606726800) -- owig rug
+GenerateCarpet(38551, 30, 1606726800) -- panther rug
+GenerateCarpet(38553, 25, 1606726800) -- moon carpet
+GenerateCarpet(38555, 30, 1606726800) -- romantic carpet
+GenerateCarpet(39675, 30, 1626080400) -- grass
+GenerateCarpet(44794, 30, 1658134800) -- flowery grass
+
+-- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
+local desc_rune = "{character}\n{storeinbox}\n{vocationlevelcheck}\n{battlesign}\n{capacity}\n\n"
+GenerateStoreItem(
+	2268, 28, -- itemId, price
+	STORE_TAB_RUNES, 1, -- runes, dropdown menu pos
+	0, 250, nil, -- publishedAt, amount, amountMulti
+	-- description
+	string.format("%s<i>%s</i>", desc_rune, "Nearly no other spell can compare to Sudden Death when it comes to sheer damage. For this reason it is immensely popular despite the fact that only a single target is affected. However, since the damage caused by the rune is of deadly nature, it is less useful against most undead creatures.")
+)
+

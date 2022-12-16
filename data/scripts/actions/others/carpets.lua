@@ -89,7 +89,7 @@ CarpetMap = {
 	[40921] = 40922, -- zaoan mat pattern 6
 	
 	-- 12.91
-	[44794] = 44795,
+	[44794] = 44795, -- flowery grass
 	
 	-- 13.10
 	[47082] = 47080, -- cloth (idol)

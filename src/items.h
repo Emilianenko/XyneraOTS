@@ -295,52 +295,52 @@ class ItemType
 		}
 
 		bool isDoor() const {
-			return (type == ITEM_TYPE_DOOR);
+			return type == ITEM_TYPE_DOOR;
 		}
 		bool isMagicField() const {
-			return (type == ITEM_TYPE_MAGICFIELD);
+			return type == ITEM_TYPE_MAGICFIELD;
 		}
 		bool isTeleport() const {
-			return (type == ITEM_TYPE_TELEPORT);
+			return type == ITEM_TYPE_TELEPORT;
 		}
 		bool isKey() const {
-			return (type == ITEM_TYPE_KEY);
+			return type == ITEM_TYPE_KEY;
 		}
 		bool isDepot() const {
-			return (type == ITEM_TYPE_DEPOT);
+			return type == ITEM_TYPE_DEPOT;
 		}
 		bool isMailbox() const {
-			return (type == ITEM_TYPE_MAILBOX);
+			return type == ITEM_TYPE_MAILBOX;
 		}
 		bool isTrashHolder() const {
-			return (type == ITEM_TYPE_TRASHHOLDER);
+			return type == ITEM_TYPE_TRASHHOLDER;
 		}
 		bool isBed() const {
-			return (type == ITEM_TYPE_BED);
+			return type == ITEM_TYPE_BED;
 		}
 		bool isRune() const {
-			return (type == ITEM_TYPE_RUNE);
+			return type == ITEM_TYPE_RUNE;
 		}
 		bool isPodium() const {
-			return (type == ITEM_TYPE_PODIUM);
+			return type == ITEM_TYPE_PODIUM;
 		}
 		bool isHirelingLamp() const {
-			return (type == ITEM_TYPE_HIRELINGLAMP);
+			return type == ITEM_TYPE_HIRELINGLAMP;
 		}
 		bool isRewardChest() const {
-			return (type == ITEM_TYPE_REWARDCHEST);
+			return type == ITEM_TYPE_REWARDCHEST;
 		}
 		bool isRewardBag() const {
-			return (type == ITEM_TYPE_REWARDBAG);
+			return type == ITEM_TYPE_REWARDBAG;
 		}
 		bool isPickupable() const {
-			return (allowPickupable || pickupable);
+			return pickupable;
 		}
 		bool isUseable() const {
-			return (useable);
+			return useable;
 		}
 		bool hasSubType() const {
-			return (isFluidContainer() || isSplash() || stackable || charges != 0);
+			return isFluidContainer() || isSplash() || stackable || charges != 0;
 		}
 
 		Abilities& getAbilities() {

@@ -53,7 +53,7 @@ class Outfits
 
 		const Outfit* getOutfitByLookType(PlayerSex_t sex, uint16_t lookType) const;
 		const Outfit* getOutfitByLookType(uint16_t lookType) const;
-		bool Outfits::setOutfitOfferId(uint16_t lookType, uint32_t offerId);
+		bool setOutfitOfferId(uint16_t lookType, uint32_t offerId);
 		const std::vector<Outfit>& getOutfits(PlayerSex_t sex) const {
 			return outfits[sex];
 		}

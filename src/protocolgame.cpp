@@ -4110,10 +4110,12 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(std::min<uint32_t>(player->getLevel(), std::numeric_limits<uint16_t>::max()));
 	msg.addByte(player->getLevelPercent());
 
-	msg.add<uint16_t>(100); // base xp gain rate
+	uint16_t stamina = player->getStaminaMinutes();
+	uint32_t xpRate = std::min<uint32_t>(100 * g_config.getExperienceStage(player->getLevel()), 0xFFFF);
+	msg.add<uint16_t>(static_cast<uint16_t>(xpRate)); // base xp gain rate
 	msg.add<uint16_t>(0); // low level bonus
 	msg.add<uint16_t>(0); // xp boost
-	msg.add<uint16_t>(100); // stamina multiplier (100 = x1.0)
+	msg.add<uint16_t>(stamina > 2340 ? 150 : stamina < 840 ? 50 : 100); // stamina multiplier (100 = x1.0)
 
 	msg.add<uint32_t>(static_cast<uint32_t>(player->getMana()));
 	msg.add<uint32_t>(static_cast<uint32_t>(player->getMaxMana()));
@@ -4128,7 +4130,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
 
 	msg.add<uint16_t>(0); // xp boost time (seconds)
-	msg.addByte(0x00); // enables exp boost in the store
+	msg.addByte(!player->isAccessPlayer()); // show xp boost button in skill window
 
 	msg.add<uint32_t>(0);  // remaining mana shield
 	msg.add<uint32_t>(0);  // total mana shield

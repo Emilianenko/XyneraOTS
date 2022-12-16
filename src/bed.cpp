@@ -128,11 +128,6 @@ bool BedItem::trySleep(Player* player)
 		return false;
 	}
 
-	BedItem* nextBedItem = getNextBedItem();
-	if (!nextBedItem) {
-		return false;
-	}
-
 	if (sleeperGUID != 0) {
 		if (Item::items[id].transformToFree != 0 && house->getOwner() == player->getGUID()) {
 			wakeUp(nullptr);
@@ -141,6 +136,12 @@ bool BedItem::trySleep(Player* player)
 		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
 		return false;
 	}
+
+	BedItem* nextBedItem = getNextBedItem();
+	if (!nextBedItem) {
+		return false;
+	}
+
 	return true;
 }
 
