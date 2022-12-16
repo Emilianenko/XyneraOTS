@@ -326,3 +326,14 @@ GenerateCarpet(38553, 25, 1606726800) -- moon carpet
 GenerateCarpet(38555, 30, 1606726800) -- romantic carpet
 GenerateCarpet(39675, 30, 1626080400) -- grass
 GenerateCarpet(44794, 30, 1658134800) -- flowery grass
+
+-- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
+local desc_rune = "{character}\n{storeinbox}\n{vocationlevelcheck}\n{battlesign}\n{capacity}\n\n"
+GenerateStoreItem(
+	2268, 28, -- itemId, price
+	STORE_TAB_RUNES, 1, -- runes, dropdown menu pos
+	0, 250, nil, -- publishedAt, amount, amountMulti
+	-- description
+	string.format("%s<i>%s</i>", desc_rune, "Nearly no other spell can compare to Sudden Death when it comes to sheer damage. For this reason it is immensely popular despite the fact that only a single target is affected. However, since the damage caused by the rune is of deadly nature, it is less useful against most undead creatures.")
+)
+

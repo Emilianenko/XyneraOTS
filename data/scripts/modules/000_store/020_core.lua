@@ -227,6 +227,7 @@ function GenerateOutfit(name, lookTypeM, lookTypeF, price, publishedAt, descript
 	Game.setStoreOutfit(lookTypeF, lastOfferId)
 end
 
+-- carpet offer generator
 function GenerateCarpet(itemId, price, publishedAt)
 	local productId = #StoreOffers + 1
 	lastOfferId = lastOfferId + 1
@@ -264,6 +265,56 @@ function GenerateCarpet(itemId, price, publishedAt)
 	lastOfferId = lastOfferId + 1
 	
 	table.insert(StoreCategories[STORE_TAB_DECORATIONS].offerTypes[1].offers, productId)
+end
+
+-- generic offer generator
+-- amountBase - amount on first price tag (example: 1)
+-- amountMulti - multiplier for second price tag (example: 5), no second price tag if nil
+function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	local offer = {
+		name = upAllWords(ItemType(itemId):getName()),
+		description = description,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = amountBase,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_ITEM,
+		itemId = itemId,
+		
+		-- for direct offer id request
+		category = category,
+		subCategory = subCategory
+	}
+
+	-- second price tag
+	if amountMulti then
+		lastOfferId = lastOfferId + 1
+		offer.packages[2] = {
+			amount = amountBase * amountMulti,
+			price = price * amountMulti,
+			currency = STORE_CURRENCY_COINS,
+			offerId = lastOfferId + 1,
+			status = STORE_CATEGORY_TYPE_NORMAL,
+		}
+	end
+	
+	StoreOffers[productId] = offer
+	
+	if subCategory then
+		table.insert(StoreCategories[category].offerTypes[subCategory].offers, productId)
+	else
+		table.insert(StoreCategories[category].offers, productId)
+	end
 end
 
 -- permission check
