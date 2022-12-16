@@ -15,6 +15,7 @@ Reserved account storage ranges:
 -- 1000000 reserved for store coins
 ]]--
 PlayerStorageKeys = {
+	-- 100-65535 - questsystem - quest doors and chests
 	annihilatorReward = 70015,
 	goldenOutfit = 70016,
 	-- empty 70017
@@ -59,6 +60,10 @@ PlayerStorageKeys = {
 	-- rune to set podium item
 	-- scripts/actions/podiumRune.lua
 	podiumRune = 80040,
+	
+	-- gamestore
+	-- intended range: 90000-90100
+	storeGoldPouchBought = 90000,
 	
 	-- total range: 300000-319999
 	achievementsBase = 300000,

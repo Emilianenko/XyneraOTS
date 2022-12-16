@@ -317,6 +317,40 @@ function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, am
 	end
 end
 
+function GenerateStoreService(name, serviceId, price, category, image, publishedAt, description)
+	if not serviceId or serviceId < 1 or serviceId > STORE_SERVICE_LAST then
+		return
+	end
+
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	StoreOffers[productId] = {
+		name = name,
+		description = description,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = 1,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_DEFAULT,
+		image = image,
+		serviceId = serviceId,
+		configurable = serviceId <= STORE_SERVICE_LAST_CONFIGURABLE,
+		
+		-- for direct offer id request
+		category = category
+	}
+
+	table.insert(StoreCategories[category].offers, productId)
+end
+
 -- permission check
 function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}
@@ -348,6 +382,41 @@ function Player:getOfferStatus(offer, fastCheck)
 			
 			messages[#messages + 1] = STORE_REASON_ERROR
 		end
+	elseif offer.serviceId then
+		local serviceId = offer.serviceId
+		if serviceId > STORE_SERVICE_NONE and serviceId <= STORE_SERVICE_LAST then
+			-- supported service types
+			if serviceId == STORE_SERVICE_BUY_HIRELING then
+				-- conditions will apply
+			elseif serviceId == STORE_SERVICE_TEMPLE_TELEPORT then
+				-- temple tp - distance check
+				local currentPos = self:getPosition()
+				local homePos = self:getTown():getTemplePosition()
+				if currentPos:getDistance(homePos) < 20 or math.abs(currentPos.z - homePos.z) < 3 then
+					if fastCheck then
+						return STORE_REASON_TOO_CLOSE
+					end
+					
+					messages[#messages + 1] = STORE_REASON_TOO_CLOSE
+				end
+				
+				-- temple tp - infight check
+				if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+					if fastCheck then
+						return STORE_REASON_INFIGHT
+					end
+					
+					messages[#messages + 1] = STORE_REASON_INFIGHT
+				end
+			end
+		else
+			-- unsupported service type
+			if fastCheck then
+				return STORE_REASON_ERROR
+			end
+			
+			messages[#messages + 1] = STORE_REASON_ERROR
+		end		
 	else
 		-- in house items tab
 		local parentName = StoreCategories[offer.category].parent
@@ -360,7 +429,37 @@ function Player:getOfferStatus(offer, fastCheck)
 				messages[#messages + 1] = STORE_REASON_NEED_HOUSE
 			end
 		end
+		
+		if offer.type == STORE_OFFER_TYPE_ITEM then
+			local itemType = ItemType(offer.itemId)
+			if itemType then
+				if itemType:isPickupable() and self:getFreeCapacity() < itemType:getWeight() * offer.packages[1].amount then
+					if fastCheck then
+						return STORE_REASON_CAPACITY
+					end
+					
+					messages[#messages + 1] = STORE_REASON_CAPACITY
+				end
+				
+				if itemType:getId() == ITEM_GOLD_POUCH then
+					-- can only be bought once
+					if self:getStorageValue(PlayerStorageKeys.storeGoldPouchBought) == 1 then
+						if fastCheck then
+							return STORE_REASON_GOLD_POUCH
+						end
+						
+						messages[#messages + 1] = STORE_REASON_GOLD_POUCH
+					end
+				end
+			else
+				if fastCheck then
+					return STORE_REASON_ERROR
+				end
+				
+				messages[#messages + 1] = STORE_REASON_ERROR
+			end
+		end
 	end
 	
-	return messages
+	return fastCheck and STORE_REASON_OK or messages
 end

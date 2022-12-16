@@ -160,6 +160,7 @@ StoreCategories = {
 	[17] = {
 		name = "Hirelings", parent = "Houses",
 		image = "HouseTools_NPCApprenticeships",
+		offers = {},
 	},
 	[18] = {
 		name = "Hireling Dresses", parent = "Houses",
@@ -181,10 +182,12 @@ StoreCategories = {
 	[21] = {
 		name = "Extra Services", parent = "Extras",
 		image = "ExtraServices",
+		offers = {},
 	},
 	[22] = {
 		name = "Useful Things", parent = "Extras",
 		image = "UsefulThings",
+		offers = {},
 	},
 	[23] = {
 		name = "Tournament",
@@ -192,9 +195,11 @@ StoreCategories = {
 	},
 	[24] = {
 		name = "Tickets", parent = "Tournament",
+		offers = {},
 	},
 	[25] = {
 		name = "Exclusive Offers", parent = "Tournament",
-		image = "ExclusiveOffers"
+		image = "ExclusiveOffers",
+		offers = {},
 	}
 }

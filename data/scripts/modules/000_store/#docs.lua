@@ -1,3 +1,57 @@
+--[[
+
+-- useful
+-- prey wildcard
+5x 50
+20x 200
+Use Prey Wildcards to reroll the bonus of an active prey, to lock your active prey or to select a prey of your choice.
+
+  only usable by purchasing character
+  added directly to Prey dialog
+  maximum amount that can be owned by character: 50
+
+-- temple teleport
+15
+Teleports you instantly to your home temple.
+
+  only usable by purchasing character
+  use it to teleport you to your home temple
+  cannot be used while having a battle sign or a protection zone block
+  does not work in no-logout zones or close to a character's home temple
+
+-- gold converters?
+
+-- permanent prey slot
+900
+Get an additional prey slot to activate additional prey!
+
+  only usable by purchasing character
+  maximum amount that can be owned by character: 3
+  added directly to Prey dialog
+
+-- charm expansion
+450
+Assign as many of your unlocked Charms as you like and get a 25% discount whenever you are removing a Charm from a creature!
+
+  only usable by purchasing character
+  can only be purchased once
+
+-- instant reward access
+30 x 100
+No matter where you are in Tibia, claim your daily reward on the spot!
+
+  only usable by purchasing character
+  added to your reward wall
+  maximum amount that can be owned by character: 90
+
+-- permanent hunting task slot
+750
+Get an additional Prey Hunting Task slot to activate additional hunting tasks!
+  only usable by purchasing character
+  maximum amount that can be owned by character: 3
+  added directly to Hunting Tasks tab in the Prey dialog
+]]
+
 unused ={
 	[1] = {
 		name = "Flowery Grass",
