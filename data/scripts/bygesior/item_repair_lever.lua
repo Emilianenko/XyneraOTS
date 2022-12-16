@@ -11,48 +11,67 @@ local itemRepairConfig = {
 	[50110] = {itemId = 44216, newItemId = 44214, requiredItemId = 25172, requiredItemCount = 5}, -- arcanomancer sigil
 }
 
+local itemShopConfig = {
+	[50021] = {itemId = 2286, count = 100, cost = 13500, name = "sudden death runes" },
+}
+
 local leverIds = {1945, 1946}
 
 local itemRepairAction = Action()
 
 function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+	
+	-- Repair lever
 	local config = itemRepairConfig[item.actionid]
-	if not config then
-		return false
+	if config then
+		item:transform(item.itemid == leverIds[1] and leverIds[2] or leverIds[1])
+
+		local itemId = config.itemId
+		local newItemId = config.newItemId
+		local requiredItemId = config.requiredItemId
+		local requiredItemCount = config.requiredItemCount
+
+		local itemType = ItemType(itemId)
+		local itemName = itemType:getName() or "error-unknown-item"
+		local requiredItemType = ItemType(requiredItemId)
+		local requiredItemName = requiredItemType:getName() or "error-unknown-item"
+
+
+		if player:getItemCount(requiredItemId) < requiredItemCount then
+			player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+			item:getPosition():sendMagicEffect(CONST_ME_POFF)
+			return false
+		end
+
+		if player:getItemCount(itemId) < 1 then
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "You do not have " .. itemName .. ".")
+			item:getPosition():sendMagicEffect(CONST_ME_POFF)
+			return false
+		end
+
+		player:removeItem(requiredItemId, requiredItemCount)
+		player:removeItem(itemId, 1)
+		player:addItem(newItemId, 1)
+		player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repaired for " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+		item:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
+
+		return true
 	end
 
-	item:transform(item.itemid == leverIds[1] and leverIds[2] or leverIds[1])
+	-- Shop lever
+	local config = itemShopConfig[item:getUniqueId()]
+	if config then
+		if player:removeTotalMoney(config.cost) then
+            player:sendColorMessage("Success! You bought ".. config.count .." ".. config.name .. " for ".. config.cost .. " gold coins.", MESSAGE_COLOR_YELLOW)
+			player:addItem(config.itemId, config.count)
+            return true
+        else
+            player:sendColorMessage("You don't have enough money.", MESSAGE_COLOR_PURPLE)
+            player:getPosition():sendMagicEffect(CONST_ME_POFF)
 
-	local itemId = config.itemId
-	local newItemId = config.newItemId
-	local requiredItemId = config.requiredItemId
-	local requiredItemCount = config.requiredItemCount
-
-	local itemType = ItemType(itemId)
-	local itemName = itemType:getName() or "error-unknown-item"
-	local requiredItemType = ItemType(requiredItemId)
-	local requiredItemName = requiredItemType:getName() or "error-unknown-item"
-
-
-	if player:getItemCount(requiredItemId) < requiredItemCount then
-		player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".")
-		item:getPosition():sendMagicEffect(CONST_ME_POFF)
-		return false
+			return false
+        end
 	end
-
-	if player:getItemCount(itemId) < 1 then
-		player:sendTextMessage(MESSAGE_INFO_DESCR, "You do not have " .. itemName .. ".")
-		item:getPosition():sendMagicEffect(CONST_ME_POFF)
-		return false
-	end
-
-	player:removeItem(requiredItemId, requiredItemCount)
-	player:removeItem(itemId, 1)
-	player:addItem(newItemId, 1)
-	player:sendTextMessage(MESSAGE_INFO_DESCR, itemName .. " repaired for " .. requiredItemCount .. "x " .. requiredItemName .. ".")
-	item:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
-
-	return true
 end
 
 for k, v in pairs(itemRepairConfig) do
