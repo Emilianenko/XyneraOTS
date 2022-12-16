@@ -58,13 +58,13 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 
 
 		if player:getItemCount(requiredItemId) < requiredItemCount then
-			player:sendTextMessage(MESSAGE_COLOR_PURPLE, itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+			player:sendColorMessage(itemName .. " repair costs " .. requiredItemCount .. "x " .. requiredItemName .. ".", MESSAGE_COLOR_PURPLE)
 			player:getPosition():sendMagicEffect(CONST_ME_POFF)
 			return false
 		end
 
 		if player:getItemCount(itemId) < 1 then
-			player:sendTextMessage(MESSAGE_COLOR_PURPLE, "You do not have " .. itemName .. ".")
+			player:sendColorMessage("You do not have " .. itemName .. ".", MESSAGE_COLOR_PURPLE)
 				player:getPosition():sendMagicEffect(CONST_ME_POFF)
 			return false
 		end
@@ -72,7 +72,7 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 		player:removeItem(requiredItemId, requiredItemCount)
 		player:removeItem(itemId, 1)
 		player:addItem(newItemId, 1)
-		player:sendTextMessage(MESSAGE_COLOR_WHITE, itemName .. " repaired for " .. requiredItemCount .. "x " .. requiredItemName .. ".")
+		player:sendColorMessage(itemName .. " repaired for " .. requiredItemCount .. "x " .. requiredItemName .. ".", MESSAGE_COLOR_GREEN)
 		player:getPosition():sendMagicEffect(CONST_ME_HOLYAREA)
 
 		return true
@@ -83,7 +83,7 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 	if config then
 
 		if player:removeTotalMoney(config.cost) then
-            player:sendColorMessage("Success! You bought ".. config.count .." ".. config.name .. " for ".. config.cost .. " gold coins.", MESSAGE_COLOR_WHITE)
+            player:sendColorMessage("Success! You bought ".. config.count .." ".. config.name .. " for ".. config.cost .. " gold coins.", MESSAGE_COLOR_GREEN)
 			player:getPosition():sendMagicEffect(CONST_ME_SOUND_GREEN)
 			player:addItem(config.itemId, config.count)
             return true
