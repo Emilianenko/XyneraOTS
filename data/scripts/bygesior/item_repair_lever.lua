@@ -59,7 +59,7 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 	end
 
 	-- Shop lever
-	local config = itemShopConfig[item:getUniqueId()]
+	local config = itemShopConfig[item.actionid]
 	if config then
 		if player:removeTotalMoney(config.cost) then
             player:sendColorMessage("Success! You bought ".. config.count .." ".. config.name .. " for ".. config.cost .. " gold coins.", MESSAGE_COLOR_YELLOW)
@@ -77,6 +77,10 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 end
 
 for k, v in pairs(itemRepairConfig) do
+	itemRepairAction:aid(k)
+end
+
+for k, v in pairs(itemShopConfig) do
 	itemRepairAction:aid(k)
 end
 
