@@ -12,11 +12,11 @@ local itemRepairConfig = {
 }
 
 local itemShopConfig = {
-	[50020] = {itemId = 3161, count = 100, cost = 5700, name = "avalanche runes" },
-	[50021] = {itemId = 3155, count = 100, cost = 13500, name = "sudden death runes" },
-	[50022] = {itemId = 3175, count = 100, cost = 3700, name = "stone shower runes" },
-	[50023] = {itemId = 3171, count = 100, cost = 5700, name = "great fireball runes" },
-	[50024] = {itemId = 3202, count = 100, cost = 4700, name = "thunderstorm runes" },
+	[50020] = {itemId = 2274, count = 100, cost = 5700, name = "avalanche runes" },
+	[50021] = {itemId = 2268, count = 100, cost = 13500, name = "sudden death runes" },
+	[50022] = {itemId = 2288, count = 100, cost = 3700, name = "stone shower runes" },
+	[50023] = {itemId = 2304, count = 100, cost = 5700, name = "great fireball runes" },
+	[50024] = {itemId = 2315, count = 100, cost = 4700, name = "thunderstorm runes" },
 	[50025] = {itemId = 3192, count = 100, cost = 14700, name = "fire bomb runes" },
 	[50026] = {itemId = 3173, count = 100, cost = 8500, name = "poison bomb runes" },
 	[50027] = {itemId = 3149, count = 100, cost = 20300, name = "energy bomb runes" },
