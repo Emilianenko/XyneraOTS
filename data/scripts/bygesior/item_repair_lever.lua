@@ -71,6 +71,8 @@ function itemRepairAction.onUse(player, item, fromPosition, target, toPosition, 
 
 			return false
         end
+	else
+		item:getPosition():sendMagicEffect(CONST_ME_POFF) 
 	end
 end
 
