@@ -14,6 +14,13 @@ GeneratePremium(360, 3000, 0)
 
 -- price
 GenerateXPBoost(30)
+
+-- other boosts?
+-- stamina reset?
+-- frag remover?
+-- loot rate boost?
+-- skill rate boost?
+
 --[[
 -- services
 -- name change (character, purchase)

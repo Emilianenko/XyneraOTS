@@ -355,6 +355,9 @@ do
 			if offer then
 				request.primaryText = StoreCategories[offer.category].name
 			end
+		elseif request.actionType == 1 and request.primaryValue == 1 and STORE_OFFERID_XPBOOST then
+			request.primaryText = StoreCategories[STORE_TAB_BOOSTS].name
+			request.offerId = STORE_OFFERID_XPBOOST
 		end
 		
 		player:sendStoreUI(request.actionType, request.primaryText, request.offerId)

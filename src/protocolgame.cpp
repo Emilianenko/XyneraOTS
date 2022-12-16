@@ -4130,7 +4130,7 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(player->getOfflineTrainingTime() / 60 / 1000);
 
 	msg.add<uint16_t>(0); // xp boost time (seconds)
-	msg.addByte(0x00); // enables exp boost in the store
+	msg.addByte(!player->isAccessPlayer()); // show xp boost button in skill window
 
 	msg.add<uint32_t>(0);  // remaining mana shield
 	msg.add<uint32_t>(0);  // total mana shield

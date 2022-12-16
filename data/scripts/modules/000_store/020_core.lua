@@ -184,6 +184,8 @@ function GenerateXPBoost(price)
 	}
 	
 	table.insert(StoreCategories[STORE_TAB_BOOSTS].offers, productId)
+	
+	STORE_OFFERID_XPBOOST = productId
 end
 
 -- outfit offer generator and macros
