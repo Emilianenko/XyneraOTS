@@ -34,14 +34,19 @@ function Player:sendStoreRequest(type, offerId)
 	if type == 2 then
 		-- character world transfer
 		-- checkboxes
-		msg:addByte(0)
-		msg:addByte(0)
-		msg:addByte(0)
-		msg:addByte(0)
-		msg:addByte(0)
-		msg:addByte(0)
-		-- list of worlds
-		msg:addByte(0)
+		msg:addByte(0) -- byte ignored
+		msg:addByte(1) -- world list
+			msg:addString("Xynera")
+			msg:addByte(1) -- premium only
+			msg:addByte(1) -- isLocked
+			msg:addByte(1) -- world type
+			
+		-- reasons you cant transfer (1 - x symbol)
+		msg:addByte(0) -- has red skull
+		msg:addByte(0) -- has black skull
+		msg:addByte(0) -- has guild
+		msg:addByte(0) -- has house
+		msg:addByte(0) -- has coins in market
 	elseif type == 4 then
 		-- main character change ui
 		msg:addByte(1) -- character count
@@ -51,7 +56,7 @@ function Player:sendStoreRequest(type, offerId)
 		msg:addU16(100) -- level
 	elseif type == 5 then
 		-- tournament ui
-		msg:addString("Twoj Stary Pijany")
+		msg:addString("Player")
 		msg:addByte(3) -- world location
 			msg:addString("Europe")
 			msg:addString("Brazil")
@@ -110,7 +115,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		for i = 1, #offer.packages do
 			local packInfo = offer.packages[i]
 			-- price tag data
-			self:addU32(offerId) -- packinfo.offerId(?)
+			self:addU32(packInfo.offerId) -- packinfo.offerId(?)
 			self:addU16(packInfo.amount)
 			self:addU32(packInfo.price)
 			self:addByte(packInfo.currency)
@@ -184,7 +189,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 	self:addString(parentName) -- parent name (menu or dropdown menu)
 	self:addU16(offer.popularity) -- Popularity Score
 	self:addU32(offer.publishedAt) -- Published at
-	self:addByte(offer.configurable) -- 0 - buy, 1 - configure
+	self:addByte(offer.configurable and 1 or 0) -- 0 - buy, 1 - configure
 	if offer.bed then
 		self:addU16(2) -- package items
 		
@@ -337,7 +342,7 @@ function Player:sendStoreUI(actionType, tabName, productId)
 		if offer then
 			local m = NetworkMessage()
 			m:addByte(0xEA)
-			m:addU32(offerId)
+			m:addU32(offer.packages[1].offerId)
 			m:addString(offer.description)
 			m:sendToPlayer(self)
 		end
@@ -361,6 +366,26 @@ do
 		end
 		
 		player:sendStoreUI(request.actionType, request.primaryText, request.offerId)
+	end
+	ec:register()
+end
+do
+	local ec = EventCallback
+	function ec.onStoreBuy(player, offerId, action, name, type, location)
+		-- get offer
+		-- check if configurable
+		-- process
+		--[[
+			STORE_ACTION_BUY = 0
+			STORE_ACTION_NAME = 1
+			STORE_ACTION_WORLD_TRANSFER = 2
+			STORE_ACTION_BUY_HIRELING = 3
+			STORE_ACTION_MAIN_CHARACTER = 4
+			STORE_ACTION_JOIN_TOURNAMENT = 5
+			STORE_ACTION_CONFIRM = 6
+		]]
+		print(offerId)
+		--player:sendStoreRequest(5, offerId)
 	end
 	ec:register()
 end

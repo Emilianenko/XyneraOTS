@@ -169,6 +169,8 @@ bool Events::load()
 				info.playerOnEditName = event;
 			} else if (methodName == "onStoreBrowse") {
 				info.playerOnStoreBrowse = event;
+			} else if (methodName == "onStoreBuy") {
+				info.playerOnStoreBuy = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -2048,6 +2050,46 @@ void Events::eventPlayerOnStoreBrowse(Player* player, GameStoreRequest& request)
 	LuaScriptInterface::pushStoreRequest(L, request);
 
 	scriptInterface.callVoidFunction(2);
+}
+
+void Events::eventPlayerOnStoreBuy(Player* player, uint16_t offerId, uint8_t action, const std::string& name, uint8_t type, const std::string& location)
+{
+	// Player:onStoreBuy(offerId, action, name, type, location)
+	if (info.playerOnStoreBuy == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnStoreBuy, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnStoreBuy);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// offerId
+	lua_pushnumber(L, offerId);
+
+	// action
+	lua_pushnumber(L, action);
+
+	// name
+	lua_pushstring(L, name.c_str());
+
+	// type
+	lua_pushnumber(L, type);
+
+	// location
+	lua_pushstring(L, location.c_str());
+
+	scriptInterface.callVoidFunction(6);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)

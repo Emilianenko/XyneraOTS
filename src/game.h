@@ -434,6 +434,7 @@ class Game
 		void playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter);
 		void playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16_t counter, uint16_t amount);
 		void playerBrowseStore(uint32_t playerId, GameStoreRequest request);
+		void playerBuyInStore(uint32_t playerId, uint16_t offerId, uint8_t action, const std::string& name, uint8_t type, const std::string& location);
 		void playerRegisterCurrencies(uint32_t playerId);
 		void playerFuseItems(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId, bool successCore, bool tierLossCore);
 		void playerTransferTier(uint32_t playerId, uint16_t fromSpriteId, uint8_t fromTier, uint16_t toSpriteId);

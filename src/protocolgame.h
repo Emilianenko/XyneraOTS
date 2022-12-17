@@ -163,6 +163,7 @@ class ProtocolGame final : public Protocol
 		// Store
 		void parseNameChange(NetworkMessage& msg);
 		void parseStoreBrowse(NetworkMessage& msg);
+		void parseStoreBuy(NetworkMessage& msg);
 
 		// Trade (with players)
 		void parseRequestTrade(NetworkMessage& msg);

@@ -93,6 +93,7 @@
 	
 	<!-- Player - store -->
 	<event class="Player" method="onStoreBrowse" enabled="1" />
+	<event class="Player" method="onStoreBuy" enabled="1" />
 	
 	<!-- Player - network -->
 	<event class="Player" method="onConnect" enabled="1" />

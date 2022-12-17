@@ -6344,6 +6344,16 @@ void Game::playerBrowseStore(uint32_t playerId, GameStoreRequest request)
 	g_events->eventPlayerOnStoreBrowse(player, request);
 }
 
+void Game::playerBuyInStore(uint32_t playerId, uint16_t offerId, uint8_t action, const std::string& name, uint8_t type, const std::string& location)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnStoreBuy(player, offerId, action, name, type, location);
+}
+
 void Game::playerRegisterCurrencies(uint32_t playerId)
 {
 	// initialize store and tournament coins

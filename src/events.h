@@ -82,6 +82,7 @@ class Events
 		int32_t playerOnUseCreature = -1;
 		int32_t playerOnEditName = -1;
 		int32_t playerOnStoreBrowse = -1;
+		int32_t playerOnStoreBuy = -1;
 
 		// Player - network
 		int32_t playerOnConnect = -1;
@@ -159,6 +160,7 @@ class Events
 		void eventPlayerOnUseCreature(Player* player, Creature* target);
 		void eventPlayerOnEditName(Player* player, Creature* target, const std::string& name);
 		void eventPlayerOnStoreBrowse(Player* player, GameStoreRequest& request);
+		void eventPlayerOnStoreBuy(Player* player, uint16_t offerId, uint8_t action, const std::string& name, uint8_t type, const std::string& location);
 
 		void eventPlayerOnConnect(Player* player, bool isLogin);
 

@@ -973,7 +973,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xE6: parseBugReport(msg); break;
 		case 0xE7: /* thank you - reads u32 statementId */ break;
 		case 0xE8: /* request store balance (?) */ break; /* 10.98: parseDebugAssert(msg); */
-		// 0xE9 - store ui click
+		case 0xE9: /* close store */ break;
 		// 0xEA - store (?)
 		// 0xEB - prey
 		case 0xEC: parseNameChange(msg); break;
@@ -990,9 +990,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF7: parseMarketCancelOffer(msg); break;
 		case 0xF8: parseMarketAcceptOffer(msg); break;
 		case 0xF9: parseModalWindowAnswer(msg); break;
-		case 0xFA: /* store currencies (?) addGameTask([playerID = player->getID()]() { g_game.playerOpenStore(playerID); }); */ break;
+		case 0xFA: /*open store */ break;
 		case 0xFB: parseStoreBrowse(msg); break;
-		//case 0xFC: break; // store window buy
+		case 0xFC: parseStoreBuy(msg); break;
 		//case 0xFD: break; // store window history 1
 		//case 0xFE: break; // store window history 2
 		//0xFF - empty
@@ -1789,6 +1789,41 @@ void ProtocolGame::parseStoreBrowse(NetworkMessage& msg)
 	}
 
 	addGameTask(([=, playerID = player->getID()]() { g_game.playerBrowseStore(playerID, request); }));
+}
+
+void ProtocolGame::parseStoreBuy(NetworkMessage& msg)
+{
+	uint16_t offerId = msg.get<uint16_t>();
+	msg.get<uint16_t>(); // 2x u8, unknown purpose, always 0
+	uint8_t action = msg.get<uint8_t>(); // 0 - buy, 1-6 - confirm buy if service
+	uint8_t type = 1;
+
+	std::string name;
+	std::string location;
+
+	if (action > 0 && action < 6) {
+		// 1 - new player name
+		// 2 - new world name
+		// 3 - new hireling name
+		// 4 - new main character name
+		// 5 - tournament server location name
+		name = msg.getString();
+
+		if (action == 3) {
+			// hireling sex
+			// 1 - male
+			// 2 - female
+			type = msg.get<uint8_t>();
+		} else if (action == 5) {
+			// vocationId
+			type = msg.get<uint8_t>();
+
+			// starting town name
+			location = msg.getString();
+		}
+	}
+
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerBuyInStore(playerID, offerId, action, name, type, location); }));
 }
 
 void ProtocolGame::parseInviteToParty(NetworkMessage& msg)

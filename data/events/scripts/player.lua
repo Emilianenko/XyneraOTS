@@ -504,6 +504,12 @@ function Player:onStoreBrowse(request)
 	end
 end
 
+function Player:onStoreBuy(offerId, action, name, type, location)
+	if EventCallback.onStoreBuy then
+		EventCallback.onStoreBuy(self, offerId, action, name, type, location)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)
