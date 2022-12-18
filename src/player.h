@@ -1385,6 +1385,7 @@ class Player final : public Creature, public Cylinder
 		bool hasLearnedInstantSpell(const std::string& spellName) const;
 
 		void updateRegeneration();
+		void updateStoreCoins();
 
 		const std::map<uint8_t, OpenContainer>& getOpenContainers() const {
 			return openContainers;

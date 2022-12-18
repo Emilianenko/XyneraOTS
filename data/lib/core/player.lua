@@ -605,6 +605,20 @@ end
 
 -- player:addStoreItem(id or name, subType)
 function Player:addStoreItem(itemId, subType)
+	if subType > 100 then
+		local it = ItemType(itemId)
+		if it:isStackable() then
+			-- add stacks of 100
+			local fullStacks = math.floor(subType/100)
+			for i = 1, fullStacks do
+				self:addStoreItem(itemId, 100)
+			end
+			
+			-- add last stack
+			subType = subType % 100
+		end
+	end
+
 	local storeItem = Game.createItem(itemId, subType)
 	if storeItem then
 		self:addStoreItemEx(storeItem)

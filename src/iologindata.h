@@ -26,6 +26,8 @@ class IOLoginData
 
 		static AccountType_t getAccountType(uint32_t accountId);
 		static void setAccountType(uint32_t accountId, AccountType_t accountType);
+		static int64_t getAccountUnsyncedCoins(uint32_t accountId);
+		static void clearAccountUnsyncedCoins(uint32_t accountId);
 		static void updateOnlineStatus(uint32_t guid, bool login);
 		static bool preloadPlayer(Player* player, const std::string& name);
 

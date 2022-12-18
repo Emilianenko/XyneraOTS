@@ -5418,6 +5418,23 @@ void Player::updateRegeneration()
 	}
 }
 
+void Player::updateStoreCoins()
+{
+	// synchronize player balance with website
+	int64_t unsyncedCoins = IOLoginData::getAccountUnsyncedCoins(accountNumber);
+	if (unsyncedCoins != 0) {
+		DBTransaction transaction;
+		if (!transaction.begin()) {
+			return;
+		}
+
+		IOLoginData::clearAccountUnsyncedCoins(accountNumber);
+		addAccountResource(ACCOUNTRESOURCE_STORE_COINS, unsyncedCoins);
+		saveAccountResource(ACCOUNTRESOURCE_STORE_COINS);
+		transaction.commit();
+	}
+}
+
 void Player::toggleImbuement(uint8_t imbuId, bool isEquip)
 {
 	if (imbuId == 0) {

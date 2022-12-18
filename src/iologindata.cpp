@@ -162,6 +162,20 @@ void IOLoginData::setAccountType(uint32_t accountId, AccountType_t accountType)
 	Database::getInstance().executeQuery(fmt::format("UPDATE `accounts` SET `type` = {:d} WHERE `id` = {:d}", static_cast<uint16_t>(accountType), accountId));
 }
 
+int64_t IOLoginData::getAccountUnsyncedCoins(uint32_t accountId)
+{
+	DBResult_ptr result = Database::getInstance().storeQuery(fmt::format("SELECT `coins` FROM `accounts` WHERE `id` = {:d}", accountId));
+	if (!result) {
+		return 0;
+	}
+	return result->getNumber<int64_t>("coins");
+}
+
+void IOLoginData::clearAccountUnsyncedCoins(uint32_t accountId)
+{
+	Database::getInstance().executeQuery(fmt::format("UPDATE `accounts` SET `coins` = {:d} WHERE `id` = {:d}", 0, accountId));
+}
+
 void IOLoginData::updateOnlineStatus(uint32_t guid, bool login)
 {
 	if (g_config.getBoolean(ConfigManager::ALLOW_CLONES)) {

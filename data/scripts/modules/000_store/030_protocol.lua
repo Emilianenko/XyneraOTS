@@ -33,10 +33,9 @@ function Player:sendStoreRequest(type, offerId)
 
 	if type == 2 then
 		-- character world transfer
-		-- checkboxes
 		msg:addByte(0) -- byte ignored
 		msg:addByte(1) -- world list
-			msg:addString("Xynera")
+			msg:addString("Xynera") -- world name
 			msg:addByte(1) -- premium only
 			msg:addByte(1) -- isLocked
 			msg:addByte(1) -- world type
@@ -50,13 +49,13 @@ function Player:sendStoreRequest(type, offerId)
 	elseif type == 4 then
 		-- main character change ui
 		msg:addByte(1) -- character count
-		msg:addString("Player") -- name
+		msg:addString("Player") -- character name
 		msg:addString("Xynera") -- world
 		msg:addString("Druid") -- vocation
 		msg:addU16(100) -- level
 	elseif type == 5 then
-		-- tournament ui
-		msg:addString("Player")
+		-- tournament joining ui
+		msg:addString("Player") -- character name
 		msg:addByte(3) -- world location
 			msg:addString("Europe")
 			msg:addString("Brazil")
@@ -72,9 +71,26 @@ function Player:sendStoreRequest(type, offerId)
 			msg:addString("Venore")
 		msg:addByte(0) -- show warning (bool)
 	elseif type == 6 then
+		-- "attention" message window with "ok" and "cancel" buttons
 		msg:addString("message")
 	end
 	msg:sendToPlayer(self)
+end
+
+function Player:sendStoreMessage(storeMessageType, text)
+	local msg = NetworkMessage()
+	msg:addByte(0xE0)
+	msg:addByte(storeMessageType)
+	msg:addString(text)
+	msg:sendToPlayer(self)
+end
+
+function Player:sendStoreSuccess(text)
+	m = NetworkMessage()
+	m:addByte(0xFE)
+	m:addByte(0x00)
+	m:addString(text)
+	m:sendToPlayer(self)
 end
 
 function NetworkMessage:addStoreOfferError(offerId)
@@ -115,7 +131,7 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		for i = 1, #offer.packages do
 			local packInfo = offer.packages[i]
 			-- price tag data
-			self:addU32(packInfo.offerId) -- packinfo.offerId(?)
+			self:addU32(packInfo.offerId) -- packInfo.offerId(?)
 			self:addU16(packInfo.amount)
 			self:addU32(packInfo.price)
 			self:addByte(packInfo.currency)
@@ -321,11 +337,11 @@ function Player:sendStoreUI(actionType, tabName, productId)
 	if isHomePage then
 		msg:addByte(#StoreBanners)
 		for _, banner in ipairs(StoreBanners) do
-			msg:addString(banner.image)--banner.image
+			msg:addString(banner.image) -- banner.image
 			msg:addByte(banner.type) -- Banner Type (offer)
 			msg:addU32(banner.offerId) -- offerId
 			msg:addByte(0) -- unknown 1
-			msg:addByte(0) -- unknown 1
+			msg:addByte(0) -- unknown 2
 		end
 		
 		msg:addByte(StoreBannerDelay) -- banner delay
@@ -370,22 +386,76 @@ do
 	ec:register()
 end
 do
+	local errMsg = {
+		[1] = "Invalid product id!",
+		[2] = "Unable to load offer data!",
+		[3] = "You do not have enough coins!",
+	}
+
+	-- handle "buy" action	
 	local ec = EventCallback
 	function ec.onStoreBuy(player, offerId, action, name, type, location)
-		-- get offer
-		-- check if configurable
-		-- process
-		--[[
-			STORE_ACTION_BUY = 0
-			STORE_ACTION_NAME = 1
-			STORE_ACTION_WORLD_TRANSFER = 2
-			STORE_ACTION_BUY_HIRELING = 3
-			STORE_ACTION_MAIN_CHARACTER = 4
-			STORE_ACTION_JOIN_TOURNAMENT = 5
-			STORE_ACTION_CONFIRM = 6
-		]]
-		print(offerId)
-		--player:sendStoreRequest(5, offerId)
+		local productId = OfferToProductIdMap[offerId]
+		if not productId then
+			-- indexing failed
+			player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, errMsg[1])
+			return
+		end
+		
+		local offer = StoreOffers[productId]
+		if not offer then
+			-- offer indexed but does not exist
+			player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, errMsg[2])
+			return
+		end
+		
+		local serviceId = offer.serviceId
+		if action == STORE_ACTION_BUY and serviceId and serviceId > STORE_SERVICE_NONE and serviceId <= STORE_SERVICE_LAST_CONFIGURABLE then
+			-- filling a form required to complete the purchase
+			player:sendStoreRequest(serviceId, offerId)
+			return
+		end
+
+		-- get price tag info
+		local packInfo
+		for i = 1, #offer.packages do
+			if not packInfo and offer.packages[i].offerId == offerId then
+				packInfo = offer.packages[i]
+			end
+		end
+		if not packInfo then
+			player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, errMsg[2])
+			return
+		end
+		
+		-- get account currency status
+		if packInfo.currency == STORE_CURRENCY_COINS then
+			if player:getStoreCoins() < packInfo.price then
+				player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, errMsg[3])
+				return
+			end
+		else
+			if player:getAccountResource(packInfo.currency) < packInfo.price then
+				player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, errMsg[3])
+				return
+			end
+		end
+		
+		-- check if player can buy this offer
+		local buyRet = player:getOfferStatus(offer, true)
+		if buyRet ~= STORE_REASON_OK then
+			-- buy button was active, but offer is no longer available
+			-- example scenario:
+			-- player tried to buy temple tp
+			-- player was not in fight when opening store
+			-- a monster spawned and player can no longer buy this offer
+			player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, StoreOfferDisableReasons[buyRet])
+			return
+		end
+		
+		-- all checks were performed
+		-- consume coins and send item to player
+		player:processStorePurchase(offerId, productId, name, type, location)
 	end
 	ec:register()
 end

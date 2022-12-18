@@ -124,3 +124,113 @@ do
 		return table.concat(response, " ")
 	end
 end
+
+local illegalPatterns = {
+	-- double characters
+	"''", "  ", "%-%-",
+
+	-- combined characters
+	"%-'", "'%-",
+
+	-- triple letters
+	"aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh",
+	"iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
+	"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx",
+	"yyy", "zzz",
+
+	-- imposting staff
+	"gm ", "god ", "adm ", "admin", "administrator", "administrador", "staff ",
+	
+	-- sentences
+	"you ", " are ", "are you", "you are", "you're", "do not", "don't", "cya ", " cya"
+}
+
+-- remove spaces and special chars before checking
+local illegalWords = {
+	-- list of blocked words
+	
+	-- imposting server administration
+	"owner", "gamemaster", "hoster", "account", "server", "serwer", "servidor",
+	
+	-- politically incorrect
+	"hitler", "stalin", "mussolini", "zedong", "queenelizabeth", "popefrancis", "trump", "xiyingping", "putin", "zelensky", "andrzejduda",
+	"holocaust", "holodomor", "terror", "genocide", "andrzejdupa",
+	
+	-- other
+	"nigg", "fag", "fuck",
+}
+
+function Game.verifyName(origName)
+	-- turn lowercase for matching bad words
+	local name = origName:lower()
+	
+	-- small letter at front
+	if origName:sub(1, 1):match("%l") then
+		return "The first name should start with a capital letter."
+	end
+		
+	-- name length
+	local length = origName:len()
+	if length < 4 then
+		return "Name too short."	
+	elseif length > 21 then
+		return "Name too long."
+	end
+	
+	-- 4+ words in names
+	local words = name:split(" ")
+	if #words > 3 then
+		return "Name contains too many words."
+	end
+	
+	-- numbers and special chars
+	if not name:match("^[a-zA-Z' %-]+$") then
+		return "Name contains invalid pattern."
+	end
+	
+	-- rat, demon, orc, etc.
+	if Monster(name) then
+		return "Name contains reserved words."
+	end
+	
+	-- words verification
+	for _, word in pairs(words) do
+		-- n l t
+		if word:len() == 1 then
+			return "Name contains invalid pattern."
+		end
+		
+		-- nms lk ths
+		if not (word:match("[aeiouy]")) then
+			return "Name contains words without vowels."
+		end
+		
+		-- -names' -like- 'this'
+		if word:sub(1, 1):match("[%-']") or word:sub(-1, -1):match("[%-']") then
+			return "Name contains invalid pattern."
+		end
+		
+		-- nAmEs lIkE tHiS
+		if word:sub(2, -1):match("%u") then
+			return "Name contains invalid pattern."
+		end
+	end
+	
+	-- names with matched illegalPatterns
+	for _, p in pairs(illegalPatterns) do
+		if name:find(p) then
+			return "Name contains invalid pattern."
+		end
+	end
+	
+	-- names with illegal words
+	-- special characters and spaces cut for better matching
+	name = name:gsub("'", ""):gsub(" ", ""):gsub("-", "")
+	for _, p in pairs(illegalWords) do
+		if name:find(p) then
+			return "Name contains reserved words."
+		end
+	end
+	
+	return false
+end

@@ -1796,7 +1796,7 @@ void ProtocolGame::parseStoreBuy(NetworkMessage& msg)
 	uint16_t offerId = msg.get<uint16_t>();
 	msg.get<uint16_t>(); // 2x u8, unknown purpose, always 0
 	uint8_t action = msg.get<uint8_t>(); // 0 - buy, 1-6 - confirm buy if service
-	uint8_t type = 1;
+	uint8_t type = 0;
 
 	std::string name;
 	std::string location;
@@ -1918,7 +1918,6 @@ void ProtocolGame::parseMarketCreateOffer(NetworkMessage& msg)
 	uint64_t price = msg.get<uint64_t>();
 	bool anonymous = (msg.getByte() != 0);
 	addGameTask(([=, playerID = player->getID()]() { g_game.playerCreateMarketOffer(playerID, type, spriteId, amount, tier, price, anonymous); }));
-	sendStoreBalance();
 }
 
 void ProtocolGame::parseMarketCancelOffer(NetworkMessage& msg)
@@ -1926,7 +1925,6 @@ void ProtocolGame::parseMarketCancelOffer(NetworkMessage& msg)
 	uint32_t timestamp = msg.get<uint32_t>();
 	uint16_t counter = msg.get<uint16_t>();
 	addGameTask(([=, playerID = player->getID()]() { g_game.playerCancelMarketOffer(playerID, timestamp, counter); }));
-	sendStoreBalance();
 }
 
 void ProtocolGame::parseMarketAcceptOffer(NetworkMessage& msg)
@@ -2584,6 +2582,12 @@ void ProtocolGame::sendResourceBalance(const ResourceTypes_t resourceType, uint6
 
 void ProtocolGame::sendStoreBalance()
 {
+	// dispatcher thread only
+
+	// sync coins from the database
+	player->updateStoreCoins();
+
+	// send balance
 	NetworkMessage msg;
 
 	// header

@@ -1,4 +1,5 @@
 -- autogenerate helpers for store indexing
+-- link category names to ids
 CategoryToIdMap = {}
 for index, categoryData in pairs(StoreCategories) do
 	-- index category
@@ -20,4 +21,12 @@ for index, categoryData in pairs(StoreCategories) do
 	
 	StoreCategories[index].offerCount = offerCount
 	StoreCategories[index].offerTypeCount = offerTypeCount
+end
+
+-- link price tags to product ids
+OfferToProductIdMap = {}
+for productId, offer in pairs(StoreOffers) do
+	for i = 1, #offer.packages do
+		OfferToProductIdMap[offer.packages[i].offerId] = productId
+	end
 end

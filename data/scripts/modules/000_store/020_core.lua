@@ -356,13 +356,22 @@ function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}
 
 	if offer.type == STORE_OFFER_TYPE_OUTFIT then
-		-- is an outfit offer
-		if self:canWearOutfit(offer.lookTypeMale) or self:canWearOutfit(offer.lookTypeFemale) then
+		if not Outfit(offer.lookTypeMale) or not Outfit(offer.lookTypeFemale) then
+			-- is valid outfit offer
 			if fastCheck then
-				return STORE_REASON_OWNED_OUTFIT
+				return STORE_REASON_ERROR
 			end
+			
+			messages[#messages + 1] = STORE_REASON_ERROR
+		else
+			-- was outfit already bought
+			if self:canWearOutfit(offer.lookTypeMale) or self:canWearOutfit(offer.lookTypeFemale) then
+				if fastCheck then
+					return STORE_REASON_OWNED_OUTFIT
+				end
 
-			messages[#messages + 1] = STORE_REASON_OWNED_OUTFIT
+				messages[#messages + 1] = STORE_REASON_OWNED_OUTFIT
+			end
 		end
 	elseif offer.type == STORE_OFFER_TYPE_MOUNT then
 		-- is a mount offer
@@ -392,7 +401,7 @@ function Player:getOfferStatus(offer, fastCheck)
 				-- temple tp - distance check
 				local currentPos = self:getPosition()
 				local homePos = self:getTown():getTemplePosition()
-				if currentPos:getDistance(homePos) < 20 or math.abs(currentPos.z - homePos.z) < 3 then
+				if currentPos:getDistance(homePos) < 15 and math.abs(currentPos.z - homePos.z) < 3 then
 					if fastCheck then
 						return STORE_REASON_TOO_CLOSE
 					end
@@ -463,3 +472,113 @@ function Player:getOfferStatus(offer, fastCheck)
 	
 	return fastCheck and STORE_REASON_OK or messages
 end
+
+function Player:addStoreKit(furnitureId, amount)
+	local it = ItemType(furnitureId)
+	if it:isPickupable() then
+		self:addStoreItem(furnitureId, amount)
+	else
+		for i = 1, amount do
+			local kit = self:addStoreItem(ITEM_STORE_KIT, 1)
+			kit:setAttribute(ITEM_ATTRIBUTE_WRAPID, furnitureId)
+		end
+	end
+end
+
+function Player:processStorePurchase(offerId, productId, name, type, location)
+	-- launched from onStoreBuy
+	-- checks were already performed so we assume that the table entries exist
+
+	-- fetch offer data
+	local offer = StoreOffers[productId]
+	
+	-- fetch price tag
+	local packInfo
+	for i = 1, #offer.packages do
+		if not packInfo and offer.packages[i].offerId == offerId then
+			packInfo = offer.packages[i]
+		end
+	end
+	
+	-- add product / perform a service
+	-- checks were already performed
+	local success = false
+	if offer.type == STORE_OFFER_TYPE_OUTFIT then
+		-- outfit offer
+		self:addOutfitAddon(offer.lookTypeMale, 3)
+		self:addOutfitAddon(offer.lookTypeFemale, 3)
+		success = true
+	elseif offer.type == STORE_OFFER_TYPE_MOUNT then
+		-- mount offer
+		self:addMount(Game.getMountIdByLookType(offer.lookType))
+		success = true
+	elseif offer.type == STORE_OFFER_TYPE_ITEM then
+		if offer.itemId == ITEM_GOLD_POUCH then
+			self:setStorageValue(PlayerStorageKeys.storeGoldPouchBought, 1)
+		end
+
+		-- item offer
+		self:addStoreKit(ReverseCarpetMap and ReverseCarpetMap[offer.itemId] or offer.itemId, packInfo.amount)
+		success = true
+	elseif offer.bed then
+		-- bed offer
+		-- add footBoard first so headBoard lands on first slot of store inbox
+		self:addStoreKit(Game.getItemTypeByClientId(offer.bed[4]):getId(), packInfo.amount)
+		self:addStoreKit(Game.getItemTypeByClientId(offer.bed[2]):getId(), packInfo.amount)
+		success = true
+	elseif offer.premDays then
+		-- vip system
+		-- not supported yet
+	elseif offer.XPBoost then
+		-- xp boost
+		-- not supported yet
+	elseif offer.serviceId then
+		-- store services
+		local serviceId = offer.serviceId
+		if serviceId > 0 and serviceId <= STORE_SERVICE_LAST then
+			if serviceId == STORE_SERVICE_NAME_CHANGE then
+				if name and name:len() > 0 then
+					-- prevent duplicate player names
+					if not Game.playerExists(name) then
+						local ret = Game.verifyName(name)
+						if ret then
+							self:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, ret)
+							return
+						else
+							self:rename(name)
+							success = true
+						end
+					else
+						self:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, string.format("Name \"%s\" is already in use!", name))
+						return
+					end
+				end
+			elseif serviceId == STORE_SERVICE_SEX_CHANGE then
+				self:changeSex()
+				success = true
+			elseif serviceId == STORE_SERVICE_TEMPLE_TELEPORT then
+				self:teleportTo(self:getTown():getTemplePosition())
+				success = true
+			end
+		end
+	end
+	
+	-- service configuration checker
+	if not success then
+		self:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, "Service not supported!")
+		return
+	end
+	
+	local amountStr = packInfo.amount ~= 0 and string.format("%dx ", packInfo.amount) or ""
+	self:sendStoreSuccess(string.format("You have bought %s%s for %d coins!", amountStr, offer.name, packInfo.price))
+	
+	-- consume coins
+	if packInfo.currency == STORE_CURRENCY_COINS then
+		self:addStoreCoins(-packInfo.price)
+	else
+		self:addAccountResource(packInfo.currency, -packInfo.price)
+	end
+end
+
+-- to do: save players and houses
+-- add logging
