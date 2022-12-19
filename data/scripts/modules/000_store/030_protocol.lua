@@ -474,9 +474,7 @@ end
 do
 	local ec = EventCallback
 	function ec.onStoreHistoryBrowse(player, pageId, isInit)
-		-- lua dispatcher here
-		--player:sendDemo()
-		--
+		player:addDispatcherTask(storeLoadHistoryPage, DISPATCHER_PAGINATION, player:getId(), pageId)
 	end
 	ec:register()
 end
@@ -485,53 +483,32 @@ function Player:viewStoreHistoryPage(pageId)
 	m = NetworkMessage()
 	m:addByte(0xFD)
 	m:addU32(pageId)
-	m:addU32(player:getStoreHistoryPageCount())
+	m:addU32(self:getStoreHistoryPageCount())
 
 	local page = self:getStoreHistoryPage(pageId)
-	-- to do: query with limit
-	m:addByte(1) -- amount of entries
-		m:addU32(100) -- transactionId
-		m:addU32(os.time())
-		m:addByte(0) -- 0 - amount, 1 - gift, 2 - refund
-		m:addI32(-245) -- amount
-		m:addByte(0) -- currency
-		m:addString("Test") -- desc
-		m:addByte(1) -- show details button
-	m:sendToPlayer(self)
-end
-
---[[
-
-
-
-
-]]
---[[
-function Player:sendTransactionDetails(mode)
-	-- demo
-	m = NetworkMessage()
-	m:addByte(0xCB)
-	m:addU32(100) -- transactionId
-	
-	m:addByte(mode == 1 and 1 or 0)
-	if mode == 1 then
-		-- case 1: tc sold dialog
-		m:addString("Character")
-		m:addU32(1) -- total offer
-		m:addU32(2) -- sold coins
-		m:addU32(3) -- coins still in market
-		m:addU64(4) -- price piece
-		m:addU64(5) -- received gold
-		m:addU16(0) -- table structure like in 0xFD (?)
-	else
-		-- case 0: tc sold dialog
-		m:addU32(os.time())
-		m:addString("Description")
-		m:addString("Character")
-		m:addU32(0) -- sold coins
-		m:addI64(0) -- price piece
-		m:addI64(0) -- spent gold
+	m:addByte(#page) -- amount of entries
+	if #page > 0 then
+		for i = 1, #page do
+			local row = page[i]
+			m:addU32(row.id) -- transactionId
+			m:addU32(row.date)
+			m:addByte(row.status) -- 0 - amount, 1 - gift, 2 - refund
+			m:addI32(row.price) -- price
+			m:addByte(row.currency) -- currency
+			
+			-- offer name
+			local amount = row.amount > 1 and string.format("%dx ", row.amount) or ""
+			m:addString(string.format("%s%s", amount, row.name))
+			m:addByte(0) -- show details button
+		end
 	end
+	
 	m:sendToPlayer(self)
 end
-]]
+
+function storeLoadHistoryPage(playerId, pageId)
+	local player = Player(playerId)
+	if player then
+		player:viewStoreHistoryPage(pageId)
+	end
+end

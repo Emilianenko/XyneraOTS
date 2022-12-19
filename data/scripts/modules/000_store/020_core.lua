@@ -623,7 +623,7 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 	end
 	
 	-- add to history
-	self:appendStoreHistory(offer.name, packInfo.amount, packInfo.price, packInfo.currency, param1, param2)
+	self:appendStoreHistory(offer.name, packInfo.amount, -packInfo.price, packInfo.currency, param1, param2)
 end
 
 local historyPageCountCache = {}
@@ -639,7 +639,7 @@ function Player:getStoreHistoryPageCount()
 	local pageCount = 0
 	local resultId = db.storeQuery("SELECT COUNT(*) AS `count` FROM `store_history` WHERE `account_id` = 1")
 	if resultId ~= false then
-		pageCount = math.floor(math.max((result.getNumber(resultId, "count") or 0) - 1, 0) / entriesPerPage)
+		pageCount = math.floor(math.max((result.getNumber(resultId, "count") or 0) - 1, 0) / entriesPerPage) + 1
 		result.free(resultId)
 	end
 	
@@ -648,10 +648,23 @@ function Player:getStoreHistoryPageCount()
 end
 
 function Player:getStoreHistoryPage(pageId)
-
-	-- open store history - get page count query
-	-- navigate pages - get queries
-
-	--string.format("SELECT * FROM `store_history` LIMIT %d, %d", pageId * entries, pageId + 1 * entries);
-	return {}
+	local page = {}
+	local q = "SELECT `transaction_id`, `date`, `status`, `name`, `amount`, `price`, `currency` FROM `store_history` WHERE `account_id` = %d LIMIT %d, %d;"
+	local resultId = db.storeQuery(string.format(q, self:getAccountId(), pageId * entriesPerPage, entriesPerPage))
+	if resultId ~= false then
+		repeat
+			page[#page + 1] = {
+				id = result.getNumber(resultId, "transaction_id"),
+				name = result.getString(resultId, "name"),
+				date = result.getNumber(resultId, "date"),
+				status = result.getNumber(resultId, "status"),
+				amount = result.getNumber(resultId, "amount"),
+				price = result.getNumber(resultId, "price"),
+				currency = result.getNumber(resultId, "currency")
+			}
+		until not result.next(resultId)
+		result.free(resultId)
+	end
+	
+	return page
 end
