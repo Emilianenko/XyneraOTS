@@ -395,6 +395,13 @@ do
 	-- handle "buy" action	
 	local ec = EventCallback
 	function ec.onStoreBuy(player, offerId, action, name, type, location)
+		-- cooldown check
+		if os.time() < player:getStorageValue(PlayerStorageKeys.storeLastUseCooldown) then
+			player:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, "Please wait a few seconds.")
+			return
+		end
+	
+		-- find product by price tag clicked
 		local productId = OfferToProductIdMap[offerId]
 		if not productId then
 			-- indexing failed
@@ -402,6 +409,7 @@ do
 			return
 		end
 		
+		-- find full product data
 		local offer = StoreOffers[productId]
 		if not offer then
 			-- offer indexed but does not exist
@@ -409,6 +417,7 @@ do
 			return
 		end
 		
+		-- product is a service, send a form to fill
 		local serviceId = offer.serviceId
 		if action == STORE_ACTION_BUY and serviceId and serviceId > STORE_SERVICE_NONE and serviceId <= STORE_SERVICE_LAST_CONFIGURABLE then
 			-- filling a form required to complete the purchase
@@ -416,6 +425,9 @@ do
 			return
 		end
 
+		-- add cooldown
+		player:setStorageValue(PlayerStorageKeys.storeLastUseCooldown, os.time() + 3)
+		
 		-- get price tag info
 		local packInfo
 		for i = 1, #offer.packages do
@@ -459,3 +471,67 @@ do
 	end
 	ec:register()
 end
+do
+	local ec = EventCallback
+	function ec.onStoreHistoryBrowse(player, pageId, isInit)
+		-- lua dispatcher here
+		--player:sendDemo()
+		--
+	end
+	ec:register()
+end
+
+function Player:viewStoreHistoryPage(pageId)
+	m = NetworkMessage()
+	m:addByte(0xFD)
+	m:addU32(pageId)
+	m:addU32(player:getStoreHistoryPageCount())
+
+	local page = self:getStoreHistoryPage(pageId)
+	-- to do: query with limit
+	m:addByte(1) -- amount of entries
+		m:addU32(100) -- transactionId
+		m:addU32(os.time())
+		m:addByte(0) -- 0 - amount, 1 - gift, 2 - refund
+		m:addI32(-245) -- amount
+		m:addByte(0) -- currency
+		m:addString("Test") -- desc
+		m:addByte(1) -- show details button
+	m:sendToPlayer(self)
+end
+
+--[[
+
+
+
+
+]]
+--[[
+function Player:sendTransactionDetails(mode)
+	-- demo
+	m = NetworkMessage()
+	m:addByte(0xCB)
+	m:addU32(100) -- transactionId
+	
+	m:addByte(mode == 1 and 1 or 0)
+	if mode == 1 then
+		-- case 1: tc sold dialog
+		m:addString("Character")
+		m:addU32(1) -- total offer
+		m:addU32(2) -- sold coins
+		m:addU32(3) -- coins still in market
+		m:addU64(4) -- price piece
+		m:addU64(5) -- received gold
+		m:addU16(0) -- table structure like in 0xFD (?)
+	else
+		-- case 0: tc sold dialog
+		m:addU32(os.time())
+		m:addString("Description")
+		m:addString("Character")
+		m:addU32(0) -- sold coins
+		m:addI64(0) -- price piece
+		m:addI64(0) -- spent gold
+	end
+	m:sendToPlayer(self)
+end
+]]

@@ -80,7 +80,11 @@ ec.onUseCreature = {}
 ec.onEditName = {}
 ec.onStoreBrowse = {}
 ec.onStoreBuy = {}
+ec.onStoreHistoryBrowse = {}
+
+-- Player (network)
 ec.onConnect = {}
+ec.onExtendedProtocol = {}
 
 -- Monster
 ec.onDropLoot = {}

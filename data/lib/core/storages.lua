@@ -64,6 +64,7 @@ PlayerStorageKeys = {
 	-- gamestore
 	-- intended range: 90000-90100
 	storeGoldPouchBought = 90000,
+	storeLastUseCooldown = 90001,
 	
 	-- total range: 300000-319999
 	achievementsBase = 300000,

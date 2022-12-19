@@ -485,10 +485,29 @@ function Player:addStoreKit(furnitureId, amount)
 	end
 end
 
+-- method for both offline and online players
+function AppendStoreHistory(accountId, playerGuid, ip, offerName, amount, price, currency, param1, param2)
+	local res = db.query(string.format("SELECT `email` FROM `accounts` WHERE `id` = %d", accountId))
+	local email = res and result.getNumber(res, "email") or ""
+	if res then
+		result.free(res)
+	end
+	
+	local columns = "`date`,`status`,`account_id`,`player_id`,`email`,`ip`,`name`,`amount`,`price`,`currency`,`param_1`,`param_2`"
+	local fields = {os.time(), 0, accountId, playerGuid, db.escapeString(email), ip, db.escapeString(offerName), amount, price, currency, param1 and db.escapeString(param1) or "", param2 and db.escapeString(param2) or ""}
+	local q = string.format("INSERT INTO `store_history` (%s) VALUES ('%s')", columns, table.concat(fields, "','"))
+	db.query(q)
+end
+
+-- method for online players
+function Player:appendStoreHistory(offerName, amount, price, currency, param1, param2)
+	AppendStoreHistory(self:getAccountId(), self:getGuid(), self:getIp(), offerName, amount, price, currency, param1, param2)
+end
+
 function Player:processStorePurchase(offerId, productId, name, type, location)
 	-- launched from onStoreBuy
 	-- checks were already performed so we assume that the table entries exist
-
+	
 	-- fetch offer data
 	local offer = StoreOffers[productId]
 	
@@ -500,38 +519,52 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 		end
 	end
 	
+	-- declare offer params
+	local param1, param2
+	
 	-- add product / perform a service
 	-- checks were already performed
 	local success = false
 	if offer.type == STORE_OFFER_TYPE_OUTFIT then
 		-- outfit offer
-		self:addOutfitAddon(offer.lookTypeMale, 3)
-		self:addOutfitAddon(offer.lookTypeFemale, 3)
+		param1 = offer.lookTypeMale
+		param2 = offer.lookTypeFemale
+		self:addOutfitAddon(param1, 3)
+		self:addOutfitAddon(param2, 3)
 		success = true
 	elseif offer.type == STORE_OFFER_TYPE_MOUNT then
 		-- mount offer
-		self:addMount(Game.getMountIdByLookType(offer.lookType))
+		param1 = offer.lookType
+		param2 = Game.getMountIdByLookType(param1)
+		self:addMount(param2)
 		success = true
 	elseif offer.type == STORE_OFFER_TYPE_ITEM then
 		if offer.itemId == ITEM_GOLD_POUCH then
-			self:setStorageValue(PlayerStorageKeys.storeGoldPouchBought, 1)
+			param2 = PlayerStorageKeys.storeGoldPouchBought
+			self:setStorageValue(param2, 1)
 		end
 
+		param1 = ReverseCarpetMap and ReverseCarpetMap[offer.itemId] or offer.itemId
+		
 		-- item offer
-		self:addStoreKit(ReverseCarpetMap and ReverseCarpetMap[offer.itemId] or offer.itemId, packInfo.amount)
+		self:addStoreKit(param1, packInfo.amount)
 		success = true
 	elseif offer.bed then
 		-- bed offer
 		-- add footBoard first so headBoard lands on first slot of store inbox
-		self:addStoreKit(Game.getItemTypeByClientId(offer.bed[4]):getId(), packInfo.amount)
-		self:addStoreKit(Game.getItemTypeByClientId(offer.bed[2]):getId(), packInfo.amount)
+		param1 = Game.getItemTypeByClientId(offer.bed[4]):getId()
+		param2 = Game.getItemTypeByClientId(offer.bed[2]):getId()
+		self:addStoreKit(param1, packInfo.amount)
+		self:addStoreKit(param2, packInfo.amount)
 		success = true
 	elseif offer.premDays then
+		param1 = offer.premDays
 		-- vip system
 		-- not supported yet
 	elseif offer.XPBoost then
 		-- xp boost
 		-- not supported yet
+		-- param1 - boost id(?)
 	elseif offer.serviceId then
 		-- store services
 		local serviceId = offer.serviceId
@@ -545,6 +578,8 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 							self:sendStoreMessage(STORE_MESSAGE_ERROR_BUY, ret)
 							return
 						else
+							param1 = self:getName()
+							param2 = name
 							self:rename(name)
 							success = true
 						end
@@ -554,10 +589,17 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 					end
 				end
 			elseif serviceId == STORE_SERVICE_SEX_CHANGE then
+				param1 = self:getSex()
 				self:changeSex()
+				param2 = self:getSex()
 				success = true
 			elseif serviceId == STORE_SERVICE_TEMPLE_TELEPORT then
-				self:teleportTo(self:getTown():getTemplePosition())
+				local currentPos = self:getPosition()
+				local homePos = self:getTown():getTemplePosition()
+				self:teleportTo(homePos)
+				homePos:sendMagicEffect(CONST_ME_TELEPORT)
+				param1 = string.format("%d,%d,%d", currentPos.x, currentPos.y, currentPos.z)
+				param2 = string.format("%d,%d,%d:%d", homePos.x, homePos.y, homePos.z, self:getTown():getId())
 				success = true
 			end
 		end
@@ -578,7 +620,36 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 	else
 		self:addAccountResource(packInfo.currency, -packInfo.price)
 	end
+	
+	-- add to history
+	self:appendStoreHistory(offer.name, packInfo.amount, packInfo.price, packInfo.currency, param1, param2)
 end
 
--- to do: save players and houses
--- add logging
+local historyPageCountCache = {}
+local pageQueryCooldown = 5
+local entriesPerPage = 10
+
+function Player:getStoreHistoryPageCount()
+	local cid = self:getId()
+	if historyPageCountCache[cid] and os.time() < historyPageCountCache[cid][1] then
+		return historyPageCountCache[cid][2]
+	end
+	
+	local pageCount = 0
+	local resultId = db.storeQuery("SELECT COUNT(*) AS `count` FROM `store_history` WHERE `account_id` = 1")
+	if resultId ~= false then
+		pageCount = math.floor(math.max((result.getNumber(resultId, "count") or 0) - 1, 0) / entriesPerPage)
+		result.free(resultId)
+	end
+	
+	historyPageCountCache[cid] = {os.time() + pageQueryCooldown, pageCount}
+	return pageCount
+end
+
+function Player:getStoreHistoryPage(pageId)
+	-- open store history - get page count query
+	-- navigate pages - get queries
+
+	--string.format("SELECT * FROM `store_history` LIMIT %d, %d", pageId * entries, pageId + 1 * entries);
+	return {}
+end

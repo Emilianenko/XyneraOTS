@@ -6354,6 +6354,16 @@ void Game::playerBuyInStore(uint32_t playerId, uint16_t offerId, uint8_t action,
 	g_events->eventPlayerOnStoreBuy(player, offerId, action, name, type, location);
 }
 
+void Game::playerBrowseStoreHistory(uint32_t playerId, uint32_t pageId, bool isInit)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	g_events->eventPlayerOnStoreHistoryBrowse(player, pageId, isInit);
+}
+
 void Game::playerRegisterCurrencies(uint32_t playerId)
 {
 	// initialize store and tournament coins

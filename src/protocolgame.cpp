@@ -991,10 +991,10 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0xF8: parseMarketAcceptOffer(msg); break;
 		case 0xF9: parseModalWindowAnswer(msg); break;
 		case 0xFA: /*open store */ break;
-		case 0xFB: parseStoreBrowse(msg); break;
-		case 0xFC: parseStoreBuy(msg); break;
-		//case 0xFD: break; // store window history 1
-		//case 0xFE: break; // store window history 2
+		case 0xFB: parseStoreBrowse(msg); break; // click on store categories
+		case 0xFC: parseStoreBuy(msg); break; // click on store "buy" button
+		case 0xFD: parseStoreHistoryBrowse(msg, recvbyte); break; // open store history
+		case 0xFE: parseStoreHistoryBrowse(msg, recvbyte); break; // request store history page
 		//0xFF - empty
 
 		default:
@@ -1726,6 +1726,8 @@ void ProtocolGame::parseBugReport(NetworkMessage& msg)
 
 void ProtocolGame::parseDebugAssert(NetworkMessage& msg)
 {
+	// deprecated / protocol 1098
+
 	if (debugAssertSent) {
 		return;
 	}
@@ -1824,6 +1826,15 @@ void ProtocolGame::parseStoreBuy(NetworkMessage& msg)
 	}
 
 	addGameTask(([=, playerID = player->getID()]() { g_game.playerBuyInStore(playerID, offerId, action, name, type, location); }));
+}
+
+void ProtocolGame::parseStoreHistoryBrowse(NetworkMessage& msg, uint8_t recvbyte)
+{
+	// packet structure:
+	// 0xFD: u8 entries per page
+	// 0xFE: u32 pageId, u8 entriesPerPage
+	uint32_t pageId = recvbyte == 0xFE ? msg.get<uint32_t>() : 0;
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerBrowseStoreHistory(playerID, pageId, recvbyte == 0xFD); }));
 }
 
 void ProtocolGame::parseInviteToParty(NetworkMessage& msg)
@@ -2476,7 +2487,7 @@ void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
 
 	NetworkMessage msg;
 	msg.addByte(0x7B);
-	//msg.add<uint64_t>(playerBank + playerMoney); // deprecated and ignored by QT client. OTClient still uses it.
+	//msg.add<uint64_t>(playerBank + playerMoney); // deprecated in QT client. to do: remove from OTC
 
 	std::map<uint16_t, uint32_t> saleMap;
 
@@ -2895,7 +2906,6 @@ void ProtocolGame::sendQuestLine(const Quest* quest)
 
 	writeToOutputBuffer(msg);
 }
-
 
 void ProtocolGame::sendQuestTracker()
 {

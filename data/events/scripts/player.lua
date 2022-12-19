@@ -510,6 +510,12 @@ function Player:onStoreBuy(offerId, action, name, type, location)
 	end
 end
 
+function Player:onStoreHistoryBrowse(pageId, isInit)
+	if EventCallback.onStoreHistoryBrowse then
+		EventCallback.onStoreHistoryBrowse(self, pageId, isInit)
+	end
+end
+
 -- begin onConnect
 local function sendForgeTypesAsync(cid)
 	local p = Player(cid)

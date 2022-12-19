@@ -171,6 +171,8 @@ bool Events::load()
 				info.playerOnStoreBrowse = event;
 			} else if (methodName == "onStoreBuy") {
 				info.playerOnStoreBuy = event;
+			} else if (methodName == "onStoreHistoryBrowse") {
+				info.playerOnStoreHistoryBrowse = event;
 
 			// network methods
 			} else if (methodName == "onConnect") {
@@ -2090,6 +2092,37 @@ void Events::eventPlayerOnStoreBuy(Player* player, uint16_t offerId, uint8_t act
 	lua_pushstring(L, location.c_str());
 
 	scriptInterface.callVoidFunction(6);
+}
+
+void Events::eventPlayerOnStoreHistoryBrowse(Player* player, uint32_t pageId, bool isInit)
+{
+	// Player:onStoreHistoryBrowse(pageId, isInit)
+	if (info.playerOnStoreHistoryBrowse == -1) {
+		return;
+	}
+
+	if (!scriptInterface.reserveScriptEnv()) {
+		reportOverflow();
+		return;
+	}
+
+	ScriptEnvironment* env = scriptInterface.getScriptEnv();
+	env->setScriptId(info.playerOnStoreHistoryBrowse, &scriptInterface);
+
+	lua_State* L = scriptInterface.getLuaState();
+	scriptInterface.pushFunction(info.playerOnStoreHistoryBrowse);
+
+	// player
+	LuaScriptInterface::pushUserdata<Player>(L, player);
+	LuaScriptInterface::setMetatable(L, -1, "Player");
+
+	// pageId
+	lua_pushnumber(L, pageId);
+
+	// isInit
+	lua_pushboolean(L, isInit);
+
+	scriptInterface.callVoidFunction(3);
 }
 
 void Events::eventPlayerOnConnect(Player* player, bool isLogin)
