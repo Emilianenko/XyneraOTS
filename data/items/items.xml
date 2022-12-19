@@ -6413,9 +6413,6 @@
 	<item id="3138" name="stairs">
 		<attribute key="floorchange" value="down" />
 	</item>
-	<item id="3169" article="a" name="carved stone tile">
-		<attribute key="type" value="teleport" />
-	</item>
 	<item fromid="3216" toid="3217" name="wooden floor">
 		<attribute key="description" value="It seems to be a switch." />
 		<attribute key="walkStack" value="0" />
@@ -6501,12 +6498,6 @@
 	</item>
 	<item id="3552" article="an" name="open door">
 		<attribute key="type" value="door" />
-	</item>
-	<item fromid="3588" toid="3590" article="a" name="small boat">
-		<attribute key="type" value="teleport" />
-	</item>
-	<item fromid="3593" toid="3595" article="a" name="small boat">
-		<attribute key="type" value="teleport" />
 	</item>
 	<item id="3679" article="a" name="ramp">
 		<attribute key="floorchange" value="east" />
@@ -12618,9 +12609,6 @@
 		<attribute key="weight" value="80" />
 		<attribute key="slotType" value="ring" />
 	</item>
-	<item id="7719" name="wooden floor">
-		<attribute key="type" value="teleport" />
-	</item>
 	<item fromid="7720" toid="7721" article="a" name="parchment">
 		<attribute key="weight" value="100" />
 	</item>
@@ -13957,9 +13945,6 @@
 	</item>
 	<item id="7940" article="a" name="blocked cave entrance">
 		<attribute key="floorchange" value="down" />
-	</item>
-	<item id="7941" name="wooden floor">
-		<attribute key="type" value="teleport" />
 	</item>
 	<item fromid="7943" toid="7954" name="shallow water">
 		<attribute key="allowpickupable" value="1" />
