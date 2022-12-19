@@ -628,7 +628,7 @@ end
 
 local historyPageCountCache = {}
 local pageQueryCooldown = 5
-local entriesPerPage = 10
+local entriesPerPage = 25
 
 function Player:getStoreHistoryPageCount()
 	local cid = self:getId()
