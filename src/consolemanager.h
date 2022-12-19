@@ -32,7 +32,7 @@ enum ConsoleLoadingResult {
 
 namespace console {
 
-const uint8_t CONSOLE_CACHE_SIZE = 20;
+const uint8_t CONSOLE_CACHE_SIZE = 50;
 
 typedef std::array<std::pair<std::string, ConsoleMessageType>, CONSOLE_CACHE_SIZE> Cache;
 typedef fmt::color Color;
