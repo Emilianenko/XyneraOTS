@@ -487,16 +487,17 @@ end
 
 -- method for both offline and online players
 function AppendStoreHistory(accountId, playerGuid, ip, offerName, amount, price, currency, param1, param2)
-	local res = db.query(string.format("SELECT `email` FROM `accounts` WHERE `id` = %d", accountId))
-	local email = res and result.getNumber(res, "email") or ""
-	if res then
-		result.free(res)
+	local resultId = db.storeQuery(string.format("SELECT `email` FROM `accounts` WHERE `id` = %d", accountId))
+	local email = ""
+	if resultId ~= false then
+		email = result.getString(resultId, "email") or ""
+		result.free(resultId)
 	end
-	
+
 	local columns = "`date`,`status`,`account_id`,`player_id`,`email`,`ip`,`name`,`amount`,`price`,`currency`,`param_1`,`param_2`"
-	local fields = {os.time(), 0, accountId, playerGuid, db.escapeString(email), ip, db.escapeString(offerName), amount, price, currency, param1 and db.escapeString(param1) or "", param2 and db.escapeString(param2) or ""}
-	local q = string.format("INSERT INTO `store_history` (%s) VALUES ('%s')", columns, table.concat(fields, "','"))
-	db.query(q)
+	local fields = {os.time(), 0, accountId, playerGuid, db.escapeString(email), ip, db.escapeString(offerName), amount, price, currency, param1 and db.escapeString(param1) or "''", param2 and db.escapeString(param2) or "''"}
+	local q = string.format("INSERT INTO `store_history` (%s) VALUES (%s)", columns, table.concat(fields, ","))
+	db.query(q)	
 end
 
 -- method for online players
@@ -647,6 +648,7 @@ function Player:getStoreHistoryPageCount()
 end
 
 function Player:getStoreHistoryPage(pageId)
+
 	-- open store history - get page count query
 	-- navigate pages - get queries
 
