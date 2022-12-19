@@ -6,6 +6,15 @@
 	<monster name="Paladin Familiar" file="monsters/paladin_familiar.xml" />
 	<monster name="Knight Familiar" file="monsters/knight_familiar.xml" />
 	
+	<!-- compats -->
+	<monster name="Horse1" file="monsters/taupe_horse.xml" />
+	<monster name="Horse2" file="monsters/brown_horse.xml" />
+	<monster name="Horse3" file="monsters/gray_horse.xml" />
+	<monster name="Lady bug" file="monsters/ladybug.xml" />
+	<monster name="Butterfly" file="monsters/purple_butterfly.xml" />
+	<monster name="Beholder" file="monsters/bonelord.xml" />
+	<monster name="Elder Beholder" file="monsters/elder_bonelord.xml" />
+
 	<!-- monsters -->
 	<monster name="a carved stone tile" file="monsters/a_carved_stone_tile.xml" />
 	<monster name="Abyssador" file="monsters/abyssador.xml" />
