@@ -46,6 +46,15 @@ local desc_rune = [[{character}
 {battlesign}
 {capacity}]]
 
+local desc_xpboost = [[<i>Purchase a boost that increases the experience points your character gains from hunting by 50%!</i>
+
+{character}
+{info} lasts for 1 hour hunting time
+{info} paused if stamina falls under 14 hours
+{info} can be purchased up to 5 times between 2 server saves
+{info} price increases with every purchase
+{info} cannot be purchased if an XP boost is already active]]
+
 -- bed offer generator and helpers
 local function wordHelper(first, rest)
    return string.format("%s%s", first:upper(), rest:lower())
@@ -60,7 +69,7 @@ local lastOfferId = 0
 -- generic offer generator
 -- amountBase - amount on first price tag (example: 1)
 -- amountMulti - multiplier for second price tag (example: 5), no second price tag if nil
-function StoreOfferGeneric(name, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
+function StoreCreateOffer(name, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
 	local productId = #StoreOffers + 1
 	lastOfferId = lastOfferId + 1
 	local offer = {
@@ -103,59 +112,33 @@ function StoreOfferGeneric(name, price, category, subCategory, publishedAt, amou
 		table.insert(StoreCategories[category].offers, productId)
 	end
 	
+	-- xp boost button in skills window
+	if name == "XP Boost" then
+		STORE_OFFERID_XPBOOST = productId
+	end
+	
 	return StoreOffers[productId]
 end
 
-
+-- item offer generator
 function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	local offer = {
-		name = upAllWords(ItemType(itemId):getName()),
-		description = description,
-		publishedAt = publishedAt,
+	local offer = StoreCreateOffer(
+		upAllWords(ItemType(itemId):getName()),
+		price, category, subCategory, publishedAt,
+		amountBase, amountMulti, description
+	)
 
-		packages = {
-			[1] = {
-				amount = amountBase,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_ITEM,
-		itemId = itemId,
-		
-		-- for direct offer id request
-		category = category,
-		subCategory = subCategory
-	}
-
-	-- second price tag
-	if amountMulti then
-		lastOfferId = lastOfferId + 1
-		offer.packages[2] = {
-			amount = amountBase * amountMulti,
-			price = price * amountMulti,
-			currency = STORE_CURRENCY_COINS,
-			offerId = lastOfferId + 1,
-			status = STORE_CATEGORY_TYPE_NORMAL,
-		}
-	end
-	
-	StoreOffers[productId] = offer
-	
-	if subCategory then
-		table.insert(StoreCategories[category].offerTypes[subCategory].offers, productId)
-	else
-		table.insert(StoreCategories[category].offers, productId)
-	end
+	offer.type = STORE_OFFER_TYPE_ITEM
+	offer.itemId = itemId	
 end
 
-
+-- bed offer generator
 function GenerateBed(bedName, price, publishedAt, headBoard, footBoard)
+	local offer = StoreCreateOffer(
+		bedName, price, STORE_TAB_BEDS, nil,
+		publishedAt, 1, nil, desc_bed
+	)
+	
 	local hb = ItemType(headBoard)
 	local fb = ItemType(footBoard)
 	local bed = {
@@ -163,134 +146,9 @@ function GenerateBed(bedName, price, publishedAt, headBoard, footBoard)
 		string.format("%s Footboard", upAllWords(fb:getName())), fb:getClientId()
 	}
 
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = bedName,
-		description = desc_bed,
-		publishedAt = publishedAt,
-
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_DEFAULT,
-		image = string.format("%s.png", bedName:gsub(" ", "_")),
-		bed = bed,
-		
-		-- for direct offer id request
-		category = STORE_TAB_BEDS,
-	}
-	
-	table.insert(StoreCategories[STORE_TAB_BEDS].offers, productId)
-end
-
--- mount offer generator
-function GenerateMount(name, lookType, price, publishedAt, description)
-	local tier = price > 800 and 3 or price < 750 and 1 or 2
-
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = name,
-		description = string.format("{character}\n{speedboost}\n\n<i>%s</i>", description),
-		publishedAt = publishedAt,
-
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_MOUNT,
-		lookType = lookType,
-		
-		-- for direct offer id request
-		category = STORE_TAB_MOUNTS,
-		subCategory = tier
-	}
-	
-	table.insert(StoreCategories[STORE_TAB_MOUNTS].offerTypes[tier].offers, productId)
-	
-	Game.setStoreMount(lookType, lastOfferId)
-end
-
--- premium time (vip pass) generator
-function GeneratePremium(days, price, publishedAt)
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = string.format("%d days", days),
-		description = desc_premium,
-		publishedAt = publishedAt,
-
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_DEFAULT,
-		image = string.format("Premium_Time_%d.png", days),
-		premDays = days,
-		-- for direct offer id request
-		category = STORE_TAB_PREMIUM,
-	}
-	
-	table.insert(StoreCategories[STORE_TAB_PREMIUM].offers, productId)
-end
-
--- XP Boost
-function GenerateXPBoost(price)
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = "XP Boost",
-		description = [[<i>Purchase a boost that increases the experience points your character gains from hunting by 50%!</i>
-
-{character}
-{info} lasts for 1 hour hunting time
-{info} paused if stamina falls under 14 hours
-{info} can be purchased up to 5 times between 2 server saves
-{info} price increases with every purchase
-{info} cannot be purchased if an XP boost is already active]],
-
-		publishedAt = 0,
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_DEFAULT,
-		image = "Product_XpBoost.png",
-		XPBoost = true,
-		
-		-- for direct offer id request
-		category = STORE_TAB_BOOSTS,
-	}
-	
-	table.insert(StoreCategories[STORE_TAB_BOOSTS].offers, productId)
-	
-	STORE_OFFERID_XPBOOST = productId
+	offer.type = STORE_OFFER_TYPE_DEFAULT
+	offer.image = string.format("%s.png", bedName:gsub(" ", "_"))
+	offer.bed = bed
 end
 
 -- outfit offer generator and macros
@@ -300,143 +158,101 @@ local descOutfitAddons = "{info} includes basic outfit and 2 addons which can be
 function GenerateOutfit(name, lookTypeM, lookTypeF, price, publishedAt, description)
 	local retro = name:lower():match("retro") and true
 	local tier = retro and 4 or price > 850 and 3 or price < 730 and 1 or 2
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = name,
-		description = string.format("%s%s\n<i>%s</i>", descOutfitColor, retro and "" or descOutfitAddons, description),
-		publishedAt = publishedAt,
 
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
+	local offer = StoreCreateOffer(
+		name, price, STORE_TAB_OUTFITS, tier,
+		publishedAt, 1, nil,
+		string.format("%s%s\n<i>%s</i>", descOutfitColor, retro and "" or descOutfitAddons, description)
+	)
 	
-		type = STORE_OFFER_TYPE_OUTFIT,
-		lookTypeMale = lookTypeM,
-		lookTypeFemale = lookTypeF,
-		
-		-- for direct offer id request
-		category = STORE_TAB_OUTFITS,
-		subCategory = tier
-	}
-	
-	table.insert(StoreCategories[STORE_TAB_OUTFITS].offerTypes[tier].offers, productId)
-	
+	offer.type = STORE_OFFER_TYPE_OUTFIT
+	offer.lookTypeMale = lookTypeM
+	offer.lookTypeFemale = lookTypeF
+
 	Game.setStoreOutfit(lookTypeM, lastOfferId)
 	Game.setStoreOutfit(lookTypeF, lastOfferId)
 end
 
+-- mount offer generator
+function GenerateMount(name, lookType, price, publishedAt, description)
+	local tier = price > 800 and 3 or price < 750 and 1 or 2
+	
+	local offer = StoreCreateOffer(
+		name, price, STORE_TAB_MOUNTS, tier,
+		publishedAt, 1, nil,
+		string.format("{character}\n{speedboost}\n\n<i>%s</i>", description)
+	)
+	
+	offer.type = STORE_OFFER_TYPE_MOUNT
+	offer.lookType = lookType
+	
+	Game.setStoreMount(lookType, lastOfferId)
+end
+
+-- premium time (vip pass) generator
+function GeneratePremium(days, price, publishedAt)
+	local offer = StoreCreateOffer(
+		string.format("%d days", days), price,
+		STORE_TAB_PREMIUM, nil, publishedAt, 1, nil,
+		desc_premium
+	)
+	
+	offer.type = STORE_OFFER_TYPE_DEFAULT
+	offer.image = string.format("Premium_Time_%d.png", days)
+	offer.premDays = days
+end
+
+-- XP Boost
+function GenerateXPBoost(price)
+	local offer = StoreCreateOffer(
+		"XP Boost", price,
+		STORE_TAB_BOOSTS, nil, publishedAt, 1, nil,
+		desc_xpboost
+	)
+	
+	offer.type = STORE_OFFER_TYPE_DEFAULT
+	offer.image = "Product_XpBoost.png"
+	offer.XPBoost = true
+end
+
 -- carpet offer generator
 function GenerateCarpet(itemId, price, publishedAt)
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = upAllWords(ItemType(itemId):getName()),
-		description = desc_carpet,
-		publishedAt = publishedAt,
+	local offer = StoreCreateOffer(
+		upAllWords(ItemType(itemId):getName()), price,
+		STORE_TAB_DECORATIONS, 1, publishedAt, 1, 5,
+		desc_carpet
+	)
 
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-			[2] = {
-				amount = 5,
-				price = price * 5,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId + 1,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_ITEM,
-		itemId = CarpetMap[itemId],
-		
-		-- for direct offer id request
-		category = STORE_TAB_DECORATIONS,
-		subCategory = 1
-	}
-
-	-- +1 for every price tag after first
-	lastOfferId = lastOfferId + 1
-	
-	table.insert(StoreCategories[STORE_TAB_DECORATIONS].offerTypes[1].offers, productId)
+	offer.type = STORE_OFFER_TYPE_ITEM
+	offer.itemId = CarpetMap[itemId]
 end
 
 -- rune offer generator
 function GenerateRune(itemId, price, runeType, publishedAt, description)
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = upAllWords(ItemType(itemId):getName()),
-		description = string.format("%s\n\n<i>%s</i>", desc_rune, description),
-		publishedAt = publishedAt,
-
-		packages = {
-			[1] = {
-				amount = 250,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
-	
-		type = STORE_OFFER_TYPE_ITEM,
-		itemId = itemId,
-		
-		-- for direct offer id request
-		category = STORE_TAB_RUNES,
-		subCategory = runeType
-	}
-
-	-- +1 for every price tag after first
-	lastOfferId = lastOfferId + 1
-	
-	table.insert(StoreCategories[STORE_TAB_RUNES].offerTypes[runeType].offers, productId)
+	GenerateStoreItem(
+		itemId, price,
+		STORE_TAB_RUNES, runeType,
+		publishedAt, 250, nil,
+		string.format("%s\n\n<i>%s</i>", desc_rune, description)
+	)
 end
 
+-- service offer generator
 function GenerateStoreService(name, serviceId, price, category, image, publishedAt, description)
 	if not serviceId or serviceId < 1 or serviceId > STORE_SERVICE_LAST then
 		return
 	end
 
-	local productId = #StoreOffers + 1
-	lastOfferId = lastOfferId + 1
-	StoreOffers[productId] = {
-		name = name,
-		description = description,
-		publishedAt = publishedAt,
-
-		packages = {
-			[1] = {
-				amount = 1,
-				price = price,
-				currency = STORE_CURRENCY_COINS,
-				offerId = lastOfferId,
-				status = STORE_CATEGORY_TYPE_NORMAL,
-			},
-		},
+	local offer = StoreCreateOffer(
+		name, price,
+		category, nil, publishedAt, 1, nil,
+		description
+	)
 	
-		type = STORE_OFFER_TYPE_DEFAULT,
-		image = image,
-		serviceId = serviceId,
-		configurable = serviceId <= STORE_SERVICE_LAST_CONFIGURABLE,
-		
-		-- for direct offer id request
-		category = category
-	}
-
-	table.insert(StoreCategories[category].offers, productId)
+	offer.type = STORE_OFFER_TYPE_DEFAULT
+	offer.image = image
+	offer.serviceId = serviceId
+	offer.configurable = serviceId <= STORE_SERVICE_LAST_CONFIGURABLE
 end
 
 -- permission check
@@ -776,7 +592,7 @@ end
 
 function Player:getStoreHistoryPage(pageId)
 	local page = {}
-	local q = "SELECT `transaction_id`, `date`, `status`, `name`, `amount`, `price`, `currency` FROM `store_history` WHERE `account_id` = %d LIMIT %d, %d;"
+	local q = "SELECT `transaction_id`, `date`, `status`, `name`, `amount`, `price`, `currency` FROM `store_history` WHERE `account_id` = %d ORDER BY `transaction_id` DESC LIMIT %d, %d;"
 	local resultId = db.storeQuery(string.format(q, self:getAccountId(), pageId * entriesPerPage, entriesPerPage))
 	if resultId ~= false then
 		repeat
