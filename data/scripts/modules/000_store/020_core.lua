@@ -366,6 +366,16 @@ function Player:getOfferStatus(offer, fastCheck)
 				elseif itemType:isRune() then
 					local rune = Spell(itemType:getId())
 					if rune then
+						-- infight check
+						if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+							if fastCheck then
+								return STORE_REASON_INFIGHT
+							end
+							
+							messages[#messages + 1] = STORE_REASON_INFIGHT
+						end
+						
+						-- level check
 						if self:getLevel() < rune:runeLevel() then
 							if fastCheck then
 								return STORE_REASON_LEVEL
@@ -374,6 +384,7 @@ function Player:getOfferStatus(offer, fastCheck)
 							messages[#messages + 1] = STORE_REASON_LEVEL
 						end
 						
+						-- maglevel check
 						if self:getBaseMagicLevel() < rune:runeMagicLevel() then
 							if fastCheck then
 								return STORE_REASON_MAGLEVEL
@@ -382,6 +393,7 @@ function Player:getOfferStatus(offer, fastCheck)
 							messages[#messages + 1] = STORE_REASON_MAGLEVEL
 						end
 						
+						-- vocation check
 						local runeVocMap = rune:vocation()
 						if runeVocMap and #runeVocMap > 0 then
 							local vocFound = false
