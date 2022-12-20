@@ -1,4 +1,5 @@
 --[[
+hide wg and paral from shop if not ed
 
 -- useful
 -- prey wildcard

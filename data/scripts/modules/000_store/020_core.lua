@@ -40,6 +40,12 @@ local desc_decoration_useable = [[{house}
 {use}
 {backtoinbox}]]
 
+local desc_rune = [[{character}
+{storeinbox}
+{vocationlevelcheck}
+{battlesign}
+{capacity}]]
+
 -- bed offer generator and helpers
 local function wordHelper(first, rest)
    return string.format("%s%s", first:upper(), rest:lower())
@@ -50,6 +56,105 @@ local function upAllWords(text)
 end
 
 local lastOfferId = 0
+
+-- generic offer generator
+-- amountBase - amount on first price tag (example: 1)
+-- amountMulti - multiplier for second price tag (example: 5), no second price tag if nil
+function StoreOfferGeneric(name, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	local offer = {
+		name = name,
+		description = description,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = amountBase,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+			
+		-- for direct offer id request
+		category = category,
+		subCategory = subCategory
+	}
+
+	-- second price tag
+	if amountMulti then
+		lastOfferId = lastOfferId + 1
+		offer.packages[2] = {
+			amount = amountBase * amountMulti,
+			price = price * amountMulti,
+			currency = STORE_CURRENCY_COINS,
+			offerId = lastOfferId + 1,
+			status = STORE_CATEGORY_TYPE_NORMAL,
+		}
+	end
+	
+	StoreOffers[productId] = offer
+	
+	if subCategory then
+		table.insert(StoreCategories[category].offerTypes[subCategory].offers, productId)
+	else
+		table.insert(StoreCategories[category].offers, productId)
+	end
+	
+	return StoreOffers[productId]
+end
+
+
+function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
+	local productId = #StoreOffers + 1
+	lastOfferId = lastOfferId + 1
+	local offer = {
+		name = upAllWords(ItemType(itemId):getName()),
+		description = description,
+		publishedAt = publishedAt,
+
+		packages = {
+			[1] = {
+				amount = amountBase,
+				price = price,
+				currency = STORE_CURRENCY_COINS,
+				offerId = lastOfferId,
+				status = STORE_CATEGORY_TYPE_NORMAL,
+			},
+		},
+	
+		type = STORE_OFFER_TYPE_ITEM,
+		itemId = itemId,
+		
+		-- for direct offer id request
+		category = category,
+		subCategory = subCategory
+	}
+
+	-- second price tag
+	if amountMulti then
+		lastOfferId = lastOfferId + 1
+		offer.packages[2] = {
+			amount = amountBase * amountMulti,
+			price = price * amountMulti,
+			currency = STORE_CURRENCY_COINS,
+			offerId = lastOfferId + 1,
+			status = STORE_CATEGORY_TYPE_NORMAL,
+		}
+	end
+	
+	StoreOffers[productId] = offer
+	
+	if subCategory then
+		table.insert(StoreCategories[category].offerTypes[subCategory].offers, productId)
+	else
+		table.insert(StoreCategories[category].offers, productId)
+	end
+end
+
+
 function GenerateBed(bedName, price, publishedAt, headBoard, footBoard)
 	local hb = ItemType(headBoard)
 	local fb = ItemType(footBoard)
@@ -267,20 +372,18 @@ function GenerateCarpet(itemId, price, publishedAt)
 	table.insert(StoreCategories[STORE_TAB_DECORATIONS].offerTypes[1].offers, productId)
 end
 
--- generic offer generator
--- amountBase - amount on first price tag (example: 1)
--- amountMulti - multiplier for second price tag (example: 5), no second price tag if nil
-function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description)
+-- rune offer generator
+function GenerateRune(itemId, price, runeType, publishedAt, description)
 	local productId = #StoreOffers + 1
 	lastOfferId = lastOfferId + 1
-	local offer = {
+	StoreOffers[productId] = {
 		name = upAllWords(ItemType(itemId):getName()),
-		description = description,
+		description = string.format("%s\n\n<i>%s</i>", desc_rune, description),
 		publishedAt = publishedAt,
 
 		packages = {
 			[1] = {
-				amount = amountBase,
+				amount = 250,
 				price = price,
 				currency = STORE_CURRENCY_COINS,
 				offerId = lastOfferId,
@@ -292,29 +395,14 @@ function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, am
 		itemId = itemId,
 		
 		-- for direct offer id request
-		category = category,
-		subCategory = subCategory
+		category = STORE_TAB_RUNES,
+		subCategory = runeType
 	}
 
-	-- second price tag
-	if amountMulti then
-		lastOfferId = lastOfferId + 1
-		offer.packages[2] = {
-			amount = amountBase * amountMulti,
-			price = price * amountMulti,
-			currency = STORE_CURRENCY_COINS,
-			offerId = lastOfferId + 1,
-			status = STORE_CATEGORY_TYPE_NORMAL,
-		}
-	end
+	-- +1 for every price tag after first
+	lastOfferId = lastOfferId + 1
 	
-	StoreOffers[productId] = offer
-	
-	if subCategory then
-		table.insert(StoreCategories[category].offerTypes[subCategory].offers, productId)
-	else
-		table.insert(StoreCategories[category].offers, productId)
-	end
+	table.insert(StoreCategories[STORE_TAB_RUNES].offerTypes[runeType].offers, productId)
 end
 
 function GenerateStoreService(name, serviceId, price, category, image, publishedAt, description)
@@ -458,6 +546,45 @@ function Player:getOfferStatus(offer, fastCheck)
 						end
 						
 						messages[#messages + 1] = STORE_REASON_GOLD_POUCH
+					end
+				elseif itemType:isRune() then
+					local rune = Spell(itemType:getId())
+					if rune then
+						if self:getLevel() < rune:runeLevel() then
+							if fastCheck then
+								return STORE_REASON_LEVEL
+							end
+							
+							messages[#messages + 1] = STORE_REASON_LEVEL
+						end
+						
+						if self:getBaseMagicLevel() < rune:runeMagicLevel() then
+							if fastCheck then
+								return STORE_REASON_MAGLEVEL
+							end
+							
+							messages[#messages + 1] = STORE_REASON_MAGLEVEL
+						end
+						
+						local runeVocMap = rune:vocation()
+						if runeVocMap and #runeVocMap > 0 then
+							local vocFound = false
+							local pVocName = self:getVocation():getName()
+							for _, runeVocName in ipairs(runeVocMap) do
+								if pVocName:match(runeVocName) then
+									vocFound = true
+									break
+								end
+							end
+							
+							if not vocFound then
+								if fastCheck then
+									return STORE_REASON_VOCATION
+								end
+								
+								messages[#messages + 1] = STORE_REASON_VOCATION
+							end
+						end
 					end
 				end
 			else

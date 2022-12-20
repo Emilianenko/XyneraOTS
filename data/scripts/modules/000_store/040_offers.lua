@@ -275,12 +275,87 @@
 	GenerateCarpet(44794, 30, 1658134800) -- flowery grass
 
 -- Runes
-	-- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
-	local desc_rune = "{character}\n{storeinbox}\n{vocationlevelcheck}\n{battlesign}\n{capacity}\n\n"
-	GenerateStoreItem(
-		2268, 28, -- itemId, price
-		STORE_TAB_RUNES, 1, -- runes, dropdown menu pos
-		0, 250, nil, -- publishedAt, amount, amountMulti
-		-- description
-		string.format("%s<i>%s</i>", desc_rune, "Nearly no other spell can compare to Sudden Death when it comes to sheer damage. For this reason it is immensely popular despite the fact that only a single target is affected. However, since the damage caused by the rune is of deadly nature, it is less useful against most undead creatures.")
-	)
+	-- gfb
+	GenerateRune(2304, 28, STORE_RUNE_TYPE_ATTACK, 0, "A shot of this rune affects a huge area - up to 37 square metres! It stands to reason that the Great Fireball is a favourite of most Tibians, as it is well suited both to hit whole crowds of monsters and individual targets that are difficult to hit because they are fast or hard to spot.")
+
+	-- sd
+	GenerateRune(2268, 12, STORE_RUNE_TYPE_ATTACK, 0, "Nearly no other spell can compare to Sudden Death when it comes to sheer damage. For this reason it is immensely popular despite the fact that only a single target is affected. However, since the damage caused by the rune is of deadly nature, it is less useful against most undead creatures.")
+
+	-- ava
+	GenerateRune(2274, 12, STORE_RUNE_TYPE_ATTACK, 0, "The ice damage which arises from this rune is a useful weapon in every battle but it comes in particularly handy if you fight against a horde of creatures dominated by the element fire.")
+
+	-- icicle
+	GenerateRune(2271, 6, STORE_RUNE_TYPE_ATTACK, 0, "Particularly creatures determined by the element fire are vulnerable against this ice-cold rune. Being hit by the magic stored in this rune, an ice arrow seems to pierce the heart of the struck victim. The damage done by this rune is quite impressive which makes this a quite popular rune among mages.")
+
+	-- mw
+	GenerateRune(2293, 23, STORE_RUNE_TYPE_FIELD, 0, "This spell causes all particles that are contained in the surrounding air to quickly gather and contract until a solid wall is formed that covers one full square metre. The wall that is formed that way is impenetrable to any missiles or to light and no creature or character can walk through it. However, the wall will only last for a couple of seconds.")
+	
+	-- thunderstorm
+	GenerateRune(2315, 9, STORE_RUNE_TYPE_ATTACK, 0, "Flashes filled with dangerous energy hit the rune user's opponent when this rune is being used. It is especially effective against ice dominated creatures. Covering up an area up to 37 squares, this rune is particularly useful when you meet a whole mob of opponents.")
+	
+	-- energy bomb
+	GenerateRune(2262, 40, STORE_RUNE_TYPE_FIELD, 0, "Using the Energy Bomb rune will create a field of deadly energy that deals damage to all who carelessly step into it. Its area of effect is covering a full 9 square metres! Creatures that are caught in the middle of an Energy Bomb are frequently confused by the unexpected effect, and some may even stay in the field of deadly sparks for a while.")
+
+	-- energy wall
+	GenerateRune(2279, 17, STORE_RUNE_TYPE_FIELD, 0, "Casting this spell generates a solid wall made up of magical energy. Walls made this way surpass any other magically created obstacle in width, so it is always a good idea to have an Energy Wall rune or two in one's pocket when travelling through the wilderness.")
+	
+	-- fire field
+	GenerateRune(2301, 6, STORE_RUNE_TYPE_FIELD, 0, "When this rune is used a field of one square metre is covered by searing fire that will last for some minutes, gradually diminishing as the blaze wears down. As with all field spells, Fire Field is quite useful to block narrow passageways or to create large, connected barriers.")
+
+	-- stone shower
+	GenerateRune(2288, 7, STORE_RUNE_TYPE_ATTACK, 0, "Particularly creatures with an affection to energy will suffer greatly from this rune filled with powerful earth damage. As the name already says, a shower of stones drums on the opponents of the rune user in an area up to 37 squares.")
+
+	-- animate dead
+	GenerateRune(2316, 75, STORE_RUNE_TYPE_SUMMON, 0, "After a long time of research, the magicians of Edron succeeded in storing some life energy in a rune. When this energy was unleashed onto a body it was found that an undead creature arose that could be mentally controlled by the user of the rune. This rune is useful to create allies in combat.")
+
+	-- chameleon
+	GenerateRune(2291, 42, STORE_RUNE_TYPE_SUPPORT, 0, "The metamorphosis caused by this rune is only superficial, and while casters who are using the rune can take on the exterior form of nearly any inanimate object, they will always retain their original smell and mental abilities. So there is no real practical use for this rune, making this largely a fun rune.")
+	
+	-- connvince rune
+	GenerateRune(2290, 16, STORE_RUNE_TYPE_SUMMON, 0, "Using this rune together with some mana, you can convince certain creatures. The needed amount of mana is determined by the power of the creature one wishes to convince, so the amount of mana to convince a rat is lower than that which is needed for an orc.")
+
+	-- cure poison
+	GenerateRune(2266, 13, STORE_RUNE_TYPE_HEALING, 0, "In the old days, many adventurers fell prey to poisonous creatures that were roaming the caves and forests. After many years of research druids finally succeeded in altering the cure poison spell so it could be bound to a rune. By using this rune it is possible to stop the effect of any known poison.")
+	
+	-- disintegrate
+	GenerateRune(2310, 5, STORE_RUNE_TYPE_SUPPORT, 0, "Nothing is worse than being cornered when fleeing from an enemy you just cannot beat, especially if the obstacles in your way are items you could easily remove if only you had the time! However, there is one reliable remedy: The Disintegrate rune will instantly destroy up to 500 movable items that are in your way, making room for a quick escape.")
+
+	-- energy field
+	GenerateRune(2277, 8, STORE_RUNE_TYPE_FIELD, 0, "This spell creates a limited barrier made up of crackling energy that will cause electrical damage to all those passing through. Since there are few creatures that are immune to the harmful effects of energy this spell is not to be underestimated.")
+
+	-- explosion
+	GenerateRune(2313, 6, STORE_RUNE_TYPE_ATTACK, 0, "This rune must be aimed at areas rather than at specific creatures, so it is possible for explosions to be unleashed even if no targets are close at all. These explosions cause a considerable physical damage within a substantial blast radius.")
+
+	-- fire bomb
+	GenerateRune(2305, 29, STORE_RUNE_TYPE_FIELD, 0, "This rune is a deadly weapon in the hands of the skilled user. On releasing it an area of 9 square metres is covered by searing flames that will scorch all those that are unfortunate enough to be caught in them. Worse, many monsters are confused by the unexpected blaze, and with a bit of luck a caster will even manage to trap his opponents by using the spell.")
+	
+	-- fire wall
+	GenerateRune(2303, 12, STORE_RUNE_TYPE_FIELD, 0, "This rune offers reliable protection against all creatures that are afraid of fire. The exceptionally long duration of the spell as well as the possibility to form massive barriers or even protective circles out of fire walls make this a versatile, practical spell.")
+
+	-- fireball
+	GenerateRune(2302, 6, STORE_RUNE_TYPE_ATTACK, 0, "When this rune is used a massive fiery ball is released which hits the aimed foe with immense power. It is especially effective against opponents of the element earth.")
+
+	-- intense healing
+	GenerateRune(2265, 19, STORE_RUNE_TYPE_HEALING, 0, "This rune is commonly used by young adventurers who are not skilled enough to use the rune's stronger version. Also, since the rune's effectiveness is determined by the user's magic skill, it is still popular among experienced spell casters who use it to get effective healing magic at a cheap price.")
+
+	-- paralyse
+	GenerateRune(2278, 140, STORE_RUNE_TYPE_SUPPORT, 0, "The effect of this rune causes the target's blood to thicken, leaving it paralysed and unable to fight or escape unless the effect has worn off. This rune can buy its user precious time in combat.")
+
+	-- poison bomb
+	GenerateRune(2286, 17, STORE_RUNE_TYPE_FIELD, 0, "This rune causes an area of 9 square metres to be contaminated with toxic gas that will poison anybody who is caught within it. Conceivable applications include the blocking of areas or the combat against fast-moving or invisible targets. Keep in mind, however, that there are a number of creatures that are immune to poison.")
+
+	-- poison wall
+	GenerateRune(2289, 10, STORE_RUNE_TYPE_FIELD, 0, "When this rune is used a wall of concentrated toxic fumes is created which inflicts a moderate poison on all those who are foolish enough to enter it. The effect is usually impressive enough to discourage monsters from doing so, although few of the stronger ones will hesitate if there is nothing but a poison wall between them and their dinner.")
+
+	-- soulfire
+	GenerateRune(2308, 9, STORE_RUNE_TYPE_ATTACK, 0, "Soulfire is an immensely evil spell as it directly targets a creature's very life essence. When the rune is used on a victim, its soul is temporarily moved out of its body, casting it down into the blazing fires of hell itself! Note that the experience and the mental strength of the caster influence the damage that is caused.")
+
+	-- ultimate healing
+	GenerateRune(2273, 35, STORE_RUNE_TYPE_HEALING, 0, "The coveted Ultimate Healing rune is an all-time favourite among all vocations. No other healing enchantments that are bound into runes can compare to its salutary effect.")
+
+	-- wild growth
+	GenerateRune(2269, 32, STORE_RUNE_TYPE_FIELD, 0, "By unleashing this spell, all seeds that are lying dormant in the surrounding quickly sprout and grow into full-sized plants, thus forming an impenetrable thicket. Unfortunately, plant life created this way is short-lived and will collapse within minutes, so the magically created obstacle will not last long.")
+
+-- irregular items
+-- GenerateStoreItem
+-- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description

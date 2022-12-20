@@ -26,6 +26,12 @@ STORE_TAB_TOURNAMENT = 23
 STORE_TAB_TICKETS = 24
 STORE_TAB_EXCLUSIVE = 25
 
+STORE_RUNE_TYPE_ATTACK = 1
+STORE_RUNE_TYPE_FIELD = 2
+STORE_RUNE_TYPE_HEALING = 3
+STORE_RUNE_TYPE_SUMMON = 4
+STORE_RUNE_TYPE_SUPPORT = 5
+
 -- offer status
 STORE_CATEGORY_TYPE_NORMAL = 0
 STORE_CATEGORY_TYPE_NEW = 1
@@ -108,8 +114,11 @@ STORE_REASON_XP_LIMIT = 22
 STORE_REASON_CAPACITY = 23
 STORE_REASON_INFIGHT = 24
 STORE_REASON_TOO_CLOSE = 25
+STORE_REASON_LEVEL = 26
+STORE_REASON_MAGLEVEL = 27
+STORE_REASON_VOCATION = 28
 
-STORE_REASON_LAST = STORE_REASON_TOO_CLOSE
+STORE_REASON_LAST = STORE_REASON_VOCATION
 
 StoreOfferDisableReasons = {
 	-- errors
@@ -153,6 +162,11 @@ StoreOfferDisableReasons = {
 	[STORE_REASON_CAPACITY] = "You do not have enough capacity.",
 	[STORE_REASON_INFIGHT] = "You cannot make this purchase as long as your character has a logout block.",
 	[STORE_REASON_TOO_CLOSE] = "You are too close to your home temple to purchase a Temple Teleport. Keep walking - it's not far anymore!",
+	
+	-- runes
+	[STORE_REASON_LEVEL] = "Your Level is too low.",
+	[STORE_REASON_MAGLEVEL] = "Your Magic Level is too low.",
+	[STORE_REASON_VOCATION] = "Your vocation cannot use this rune.",
 }
 
 StoreOfferDisableReasonsCount = 0
