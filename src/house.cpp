@@ -227,9 +227,13 @@ bool House::transferToDepot(Player* player) const
 
 					// wrap the furniture into default kits
 					if (item->isMoveable() || item->hasForceSerialize()) {
+						uint16_t storedCharges = item->getCharges();
 						uint16_t unwrapId = item->getID();
 						Item* newItem = g_game.transformItem(item, item->isStoreItem() ? ITEM_STORE_KIT : ITEM_FURNITURE_KIT, item->getSubType());
 						newItem->setIntAttr(ITEM_ATTRIBUTE_WRAPID, unwrapId);
+						if (storedCharges > 1) {
+							newItem->setCharges(storedCharges);
+						}
 						moveItemList.push_back(newItem);
 					}
 				}

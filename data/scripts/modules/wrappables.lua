@@ -71,10 +71,13 @@ local function wrap(player, item)
 		return RETURNVALUE_CANNOTUSETHISOBJECT
 	end
 
+	-- memorize item charges if applicable (casks)
+	local storedCharges = item:getCharges()
+		
 	-- try to wrap
 	if furniture then
 		local itemCopy = item:clone()
-			
+		
 		if player:getFreeCapacity() < itemCopy:getWeight() then
 			itemCopy:remove()
 			return RETURNVALUE_NOTENOUGHCAPACITY
@@ -95,12 +98,15 @@ local function wrap(player, item)
 		if ret == RETURNVALUE_NOERROR then
 			if not defaultKit then
 				itemCopy:setAttribute(ITEM_ATTRIBUTE_WRAPID, itemId)
+				if storedCharges > 0 then
+					itemCopy:setAttribute(ITEM_ATTRIBUTE_CHARGES, storedCharges)
+				end
 			end
 			item:remove()
 		else
 			itemCopy:remove()
 		end
-			
+		
 		return ret
 	end
 	
@@ -116,6 +122,10 @@ local function wrap(player, item)
 		item:setAttribute(ITEM_ATTRIBUTE_WRAPID, item:getId())
 	end
 	item:transform(transformId)
+	if storedCharges > 0 then
+		item:setAttribute(ITEM_ATTRIBUTE_CHARGES, storedCharges)
+	end
+	
 	item:moveTo(tile:getPosition())
 	
 	return RETURNVALUE_NOERROR
