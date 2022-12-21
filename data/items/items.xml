@@ -45192,6 +45192,10 @@
 		<attribute key="rotateTo" value="44557" />
 	</item>
 	
+	<!-- depot chest -->
+	<!-- default name: ominous device -->
+	<item id="44562" article="an" name="exaltation forge" />
+		
 	<item id="44567" article="a" name="candy lure">
 		<attribute key="description" value="It is slowly melting"/>
 		<attribute key="decayTo" value="39195" />
@@ -47709,4 +47713,6 @@
 		<attribute key="description" value="Use this item to earn 100 dust at the exaltation forge."/>
 		<attribute key="weight" value="10"/>
 	</item>
+	
+
 </items>
