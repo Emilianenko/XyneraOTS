@@ -34525,6 +34525,71 @@
 		<attribute key="decayTo" value="28521"/>
 		<attribute key="containersize" value="20"/>
 	</item>
+	
+	<!-- store casks -->
+	<item fromid="28535" toid="28539">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="1000"/>
+	</item>
+	<item fromid="28545" toid="28548">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="1000"/>
+	</item>
+	<item id="28549">
+		<!-- supreme mana cask -->
+		<!-- supreme mp do not exist so this one just holds 2x ump capacity -->
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="2000"/>
+	</item>
+	<item fromid="28555" toid="28556">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="1000"/>
+	</item>
+	
+	<!-- store kegs -->
+	<!-- health-->
+	<item id="28559">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="30000"/>
+	</item>
+	<item fromid="28560" toid="28562">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="32500"/>
+	</item>
+	<item id="28563">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="42500"/>
+	</item>
+	
+	<!-- mana -->
+	<item id="28564">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="30000"/>
+	</item>
+	<item fromid="28565" toid="28567">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="32500"/>
+	</item>
+	<item id="28568">
+		<!-- supreme mana keg -->
+		<!-- supreme mp do not exist so this one just holds 2x ump capacity -->
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="1000"/>
+		<attribute key="weight" value="42500"/>
+	</item>
+	
+	<!-- spirit -->
+	<item fromid="28569" toid="28570">
+		<attribute key="showCharges" value="1"/>
+		<attribute key="charges" value="500"/>
+		<attribute key="weight" value="32500"/>
+	</item>
+	
 	<item id="28631" article="a" name="moon mirror">
 		<attribute key="slotType" value="ammo"/>
 		<attribute key="showAttributes" value="1"/>

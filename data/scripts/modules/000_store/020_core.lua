@@ -298,6 +298,48 @@ function GenerateStoreService(name, serviceId, price, category, image, published
 	offer.configurable = serviceId <= STORE_SERVICE_LAST_CONFIGURABLE
 end
 
+local templateKeg = [[<i>Fill up potions to %s no matter where you are!</i>
+
+{character}
+{vocationlevelcheck}
+{storeinboxicon} potions created from this keg will be sent to your Store inbox and can only be stored there and in depot box
+{info} usable 500 times a piece
+{info} saves capacity because it's constant weight equals only 250 potions]]
+
+local templateCask = [[<i>Place it in your house and fill up potions to %s!</i>
+
+{house}
+{box}
+{storeinbox}
+{usablebyallicon} can be used to fill up potions by all characters that have access to the house
+{storeinboxicon} potions created from this cask will be sent to your Store inbox and can only be stored there and in depot box
+{backtoinbox}
+{info} usable 1000 times a piece
+{transferableprice}]]
+
+local templatePotions = {
+	[1] = "restore your hit points",
+	[2] = "refill your mana",
+	[3] = "restore your hit points and mana"
+}
+
+function GenerateCasksKegs(kegTable, minId, maxId)
+	for i = minId, maxId do
+		if kegTable[i] then
+			local itemName = ItemType(i):getName():lower()
+			local isKeg = itemName:match("keg")
+			local potionType = itemName:match("health") and 1 or itemName:match("mana") and 2 or 3
+			local desc = string.format(isKeg and templateKeg or templateCask, templatePotions[potionType])
+			local offer = GenerateStoreItem(i, kegTable[i][2], isKeg and STORE_TAB_KEGS or STORE_TAB_CASKS, potionType, 1499155200, 1, nil, desc)
+			if isKeg then
+				-- locks the player from buying if vocation wrong
+				-- casks are ok because other characters can use them
+				offer.potion = kegTable[i][1]
+			end
+		end
+	end
+end
+
 -- permission check
 function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}
@@ -386,18 +428,28 @@ function Player:getOfferStatus(offer, fastCheck)
 			end
 		end
 		
+		-- is item offer
 		if offer.type == STORE_OFFER_TYPE_ITEM then
 			local itemType = ItemType(offer.itemId)
 			if itemType then
-				if itemType:isPickupable() and self:getFreeCapacity() < itemType:getWeight() * offer.packages[1].amount then
+				local pickupable = itemType:isPickupable()
+				if pickupable and self:getFreeCapacity() < itemType:getWeight() * offer.packages[1].amount then
 					if fastCheck then
 						return STORE_REASON_CAPACITY
 					end
 					
 					messages[#messages + 1] = STORE_REASON_CAPACITY
+				elseif not pickupable then
+					if not self:getHouse() then
+						if fastCheck then
+							return STORE_REASON_NEED_HOUSE
+						end
+						
+						messages[#messages + 1] = STORE_REASON_NEED_HOUSE
+					end
 				end
 				
-				local potion = Potions[offer.itemId]
+				local potion = Potions[offer.potion or offer.itemId]
 				
 				if offer.itemId == ITEM_GOLD_POUCH then
 					-- can only be bought once
@@ -429,7 +481,7 @@ function Player:getOfferStatus(offer, fastCheck)
 					
 					-- vocation check
 					if potion.vocations then
-						local vocMap = Potions[offer.itemId].vocations
+						local vocMap = Potions[offer.potion or offer.itemId].vocations
 						if vocMap and not table.contains(vocMap, self:getVocation():getId()) then
 							if fastCheck then
 								return STORE_REASON_VOCATION
@@ -710,8 +762,8 @@ local function isValidOffer(player, offer)
 	if offer.type == STORE_OFFER_TYPE_ITEM then
 		local rune = Spell(offer.itemId)
 		
-		if Potions[offer.itemId] then
-			local vocMap = Potions[offer.itemId].vocations
+		if Potions[offer.potion or offer.itemId] then
+			local vocMap = Potions[offer.potion or offer.itemId].vocations
 			if vocMap and not table.contains(vocMap, player:getVocation():getId()) then
 				return false
 			end						

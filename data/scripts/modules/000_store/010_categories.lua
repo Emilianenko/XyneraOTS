@@ -189,6 +189,8 @@ StoreCategories = {
 		image = "UsefulThings",
 		offers = {},
 	},
+	--[[
+	-- unused
 	[23] = {
 		name = "Tournament",
 		redirect = STORE_TAB_TICKETS,
@@ -202,4 +204,5 @@ StoreCategories = {
 		image = "ExclusiveOffers",
 		offers = {},
 	}
+	]]
 }

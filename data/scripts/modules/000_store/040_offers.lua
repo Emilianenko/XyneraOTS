@@ -373,6 +373,9 @@
 	-- supreme
 	GeneratePotion(26031, 47, 100, 113, 250)
 
+-- Casks and Kegs
+	GenerateCasksKegs(KegTable, 28535, 28570)
+
 -- irregular items
 -- GenerateStoreItem
 -- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
