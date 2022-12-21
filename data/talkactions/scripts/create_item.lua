@@ -42,13 +42,21 @@ function onSay(player, words, param)
 	local result = player:addItem(itemType:getId(), count)
 	if result then
 		if not itemType:isStackable() then
+			local charges = itemType:getCharges()
 			if type(result) == "table" then
 				for _, item in ipairs(result) do
+					if charges > 1 then
+						item:setAttribute(ITEM_ATTRIBUTE_CHARGES, charges)
+					end
 					item:decay()
 				end
 			else
 				if itemType:isKey() then
 					result:setAttribute(ITEM_ATTRIBUTE_ACTIONID, keyNumber)
+				end
+				
+				if charges > 1 then
+					result:setAttribute(ITEM_ATTRIBUTE_CHARGES, charges)
 				end
 				result:decay()
 			end
