@@ -49,6 +49,7 @@ CarpetMap = {
 	[38555] = 38556, -- romantic carpet
 	
 	-- 12.70
+	[39494] = 39152, -- eldritch carpet
 	[39607] = 39595, -- cloth (sapling)
 	[39608] = 39597, -- cloth (almanac)
 	[39609] = 39599, -- cloth (book)

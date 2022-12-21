@@ -43008,6 +43008,11 @@
 		<attribute key="rotateTo" value="38614" />
 	</item>
 
+	<!-- eldritch carpet -->
+	<item id="39152">
+		<attribute key="forceSerialize" value="1" />
+	</item>
+	
 	<item id="39265" article="a" name="dead abomination">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="300"/>
@@ -43424,6 +43429,12 @@
 		<attribute key="decayTo" value="39374"/>
 		<attribute key="containersize" value="30"/>
 	</item>
+	
+	<!-- eldritch carpet -->
+	<item id="39404">
+		<attribute key="forceSerialize" value="1" />
+	</item>
+	
 	<item id="39417" article="a" name="dead lavafungus">
 		<attribute key="containerSize" value="30" />
 		<attribute key="decayTo" value="0" />
