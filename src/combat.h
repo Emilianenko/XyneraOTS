@@ -126,6 +126,7 @@ class Combat
 		static bool isPlayerCombat(const Creature* target);
 		static CombatType_t ConditionToDamageType(ConditionType_t type);
 		static ConditionType_t DamageToConditionType(CombatType_t type);
+		static uint8_t GetClientCombatByType(CombatType_t type);
 		static ReturnValue canTargetCreature(Player* attacker, Creature* target);
 		static ReturnValue canDoCombat(Creature* caster, Tile* tile, bool aggressive);
 		static ReturnValue canDoCombat(Creature* attacker, Creature* target);

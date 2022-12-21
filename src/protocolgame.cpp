@@ -7,6 +7,7 @@
 
 #include "actions.h"
 #include "ban.h"
+#include "combat.h"
 #include "condition.h"
 #include "configmanager.h"
 #include "depotchest.h"
@@ -4188,25 +4189,58 @@ void ProtocolGame::AddPlayerStats(NetworkMessage& msg)
 void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 {
 	msg.addByte(0xA1);
+	// magic level
 	msg.add<uint16_t>(player->getMagicLevel());
 	msg.add<uint16_t>(player->getBaseMagicLevel());
-	msg.add<uint16_t>(player->getBaseMagicLevel()); // base + loyalty bonus(?)
+	msg.add<uint16_t>(player->getBaseMagicLevel()); // base + loyalty bonus
 	msg.add<uint16_t>(player->getMagicLevelPercent() * 100);
 
 	// skills
 	for (uint8_t i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
 		msg.add<uint16_t>(std::min<int32_t>(player->getSkillLevel(i), std::numeric_limits<uint16_t>::max()));
 		msg.add<uint16_t>(player->getBaseSkill(i));
-		msg.add<uint16_t>(player->getBaseSkill(i)); // base + loyalty bonus(?)
+		msg.add<uint16_t>(player->getBaseSkill(i)); // base + loyalty bonus
 		msg.add<uint16_t>(player->getSkillPercent(i) * 100);
 	}
 
-	// crit, leech, tier bonuses
-	for (uint8_t i = SPECIALSKILL_FIRST; i <= SPECIALSKILL_LAST; ++i) {
+	// crit, leech
+	for (uint8_t i = SPECIALSKILL_LEECH_FIRST; i <= SPECIALSKILL_LEECH_LAST; ++i) {
 		int32_t skillAmount = std::max<int32_t>(0, std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i]));
 		if (i != SPECIALSKILL_CRITICALHITAMOUNT && i != SPECIALSKILL_LIFELEECHAMOUNT && i != SPECIALSKILL_MANALEECHAMOUNT) {
-			skillAmount = std::min<int32_t>(skillAmount, i < SPECIALSKILL_ONSLAUGHT ? 100 : 10000);
+			skillAmount = std::min<int32_t>(skillAmount, 100);
 		}
+		else {
+			skillAmount *= 100;
+		}
+
+		msg.add<uint16_t>(skillAmount); // base + bonus special skill
+		msg.add<uint16_t>(0); // base special skill
+	}
+
+	// get element magic levels in client-friendly format
+	std::array<int16_t, COMBAT_COUNT> specMLs = {0};
+	uint8_t realCount = 0;
+	for (uint16_t elementId = 0; elementId < COMBAT_COUNT; ++elementId) {
+		uint16_t specMagLevel = player->specialMagicLevelSkill[elementId];
+		if (specMagLevel != 0) {
+			specMLs[Combat::GetClientCombatByType(static_cast<CombatType_t>(1 << elementId))] = specMagLevel;
+			++realCount;
+		}
+	}
+		
+	// element magic levels
+	msg.addByte(realCount);
+	for (uint16_t elementId = 0; elementId < COMBAT_COUNT; ++elementId) {
+		if (specMLs[elementId] != 0) {
+			msg.addByte(elementId);
+			msg.add<int16_t>(specMLs[elementId]); // base special skill
+		}
+	}
+
+	// tier bonuses
+	for (uint8_t i = SPECIALSKILL_FORGE_FIRST; i <= SPECIALSKILL_FORGE_LAST; ++i) {
+		int32_t skillAmount = std::max<int32_t>(0, std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i]));
+		skillAmount = std::min<int32_t>(skillAmount, 10000);
 
 		msg.add<uint16_t>(skillAmount); // base + bonus special skill
 		msg.add<uint16_t>(0); // base special skill

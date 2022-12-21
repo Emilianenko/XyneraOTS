@@ -200,6 +200,47 @@ ConditionType_t Combat::DamageToConditionType(CombatType_t type)
 	}
 }
 
+uint8_t Combat::GetClientCombatByType(CombatType_t type)
+{
+	switch (type) {
+		case COMBAT_PHYSICALDAMAGE:
+			return 0;
+
+		case COMBAT_FIREDAMAGE:
+			return 1;
+
+		case COMBAT_EARTHDAMAGE:
+			return 2;
+
+		case COMBAT_ENERGYDAMAGE:
+			return 3;
+
+		case COMBAT_ICEDAMAGE:
+			return 4;
+
+		case COMBAT_HOLYDAMAGE:
+			return 5;
+
+		case COMBAT_DEATHDAMAGE:
+			return 6;
+
+		case COMBAT_HEALING:
+			return 7;
+
+		case COMBAT_DROWNDAMAGE:
+			return 8;
+
+		case COMBAT_LIFEDRAIN:
+			return 9;
+
+		case COMBAT_MANADRAIN:
+			return 10;
+
+		default:
+			return 0;
+	}
+}
+
 bool Combat::isPlayerCombat(const Creature* target)
 {
 	if (target->getPlayer()) {
