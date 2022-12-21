@@ -4208,8 +4208,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 		int32_t skillAmount = std::max<int32_t>(0, std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i]));
 		if (i != SPECIALSKILL_CRITICALHITAMOUNT && i != SPECIALSKILL_LIFELEECHAMOUNT && i != SPECIALSKILL_MANALEECHAMOUNT) {
 			skillAmount = std::min<int32_t>(skillAmount, 100);
-		}
-		else {
+		} else {
 			skillAmount *= 100;
 		}
 

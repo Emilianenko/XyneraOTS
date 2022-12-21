@@ -166,7 +166,7 @@ StoreOfferDisableReasons = {
 	-- runes
 	[STORE_REASON_LEVEL] = "Your Level is too low.",
 	[STORE_REASON_MAGLEVEL] = "Your Magic Level is too low.",
-	[STORE_REASON_VOCATION] = "Your vocation cannot use this rune.",
+	[STORE_REASON_VOCATION] = "Your vocation cannot use this item.",
 }
 
 StoreOfferDisableReasonsCount = 0

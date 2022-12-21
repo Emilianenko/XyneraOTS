@@ -1,4 +1,20 @@
 --[[
+mp 125x 6 300x 12
+smp 100x 7 250x 17
+gmp 100x 11 250x 26
+ump 100x 33 250x 79
+hp 125x 6 300x 11
+shp 100x 10 250x 21
+ghp 100x 18 250x 21
+uhp 100x 29 250x 68
+supr hp 100x 47 250x 113
+gsp 100x 18 250x 41
+usp 100x 33 250x 79
+
+Restores your character's hit points.
+Refills your character's mana.
+Restores your character's hit points and mana.
+
 hide wg and paral from shop if not ed
 
 -- useful

@@ -129,7 +129,8 @@ function GenerateStoreItem(itemId, price, category, subCategory, publishedAt, am
 	)
 
 	offer.type = STORE_OFFER_TYPE_ITEM
-	offer.itemId = itemId	
+	offer.itemId = itemId
+	return offer
 end
 
 -- bed offer generator
@@ -228,13 +229,55 @@ function GenerateCarpet(itemId, price, publishedAt)
 end
 
 -- rune offer generator
-function GenerateRune(itemId, price, runeType, publishedAt, description)
+function GenerateRune(itemId, price, runeType, description)
 	GenerateStoreItem(
 		itemId, price,
 		STORE_TAB_RUNES, runeType,
-		publishedAt, 250, nil,
+		0, 250, nil,
 		string.format("%s\n\n<i>%s</i>", desc_rune, description)
 	)
+end
+
+local descPotions = {
+	[1] = "Restores your character's hit points.",
+	[2] = "Refills your character's mana.",
+	[3] = "Restores your character's hit points and mana."
+}
+	
+local descPotionCommon = [[{character}
+{vocationlevelcheck}
+{storeinbox}
+{battlesign}
+{capacity}]]
+
+-- potion offer generator
+function GeneratePotion(itemId, price1, amount1, price2, amount2)
+	local potionData = Potions[itemId]
+	if not potionData then
+		print("Store: invalid potion", itemId)
+		return
+	end
+	
+	local potionType = potionData.health and 1 or 0
+	if potionData.mana then
+		potionType = potionType + 2
+	end
+	
+	local potionDesc = potionType ~= 0 and descPotions[potionType] or ""
+	local offer = GenerateStoreItem(
+		itemId, price1,
+		STORE_TAB_POTIONS, potionType,
+		0, amount1, nil,
+		string.format("<i>%s</i>\n\n%s", potionDesc, descPotionCommon)
+	)
+	lastOfferId = lastOfferId + 1
+	offer.packages[2] = {
+		amount = amount2,
+		price = price2,
+		currency = STORE_CURRENCY_COINS,
+		offerId = lastOfferId,
+		status = STORE_CATEGORY_TYPE_NORMAL,
+	}
 end
 
 -- service offer generator
@@ -354,7 +397,9 @@ function Player:getOfferStatus(offer, fastCheck)
 					messages[#messages + 1] = STORE_REASON_CAPACITY
 				end
 				
-				if itemType:getId() == ITEM_GOLD_POUCH then
+				local potion = Potions[offer.itemId]
+				
+				if offer.itemId == ITEM_GOLD_POUCH then
 					-- can only be bought once
 					if self:getStorageValue(PlayerStorageKeys.storeGoldPouchBought) == 1 then
 						if fastCheck then
@@ -363,8 +408,38 @@ function Player:getOfferStatus(offer, fastCheck)
 						
 						messages[#messages + 1] = STORE_REASON_GOLD_POUCH
 					end
+				elseif potion then
+					-- infight check
+					if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+						if fastCheck then
+							return STORE_REASON_INFIGHT
+						end
+						
+						messages[#messages + 1] = STORE_REASON_INFIGHT
+					end
+					
+					-- level check
+					if self:getLevel() < (potion.level or 0) then
+						if fastCheck then
+							return STORE_REASON_LEVEL
+						end
+							
+						messages[#messages + 1] = STORE_REASON_LEVEL
+					end
+					
+					-- vocation check
+					if potion.vocations then
+						local vocMap = Potions[offer.itemId].vocations
+						if vocMap and not table.contains(vocMap, self:getVocation():getId()) then
+							if fastCheck then
+								return STORE_REASON_VOCATION
+							end
+							
+							messages[#messages + 1] = STORE_REASON_VOCATION
+						end
+					end
 				elseif itemType:isRune() then
-					local rune = Spell(itemType:getId())
+					local rune = Spell(offer.itemId)
 					if rune then
 						-- infight check
 						if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
@@ -622,4 +697,81 @@ function Player:getStoreHistoryPage(pageId)
 	end
 	
 	return page
+end
+
+local function isValidOffer(player, offer)
+	-- conditions to determine whether the item is visible to the player
+	-- offer exists
+	if not offer then
+		return false
+	end
+	
+	-- offer is item and can be used by player vocation
+	if offer.type == STORE_OFFER_TYPE_ITEM then
+		local rune = Spell(offer.itemId)
+		
+		if Potions[offer.itemId] then
+			local vocMap = Potions[offer.itemId].vocations
+			if vocMap and not table.contains(vocMap, player:getVocation():getId()) then
+				return false
+			end						
+		elseif rune then
+			local vocMap = rune:vocation()
+			if vocMap and #vocMap > 0 then
+				local vocFound = false
+				local pVocName = player:getVocation():getName()
+				for _, runeVocName in ipairs(vocMap) do
+					if pVocName:match(runeVocName) then
+						return true
+					end
+				end
+				
+				if not vocFound then
+					return false
+				end
+			end
+		end
+	end
+	
+	return true
+end
+
+function Player:filterStoreTab(tabInfo)
+	local playerTab = {
+		offerCount = 0
+	}
+	
+	if tabInfo.offers and #tabInfo.offers > 0 then
+		playerTab.name = tabInfo.name
+		playerTab.offers = {}
+		for i = 1, #tabInfo.offers do
+			if isValidOffer(self, StoreOffers[tabInfo.offers[i]]) then
+				playerTab.offers[#playerTab.offers + 1] = tabInfo.offers[i]
+				playerTab.offerCount = playerTab.offerCount + 1
+			end
+		end
+	end
+	
+	if tabInfo.offerTypes and #tabInfo.offerTypes > 0 then
+		playerTab.offerTypes = {}
+		for dropDownId = 1, #tabInfo.offerTypes do
+			playerTab.offerTypes[dropDownId] = {
+				name = tabInfo.offerTypes[dropDownId].name,
+				offers = {}
+			}
+			
+			local currentTab = tabInfo.offerTypes[dropDownId]
+			if currentTab.offers and #currentTab.offers > 0 then
+				for offerIndex = 1, #currentTab.offers do
+					local currentOfferId = currentTab.offers[offerIndex]
+					if isValidOffer(self, StoreOffers[currentOfferId]) then
+						table.insert(playerTab.offerTypes[dropDownId].offers, currentTab.offers[offerIndex])
+						playerTab.offerCount = playerTab.offerCount + 1
+					end
+				end
+			end
+		end
+	end
+	
+	return playerTab
 end
