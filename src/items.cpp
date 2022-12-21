@@ -692,14 +692,17 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 	const std::string location = "Items::parseItemNode";
 
-	// load name for subtypes and unnamed items only
-	if (id > 0 && id < 100 || it.name.empty()) {
-		it.name = itemNode.attribute("name").as_string();
+	pugi::xml_attribute nameAttribute = itemNode.attribute("name");
+	if (nameAttribute) {
+		const std::string nameStr = nameAttribute.as_string();
+		if (!nameStr.empty()) {
+			it.name = nameStr;
 
-		if (!it.name.empty()) {
-			std::string lowerCaseName = asLowerCaseString(it.name);
-			if (nameToItems.find(lowerCaseName) == nameToItems.end()) {
-				nameToItems.emplace(std::move(lowerCaseName), id);
+			if (!it.name.empty()) {
+				std::string lowerCaseName = asLowerCaseString(it.name);
+				if (nameToItems.find(lowerCaseName) == nameToItems.end()) {
+					nameToItems.emplace(std::move(lowerCaseName), id);
+				}
 			}
 		}
 	}
