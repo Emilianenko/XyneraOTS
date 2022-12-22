@@ -1,3 +1,5 @@
+-- use this file to add store offers
+
 -- VIP Pass (Premium Time)
 	-- days, price, publishedAt
 	GeneratePremium(30, 250, 3)
@@ -233,7 +235,7 @@
 	-- itemId, price, publishedAt
 	GenerateCarpet(26087, 35, 1449565200) -- yalaharian carpet
 	GenerateCarpet(26088, 30, 1449565200) -- white fur carpet
-	GenerateCarpet(26087, 25, 1449565200) -- bamboo mat
+	GenerateCarpet(26089, 25, 1449565200) -- bamboo mat
 	GenerateCarpet(26363, 35, 1472547600) -- crimson carpet
 	GenerateCarpet(26366, 35, 1472547600) -- azure carpet
 	GenerateCarpet(26367, 35, 1472547600) -- emerald carpet
@@ -379,3 +381,13 @@
 -- irregular items
 -- GenerateStoreItem
 -- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
+
+	for itemId = 31208, 31213 do
+		GenerateStoreItem(itemId, 25, STORE_TAB_EXERCISE, nil, 0, 1, nil, generateExerciseDesc(itemId))
+	end
+	
+	for itemId = 37935, 37946 do
+		local price = itemId < 37941 and 90 or 720
+		GenerateStoreItem(itemId, price, STORE_TAB_EXERCISE, nil, 0, 1, nil, generateExerciseDesc(itemId))
+	end
+	

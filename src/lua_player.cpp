@@ -2758,6 +2758,32 @@ int LuaScriptInterface::luaPlayerSetIgnoreFriction(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerStartTraining(lua_State* L)
+{
+	// player:startTraining(weapon, dummy)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	Item* weapon = getUserdata<Item>(L, 2);
+	if (!weapon) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	Item* dummy = getUserdata<Item>(L, 3);
+	if (!dummy) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	player->startTraining(weapon, dummy);
+	pushBoolean(L, true);
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerImbuementsReload(lua_State* L)
 {
 	// helper for reloading imbuements

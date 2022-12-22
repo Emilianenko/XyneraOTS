@@ -35544,41 +35544,85 @@
 		<attribute key="absorbpercentlifedrain" value="5"/>
 		<attribute key="weight" value="3800"/>
 	</item>
+	
+	<!-- exercise weapons -->
+	<item id="31196" article="a" name="training sword" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="sword" />
+	</item>
+	<item id="31197" article="a" name="training axe" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="axe" />
+	</item>
+	<item id="31198" article="a" name="training club" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="club" />
+	</item>
+	<item id="31199" article="a" name="training bow" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="bow" />
+	</item>
+	<item id="31200" article="a" name="training rod" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="rod" />
+	</item>
+	<item id="31201" article="a" name="training wand" editorsuffix=" (50 charges)">
+		<attribute key="charges" value="50" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="wand" />
+	</item>
+	<item id="31208" article="an" name="exercise sword" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="sword" />
+	</item>
+	<item id="31209" article="an" name="exercise axe" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="axe" />
+	</item>
+	<item id="31210" article="a" name="exercise club" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="club" />
+	</item>
+	<item id="31211" article="a" name="exercise bow" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="bow" />
+	</item>
+	<item id="31212" article="a" name="exercise rod" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="rod" />
+	</item>
+	<item id="31213" article="an" name="exercise wand" editorsuffix=" (500 charges)">
+		<attribute key="charges" value="500" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="wand" />
+	</item>
+
 	<item id="31227" article="a" name="book backpack">
 		<attribute key="weight" value="1800" />
 		<attribute key="containerSize" value="22" />
 		<attribute key="slotType" value="backpack" />
-	</item>
-	
-	<item id="31208" article="an" name="exercise sword">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
-	</item>
-	<item id="31209" article="an" name="exercise axe">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
-	</item>
-	<item id="31210" article="an" name="exercise club">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
-	</item>
-	<item id="31211" article="an" name="exercise bow">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
-	</item>
-	<item id="31212" article="an" name="exercise rod">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
-	</item>
-	<item id="31213" article="an" name="exercise wand">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="500"/>
-		<attribute key="weight" value="1000"/>
 	</item>
 
 	<!-- monk exercise dummy -->
@@ -42191,66 +42235,81 @@
 		<attribute key="description" value="The RRR is a testament of rascoohan ingenuity."/>
 		<attribute key="weight" value="4000"/>
 	</item>
-	<item id="37935" article="an" name="durable exercise sword">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+
+	<!-- exercise weapons -->
+	<item id="37935" article="a" name="durable exercise sword" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="sword" />
 	</item>
-	<item id="37936" article="an" name="durable exercise axe">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37936" article="a" name="durable exercise axe" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="axe" />
 	</item>
-	<item id="37937" article="an" name="durable exercise club">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37937" article="a" name="durable exercise club" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="club" />
 	</item>
-	<item id="37938" article="an" name="durable exercise bow">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37938" article="a" name="durable exercise bow" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="bow" />
 	</item>
-	<item id="37939" article="an" name="durable exercise rod">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37939" article="a" name="durable exercise rod" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="rod" />
 	</item>
-	<item id="37940" article="an" name="durable exercise wand">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="1800"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37940" article="a" name="durable exercise wand" editorsuffix=" (1800 charges)">
+		<attribute key="charges" value="1800" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="wand" />
 	</item>
-	<item id="37941" article="an" name="lasting exercise sword">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37941" article="a" name="lasting exercise sword" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="sword" />
 	</item>
-	<item id="37942" article="an" name="lasting exercise axe">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37942" article="a" name="lasting exercise axe" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="axe" />
 	</item>
-	<item id="37943" article="an" name="lasting exercise club">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37943" article="a" name="lasting exercise club" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="club" />
 	</item>
-	<item id="37944" article="an" name="lasting exercise bow">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37944" article="a" name="lasting exercise bow" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="bow" />
 	</item>
-	<item id="37945" article="an" name="lasting exercise rod">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37945" article="a" name="lasting exercise rod" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="rod" />
 	</item>
-	<item id="37946" article="an" name="lasting exercise wand">
-		<attribute key="showCharges" value="1"/>
-		<attribute key="charges" value="14400"/>
-		<attribute key="weight" value="1000"/>
+	<item id="37946" article="a" name="lasting exercise wand" editorsuffix=" (14400 charges)">
+		<attribute key="charges" value="14400" />
+		<attribute key="showcharges" value="1" />
+		<attribute key="weight" value="1000" />
+		<atrtibute key="trainingtype" value="wand" />
 	</item>
+
 	<item id="38014" article="a" name="dead exotic cave spider">
 		<attribute key="corpseType" value="venom"/>
 		<attribute key="fluidsource" value="slime"/>
@@ -47724,6 +47783,4 @@
 		<attribute key="description" value="Use this item to earn 100 dust at the exaltation forge."/>
 		<attribute key="weight" value="10"/>
 	</item>
-	
-
 </items>

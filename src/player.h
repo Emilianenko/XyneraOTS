@@ -10,6 +10,7 @@
 #include "enums.h"
 #include "groups.h"
 #include "guild.h"
+#include "housetile.h"
 #include "protocolgame.h"
 #include "rewardchest.h"
 #include "town.h"
@@ -390,7 +391,10 @@ class Player final : public Creature, public Cylinder
 		int32_t getIdleTime() const {
 			return idleTime;
 		}
-		void resetIdleTime() {
+		void resetIdleTime(bool cancelTraining = false) {
+			if (cancelTraining) {
+				stopTraining();
+			}
 			idleTime = 0;
 		}
 
@@ -725,6 +729,10 @@ class Player final : public Creature, public Cylinder
 		void onAddCombatCondition(ConditionType_t type) override;
 		void onEndCondition(ConditionType_t type) override;
 		void onCombatRemoveCondition(Condition* condition) override;
+		bool doTraining();
+		void startTraining(Item* weapon, Item* dummy);
+		void stopTraining();
+		void onAttacking(uint32_t interval) override;
 		void onAttackedCreature(Creature* target, bool addFightTicks = true) override;
 		void onAttacked() override;
 		void onAttackedCreatureDrainHealth(Creature* target, int32_t points) override;
@@ -1504,6 +1512,8 @@ class Player final : public Creature, public Cylinder
 		Item* tradeItem = nullptr;
  		Item* inventory[CONST_SLOT_LAST + 1] = {};
 		Item* writeItem = nullptr;
+		Item* trainingDummy = nullptr;
+		Item* trainingWeapon = nullptr;
 		House* editHouse = nullptr;
 		Npc* shopOwner = nullptr;
 		Party* party = nullptr;

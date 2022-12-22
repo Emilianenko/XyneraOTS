@@ -3247,6 +3247,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "isIgnoringFriction", LuaScriptInterface::luaPlayerIsIgnoringFriction);
 	registerMethod("Player", "setIgnoreFriction", LuaScriptInterface::luaPlayerSetIgnoreFriction);
 
+	registerMethod("Player", "startTraining", LuaScriptInterface::luaPlayerStartTraining);
+
 	registerMethod("Player", "imbuementsReload", LuaScriptInterface::luaPlayerImbuementsReload);
 
 	// Monster

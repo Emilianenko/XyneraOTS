@@ -61,6 +61,9 @@ PlayerStorageKeys = {
 	-- scripts/actions/podiumRune.lua
 	podiumRune = 80040,
 	
+	
+	trainingWeaponCooldown = 89999,
+	
 	-- gamestore
 	-- intended range: 90000-90100
 	storeGoldPouchBought = 90000,

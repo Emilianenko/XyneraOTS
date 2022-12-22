@@ -68,6 +68,9 @@ Player::~Player()
 	storeInbox->setParent(nullptr);
 	storeInbox->decrementReferenceCounter();
 
+	if (trainingDummy) {
+		trainingDummy->decrementReferenceCounter();
+	}
 	setWriteItem(nullptr);
 	setEditHouse(nullptr);
 }
@@ -1705,7 +1708,7 @@ void Player::setNextWalkTask(SchedulerTask* task)
 
 	if (task) {
 		nextStepEvent = g_scheduler.addEvent(task);
-		resetIdleTime();
+		resetIdleTime(true);
 	}
 }
 
@@ -1719,7 +1722,7 @@ void Player::setNextActionTask(SchedulerTask* task, bool resetIdleTime /*= true 
 	if (task) {
 		actionTaskEvent = g_scheduler.addEvent(task);
 		if (resetIdleTime) {
-			this->resetIdleTime();
+			this->resetIdleTime(true);
 		}
 	}
 }
@@ -4007,6 +4010,153 @@ void Player::onCombatRemoveCondition(Condition* condition)
 			removeCondition(condition);
 		}
 	}
+}
+
+bool Player::doTraining()
+{
+	if (!trainingDummy || !trainingWeapon) {
+		stopTraining();
+		return false;
+	}
+
+	// trainingDummy && trainingWeapon check was made in parent method already
+	if (trainingDummy->isRemoved() || trainingWeapon->isRemoved() || !g_game.isSightClear(getPosition(), trainingDummy->getPosition(), true)) {
+		stopTraining();
+		return false;
+	}
+
+	// simplified doAttacking code
+	if (lastAttack == 0) {
+		lastAttack = OTSYS_TIME() - getAttackSpeed() - 1;
+	}
+
+	if (hasCondition(CONDITION_PACIFIED)) {
+		return false;
+	}
+
+	if ((OTSYS_TIME() - lastAttack) >= getAttackSpeed()) {
+		bool result = false;
+		uint32_t delay = getAttackSpeed();
+		bool classicSpeed = g_config.getBoolean(ConfigManager::CLASSIC_ATTACK_SPEED);
+
+		if (hasFlag(PlayerFlag_NotGainSkill)) {
+			return false;
+		}
+
+		const ItemType& itemType = Item::items[trainingWeapon->getID()];
+		WeaponType_t weaponType = itemType.trainingType;
+		const Position& dummyPos = trainingDummy->getPosition();
+
+		ShootType_t distEffect = CONST_ANI_NONE;
+		bool ranged = false;
+		skills_t trainedSkill = SKILL_FIST;
+
+		switch (weaponType) {
+			case WEAPON_FIST:
+				break;
+			case WEAPON_CLUB:
+				trainedSkill = SKILL_CLUB;
+				break;
+			case WEAPON_SWORD:
+				trainedSkill = SKILL_SWORD;
+				break;
+			case WEAPON_AXE:
+				trainedSkill = SKILL_AXE;
+				break;
+			case WEAPON_DISTANCE:
+				distEffect = CONST_ANI_ARROW;
+				trainedSkill = SKILL_DISTANCE;
+				ranged = true;
+				break;
+			case WEAPON_WAND:
+				distEffect = CONST_ANI_ENERGY;
+				trainedSkill = SKILL_MAGLEVEL;
+				ranged = true;
+				break;
+			default:
+				return false;
+		}
+
+		if (ranged) {
+			// ranged check
+			if (std::max<uint32_t>(Position::getDistanceX(position, dummyPos), Position::getDistanceY(position, dummyPos)) > 6) {
+				return false;
+			}
+			g_game.addDistanceEffect(position, dummyPos, distEffect);
+		} else {
+			// melee check
+			if (!Position::areInRange<1, 1>(getPosition(), dummyPos)) {
+				return false;
+			}
+		}
+
+		bool houseTraining = false;
+		if (Tile* dummyTile = trainingDummy->getTile()) {
+			if (HouseTile* houseTile = dynamic_cast<HouseTile*>(dummyTile)) {
+				houseTraining = true;
+			}
+		}
+
+		// hitting the dummy effect
+		g_game.addMagicEffect(dummyPos, CONST_ME_POFF);
+
+		// adding skill tries
+		if (trainedSkill != SKILL_MAGLEVEL) {
+			addSkillAdvance(trainedSkill, (ranged ? 3 : 7) + (houseTraining ? 1 : 0));
+		} else {
+			addManaSpent(600);
+		}
+
+		uint16_t charges = trainingWeapon->getCharges();
+		consumeCharge(trainingWeapon);
+		if (charges < 2) {
+			// charges 1 -> 0
+			// training weapon destroyed
+			stopTraining();
+			return true;
+		}
+
+		SchedulerTask* task = createSchedulerTask(std::max<uint32_t>(SCHEDULER_MINTICKS, delay), [id = getID()]() { g_game.checkCreatureTraining(id); });
+		if (!classicSpeed) {
+			setNextActionTask(task, false);
+		} else {
+			g_scheduler.addEvent(task);
+		}
+
+		if (result) {
+			lastAttack = OTSYS_TIME();
+		}
+	}
+
+	return true;
+}
+
+void Player::startTraining(Item* weapon, Item* dummy)
+{
+	// cancel attack / follow
+	setFollowCreature(nullptr);
+	setAttackedCreature(nullptr);
+
+	// set training items
+	dummy->incrementReferenceCounter();
+	trainingDummy = dummy;
+	trainingWeapon = weapon;
+
+	g_dispatcher.addTask(createTask([id = getID()]() { g_game.checkCreatureTraining(id); }));
+}
+
+void Player::stopTraining()
+{
+	if (trainingDummy) {
+		trainingDummy->decrementReferenceCounter();
+	}
+	trainingDummy = nullptr;
+	trainingWeapon = nullptr;
+}
+
+void Player::onAttacking(uint32_t interval)
+{
+	Creature::onAttacking(interval);
 }
 
 void Player::onAttackedCreature(Creature* target, bool addFightTicks /* = true */)

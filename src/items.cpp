@@ -206,6 +206,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"allowdistread", ITEM_PARSE_ALLOWDISTREAD},
 	{"storeitem", ITEM_PARSE_STOREITEM},
 	{"worth", ITEM_PARSE_WORTH},
+	{"trainingtype", ITEM_PARSE_TRAININGTYPE},
 };
 
 const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {
@@ -897,6 +898,24 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 						it.weaponType = it2->second;
 					} else {
 						console::reportWarning(location, fmt::format("Unknown weaponType \"{:s}\"!", valueAttribute.as_string()));
+					}
+					break;
+				}
+
+				case ITEM_PARSE_TRAININGTYPE: {
+					tmpStrValue = asLowerCaseString(valueAttribute.as_string());
+					if (tmpStrValue == "club") {
+						it.trainingType = WEAPON_CLUB;
+					} else if (tmpStrValue == "sword") {
+						it.trainingType = WEAPON_SWORD;
+					} else if (tmpStrValue == "axe") {
+						it.trainingType = WEAPON_AXE;
+					} else if (tmpStrValue == "bow") {
+						it.trainingType = WEAPON_DISTANCE;
+					} else if (tmpStrValue == "wand" || tmpStrValue == "rod") {
+						it.trainingType = WEAPON_WAND;
+					} else {
+						console::reportWarning(location, fmt::format("Unknown training type \"{:s}\"!", valueAttribute.as_string()));
 					}
 					break;
 				}

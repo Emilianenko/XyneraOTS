@@ -38,6 +38,7 @@ StoreCategories = {
 	[5] = {
 		name = "Exercise Weapons", parent = "Consumables",
 		image = "ExerciseWeapons",
+		offers = {},
 	},
 	[6] = {
 		name = "Kegs", parent = "Consumables",

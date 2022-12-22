@@ -1888,7 +1888,7 @@ void Game::playerMove(uint32_t playerId, Direction direction)
 		return;
 	}
 
-	player->resetIdleTime();
+	player->resetIdleTime(true);
 	player->setNextWalkActionTask(nullptr);
 
 	player->startAutoWalk(direction);
@@ -2170,7 +2170,7 @@ void Game::playerAutoWalk(uint32_t playerId, const std::vector<Direction>& listD
 		return;
 	}
 
-	player->resetIdleTime();
+	player->resetIdleTime(true);
 	player->setNextWalkTask(nullptr);
 	player->startAutoWalk(listDir);
 }
@@ -2264,7 +2264,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 		return;
 	}
 
-	player->resetIdleTime();
+	player->resetIdleTime(true);
 	player->setNextActionTask(nullptr);
 
 	g_actions->useItemEx(player, fromPos, toPos, toStackPos, item, isHotkey);
@@ -2331,7 +2331,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 		return;
 	}
 
-	player->resetIdleTime();
+	player->resetIdleTime(true);
 	player->setNextActionTask(nullptr);
 
 	g_actions->useItem(player, pos, index, item, isHotkey);
@@ -2424,7 +2424,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 		return;
 	}
 
-	player->resetIdleTime();
+	player->resetIdleTime(true);
 	player->setNextActionTask(nullptr);
 
 	g_actions->useItemEx(player, fromPos, creature->getPosition(), creature->getParent()->getThingIndex(creature), item, isHotkey, creature);
@@ -3009,6 +3009,9 @@ void Game::playerRequestTrade(uint32_t playerId, const Position& pos, uint8_t st
 		return;
 	}
 
+	// cancel training activity
+	player->resetIdleTime(true);
+
 	if (!Position::areInRange<2, 2, 0>(tradePartner->getPosition(), player->getPosition())) {
 		player->sendCancelMessage(RETURNVALUE_DESTINATIONOUTOFREACH);
 		return;
@@ -3157,6 +3160,9 @@ void Game::playerAcceptTrade(uint32_t playerId)
 	if (!player) {
 		return;
 	}
+
+	// cancel training activity
+	player->resetIdleTime(true);
 
 	if (!(player->getTradeState() == TRADE_ACKNOWLEDGE || player->getTradeState() == TRADE_INITIATED)) {
 		return;
@@ -3972,11 +3978,12 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
 		return;
 	}
 
-	player->resetIdleTime();
-
 	if (playerSaySpell(player, type, text)) {
+		player->resetIdleTime(true);
 		return;
 	}
+
+	player->resetIdleTime();
 
 	if (type == TALKTYPE_PRIVATE_PN) {
 		playerSpeakToNpc(player, text);
@@ -4260,6 +4267,16 @@ void Game::checkCreatureAttack(uint32_t creatureId)
 	Creature* creature = getCreatureByID(creatureId);
 	if (creature && creature->getHealth() > 0) {
 		creature->onAttacking(0);
+	}
+}
+
+void Game::checkCreatureTraining(uint32_t creatureId)
+{
+	Creature* creature = getCreatureByID(creatureId);
+	if (creature && creature->getHealth() > 0) {
+		if (Player* player = creature->getPlayer()) {
+			player->doTraining();
+		}
 	}
 }
 

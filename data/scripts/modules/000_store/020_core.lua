@@ -55,6 +55,36 @@ local desc_xpboost = [[<i>Purchase a boost that increases the experience points 
 {info} price increases with every purchase
 {info} cannot be purchased if an XP boost is already active]]
 
+local desc_exercise = [[Description	<i>Use it to train your %s on an exercise dummy!</i>
+
+{character}
+{storeinbox}
+{useicon} use it on an exercise dummy to train your %s
+{info} usable %d times a piece]]
+local exerciseKeys = {"club", "sword", "axe", "bow", "wand", "rod"}
+local exerciseWords = {
+	club = "club fighting",
+	sword = "sword fighting",
+	axe = "axe fighting",
+	bow = "distance fighting",
+	wand = "magic level",
+	rod = "magic level",
+}
+
+function generateExerciseDesc(itemId)
+	local it = ItemType(itemId)
+	local itName = it:getName():lower()
+	local skillType
+	for k, v in pairs(exerciseKeys) do
+		if itName:match(v) then
+			skillType = exerciseWords[v]
+			break
+		end
+	end
+	
+	return skillType and string.format(desc_exercise, skillType, skillType, it:getCharges()) or ""
+end
+
 -- bed offer generator and helpers
 local function wordHelper(first, rest)
    return string.format("%s%s", first:upper(), rest:lower())
@@ -91,7 +121,7 @@ function StoreCreateOffer(name, price, category, subCategory, publishedAt, amoun
 		category = category,
 		subCategory = subCategory
 	}
-
+	
 	-- second price tag
 	if amountMulti then
 		lastOfferId = lastOfferId + 1
@@ -99,7 +129,7 @@ function StoreCreateOffer(name, price, category, subCategory, publishedAt, amoun
 			amount = amountBase * amountMulti,
 			price = price * amountMulti,
 			currency = STORE_CURRENCY_COINS,
-			offerId = lastOfferId + 1,
+			offerId = lastOfferId,
 			status = STORE_CATEGORY_TYPE_NORMAL,
 		}
 	end
@@ -219,7 +249,7 @@ end
 -- carpet offer generator
 function GenerateCarpet(itemId, price, publishedAt)
 	local offer = StoreCreateOffer(
-		upAllWords(ItemType(itemId):getName()), price,
+		upAllWords(ItemType(CarpetMap[itemId]):getName()), price,
 		STORE_TAB_DECORATIONS, 1, publishedAt, 1, 5,
 		desc_carpet
 	)

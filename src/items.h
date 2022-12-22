@@ -221,6 +221,7 @@ enum ItemParseAttributes_t {
 	ITEM_PARSE_BOOSTPERCENTDROWN,
 	ITEM_PARSE_BOOSTPERCENTPHYSICAL,
 	ITEM_PARSE_BOOSTPERCENTHEALING,
+	ITEM_PARSE_TRAININGTYPE
 };
 
 struct Abilities {
@@ -426,6 +427,7 @@ class ItemType
 		MagicEffectClasses magicEffect = CONST_ME_NONE;
 		Direction bedPartnerDir = DIRECTION_NONE;
 		WeaponType_t weaponType = WEAPON_NONE;
+		WeaponType_t trainingType = WEAPON_NONE;
 		Ammo_t ammoType = AMMO_NONE;
 		ShootType_t shootType = CONST_ANI_NONE;
 		RaceType_t corpseType = RACE_NONE;

@@ -1159,6 +1159,8 @@ class LuaScriptInterface
 		static int luaPlayerIsIgnoringFriction(lua_State* L);
 		static int luaPlayerSetIgnoreFriction(lua_State* L);
 
+		static int luaPlayerStartTraining(lua_State* L);
+
 		static int luaPlayerImbuementsReload(lua_State* L);
 
 		// Monster

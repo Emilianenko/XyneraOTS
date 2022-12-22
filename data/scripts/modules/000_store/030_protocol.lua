@@ -358,11 +358,13 @@ function Player:sendStoreUI(actionType, tabName, productId)
 	for _, offerId in ipairs(descriptionsToSend) do
 		local offer = StoreOffers[offerId]
 		if offer then
-			local m = NetworkMessage()
-			m:addByte(0xEA)
-			m:addU32(offer.packages[1].offerId)
-			m:addString(offer.description)
-			m:sendToPlayer(self)
+			for _, v in pairs(offer.packages) do
+				local m = NetworkMessage()
+				m:addByte(0xEA)
+				m:addU32(v.offerId)
+				m:addString(offer.description)
+				m:sendToPlayer(self)
+			end
 		end
 	end
 
