@@ -5,7 +5,7 @@ CarpetMap = {
 	[26087] = 26109, -- yalaharian carpet
 	[26088] = 26110, -- white fur carpet
 	[26089] = 26111, -- bamboo mat carpet
-	[26193] = 26192, -- void carpet
+	[26192] = 26193, -- void carpet
 	
 	-- 10.97
 	[26363] = 26371, -- crimson carpet
