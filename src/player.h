@@ -732,7 +732,6 @@ class Player final : public Creature, public Cylinder
 		bool doTraining();
 		void startTraining(Item* weapon, Item* dummy);
 		void stopTraining();
-		void onAttacking(uint32_t interval) override;
 		void onAttackedCreature(Creature* target, bool addFightTicks = true) override;
 		void onAttacked() override;
 		void onAttackedCreatureDrainHealth(Creature* target, int32_t points) override;
