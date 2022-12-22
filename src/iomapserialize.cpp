@@ -188,7 +188,7 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 						return true; // action was successful, show no errors
 					}
 				}
-				parent->internalAddThing(item);
+				parent->addThing(item);
 				item->startDecaying();
 			} else {
 				console::reportWarning("IOMapSerialize::loadItem", fmt::format("Failed to unserialize item id {:d}!", id));
