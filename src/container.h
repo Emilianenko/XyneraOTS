@@ -125,6 +125,14 @@ class Container : public Item, public Cylinder
 		bool hasPagination() const {
 			return pagination;
 		}
+		bool hasStoreItems() const {
+			for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
+				if ((*it)->isStoreItem()) {
+					return true;
+				}
+			}
+			return false;
+		}
 
 		//cylinder implementations
 		virtual ReturnValue queryAdd(int32_t index, const Thing& thing, uint32_t count,

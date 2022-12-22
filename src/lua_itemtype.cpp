@@ -947,3 +947,15 @@ int LuaScriptInterface::luaItemTypeIsStoreItem(lua_State* L)
 	}
 	return 1;
 }
+
+int LuaScriptInterface::luaItemTypeIsValidDepotBox(lua_State* L)
+{
+	// itemType:isValidDepotBox()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		pushBoolean(L, itemType->isDepotBox());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}

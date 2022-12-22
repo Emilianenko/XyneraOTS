@@ -6,13 +6,25 @@ local ec = EventCallback
 
 ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
 	-- logic for moving store items
-	if item:isStoreItem() then
+	local isStoreItem = item:isStoreItem()
+	if item:isContainer() then
+		for _, containerItem in pairs(item:getItems(true)) do
+			if containerItem:isStoreItem() then
+				isStoreItem = true
+				break
+			end
+		end
+	end
+	
+	if isStoreItem then
 		if fromPosition.x == CONTAINER_POSITION then
 			if toPosition.x == CONTAINER_POSITION and not toCylinder:getTopParent():isPlayer() then
 				-- trying to put store item in house chests (from other container)
-				return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE
+				if not toCylinder:getTopParent():getType():isValidDepotBox() then
+					return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE
+				end
 			end
-			
+
 			local toTile = Tile(toCylinder:getPosition())
 			local toHouse = toTile and toTile:getHouse()
 			if toHouse and toHouse:getOwnerGuid() ~= self:getGuid() then

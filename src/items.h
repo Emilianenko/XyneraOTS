@@ -339,6 +339,9 @@ class ItemType
 		bool isUseable() const {
 			return useable;
 		}
+		bool isDepotBox() const {
+			return isValidDepotBox(id);
+		}
 		bool hasSubType() const {
 			return isFluidContainer() || isSplash() || stackable || charges != 0;
 		}

@@ -251,7 +251,8 @@ ReturnValue Container::queryAdd(int32_t index, const Thing& thing, uint32_t coun
 	}
 
 	// store items can be only moved into depot chest or store inbox
-	if (item->isStoreItem() && !dynamic_cast<const DepotChest*>(this)) {
+	const Container* container = thing.getContainer();
+	if ((item->isStoreItem() || container && container->hasStoreItems()) && !dynamic_cast<const DepotChest*>(this->getTopParent())) {
 		return RETURNVALUE_ITEMCANNOTBEMOVEDTHERE;
 	}
 

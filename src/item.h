@@ -1060,7 +1060,7 @@ class Item : virtual public Thing
 		}
 
 		void setStoreItem(bool storeItem) {
-			setIntAttr(ITEM_ATTRIBUTE_STOREITEM, static_cast<int64_t>(storeItem));
+			setIntAttr(ITEM_ATTRIBUTE_STOREITEM, static_cast<int64_t>(storeItem ? 1 : 0));
 		}
 		bool isStoreItem() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_STOREITEM)) {

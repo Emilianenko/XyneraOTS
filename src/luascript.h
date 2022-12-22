@@ -1404,6 +1404,7 @@ class LuaScriptInterface
 		static int luaItemTypeHasSubType(lua_State* L);
 
 		static int luaItemTypeIsStoreItem(lua_State* L);
+		static int luaItemTypeIsValidDepotBox(lua_State* L);
 
 		// Combat
 		static int luaCombatCreate(lua_State* L);

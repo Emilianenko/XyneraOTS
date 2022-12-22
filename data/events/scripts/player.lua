@@ -101,7 +101,15 @@ function Player:onTradeRequest(target, item)
 		return false
 	end
 
-
+	if item:isContainer() then
+		for _, containerItem in pairs(item:getItems(true)) do
+			if containerItem:isStoreItem() then
+				self:sendCancelMessage("This item cannot be traded.")
+				return false
+			end
+		end
+	end
+	
 	if EventCallback.onTradeRequest then
 		return EventCallback.onTradeRequest(self, target, item)
 	end

@@ -819,6 +819,11 @@ uint16_t getDepotBoxId(uint16_t index)
 	return depotBoxes[index];
 }
 
+bool isValidDepotBox(uint16_t itemId)
+{
+	return std::find(depotBoxes.begin(), depotBoxes.end(), itemId) != depotBoxes.end();
+}
+
 MagicEffectClasses getMagicEffect(const std::string& strValue)
 {
 	auto magicEffect = magicEffectNames.find(strValue);
