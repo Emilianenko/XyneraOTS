@@ -3,6 +3,7 @@ StoreBannerDelay = 2
 StoreBanners = {
 	[1] = {image = "Home/banner_arbalester.png", type = 4, offerId = 0},
 	[2] = {image = "Home/banner_babyelephant.png", type = 4, offerId = 0},
+	[3] = {image = "Home/banner_herder.png", type = 4, offerId = 0},
 }
 
 -- STORE TABS
