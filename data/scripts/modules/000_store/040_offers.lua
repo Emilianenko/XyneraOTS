@@ -391,3 +391,23 @@
 		GenerateStoreItem(itemId, price, STORE_TAB_EXERCISE, nil, 0, 1, nil, generateExerciseDesc(itemId))
 	end
 	
+-- House Upgrades
+	-- dummies
+	GenerateStoreItem(31215, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
+	GenerateStoreItem(31217, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
+	GenerateStoreItem(31219, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
+	
+	-- shrines
+	-- 27831 normal
+	-- 27839 gilded
+	
+	-- mailboxes
+	-- 26055 normal
+	-- 26057 gilded
+	
+	-- reward
+	-- 28377 normal
+	-- 28379 gilded
+
+	-- hireling
+	-- hireling dresses

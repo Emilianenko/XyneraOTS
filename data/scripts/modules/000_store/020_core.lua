@@ -55,12 +55,23 @@ local desc_xpboost = [[<i>Purchase a boost that increases the experience points 
 {info} price increases with every purchase
 {info} cannot be purchased if an XP boost is already active]]
 
-local desc_exercise = [[Description	<i>Use it to train your %s on an exercise dummy!</i>
+local desc_dummy = [[<i>Train your skills more effectively at home than in public on this expert exercise dummy!
+
+{house}
+{box}
+{storeinbox}
+{usablebyallicon} can be used by all characters that have access to the house
+{character}
+{useicon} use one of the exercise weapons on this dummy
+{backtoinbox}]]
+
+local desc_exercise = [[<i>Use it to train your %s on an exercise dummy!</i>
 
 {character}
 {storeinbox}
 {useicon} use it on an exercise dummy to train your %s
 {info} usable %d times a piece]]
+
 local exerciseKeys = {"club", "sword", "axe", "bow", "wand", "rod"}
 local exerciseWords = {
 	club = "club fighting",
