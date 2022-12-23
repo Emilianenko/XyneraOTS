@@ -1,3 +1,23 @@
+CUSTOM_ATTR_TRAINING_OCCUPIER = 34200
+
+local function isUnoccupiedDummy(player, target)
+	if not target:getType():isMovable() then
+		return true
+	end
+	
+	local cid = target:getCustomAttribute(CUSTOM_ATTR_TRAINING_OCCUPIER)
+	if not cid or cid < 1 then
+		return true
+	end
+	
+	local trainingPlayer = Player(cid)
+	if trainingPlayer and cid ~= player:getId() and trainingPlayer:getTrainingDummy() == target then
+		return false
+	end
+	
+	return true
+end
+
 local function initTraining(player, item, target)
 	if os.time() < player:getStorageValue(PlayerStorageKeys.trainingWeaponCooldown) then
 		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Please wait a few seconds before selecting a target again.")
@@ -8,8 +28,20 @@ local function initTraining(player, item, target)
 	if target and target:isItem() then
 		local itemId = target:getType():getId()
 		if itemId > 31213 and itemId < 31222 then
-			player:startTraining(item, target)
-			return true
+			if player:getZone() == ZONE_PROTECTION then
+				if isUnoccupiedDummy(player, target) then
+					if target:getType():isMovable() then
+						target:setCustomAttribute(CUSTOM_ATTR_TRAINING_OCCUPIER, player:getId())
+					end
+					
+					player:startTraining(item, target)
+					return true
+				end
+				
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This exercise dummy is currently in use.")
+			else
+				player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "This exercise dummy can only be used while being in a protection zone.")
+			end
 		else
 			player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You may only use it on exercise target.")
 		end

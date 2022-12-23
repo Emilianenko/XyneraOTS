@@ -1151,8 +1151,9 @@ class LuaScriptInterface
 		static int luaPlayerGetFightMode(lua_State* L);
 
 		static int luaPlayerGetStoreInbox(lua_State* L);
-
 		static int luaPlayerIsNearDepotBox(lua_State* L);
+
+		static int luaPlayerGetTrainingDummy(lua_State* L);
 
 		static int luaPlayerGetIdleTime(lua_State* L);
 

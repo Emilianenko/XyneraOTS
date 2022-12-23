@@ -2664,7 +2664,7 @@ void Player::saveAccountResource(AccountResourceTypes_t resourceType)
 	g_game.saveAccountStorageKey(accId, ASTRG_RESERVED_RANGE_START + resourceType);
 }
 
-void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
+void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status, bool sendMessage)
 {
 	if (!client) {
 		return;
@@ -2677,10 +2677,12 @@ void Player::notifyStatusChange(Player* loginPlayer, VipStatus_t status)
 
 	client->sendUpdatedVIPStatus(loginPlayer->guid, status);
 
-	if (status == VIPSTATUS_ONLINE) {
-		client->sendTextMessage(TextMessage(MESSAGE_STATUS_SMALL, loginPlayer->getName() + " has logged in."));
-	} else if (status == VIPSTATUS_OFFLINE) {
-		client->sendTextMessage(TextMessage(MESSAGE_STATUS_SMALL, loginPlayer->getName() + " has logged out."));
+	if (sendMessage) {
+		if (status == VIPSTATUS_ONLINE) {
+			client->sendTextMessage(TextMessage(MESSAGE_STATUS_SMALL, loginPlayer->getName() + " has logged in."));
+		} else if (status == VIPSTATUS_OFFLINE) {
+			client->sendTextMessage(TextMessage(MESSAGE_STATUS_SMALL, loginPlayer->getName() + " has logged out."));
+		}
 	}
 }
 
@@ -4031,15 +4033,13 @@ bool Player::doTraining()
 	}
 
 	if (hasCondition(CONDITION_PACIFIED)) {
+		stopTraining();
 		return false;
 	}
 
 	if ((OTSYS_TIME() - lastAttack) >= getAttackSpeed()) {
-		bool result = false;
-		uint32_t delay = getAttackSpeed();
-		bool classicSpeed = g_config.getBoolean(ConfigManager::CLASSIC_ATTACK_SPEED);
-
 		if (hasFlag(PlayerFlag_NotGainSkill)) {
+			stopTraining();
 			return false;
 		}
 
@@ -4074,18 +4074,21 @@ bool Player::doTraining()
 				ranged = true;
 				break;
 			default:
+				stopTraining();
 				return false;
 		}
 
 		if (ranged) {
 			// ranged check
 			if (std::max<uint32_t>(Position::getDistanceX(position, dummyPos), Position::getDistanceY(position, dummyPos)) > 6) {
+				stopTraining();
 				return false;
 			}
 			g_game.addDistanceEffect(position, dummyPos, distEffect);
 		} else {
 			// melee check
 			if (!Position::areInRange<1, 1>(getPosition(), dummyPos)) {
+				stopTraining();
 				return false;
 			}
 		}
@@ -4107,25 +4110,27 @@ bool Player::doTraining()
 			addManaSpent(600);
 		}
 
+		lastAttack = OTSYS_TIME();
+
 		uint16_t charges = trainingWeapon->getCharges();
 		consumeCharge(trainingWeapon);
 		if (charges < 2) {
 			// charges 1 -> 0
 			// training weapon destroyed
+			lastAttack = OTSYS_TIME();
 			stopTraining();
 			return true;
 		}
+	}
 
-		SchedulerTask* task = createSchedulerTask(std::max<uint32_t>(SCHEDULER_MINTICKS, delay), [id = getID()]() { g_game.checkCreatureTraining(id); });
-		if (!classicSpeed) {
-			setNextActionTask(task, false);
-		} else {
-			g_scheduler.addEvent(task);
-		}
+	uint32_t delay = getAttackSpeed();
+	bool classicSpeed = g_config.getBoolean(ConfigManager::CLASSIC_ATTACK_SPEED);
 
-		if (result) {
-			lastAttack = OTSYS_TIME();
-		}
+	SchedulerTask* task = createSchedulerTask(std::max<uint32_t>(SCHEDULER_MINTICKS, delay), [id = getID()]() { g_game.checkCreatureTraining(id); });
+	if (!classicSpeed) {
+		setNextActionTask(task, false);
+	} else {
+		g_scheduler.addEvent(task);
 	}
 
 	return true;
@@ -4142,11 +4147,22 @@ void Player::startTraining(Item* weapon, Item* dummy)
 	trainingDummy = dummy;
 	trainingWeapon = weapon;
 
+	// set vip status as afk
+	for (const auto& it : g_game.getPlayers()) {
+		it.second->notifyStatusChange(this, VIPSTATUS_TRAINING, false);
+	}
+
 	g_dispatcher.addTask(createTask([id = getID()]() { g_game.checkCreatureTraining(id); }));
 }
 
 void Player::stopTraining()
 {
+	// set vip status as online
+	for (const auto& it : g_game.getPlayers()) {
+		it.second->notifyStatusChange(this, VIPSTATUS_ONLINE, false);
+	}
+
+	// dereference training gear
 	if (trainingDummy) {
 		trainingDummy->decrementReferenceCounter();
 	}

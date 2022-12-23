@@ -3682,10 +3682,15 @@ void Game::playerRequestAddVip(uint32_t playerId, const std::string& name)
 			return;
 		}
 
-		if (!vipPlayer->isInGhostMode() || player->canSeeGhostMode(vipPlayer)) {
-			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_ONLINE);
-		} else {
+		if (vipPlayer->isInGhostMode() && !player->canSeeGhostMode(vipPlayer)) {
+			// ghost mode, cannot be spotted
 			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_OFFLINE);
+		} else if (vipPlayer->isAfk()) {
+			// semi-afk on training area
+			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_TRAINING);
+		} else {
+			// online
+			player->addVIP(vipPlayer->getGUID(), vipPlayer->getName(), VIPSTATUS_ONLINE);
 		}
 	}
 }

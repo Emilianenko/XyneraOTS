@@ -2718,6 +2718,26 @@ int LuaScriptInterface::luaPlayerIsNearDepotBox(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerGetTrainingDummy(lua_State* L)
+{
+	// player:getTrainingDummy()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Item* dummy = player->getTrainingDummy();
+	if (!dummy) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	pushUserdata<Item>(L, dummy);
+	setMetatable(L, -1, "Item");
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetIdleTime(lua_State* L)
 {
 	// player:getIdleTime()

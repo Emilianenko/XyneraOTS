@@ -599,7 +599,11 @@ end
 function Player:addStoreKit(furnitureId, amount)
 	local it = ItemType(furnitureId)
 	if it:isPickupable() then
-		self:addStoreItem(furnitureId, amount)
+		local storeItem = self:addStoreItem(furnitureId, amount)
+		local defaultCharges = storeItem:getType():getCharges()
+		if defaultCharges > 1 then
+			storeItem:setAttribute(ITEM_ATTRIBUTE_CHARGES, defaultCharges)
+		end
 	else
 		for i = 1, amount do
 			local kit = self:addStoreItem(ITEM_STORE_KIT, 1)

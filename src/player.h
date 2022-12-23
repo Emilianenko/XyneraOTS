@@ -205,6 +205,14 @@ class Player final : public Creature, public Cylinder
 			offlineTrainingSkill = skill;
 		}
 
+		Item* getTrainingDummy() {
+			return trainingDummy;
+		}
+		bool isAfk() {
+			// possible other triggers in the future
+			return trainingDummy && true;
+		}
+
 		uint64_t getBankBalance() const {
 			return bankBalance;
 		}
@@ -619,7 +627,7 @@ class Player final : public Creature, public Cylinder
 		void saveAccountResource(AccountResourceTypes_t resourceType);
 
 		// V.I.P. functions
-		void notifyStatusChange(Player* loginPlayer, VipStatus_t status);
+		void notifyStatusChange(Player* loginPlayer, VipStatus_t status, bool sendMessage = true);
 		bool removeVIP(uint32_t vipGuid);
 		bool addVIP(uint32_t vipGuid, const std::string& vipName, VipStatus_t status);
 		bool addVIPInternal(uint32_t vipGuid);
