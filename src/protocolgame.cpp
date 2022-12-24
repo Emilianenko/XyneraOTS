@@ -3940,6 +3940,8 @@ void ProtocolGame::sendVIPEntries()
 
 		if (!vipPlayer || !player->canSeeCreature(vipPlayer)) {
 			vipStatus = VIPSTATUS_OFFLINE;
+		} else if (vipPlayer && vipPlayer->isAfk()) {
+			vipStatus = VIPSTATUS_TRAINING;
 		}
 
 		sendVIP(entry.guid, entry.name, entry.description, entry.icon, entry.notify, vipStatus);

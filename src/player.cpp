@@ -4168,9 +4168,7 @@ void Player::startTraining(Item* weapon, Item* dummy)
 	trainingWeapon = weapon;
 
 	// set vip status as afk
-	for (const auto& it : g_game.getPlayers()) {
-		it.second->notifyStatusChange(this, VIPSTATUS_TRAINING, false);
-	}
+	setAfk(true);
 
 	g_dispatcher.addTask(createTask([id = getID()]() { g_game.checkCreatureTraining(id); }));
 }
@@ -4179,9 +4177,7 @@ void Player::stopTraining()
 {
 	if (trainingDummy) {
 		// set vip status as online
-		for (const auto& it : g_game.getPlayers()) {
-			it.second->notifyStatusChange(this, VIPSTATUS_ONLINE, false);
-		}
+		setAfk(false);
 
 		// remove player-dummy link from counter
 		trainingDummy->decrementReferenceCounter();

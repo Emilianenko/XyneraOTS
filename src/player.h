@@ -209,8 +209,7 @@ class Player final : public Creature, public Cylinder
 			return trainingDummy;
 		}
 		bool isAfk() {
-			// possible other triggers in the future
-			return (trainingDummy || afk) && true;
+			return afk;
 		}
 		void setAfk(bool newStatus);
 
