@@ -2755,12 +2755,11 @@ int LuaScriptInterface::luaPlayerSetAfk(lua_State* L)
 {
 	// player:setAfk(newstatus)
 	Player* player = getUserdata<Player>(L, 1);
-	if (!player) {
-		lua_pushnil(L);
-		return 1;
+	if (player) {
+		player->setAfk(getBoolean(L, 2));
 	}
 
-	player->setAfk(getBoolean(L, 2));
+	lua_pushnil(L);
 	return 1;
 }
 
