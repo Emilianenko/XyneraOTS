@@ -115,7 +115,8 @@ StoreCategories = {
 			[13] = { name = "Smithy", offers = {}},
 			[14] = { name = "Kraken", offers = {}},
 			[15] = { name = "Zaoan", offers = {}},
-			[16] = { name = "Other", offers = {}}
+			[16] = { name = "Seafarer", offers = {}},
+			[17] = { name = "Other", offers = {}}
 		},
 	},
 	[14] = {
