@@ -1801,13 +1801,23 @@ void Player::onThink(uint32_t interval)
 		}
 	}
 
+	const int32_t kickAfterMinutes = g_config.getNumber(ConfigManager::KICK_AFTER_MINUTES);
+	const int32_t afkLimit = 60000 * kickAfterMinutes;
+
 	if (!getTile()->hasFlag(TILESTATE_NOLOGOUT) && !isAccessPlayer()) {
 		idleTime += interval;
-		const int32_t kickAfterMinutes = g_config.getNumber(ConfigManager::KICK_AFTER_MINUTES);
-		if (idleTime > (kickAfterMinutes * 60000) + 60000) {
+		if (idleTime > afkLimit + 60000) {
 			kickPlayer(true);
-		} else if (client && idleTime == 60000 * kickAfterMinutes) {
+		} else if (client && idleTime == afkLimit) {
 			client->sendTextMessage(TextMessage(MESSAGE_STATUS_WARNING, fmt::format("There was no variation in your behaviour for {:d} minutes. You will be disconnected in one minute if there is no change in your actions until then.", kickAfterMinutes)));
+		}
+	} else if (idleTime < afkLimit + 60000) {
+		idleTime += interval;
+		if (idleTime == afkLimit) {
+			if (client) {
+				client->sendTextMessage(TextMessage(MESSAGE_STATUS_WARNING, fmt::format("There was no variation in your behaviour for {:d} minutes. Your status was set to afk now.", kickAfterMinutes)));
+			}
+			setAfk(true);
 		}
 	}
 
@@ -2617,6 +2627,16 @@ void Player::fastRelog(const std::string& otherCharName)
 	if (client) {
 		g_dispatcher.addTask(createTask([=]() { client->fastRelog(otherCharName); }));
 	}
+}
+
+void Player::setAfk(bool newStatus) {
+	if (afk != newStatus) {
+		// set vip status as afk
+		for (const auto& it : g_game.getPlayers()) {
+			it.second->notifyStatusChange(this, newStatus ? VIPSTATUS_TRAINING : VIPSTATUS_ONLINE, false);
+		}
+	}
+	this->afk = newStatus;
 }
 
 void Player::storeChannelIDs(bool isFastRelog)
@@ -4157,15 +4177,17 @@ void Player::startTraining(Item* weapon, Item* dummy)
 
 void Player::stopTraining()
 {
-	// set vip status as online
-	for (const auto& it : g_game.getPlayers()) {
-		it.second->notifyStatusChange(this, VIPSTATUS_ONLINE, false);
+	if (trainingDummy) {
+		// set vip status as online
+		for (const auto& it : g_game.getPlayers()) {
+			it.second->notifyStatusChange(this, VIPSTATUS_ONLINE, false);
+		}
+
+		// remove player-dummy link from counter
+		trainingDummy->decrementReferenceCounter();
 	}
 
 	// dereference training gear
-	if (trainingDummy) {
-		trainingDummy->decrementReferenceCounter();
-	}
 	trainingDummy = nullptr;
 	trainingWeapon = nullptr;
 }

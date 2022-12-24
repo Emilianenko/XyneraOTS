@@ -784,6 +784,8 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 		return;
 	}
 
+	player->setAfk(false);
+
 	if (player != movingCreature) {
 		if (toTile->hasFlag(TILESTATE_BLOCKPATH)) {
 			player->sendCancelMessage(RETURNVALUE_NOTENOUGHROOM);
@@ -1888,6 +1890,7 @@ void Game::playerMove(uint32_t playerId, Direction direction)
 		return;
 	}
 
+	player->setAfk(false);
 	player->resetIdleTime(true);
 	player->setNextWalkActionTask(nullptr);
 

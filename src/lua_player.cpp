@@ -2738,6 +2738,32 @@ int LuaScriptInterface::luaPlayerGetTrainingDummy(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaPlayerIsAfk(lua_State* L)
+{
+	// player:isAfk()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	pushBoolean(L, player->isAfk());
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetAfk(lua_State* L)
+{
+	// player:setAfk(newstatus)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	player->setAfk(getBoolean(L, 2));
+	return 1;
+}
+
 int LuaScriptInterface::luaPlayerGetIdleTime(lua_State* L)
 {
 	// player:getIdleTime()

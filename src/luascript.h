@@ -1154,6 +1154,8 @@ class LuaScriptInterface
 		static int luaPlayerIsNearDepotBox(lua_State* L);
 
 		static int luaPlayerGetTrainingDummy(lua_State* L);
+		static int luaPlayerIsAfk(lua_State* L);
+		static int luaPlayerSetAfk(lua_State* L);
 
 		static int luaPlayerGetIdleTime(lua_State* L);
 

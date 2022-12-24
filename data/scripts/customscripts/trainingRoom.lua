@@ -75,6 +75,7 @@ function moveEvent.onStepIn(creature, item, pos, fromPosition)
 	trainerPos:sendMagicEffect(CONST_ME_TELEPORT)
 	local isPremium = player:isPremium()
 	player:sendTextMessage(MESSAGE_INFO_DESCR, string.format("Time training limit: %s", getFormattedTime(config.exitPremiumAccountTime * 60), (isPremium and "Premium")))
+	player:setAfk(true)
 	local exitTime = player:isPremium() and config.exitPremiumAccountTime
 	local playerId = player:getId()
 	exitEvents[playerId] = addEvent(exitEvent, 1000 * 60 * exitTime, playerId)

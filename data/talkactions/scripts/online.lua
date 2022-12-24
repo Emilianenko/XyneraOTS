@@ -17,7 +17,11 @@ function onSay(player, words, param)
 	
 	local players = Game.getPlayers()
 	local onlineList = {}
-
+	local playersAfk = 0
+	local legendAfk = false
+	local legendTutor = false
+	local legendAdmin = false
+	
 	for _, targetPlayer in ipairs(players) do
 		if player:canSeeCreature(targetPlayer) then
 			local entry = string.format("%s [%d]", targetPlayer:getName(), targetPlayer:getLevel())
@@ -25,16 +29,22 @@ function onSay(player, words, param)
 			local hasAccess = targetPlayer:getGroup():getAccess()
 			local color = MESSAGE_COLOR_WHITE
 			if targetPlayer:isAdmin() then
-				if (highlightAdmin and hasAccess) or (highlightAdminPlayer and targetPlayer:isAdmin()) then
+				if (hasAccess and highlightAdmin) or (not hasAccess and highlightAdminPlayer) then
 					color = MESSAGE_COLOR_BLUE
+					legendAdmin = true
 				end
 			elseif highlightTutor and accType >= ACCOUNT_TYPE_TUTOR and accType <= ACCOUNT_TYPE_SENIORTUTOR then
 				color = MESSAGE_COLOR_YELLOW
-			elseif highlightAdmin and hasAccess and accType > ACCOUNT_TYPE_SENIORTUTOR and accType < ACCOUNT_TYPE_GOD then
-				color = MESSAGE_COLOR_GREEN
+				legendTutor = true
+			elseif targetPlayer:isAfk() then
+				color = MESSAGE_COLOR_PURPLE
+				playersAfk = playersAfk + 1
+				legendAfk = true
 			end
 			
-			entry = string.format("{%d|%s}", color, entry)
+			if color ~= MESSAGE_COLOR_WHITE then
+				entry = string.format("{%d|%s}", color, entry)
+			end
 			
 			table.insert(onlineList, entry)
 		end
@@ -44,12 +54,30 @@ function onSay(player, words, param)
 	local pagesCount = math.ceil(playersOnline / maxPlayersPerMessage)
 	local pageId = 1
 	local cid = player:getId()
+	local legend = "\n\n[Online"
+	if legendAfk then
+		legend = string.format("%s, {%d|Training}", legend, MESSAGE_COLOR_PURPLE)
+	end
+	
+	if legendTutor then
+		legend = string.format("%s, {%d|Tutor}", legend, MESSAGE_COLOR_YELLOW)	
+	end
+	
+	if legendAdmin then
+		legend = string.format("%s, {%d|Staff}", legend, MESSAGE_COLOR_BLUE)	
+	end
+	
+	local onlineCountStr = playersOnline
+	if playersAfk > 0 then
+		onlineCountStr = string.format("%d (%d active {%d|%+d afk})", playersOnline, playersOnline - playersAfk, MESSAGE_COLOR_PURPLE, playersAfk)
+	end
+	legend = legend .. "]"
 	
 	for i = 1, playersOnline, maxPlayersPerMessage do
 		local j = math.min(i + maxPlayersPerMessage - 1, playersOnline)
 		local msg = table.concat(onlineList, ", ", i, j)
-		local page = pagesCount > 1 and string.format(" (page %d/%d)", pageId, math.max(1, pagesCount)) or ""
-		msg = string.format("%d player%s online%s:\n%s", playersOnline, playersOnline ~= 1 and "s" or "", page, msg)
+		local page = pagesCount > 1 and string.format(" [page %d/%d]", pageId, math.max(1, pagesCount)) or ""
+		msg = string.format("Player%s online: %s%s:\n%s%s", playersOnline ~= 1 and "s" or "", onlineCountStr, page, msg, legend)
 
 		if pageId ~= 1 then
 			addEvent(sendOnlinePage, 3000 * pageId, player:getId(), msg)

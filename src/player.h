@@ -210,8 +210,9 @@ class Player final : public Creature, public Cylinder
 		}
 		bool isAfk() {
 			// possible other triggers in the future
-			return trainingDummy && true;
+			return (trainingDummy || afk) && true;
 		}
+		void setAfk(bool newStatus);
 
 		uint64_t getBankBalance() const {
 			return bankBalance;
@@ -1580,6 +1581,7 @@ class Player final : public Creature, public Cylinder
 		fightMode_t fightMode = FIGHTMODE_ATTACK;
 		AccountType_t accountType = ACCOUNT_TYPE_NORMAL;
 
+		bool afk = false;
 		bool chaseMode = false;
 		bool secureMode = false;
 		bool inMarket = false;
