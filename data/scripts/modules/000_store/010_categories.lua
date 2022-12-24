@@ -38,7 +38,11 @@ StoreCategories = {
 	[5] = {
 		name = "Exercise Weapons", parent = "Consumables",
 		image = "ExerciseWeapons",
-		offers = {},
+		offerTypes = {
+			[1] = { name = "Normal", offers = {}},
+			[2] = { name = "Durable", offers = {}},
+			[3] = { name = "Lasting", offers = {}}
+		},
 	},
 	[6] = {
 		name = "Kegs", parent = "Consumables",
@@ -142,7 +146,8 @@ StoreCategories = {
 			[22] = { name = "Zaoan Aristocrat", offers = {}},
 			[23] = { name = "Knightly", offers = {}},
 			[24] = { name = "Floral", offers = {}},
-			[25] = { name = "Other", offers = {}},
+			[25] = { name = "Seafarer", offers = {}},
+			[26] = { name = "Other", offers = {}},
 		},
 	},
 	[15] = {

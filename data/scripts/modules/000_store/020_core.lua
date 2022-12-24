@@ -1,5 +1,7 @@
 -- description macros
 -- to do: change prem to one char on acc
+
+-- do not adjust tabbings or they will appear in the strings
 local desc_premium = [[<i>Enhance your gaming experience by gaining additional abilities and advantages:</i>
 
 &#8226; access to Premium areas
@@ -55,22 +57,49 @@ local desc_xpboost = [[<i>Purchase a boost that increases the experience points 
 {info} price increases with every purchase
 {info} cannot be purchased if an XP boost is already active]]
 
-local desc_dummy = [[<i>Train your skills more effectively at home than in public on this expert exercise dummy!
-
-{house}
-{box}
-{storeinbox}
-{usablebyallicon} can be used by all characters that have access to the house
-{character}
-{useicon} use one of the exercise weapons on this dummy
-{backtoinbox}]]
-
 local desc_exercise = [[<i>Use it to train your %s on an exercise dummy!</i>
 
 {character}
 {storeinbox}
 {useicon} use it on an exercise dummy to train your %s
 {info} usable %d times a piece]]
+
+StoreDescriptions = {
+	dummy = [[<i>Train your skills more effectively at home than in public on this expert exercise dummy!</i>
+
+{house}
+{box}
+{storeinbox}
+{usablebyall}
+{info} can only be used by one character at a time
+{info} use one of the exercise weapons on this dummy
+{backtoinbox}]],
+	imbu = [[<i>Enhance your equipment comfortably in your own four walls!</i>
+
+{house}
+{box}
+{storeinbox}
+{usablebyall}
+{useicon} use it with an imbuable item to open the imbuing dialog
+{backtoinbox}]],
+	dailyshrine = [[<i>Pick up your daily reward comfortably in your own four walls!</i>
+
+{house}
+{box}
+{storeinbox}
+{usablebyall}
+{useicon} use it to open the reward wall
+{backtoinbox}]],
+	mailbox = [[<i>Send your letters and parcels right from your own home!</i>
+
+{house}
+{box}
+{storeinbox}
+{usablebyall}
+{backtoinbox}]],
+	furniture_default = "{house}\n{box}\n{storeinbox}\n{backtoinbox}",
+	furniture_container = "{house}\n{box}\n{storeinbox}\n{useicon} use it to open up some storage space\n{backtoinbox}",
+}
 
 local exerciseKeys = {"club", "sword", "axe", "bow", "wand", "rod"}
 local exerciseWords = {
@@ -381,6 +410,28 @@ function GenerateCasksKegs(kegTable, minId, maxId)
 	end
 end
 
+-- furniture set offer generator
+function GenerateFurnitureSet(items, setName, subCategory)
+	local setPrice = 0
+	local itemIds = {}
+	for i = 1, #items do
+		local it = ItemType(items[i][1])
+		local desc = it and it:isContainer() and StoreDescriptions.furniture_container or StoreDescriptions.furniture_default
+		GenerateStoreItem(items[i][1], items[i][2], STORE_TAB_FURNITURE, subCategory, 0, 1, nil, desc)
+		setPrice = setPrice + items[i][2]
+		itemIds[#itemIds + 1] = items[i][1]
+	end
+
+	if not (setName:match("Bench") or setName:match("Couch")) then
+		setName = string.format("%s Furniture", setName)
+	end
+	
+	local offer = StoreCreateOffer(setName, setPrice, STORE_TAB_FURNITURE, subCategory, 0, 1, nil, StoreDescriptions.furniture_default)
+	offer.type = STORE_OFFER_TYPE_DEFAULT
+	offer.image = string.format("%s.png", setName:gsub(" ", "_"))
+	offer.items = itemIds
+end
+
 -- permission check
 function Player:getOfferStatus(offer, fastCheck)
 	local messages = {}
@@ -684,6 +735,11 @@ function Player:processStorePurchase(offerId, productId, name, type, location)
 		param2 = Game.getItemTypeByClientId(offer.bed[2]):getId()
 		self:addStoreKit(param1, packInfo.amount)
 		self:addStoreKit(param2, packInfo.amount)
+		success = true
+	elseif offer.items then
+		for i = 1, #offer.items do
+			self:addStoreKit(offer.items[i], 1)
+		end
 		success = true
 	elseif offer.premDays then
 		param1 = offer.premDays

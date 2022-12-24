@@ -382,32 +382,187 @@
 -- GenerateStoreItem
 -- itemId, price, category, subCategory, publishedAt, amountBase, amountMulti, description
 
+	-- normal exercise weapons
 	for itemId = 31208, 31213 do
-		GenerateStoreItem(itemId, 25, STORE_TAB_EXERCISE, nil, 0, 1, nil, generateExerciseDesc(itemId))
+		GenerateStoreItem(itemId, 25, STORE_TAB_EXERCISE, 1, 0, 1, nil, generateExerciseDesc(itemId))
 	end
 	
+	-- durable and lasting exercise weapons
 	for itemId = 37935, 37946 do
 		local price = itemId < 37941 and 90 or 720
-		GenerateStoreItem(itemId, price, STORE_TAB_EXERCISE, nil, 0, 1, nil, generateExerciseDesc(itemId))
+		GenerateStoreItem(itemId, price, STORE_TAB_EXERCISE, itemId < 37941 and 2 or 3, 0, 1, nil, generateExerciseDesc(itemId))
 	end
 	
 -- House Upgrades
 	-- dummies
-	GenerateStoreItem(31215, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
-	GenerateStoreItem(31217, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
-	GenerateStoreItem(31219, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, desc_dummy)
-	
-	-- shrines
-	-- 27831 normal
-	-- 27839 gilded
+	GenerateStoreItem(31215, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, StoreDescriptions.dummy)
+	GenerateStoreItem(31217, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, StoreDescriptions.dummy)
+	GenerateStoreItem(31219, 900, STORE_TAB_UPGRADES, 1, 0, 1, nil, StoreDescriptions.dummy)
 	
 	-- mailboxes
-	-- 26055 normal
-	-- 26057 gilded
+	GenerateStoreItem(26055, 150, STORE_TAB_UPGRADES, 2, 0, 1, nil, StoreDescriptions.mailbox)
+	GenerateStoreItem(26057, 200, STORE_TAB_UPGRADES, 2, 0, 1, nil, StoreDescriptions.mailbox)
+	
+	-- shrines
+	GenerateStoreItem(27831, 150, STORE_TAB_UPGRADES, 3, 0, 1, nil, StoreDescriptions.imbu)
+	GenerateStoreItem(27839, 200, STORE_TAB_UPGRADES, 3, 0, 1, nil, StoreDescriptions.imbu)
 	
 	-- reward
-	-- 28377 normal
-	-- 28379 gilded
+	GenerateStoreItem(28377, 150, STORE_TAB_UPGRADES, 4, 0, 1, nil, StoreDescriptions.dailyshrine)
+	GenerateStoreItem(28379, 200, STORE_TAB_UPGRADES, 4, 0, 1, nil, StoreDescriptions.dailyshrine)
 
-	-- hireling
+-- Furniture
+-- {{itemId, price}}, setName, subCategory
+	-- note: furniture sets also generate offers for individual items
+	GenerateFurnitureSet(
+		-- table, chest, chair, wardrobe
+		{{26074, 60}, {26083, 70}, {26061, 60}, {26075, 100}},
+		"Magnificent", 1
+	)
+	GenerateFurnitureSet(
+		{{26067, 50}, {26079, 80}, {26065, 50}, {26077, 110}},
+		"Ferocious", 2
+	)
+	GenerateFurnitureSet(
+		{{26354, 50}, {26358, 80}, {26351, 50}, {26356, 100}},
+		"Rustic", 3
+	)
+	GenerateFurnitureSet(
+		{{27881, 50}, {27885, 80}, {27879, 50}, {27883, 100}},
+		"Vengothic", 4
+	)
+	GenerateFurnitureSet(
+		{{28767, 50}, {28763, 80}, {28759, 50}, {28761, 100}},
+		"Verdant", 5
+	)
+	GenerateFurnitureSet(
+		{{28817, 50}, {28821, 80}, {28814, 50}, {28818, 100}},
+		"Ornate", 6
+	)
+
+	-- alchemistic tab does not have a set
+	GenerateStoreItem(30320, 100, STORE_TAB_FURNITURE, 7, 0, 1, nil, StoreDescriptions.furniture_default)
+	GenerateStoreItem(30318, 50, STORE_TAB_FURNITURE, 7, 0, 1, nil, StoreDescriptions.furniture_default)
+	GenerateStoreItem(30321, 80, STORE_TAB_FURNITURE, 7, 0, 1, nil, StoreDescriptions.furniture_default)
+
+	GenerateFurnitureSet(
+		{{31336, 50}, {31338, 80}, {31332, 50}, {31343, 100}},
+		"Skeletal", 8
+	)
+	GenerateFurnitureSet(
+		{{31592, 60}, {31594, 60}, {31590, 70}, {31598, 100}},
+		"Comfy", 9
+	)
+	GenerateFurnitureSet(
+		{{33847, 50}, {33843, 80}, {33841, 50}, {33848, 100}},
+		"Dwarven Stone", 10
+	)
+	GenerateFurnitureSet(
+		{{34335, 50}, {34343, 80}, {34349, 50}, {34361, 100}},
+		"Hrodmir", 11
+	)
+	GenerateFurnitureSet(
+		{{35433, 60}, {35436, 80}, {35434, 50}, {35431, 100}},
+		"Ice", 12
+	)
+	GenerateFurnitureSet(
+		{{35690, 50}, {35699, 80}, {35694, 50}, {35688, 100}},
+		"Heart", 13
+	)
+	GenerateFurnitureSet(
+		{{36690, 80}, {36696, 50}, {36694, 50}, {36686, 110}},
+		"Artist", 14
+	)
+	GenerateFurnitureSet(
+		{{36704, 80}, {36710, 50}, {36708, 50}, {36700, 110}},
+		"Sculptor", 15
+	)
+	GenerateFurnitureSet(
+		{{36940, 100}, {36952, 50}, {36950, 50}, {36932, 90}},
+		"Kitchen", 16
+	)
+	GenerateFurnitureSet(
+		{{37819, 90}, {37829, 50}, {37826, 50}, {37831, 90}},
+		"Smithy", 17
+	)
+	GenerateFurnitureSet(
+		{{38569, 50}, {38577, 70}, {38573, 60}, {38567, 100}},
+		"Grandiose", 18
+	)
+	
+	GenerateFurnitureSet(
+		{{38615, 60}, {38616, 60}, {38617, 60}},
+		"Grandiose Couch", 18
+	)
+	
+	-- gilded grandiose chest
+	GenerateStoreItem(38581, 90, STORE_TAB_FURNITURE, 18, 0, 1, nil, StoreDescriptions.furniture_default)
+	
+	GenerateFurnitureSet(
+		{{39295, 50}, {39288, 80}, {39292, 60}, {39301, 100}},
+		"Volcanic", 19
+	)
+	
+	GenerateFurnitureSet(
+		{{39664, 50}, {39667, 50}, {39662, 80}, {39665, 100}},
+		"Nature", 20
+	)
+	
+	GenerateFurnitureSet(
+		{{39834, 60}, {39837, 70}, {39832, 80}, {39835, 100}},
+		"Kraken", 21
+	)
+
+	GenerateFurnitureSet(
+		{{40951, 60}, {40952, 70}, {40926, 60}, {40930, 100}},
+		"Zaoan", 22
+	)
+	
+	GenerateFurnitureSet(
+		{{44454, 60}, {44537, 60}, {44452, 70}, {44472, 100}},
+		"Knightly", 23
+	)
+	
+	-- knightly bench
+	GenerateFurnitureSet(
+		{{44549, 80}, {44552, 60}},
+		"Knightly Bench", 23
+	)
+	GenerateStoreItem(44548, 60, STORE_TAB_FURNITURE, 23, 0, 1, nil, StoreDescriptions.furniture_default)
+	GenerateStoreItem(44550, 80, STORE_TAB_FURNITURE, 23, 0, 1, nil, StoreDescriptions.furniture_default)
+	GenerateStoreItem(44551, 80, STORE_TAB_FURNITURE, 23, 0, 1, nil, StoreDescriptions.furniture_default)
+	
+	-- knightly chess table
+	GenerateStoreItem(44458, 60, STORE_TAB_FURNITURE, 23, 0, 1, nil, StoreDescriptions.furniture_default)
+	
+	-- knightly decorative shield
+	GenerateStoreItem(44533, 60, STORE_TAB_FURNITURE, 23, 0, 1, nil, StoreDescriptions.furniture_default)
+	
+	GenerateFurnitureSet(
+		{{44771, 80}, {44776, 60}, {44767, 60}, {44772, 90}},
+		"Floral", 24
+	)
+	
+	-- to do: seafarer
+	
+	-- round side table
+	GenerateStoreItem(33864, 50, STORE_TAB_FURNITURE, 26, 0, 1, nil, StoreDescriptions.furniture_default)
+
+	-- square side table
+	GenerateStoreItem(33863, 50, STORE_TAB_FURNITURE, 26, 0, 1, nil, StoreDescriptions.furniture_default)
+
+	-- wooden bookcase
+	GenerateStoreItem(33850, 100, STORE_TAB_FURNITURE, 26, 0, 1, nil, StoreDescriptions.furniture_default)
+
+
+-- Hirelings
+	-- apprentice 150
+	-- cook 900
+	-- trader 150
+	-- steward 250
+	-- banker 250
+	
 	-- hireling dresses
+	-- bronze 300 servant
+	-- silver 500 banker, cook, steward, trader
+	-- gold 900 bonelord, dragon, ferumbras, hydra

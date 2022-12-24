@@ -218,6 +218,14 @@ function NetworkMessage:addStoreOffer(offerId, parentName, player)
 		self:addString(offer.bed[3])
 		self:addByte(1) -- offerType item
 		self:addU16(offer.bed[4])
+	elseif offer.items then
+		self:addU16(#offer.items)
+		for i = 1, #offer.items do
+			local it = ItemType(offer.items[i])
+			self:addString(it:getName())
+			self:addByte(1)
+			self:addU16(it:getClientId())
+		end
 	else
 		self:addU16(0)
 	end
