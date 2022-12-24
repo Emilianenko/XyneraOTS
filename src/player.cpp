@@ -4036,6 +4036,8 @@ void Player::onCombatRemoveCondition(Condition* condition)
 
 bool Player::doTraining()
 {
+	resetIdleTime();
+
 	if (!trainingDummy || !trainingWeapon) {
 		stopTraining();
 		return false;
