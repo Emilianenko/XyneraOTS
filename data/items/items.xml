@@ -2769,8 +2769,7 @@
 		<attribute key="magiclevelpoints" value="1" />
 		<attribute key="slotType" value="head" />
 	</item>
-	<item id="2324" article="a" name="witchesbroom">
-		<attribute key="description" value="Don't use it without flying license. Not suitable for minors." />
+	<item id="2324" article="a" name="broom">
 		<attribute key="weight" value="1100" />
 	</item>
 	<item id="2325" article="a" name="book">
@@ -4049,7 +4048,8 @@
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
 	</item>
-	<item id="2551" article="a" name="broom">
+	<item id="2551" article="a" name="witchesbroom">
+		<attribute key="description" value="Don't use it without flying license. Not suitable for minors." />
 		<attribute key="weight" value="1100" />
 	</item>
 	<item id="2552" article="a" name="hoe">

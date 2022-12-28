@@ -72,7 +72,7 @@
 		<item name="bronze amulet" chance="4000" />
 		<item name="blank rune" chance="5000" />
 		<item name="vampire shield" chance="250" />
-		<item id="2551" chance="1500" /><!-- broom -->
+		<item id="2324" chance="1500" /><!-- broom -->
 		<item id="2560" chance="1000" /><!-- mirror -->
 		<item name="scarf" chance="4000" />
 		<item name="red apple" countmax="3" chance="700" />
