@@ -1298,6 +1298,8 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 		return;
 	}
 
+	player->setAfk(false);
+
 	addGameTask(([playerID = player->getID(), path = std::move(path)]() { g_game.playerAutoWalk(playerID, path); }));
 }
 
