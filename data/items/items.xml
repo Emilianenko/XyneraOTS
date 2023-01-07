@@ -47783,4 +47783,18 @@
 		<attribute key="description" value="Use this item to earn 100 dust at the exaltation forge."/>
 		<attribute key="weight" value="10"/>
 	</item>
+<item id="44691" article="a" name="closed door">
+	<attribute key="type" value="door" />
+	<attribute key="blockprojectile" value="1" />
+</item>
+<item id="44697" article="an" name="open door">
+	<attribute key="type" value="door" />
+</item>
+<item id="44692" article="a" name="closed door">
+	<attribute key="type" value="door" />
+	<attribute key="blockprojectile" value="1" />
+</item>
+<item id="44698" article="an" name="open door">
+	<attribute key="type" value="door" />
+</item>
 </items>
