@@ -529,11 +529,23 @@ t.onSay = function(player, words, param)
 	end
 
 	local msg = NetworkMessage()
+	--[[
+	-- sound to client, any pos, max volume
 	msg:addByte(0x85)
 	msg:addByte(2)
 	msg:addU16(effect)
+	]]
 	
-	local spec = Game.getSpectators(player:getPosition(), true, true)
+	local ppos = player:getPosition()
+	-- sound to client, player pos
+	msg:addByte(0x83) -- sendMagicEffect header
+	msg:addPosition(ppos)
+	msg:addByte(6) -- type sound
+	msg:addByte(math.random(0, 2)) -- pitch
+	msg:addU16(effect) -- effect
+	msg:addByte(0) -- end loop
+	
+	local spec = Game.getSpectators(ppos, true, true)
 	if spec then
 		for _, target in pairs(spec) do
 			msg:sendToPlayer(target)
