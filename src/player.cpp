@@ -4091,7 +4091,7 @@ bool Player::doTraining()
 				ranged = true;
 				break;
 			case WEAPON_WAND:
-				distEffect = CONST_ANI_ENERGY;
+				distEffect = CONST_ANI_FIRE;
 				trainedSkill = SKILL_MAGLEVEL;
 				ranged = true;
 				break;
@@ -4123,7 +4123,7 @@ bool Player::doTraining()
 		}
 
 		// hitting the dummy effect
-		g_game.addMagicEffect(dummyPos, CONST_ME_POFF);
+		g_game.addMagicEffect(dummyPos, CONST_ME_HITAREA);
 
 		// adding skill tries
 		if (trainedSkill != SKILL_MAGLEVEL) {
