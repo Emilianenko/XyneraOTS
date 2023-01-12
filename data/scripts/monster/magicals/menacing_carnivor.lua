@@ -64,6 +64,10 @@ monster.immunities = {
 	{type = "bleed", condition = false}
 }
 
+monster.reflects = {
+	{type = COMBAT_PHYSICALDAMAGE, percent = 22},
+}
+
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 50},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
@@ -75,10 +79,16 @@ monster.elements = {
 	{type = COMBAT_ICEDAMAGE, percent = -20},
 	{type = COMBAT_HOLYDAMAGE , percent = 0},
 	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400, condition = {type = CONDITION_POISON, minDamage = -190, maxDamage = -190, interval = 4000}},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -0, maxDamage = -280, range = 6, type = COMBAT_PHYSICALDAMAGE, shootEffect = CONST_ANI_WHIRLWINDSWORD, effect = CONST_ME_HITBYPOISON, target = true },
+	{name ="combat", interval = 2000, chance = 27, minDamage = -170, maxDamage = -250, length = 7, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, direction = true },
+	{name ="combat", interval = 2000, chance = 23, minDamage = -140, maxDamage = -200, range = 6, radius = 3, type = COMBAT_EARTHDAMAGE, shootEffect = CONST_ANI_SNOWBALL, effect = CONST_ME_EXPLOSIONAREA, target = true},
+	{name ="combat", interval = 2000, chance = 24, minDamage = -170, maxDamage = -230, radius = 4, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_GROUNDSHAKER}, 
+	{name ="MenacingCarnivorTWave", interval = 2000, chance = 22, minDamage = -160, maxDamage = -230}
 }
 
 monster.defenses = {

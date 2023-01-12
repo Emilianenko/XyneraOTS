@@ -64,6 +64,10 @@ monster.immunities = {
 	{type = "bleed", condition = false}
 }
 
+monster.reflects = {
+	{type = COMBAT_PHYSICALDAMAGE, percent = 13},
+}
+
 monster.elements = {
 	{type = COMBAT_PHYSICALDAMAGE, percent = 40},
 	{type = COMBAT_ENERGYDAMAGE, percent = 0},
@@ -82,7 +86,7 @@ monster.attacks = {
 	{name ="combat", interval = 2000, chance = 27, minDamage = -110, maxDamage = -170, length = 6, type = COMBAT_EARTHDAMAGE, effect = CONST_ME_HITBYPOISON, direction = true },
 	{name ="combat", interval = 2000, chance = 23, minDamage = -180, maxDamage = -230, radius = 4, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_GROUNDSHAKER},
 	{name ="combat", interval = 2000, chance = 19, minDamage = -110, maxDamage = -170, length = 2, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_HITAREA, direction = true },
-	{name ="SpikyCarnivorTWave", interval = 2000, chance = 17, minDamage = -190, maxDamage = -230},
+	{name ="SpikyCarnivorTWave", interval = 2000, chance = 17, minDamage = -190, maxDamage = -230}
 }
 
 monster.defenses = {

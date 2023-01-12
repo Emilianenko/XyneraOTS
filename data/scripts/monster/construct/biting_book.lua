@@ -82,7 +82,7 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -500},
 	{name ="combat", interval = 2000, chance = 25, minDamage = -1000, maxDamage = -1400, range = 7, type = COMBAT_PHYSICALDAMAGE, shootEffect = CONST_ANI_SMALLSTONE, target = true},
-	{name ="combat", interval = 2000, chance = 20, minDamage = -900, maxDamage = -1100, radius = 4, type = COMBAT_PHYSICALDAMAGE, effect = CONST_ME_SMOKE},
+	{name ="combat", interval = 2000, chance = 20, minDamage = -900, maxDamage = -1100, radius = 4, type = COMBAT_PHYSICALDAMAGE, effect = 242},
 	{name ="bitingbook wave", interval = 2000, chance = 20, minDamage = -900, maxDamage = -1300}
 }
 
