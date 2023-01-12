@@ -335,6 +335,10 @@ void Creature::stopEventWalk()
 	if (eventWalk != 0) {
 		g_scheduler.stopEvent(eventWalk);
 		eventWalk = 0;
+
+		if (getMonster() && getWalkDelay() <= 0) {
+			g_game.updateCreatureWalk(getID());
+		}
 	}
 }
 
