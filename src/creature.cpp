@@ -335,10 +335,6 @@ void Creature::stopEventWalk()
 	if (eventWalk != 0) {
 		g_scheduler.stopEvent(eventWalk);
 		eventWalk = 0;
-
-		if (getMonster() && getWalkDelay() <= 0) {
-			g_game.updateCreatureWalk(getID());
-		}
 	}
 }
 
@@ -654,6 +650,9 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 
 	if (creature == followCreature || (creature == this && followCreature)) {
 		if (hasFollowPath) {
+			if (getWalkDelay() <= 0) {
+				g_dispatcher.addTask(createTask(std::bind(&Game::updateCreatureWalk, &g_game, getID())));
+			}
 			isUpdatingPath = true;
 		}
 
