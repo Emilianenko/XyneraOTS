@@ -1048,27 +1048,32 @@ void Player::sendPing()
 	}
 
 	int64_t noPongTime = timeNow - lastPong;
-	if ((hasLostConnection || noPongTime >= 7000) && attackedCreature && attackedCreature->getPlayer()) {
+	if ((hasLostConnection || noPongTime >= 7000) && attackedCreature) {
 		setAttackedCreature(nullptr);
 	}
 
 	int32_t noPongKickTime = vocation->getNoPongKickTime();
-	if (pzLocked && noPongKickTime < 60000) {
-		noPongKickTime = 60000;
-	}
-
 	if (noPongTime >= noPongKickTime) {
-		if (isConnecting || getTile()->hasFlag(TILESTATE_NOLOGOUT)) {
+		// do not kick currently connecting player
+		if (isConnecting) {
 			return;
 		}
 
+		// do not kick pzlocked/no-logout zone player
+		if (pzLocked || getTile() && getTile()->hasFlag(TILESTATE_NOLOGOUT)) {
+			return;
+		}
+
+		// do not kick if onLogout creaturescript returned false
 		if (!g_creatureEvents->playerLogout(this)) {
 			return;
 		}
 
 		if (client) {
+			// client connected, end the session
 			client->logout(true, true);
 		} else {
+			// client not connected, just remove creature
 			g_game.removeCreature(this, true);
 		}
 	}
@@ -1356,8 +1361,8 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 			}
 		}
 
-		sendStats();
-		sendSkills();
+		//sendStats();
+		//sendSkills();
 
 		g_game.checkPlayersRecord();
 		IOLoginData::updateOnlineStatus(guid, true);
