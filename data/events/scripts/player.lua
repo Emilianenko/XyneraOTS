@@ -539,11 +539,25 @@ local function sendColorTypesAsync(cid)
 	end
 end
 
+local function sendSpeedCorrection(cid)
+	local p = Player(cid)
+	if p and not p:isRemoved() then
+		p:changeSpeed(0)
+	end	
+end
+
 function Player:onConnect(isLogin)
 	-- schedule sending less important data
 	local cid = self:getId()
-	addEvent(sendForgeTypesAsync, 100, cid) -- classification info for market and forge
-	addEvent(sendColorTypesAsync, 200, cid) -- message colors meta
+	
+	-- exaltation forge and market - classification/tier meta
+	addEvent(sendForgeTypesAsync, 100, cid)
+	
+	-- server message colors
+	addEvent(sendColorTypesAsync, 200, cid)
+
+	-- fix desynced skills
+	addEvent(sendSpeedCorrection, 1000, cid)
 	
 	if EventCallback.onConnect then
 		EventCallback.onConnect(self, isLogin)

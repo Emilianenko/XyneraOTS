@@ -143,6 +143,10 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 	 */
 
 	if (!Protocol::RSA_decrypt(msg)) {
+#ifdef DEV_MODE
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("(legacy login) Failed to decrypt RSA for ip {:d}!", getIP()));
+#endif
+
 		disconnect();
 		return;
 	}

@@ -8,10 +8,10 @@ local function sendHotkeyPreset(cid)
 	end	
 end
 
-
-local creatureevent = CreatureEvent("hotkeyPresetLogin")
-function creatureevent.onLogin(player)
-	addEvent(sendHotkeyPreset, 200, player:getId())
-	return true
+do
+	local ec = EventCallback
+	function ec.onConnect(player, isLogin)
+		addEvent(sendHotkeyPreset, 200, player:getId())
+	end
+	ec:register()
 end
-creatureevent:register()

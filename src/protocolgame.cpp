@@ -550,13 +550,17 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 	player->isConnecting = false;
 	player->client = getThis();
 
+	// send player data
 	sendAddCreature(player, player->getPosition(), 0);
-	sendStats();
-	sendSkills();
 
+	// update last login
 	player->lastIP = player->getIP();
 	player->lastLoginSaved = std::max<time_t>(time(nullptr), player->lastLoginSaved + 1);
+
+	// reset idle events
 	player->resetIdleTime(true);
+	player->receivePing();
+
 	acceptPackets = true;
 }
 
@@ -788,6 +792,247 @@ void ProtocolGame::writeToOutputBuffer(const NetworkMessage& msg)
 	out->append(msg);
 }
 
+/*
+	SEND METHODS
+		Invalid = 0x00,
+		Invalid_1 = 0x01,
+		Invalid_2 = 0x02,
+
+		CreatureData = 0x03,
+		SessionDumpStart = 0x04,
+
+		Invalid_3 = 0x05,
+		Invalid_4 = 0x06,
+		Invalid_5 = 0x07,
+		Invalid_6 = 0x08,
+		Invalid_7 = 0x09,
+
+		PendingStateEntered = 0x0A,
+		ReadyForSecondaryConnection = 0x0B,
+
+		Invalid_8 = 0x0C,
+		Invalid_9 = 0x0D,
+		Invalid_10 = 0x0E,
+
+		WorldEntered = 0x0F,
+
+		Invalid_11 = 0x10,
+		Invalid_12 = 0x11,
+		Invalid_13 = 0x12,
+		Invalid_14 = 0x13,
+
+		LoginError = 0x14,
+		LoginAdvice = 0x15,
+		LoginWait = 0x16,
+		LoginSuccess = 0x17,
+		LogoutSession = 0x18,
+		StoreButtonIndicators = 0x19,
+
+		Invalid_15 = 0x1A,
+		Invalid_16 = 0x1B,
+		Invalid_17 = 0x1C,
+
+		Ping = 0x1D,
+		PingBack = 0x1E,
+		LoginChallenge = 0x1F,
+
+		Invalid_18 = 0x20, // OTC opcode
+		Invalid_19 = 0x21,
+		Invalid_20 = 0x22,
+		Invalid_21 = 0x23,
+		Invalid_22 = 0x24,
+		Invalid_23 = 0x25,
+		Invalid_24 = 0x26,
+		Invalid_25 = 0x27,
+
+		Dead = 0x28, // death screen
+		Stash = 0x29,
+		//DepotTileState = 0x2A,
+		SpecialContainersAvailable = 0x2A,
+		PartyHuntAnalyser = 0x2B,
+		//SpecialContainersAvailable = 0x2C,
+		TeamFinderTeamLeader = 0x2C,
+		TeamFinderTeamMember = 0x2D,
+
+		// 0x2E - 0x58 - huge empty gap (assumed)
+
+		Invalid_0x59 = 0x59,
+		Invalid_0x5A = 0x5A,
+		Invalid_0x5B = 0x5B,
+		Invalid_0x5C = 0x5C,
+
+		ImbuCooldowns = 0x5D,
+
+		Undiscovered_0x5E = 0x5E,
+
+		WheelOfDestinyUI = 0x5F,
+
+		Undiscovered_ItemList = 0x60,
+
+		BosstiaryData = 0x61,
+		BosstiaryCyclopediaBossSlots = 0x62,
+
+		// draw on game screen
+		ClientCheck = 0x63,
+		FullMap = 0x64,
+		TopRow = 0x65,
+		RightColumn = 0x66,
+		BottomRow = 0x67,
+		LeftColumn = 0x68,
+		FieldData = 0x69,
+		CreateOnMap = 0x6A,
+		ChangeOnMap = 0x6B,
+		DeleteOnMap = 0x6C,
+		MoveCreature = 0x6D,
+
+		// draw in container
+		Container = 0x6E,
+		CloseContainer = 0x6F,
+		CreateInContainer = 0x70,
+		ChangeInContainer = 0x71,
+		DeleteInContainer = 0x72,
+
+		BosstiaryCyclopediaKillsPanel = 0x73,
+		FriendSystemData = 0x74,
+		ScreenshotEvent = 0x75,
+		InspectionList = 0x76,
+		InspectionState = 0x77,
+		SetInventory = 0x78,
+		DeleteInventory = 0x79,
+		NpcOffer = 0x7A,
+		PlayerGoods = 0x7B,
+		CloseNpcTrade = 0x7C,
+		OwnOffer = 0x7D,
+		CounterOffer = 0x7E,
+		CloseTrade = 0x7F,
+		CharacterTradeConfiguration = 0x80,
+		ReportTextUI = 0x81,
+		Ambiente = 0x82, // world light
+		GraphicalEffects = 0x83, // sendMagicEffect, sendDistanceEffect, sounds
+		RemoveGraphicalEffect = 0x84,
+		MissileEffect = 0x85, // sound/music packet now
+		ForgingBasicData = 0x86, // meta
+		ExaltationForge = 0x87, // ui
+
+		ExaltationForgeHistory = 0x89,
+		CreatureUpdate = 0x8B,
+		CreatureHealth = 0x8C,
+		CreatureLight = 0x8D,
+		CreatureOutfit = 0x8E,
+		CreatureSpeed = 0x8F,
+		//CreatureSkull = 0x90, (deprecated)
+		ExaltationForgeExit = 0x90,
+		CreatureParty = 0x91,
+		CreatureUnpass = 0x92,
+		CreatureMarks = 0x93,
+		//CreaturePvpHelpers = 0x94,
+		DepotSearchResults = 0x94,
+		CreatureType = 0x95,
+		EditText = 0x96,
+		EditList = 0x97,
+		ShowGameNews = 0x98,
+		DepotSearchDetailList = 0x99,
+		CloseDepotSearch = 0x9A,
+		BlessingsDialog = 0x9B,
+		Blessings = 0x9C,
+		SwitchPreset = 0x9D,
+		PremiumTrigger = 0x9E,
+		PlayerDataBasic = 0x9F,
+		PlayerDataCurrent = 0xA0,
+		PlayerSkills = 0xA1,
+		PlayerState = 0xA2,
+		ClearTarget = 0xA3,
+		SpellDelay = 0xA4,
+		SpellGroupDelay = 0xA5,
+		MultiUseDelay = 0xA6,
+		SetTactics = 0xA7,
+		SetStoreButtonDeeplink = 0xA8,
+		RestingAreaState = 0xA9,
+		Talk = 0xAA,
+		Channels = 0xAB,
+		OpenChannel = 0xAC,
+		PrivateChannel = 0xAD,
+		EditGuildMessage = 0xAE,
+		ExperienceTracker = 0xAF,
+		Highscores = 0xB1,
+		OpenOwnChannel = 0xB2,
+		CloseChannel = 0xB3,
+		Message = 0xB4,
+		SnapBack = 0xB5, // walkthrough walkback
+		Wait = 0xB6,
+		UnjustifiedPoints = 0xB7,
+		PvpSituations = 0xB8,
+		BestiaryTracker = 0xB9,
+		PreyHuntingTaskBaseData = 0xBA,
+		PreyHuntingTaskData = 0xBB,
+		BossCooldowns = 0xBD,
+		TopFloor = 0xBE,
+		BottomFloor = 0xBF,
+		UpdateLootContainers = 0xC0,
+		PlayerDataTournament = 0xC1,
+		CyclopediaHouseActionResult = 0xC3,
+		TournamentInformation = 0xC4,
+		TournamentLeaderboard = 0xC5,
+		CyclopediaStaticHouseData = 0xC6,
+		CyclopediaCurrentHouseData = 0xC7,
+		Outfit = 0xC8,
+		ExivaSuppressed = 0xC9,
+		UpdateExivaOptions = 0xCA,
+		TransactionDetails = 0xCB,
+		ImpactTracking = 0xCC,
+		MarketStatistics = 0xCD,
+		ItemWasted = 0xCE,
+		ItemLooted = 0xCF,
+		TrackQuestflags = 0xD0,
+		KillTracking = 0xD1,
+		BuddyData = 0xD2,
+		BuddyStatusChange = 0xD3,
+		BuddyGroupData = 0xD4,
+		MonsterCyclopedia = 0xD5,
+		MonsterCyclopediaMonsters = 0xD6,
+		MonsterCyclopediaRace = 0xD7,
+		MonsterCyclopediaBonusEffects = 0xD8,
+		MonsterCyclopediaNewDetails = 0xD9,
+		CyclopediaCharacterInfo = 0xDA,
+		HirelingNameChange = 0xDB,
+		TutorialHint = 0xDC,
+		//AutomapFlag = 0xDD,
+		CyclopediaMapData = 0xDD,
+		DailyRewardCollectionState = 0xDE,
+		CreditBalance = 0xDF,
+		IngameShopError = 0xE0,
+		RequestPurchaseData = 0xE1,
+		OpenRewardWall = 0xE2,
+		CloseRewardWall = 0xE3,
+		DailyRewardBasic = 0xE4,
+		DailyRewardHistory = 0xE5,
+		PreyFreeListRerollAvailability = 0xE6,
+		PreyTimeLeft = 0xE7,
+		PreyData = 0xE8,
+		PreyPrices = 0xE9,
+		OfferDescription = 0xEA,
+		ImbuingDialogRefresh = 0xEB,
+		CloseImbuingDialog = 0xEC,
+		ShowMessageDialog = 0xED,
+		RequestResourceBalance = 0xEE,
+		WorldTime = 0xEF,
+		QuestLog = 0xF0,
+		QuestLine = 0xF1,
+		UpdatingShopBalance = 0xF2,
+		ChannelEvent = 0xF3,
+		ObjectInfo = 0xF4,
+		PlayerInventory = 0xF5,
+		MarketEnter = 0xF6,
+		MarketLeave = 0xF7,
+		MarketDetail = 0xF8,
+		MarketBrowse = 0xF9,
+		ShowModalDialog = 0xFA,
+		StoreCategories = 0xFB,
+		StoreOffers = 0xFC,
+		TransactionHistory = 0xFD,
+		StoreSuccess = 0xFE
+*/
+
 void ProtocolGame::parsePacket(NetworkMessage& msg)
 {
 	if (!acceptPackets || g_game.getGameState() == GAME_STATE_SHUTDOWN || msg.getLength() == 0) {
@@ -1009,6 +1254,10 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 	}
 
 	if (msg.isOverrun()) {
+#ifdef DEV_MODE
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Message overran for player {:s}!", (player && !player->isRemoved()) ? player->getName() : "(invalid object)"));
+#endif
+
 		disconnect();
 	}
 }
@@ -3461,27 +3710,21 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 		return;
 	}
 
-	// send player stats
-	sendStats(); // hp, cap, level, xp rate, etc.
-	sendSkills(); // skills and special skills
-
 	// send active conditions
 	player->sendIcons();
 
 	// send client info
 	sendClientFeatures(); // player speed, bug reports, store url, pvp mode, etc
 	sendBasicData(); // premium account, vocation, known spells, prey system status, magic shield status
-	sendItems(); // send carried items for action bars
 
 	// enter world and send game screen
 	sendPendingStateEntered();
 	sendEnterWorld();
 	sendMapDescription(pos);
 
-	// send login effect
-	if (magicEffect != CONST_ME_NONE) {
-		sendMagicEffect(pos, magicEffect);
-	}
+	// send player stats
+	sendStats(); // hp, cap, level, xp rate, etc.
+	sendSkills(); // skills and special skills
 
 	// send equipment
 	for (int i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
@@ -3490,6 +3733,14 @@ void ProtocolGame::sendAddCreature(const Creature* creature, const Position& pos
 
 	// send store inbox
 	sendInventoryItem(CONST_SLOT_STORE_INBOX, player->getStoreInbox()->getItem());
+
+	// send action bar items
+	sendItems();
+
+	// send login effect
+	if (magicEffect != CONST_ME_NONE) {
+		sendMagicEffect(pos, magicEffect);
+	}
 
 	// gameworld time of the day
 	sendWorldLight(g_game.getWorldLightInfo());
