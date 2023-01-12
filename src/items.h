@@ -221,7 +221,8 @@ enum ItemParseAttributes_t {
 	ITEM_PARSE_BOOSTPERCENTDROWN,
 	ITEM_PARSE_BOOSTPERCENTPHYSICAL,
 	ITEM_PARSE_BOOSTPERCENTHEALING,
-	ITEM_PARSE_TRAININGTYPE
+	ITEM_PARSE_TRAININGTYPE,
+	ITEM_PARSE_DECAY_TYPE
 };
 
 struct Abilities {
@@ -410,6 +411,7 @@ class ItemType
 		int32_t runeLevel = 0;
 		uint64_t worth = 0;
 
+		ItemDecayType_t decayType = DECAY_TYPE_NORMAL;
 		CombatType_t combatType = COMBAT_NONE;
 
 		uint16_t transformToOnUse[2] = {0, 0};

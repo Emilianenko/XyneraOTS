@@ -738,6 +738,14 @@ void Container::startDecaying()
 	}
 }
 
+void Container::stopDecaying()
+{
+	Item::stopDecaying();
+	for (Item* item : itemlist) {
+		item->stopDecaying();
+	}
+}
+
 ContainerIterator Container::iterator() const
 {
 	ContainerIterator cit;

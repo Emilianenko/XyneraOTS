@@ -2366,10 +2366,6 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(MONSTERS_EVENT_MOVE)
 	registerEnum(MONSTERS_EVENT_SAY)
 
-	registerEnum(DECAYING_FALSE)
-	registerEnum(DECAYING_TRUE)
-	registerEnum(DECAYING_PENDING)
-
 	registerEnum(FORGE_ACTION_FUSION)
 	registerEnum(FORGE_ACTION_TRANSFER)
 	registerEnum(FORGE_ACTION_DUSTTOSLIVERS)
@@ -2855,6 +2851,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "moveTo", LuaScriptInterface::luaItemMoveTo);
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
 	registerMethod("Item", "decay", LuaScriptInterface::luaItemDecay);
+	registerMethod("Item", "stopDecay", LuaScriptInterface::luaItemStopDecay);
+	registerMethod("Item", "getDuration", LuaScriptInterface::luaItemGetDuration);
+	registerMethod("Item", "setDuration", LuaScriptInterface::luaItemSetDuration);
 
 	registerMethod("Item", "getSpecialDescription", LuaScriptInterface::luaItemGetSpecialDescription);
 

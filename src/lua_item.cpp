@@ -401,6 +401,12 @@ int LuaScriptInterface::luaItemGetAttribute(lua_State* L)
 		attribute = ITEM_ATTRIBUTE_NONE;
 	}
 
+	if (attribute == ITEM_ATTRIBUTE_DURATION || attribute == ITEM_ATTRIBUTE_DECAY_TIMESTAMP) {
+		reportErrorFunc(L, "Use \"item:getDuration()\"");
+		pushBoolean(L, false);
+		return 1;
+	}
+
 	if (ItemAttributes::isIntAttrType(attribute)) {
 		lua_pushnumber(L, item->getIntAttr(attribute));
 	} else if (ItemAttributes::isStrAttrType(attribute)) {
@@ -438,6 +444,12 @@ int LuaScriptInterface::luaItemSetAttribute(lua_State* L)
 			return 1;
 		}
 
+		if (attribute == ITEM_ATTRIBUTE_DURATION || attribute == ITEM_ATTRIBUTE_DECAY_TIMESTAMP) {
+			reportErrorFunc(L, "Use \"item:setDuration(value)\"");
+			pushBoolean(L, false);
+			return 1;
+		}
+
 		item->setIntAttr(attribute, getNumber<int32_t>(L, 3));
 		pushBoolean(L, success);
 	} else if (ItemAttributes::isStrAttrType(attribute)) {
@@ -470,6 +482,12 @@ int LuaScriptInterface::luaItemRemoveAttribute(lua_State* L)
 		attribute = stringToItemAttribute(getString(L, 2));
 	} else {
 		attribute = ITEM_ATTRIBUTE_NONE;
+	}
+
+	if (attribute == ITEM_ATTRIBUTE_DURATION || attribute == ITEM_ATTRIBUTE_DECAY_TIMESTAMP) {
+		reportErrorFunc(L, "You can't remove decaying attributes.");
+		pushBoolean(L, false);
+		return 1;
 	}
 
 	bool ret = attribute != ITEM_ATTRIBUTE_UNIQUEID;
@@ -705,7 +723,54 @@ int LuaScriptInterface::luaItemDecay(lua_State* L)
 		if (isNumber(L, 2)) {
 			item->setDecayTo(getNumber<int32_t>(L, 2));
 		}
-		g_game.startDecay(item);
+		item->startDecaying();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemStopDecay(lua_State* L)
+{
+	// item:stopDecay()
+	Item* item = getUserdata<Item>(L, 1);
+	if (item) {
+		item->stopDecaying();
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetDuration(lua_State* L)
+{
+	// item:getDuration()
+	Item* item = getUserdata<Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getDuration());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSetDuration(lua_State* L)
+{
+	// item:setDuration()
+	Item* item = getUserdata<Item>(L, 1);
+	if (item) {
+		bool isDecaying = g_game.isDecaying(item);
+		if (isDecaying) {
+			g_game.stopDecay(item);
+		}
+
+		item->setDuration(getNumber<int32_t>(L, 2));
+
+		if (isDecaying) {
+			g_game.startDecay(item);
+		}
 		pushBoolean(L, true);
 	} else {
 		lua_pushnil(L);

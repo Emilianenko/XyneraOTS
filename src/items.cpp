@@ -207,6 +207,7 @@ const std::unordered_map<std::string, ItemParseAttributes_t> ItemParseAttributes
 	{"storeitem", ITEM_PARSE_STOREITEM},
 	{"worth", ITEM_PARSE_WORTH},
 	{"trainingtype", ITEM_PARSE_TRAININGTYPE},
+	{"decaytype", ITEM_PARSE_DECAY_TYPE},
 };
 
 const std::unordered_map<std::string, ItemTypes_t> ItemTypesMap = {
@@ -280,10 +281,15 @@ const std::unordered_map<std::string, FluidTypes_t> FluidTypesMap = {
 	{"ink", FLUID_INK},
 };
 
+const std::unordered_map<std::string, ItemDecayType_t > DecayTypesMap = {
+	{"normal", DECAY_TYPE_NORMAL},
+	{"timestamp", DECAY_TYPE_TIMESTAMP},
+};
+
 Items::Items()
 {
-	items.reserve(45000);
-	nameToItems.reserve(45000);
+	items.reserve(0xFFFF);
+	nameToItems.reserve(0xFFFF);
 }
 
 void Items::clear()
@@ -992,6 +998,17 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 
 				case ITEM_PARSE_DECAYTO: {
 					it.decayTo = pugi::cast<int32_t>(valueAttribute.value());
+					break;
+				}
+
+				case ITEM_PARSE_DECAY_TYPE: {
+					tmpStrValue = asLowerCaseString(valueAttribute.as_string());
+					auto it2 = DecayTypesMap.find(tmpStrValue);
+					if (it2 != DecayTypesMap.end()) {
+						it.decayType = it2->second;
+					} else {
+						std::cout << "[Warning - Items::parseItemNode] Unknown decayType: " << valueAttribute.as_string() << std::endl;
+					}
 					break;
 				}
 

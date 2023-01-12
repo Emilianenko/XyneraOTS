@@ -158,7 +158,7 @@ do
 		['HitChance'] = {key = ITEM_ATTRIBUTE_HITCHANCE},
 		['ShootRange'] = {key = ITEM_ATTRIBUTE_SHOOTRANGE},
 		['Armor'] = {key = ITEM_ATTRIBUTE_ARMOR},
-		['Duration'] = {key = ITEM_ATTRIBUTE_DURATION, cmp = function(v) return v > 0 end},
+		--['Duration'] = {key = ITEM_ATTRIBUTE_DURATION, cmp = function(v) return v > 0 end},
 		['Text'] = {key = ITEM_ATTRIBUTE_TEXT, cmp = function(v) return v ~= '' end},
 		['Date'] = {key = ITEM_ATTRIBUTE_DATE},
 		['Writer'] = {key = ITEM_ATTRIBUTE_WRITER, cmp = function(v) return v ~= '' end},

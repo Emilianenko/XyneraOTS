@@ -44,12 +44,6 @@ enum TradeEvents_t {
 	ON_TRADE_CANCEL,
 };
 
-enum ItemDecayState_t : uint8_t {
-	DECAYING_FALSE = 0,
-	DECAYING_TRUE,
-	DECAYING_PENDING,
-};
-
 // database/OTBM attributes (NOT for setAttribute / for item attributes see itemAttrTypes)
 enum AttrTypes_t {
 	//ATTR_DESCRIPTION = 1, // OTBM header
@@ -68,7 +62,7 @@ enum AttrTypes_t {
 	ATTR_HOUSEDOORID = 14,
 	ATTR_COUNT = 15,
 	ATTR_DURATION = 16,
-	ATTR_DECAYING_STATE = 17,
+	ATTR_DECAYING_STATE = 17, // decay attr, deprecated
 	ATTR_WRITTENDATE = 18, // scroll/book
 	ATTR_WRITTENBY = 19, // scroll/book
 	ATTR_SLEEPERGUID = 20, // bed
@@ -99,6 +93,7 @@ enum AttrTypes_t {
 	ATTR_IMBUEMENTS = 45, // applied imbuements
 	ATTR_HIRELINGDATA = 46, // hireling lamp data
 	ATTR_REWARDBAG = 47, // reward bag metadata
+	ATTR_DECAY_TIMESTAMP = 48, // new decay system
 };
 
 enum Attr_ReadValue {
@@ -194,18 +189,15 @@ class ItemAttributes
 		void setDuration(int32_t time) {
 			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
 		}
-		void decreaseDuration(int32_t time) {
-			increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
-		}
 		uint32_t getDuration() const {
 			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 		}
 
-		void setDecaying(ItemDecayState_t decayState) {
-			setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
+		void setDecayTimestamp(int64_t timestamp) {
+			setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
 		}
-		ItemDecayState_t getDecaying() const {
-			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
+		int64_t getDecayTimestamp() const {
+			return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
 		}
 
 		struct CustomAttribute
@@ -549,7 +541,7 @@ class ItemAttributes
 			| ITEM_ATTRIBUTE_ARMOR | ITEM_ATTRIBUTE_HITCHANCE | ITEM_ATTRIBUTE_SHOOTRANGE | ITEM_ATTRIBUTE_OWNER
 			| ITEM_ATTRIBUTE_DURATION | ITEM_ATTRIBUTE_DECAYSTATE | ITEM_ATTRIBUTE_CORPSEOWNER | ITEM_ATTRIBUTE_CHARGES
 			| ITEM_ATTRIBUTE_FLUIDTYPE | ITEM_ATTRIBUTE_DOORID | ITEM_ATTRIBUTE_DECAYTO | ITEM_ATTRIBUTE_WRAPID | ITEM_ATTRIBUTE_STOREITEM
-			| ITEM_ATTRIBUTE_ATTACK_SPEED | ITEM_ATTRIBUTE_OPENCONTAINER | ITEM_ATTRIBUTE_TIER;
+			| ITEM_ATTRIBUTE_ATTACK_SPEED | ITEM_ATTRIBUTE_OPENCONTAINER | ITEM_ATTRIBUTE_TIER | ITEM_ATTRIBUTE_DECAY_TIMESTAMP;
 		const static uint32_t stringAttributeTypes = ITEM_ATTRIBUTE_DESCRIPTION | ITEM_ATTRIBUTE_TEXT | ITEM_ATTRIBUTE_WRITER
 			| ITEM_ATTRIBUTE_NAME | ITEM_ATTRIBUTE_ARTICLE | ITEM_ATTRIBUTE_PLURALNAME;
 
@@ -830,29 +822,45 @@ class Item : virtual public Thing
 			return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
 		}
 
+		ItemDecayType_t getDecayType()
+		{
+			return items[id].decayType;
+		}
+
 		void setDuration(int32_t time) {
 			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
 		}
-		void decreaseDuration(int32_t time) {
-			increaseIntAttr(ITEM_ATTRIBUTE_DURATION, -time);
-		}
 		uint32_t getDuration() const {
-			if (!attributes) {
+		if (!attributes) {
 				return 0;
 			}
-			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+
+			if (hasAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP)) {
+				if (getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) > OTSYS_TIME()) {
+					return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) - OTSYS_TIME();
+				} else {
+					return 0;
+				}
+			} else {
+				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+			}
 		}
 
-		void setDecaying(ItemDecayState_t decayState) {
-			setIntAttr(ITEM_ATTRIBUTE_DECAYSTATE, decayState);
+		void setDurationLeft(int32_t duration) {
+			if (items[id].decayType == DECAY_TYPE_NORMAL) {
+				setIntAttr(ITEM_ATTRIBUTE_DURATION, duration);
+			} else {
+				setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, OTSYS_TIME() + duration);
+			}
 		}
+		/*
 		ItemDecayState_t getDecaying() const {
 			if (!attributes) {
 				return DECAYING_FALSE;
 			}
 			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
 		}
-
+		*/
 		int32_t getDecayTime() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
 				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
@@ -868,6 +876,16 @@ class Item : virtual public Thing
 				return getIntAttr(ITEM_ATTRIBUTE_DECAYTO);
 			}
 			return items[id].decayTo;
+		}
+
+		void setDecayTimestamp(int64_t timestamp) {
+			setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
+		}
+		int64_t getDecayTimestamp() const {
+			if (!attributes) {
+				return 0;
+			}
+			return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
 		}
 
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
@@ -1110,9 +1128,13 @@ class Item : virtual public Thing
 		void setUniqueId(uint16_t n);
 
 		void setDefaultDuration() {
-			uint32_t duration = getDefaultDuration();
-			if (duration != 0) {
-				setDuration(duration);
+			if (items[id].decayType == DECAY_TYPE_NORMAL) {
+				uint32_t duration = getDefaultDuration();
+				if (duration != 0) {
+					setDuration(duration);
+				}
+			} else if (items[id].decayType == DECAY_TYPE_TIMESTAMP) {
+				setDecayTimestamp(OTSYS_TIME() + getDefaultDuration());
 			}
 		}
 		uint32_t getDefaultDuration() const {
@@ -1130,6 +1152,7 @@ class Item : virtual public Thing
 		virtual void onTradeEvent(TradeEvents_t, Player*) {}
 
 		virtual void startDecaying();
+		virtual void stopDecaying();
 
 		bool isLoadedFromMap() const {
 			return loadedFromMap;
@@ -1162,9 +1185,7 @@ class Item : virtual public Thing
 		Cylinder* getParent() const override {
 			return parent;
 		}
-		void setParent(Cylinder* cylinder) override {
-			parent = cylinder;
-		}
+		void setParent(Cylinder* cylinder) override;
 		Cylinder* getTopParent();
 		const Cylinder* getTopParent() const;
 		Tile* getTile() override;
