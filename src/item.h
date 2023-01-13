@@ -827,11 +827,8 @@ class Item : virtual public Thing
 			return items[id].decayType;
 		}
 
-		void setDuration(int32_t time) {
-			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
-		}
 		uint32_t getDuration() const {
-		if (!attributes) {
+			if (!attributes) {
 				return 0;
 			}
 
@@ -841,12 +838,14 @@ class Item : virtual public Thing
 				} else {
 					return 0;
 				}
-			} else {
+			} else if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
 				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+			} else {
+				return items[id].decayTime;
 			}
 		}
 
-		void setDurationLeft(int32_t duration) {
+		void setDuration(int32_t duration) {
 			if (items[id].decayType == DECAY_TYPE_NORMAL) {
 				setIntAttr(ITEM_ATTRIBUTE_DURATION, duration);
 			} else {
@@ -1141,6 +1140,7 @@ class Item : virtual public Thing
 			return items[id].decayTime * 1000;
 		}
 		bool canDecay() const;
+		bool canCompleteDecay() const;
 
 		virtual bool canRemove() const {
 			return true;

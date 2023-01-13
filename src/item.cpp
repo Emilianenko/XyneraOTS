@@ -1186,6 +1186,11 @@ bool Item::canDecay() const
 	return true;
 }
 
+bool Item::canCompleteDecay() const
+{
+	return !isRemoved() && !hasAttribute(ITEM_ATTRIBUTE_UNIQUEID);
+}
+
 uint32_t Item::getWorth() const
 {
 	return items[id].worth * count;

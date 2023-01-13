@@ -660,9 +660,17 @@ void Player::closeContainer(uint8_t cid)
 	Container* container = openContainer.container;
 
 	openContainers.erase(it);
+	if (container) {
+		if (Cylinder* c = container->getTopParent()) {
+			if (Item* i = c->getItem()) {
+				std::cout << i->getName() << std::endl;
+				// print do jebanego lockera
+			}
+		}
 
-	if (container && container->getID() == ITEM_BROWSEFIELD) {
-		container->decrementReferenceCounter();
+		if (container->getID() == ITEM_BROWSEFIELD) {
+			container->decrementReferenceCounter();
+		}
 	}
 }
 
