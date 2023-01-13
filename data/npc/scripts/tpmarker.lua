@@ -11,7 +11,7 @@ local labelDefaultAlt = '<font color="#f7df05" size="5">|NPCNAME|<br />|CENTERAR
 local markers = {
 	["Monsters"] = {
 		itemId = 1387,
-		destination = Position(1052, 1010, 5),
+		destination = Position(1064, 992, 3),
 		effect = 178,
 		label = labelDefault,
 	},
