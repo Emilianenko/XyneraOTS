@@ -1107,8 +1107,13 @@ itemAttrTypes stringToItemAttribute(const std::string& str)
 		return ITEM_ATTRIBUTE_OWNER;
 	} else if (str == "duration") {
 		return ITEM_ATTRIBUTE_DURATION;
+	/*
+	// deprecated
 	} else if (str == "decaystate") {
 		return ITEM_ATTRIBUTE_DECAYSTATE;
+	*/
+	} else if (str == "decaytimestamp") {
+		return ITEM_ATTRIBUTE_DECAY_TIMESTAMP;
 	} else if (str == "corpseowner") {
 		return ITEM_ATTRIBUTE_CORPSEOWNER;
 	} else if (str == "charges") {
@@ -1127,8 +1132,6 @@ itemAttrTypes stringToItemAttribute(const std::string& str)
 		return ITEM_ATTRIBUTE_ATTACK_SPEED;
 	} else if (str == "tier") {
 		return ITEM_ATTRIBUTE_TIER;
-	} else if (str == "decaytimestamp") {
-		return ITEM_ATTRIBUTE_DECAY_TIMESTAMP;
 	}
 	return ITEM_ATTRIBUTE_NONE;
 }

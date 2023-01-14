@@ -1409,6 +1409,13 @@ class Player final : public Creature, public Cylinder
 		void toggleImbuement(uint8_t imbuId, bool isEquip);
 		void toggleImbuements(Item* item, bool isEquip, bool silent = false);
 
+		void linkDepot() {
+			inDepot = true;
+		}
+		void unlinkDepot() {
+			inDepot = false;
+		}
+
 	private:
 		std::forward_list<Condition*> getMuteConditions() const;
 
@@ -1584,6 +1591,7 @@ class Player final : public Creature, public Cylinder
 		bool chaseMode = false;
 		bool secureMode = false;
 		bool inMarket = false;
+		bool inDepot = false;
 		bool wasMounted = false;
 		bool ghostMode = false;
 		bool pzLocked = false;

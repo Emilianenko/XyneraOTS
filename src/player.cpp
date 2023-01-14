@@ -660,17 +660,9 @@ void Player::closeContainer(uint8_t cid)
 	Container* container = openContainer.container;
 
 	openContainers.erase(it);
-	if (container) {
-		if (Cylinder* c = container->getTopParent()) {
-			if (Item* i = c->getItem()) {
-				std::cout << i->getName() << std::endl;
-				// print do jebanego lockera
-			}
-		}
 
-		if (container->getID() == ITEM_BROWSEFIELD) {
-			container->decrementReferenceCounter();
-		}
+	if (container && container->getID() == ITEM_BROWSEFIELD) {
+		container->decrementReferenceCounter();
 	}
 }
 
@@ -1582,6 +1574,15 @@ void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Posit
 		inMarket = false;
 	}
 
+	// disable access to depot features when walking away from it
+	if (inDepot) {
+		if (!depotLocker || depotLocker->isRemoved() || !Position::areInRange<1, 1, 0>(depotLocker->getPosition(), getPosition())) {
+			unlinkDepot();
+		}
+	}
+
+	// to do: check in intervals rather than per step
+	// update instantly only on teleport or join/leave events
 	if (party) {
 		party->updateSharedExperience();
 	}

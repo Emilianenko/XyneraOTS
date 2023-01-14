@@ -357,6 +357,7 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 			DepotLocker& myDepotLocker = player->getDepotLocker();
 			myDepotLocker.setParent(depot->getParent()->getTile());
 			openContainer = &myDepotLocker;
+			player->linkDepot();
 		} else if (RewardChest* rewardChest = container->getRewardChest()) {
 			RewardChest& myRewardChest = player->getRewardChest();
 			for (Item* rewardBagItem : myRewardChest.getItems()) {

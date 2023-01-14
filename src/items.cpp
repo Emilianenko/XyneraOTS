@@ -288,8 +288,8 @@ const std::unordered_map<std::string, ItemDecayType_t > DecayTypesMap = {
 
 Items::Items()
 {
-	items.reserve(0xFFFF);
-	nameToItems.reserve(0xFFFF);
+	items.reserve(45000);
+	nameToItems.reserve(45000);
 }
 
 void Items::clear()
@@ -1001,13 +1001,13 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 					break;
 				}
 
-				case ITEM_PARSE_DECAY_TYPE: {
+			   case ITEM_PARSE_DECAY_TYPE: {
 					tmpStrValue = asLowerCaseString(valueAttribute.as_string());
 					auto it2 = DecayTypesMap.find(tmpStrValue);
 					if (it2 != DecayTypesMap.end()) {
 						it.decayType = it2->second;
 					} else {
-						std::cout << "[Warning - Items::parseItemNode] Unknown decayType: " << valueAttribute.as_string() << std::endl;
+						console::reportWarning(__FUNCTION__, fmt::format("Unknown decayType: {:s}", valueAttribute.as_string()));
 					}
 					break;
 				}

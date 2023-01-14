@@ -1297,7 +1297,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		return retMaxCount;
 	}
 
-	if (moveItem && moveItem->getDuration() > 0) {
+	if (moveItem && moveItem->getDurationLeft() > 0) {
 		startDecay(moveItem);
 	}
 
@@ -1397,7 +1397,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		}
 	}
 
-	if (item->getDuration() > 0 /* && !item->getDecaying() */) {
+	if (item->getDurationLeft() > 0 /* && !item->getDecaying() */) {
 		startDecay(item);
 	}
 
@@ -1764,7 +1764,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 	ReleaseItem(item);
 
 	stopDecay(item);
-	if (newItem->getDuration() > 0) {
+	if (newItem->getDurationLeft() > 0) {
 		startDecay(newItem);
 	}
 
@@ -5169,6 +5169,57 @@ void Game::addDistanceEffect(const SpectatorVec& spectators, const Position& fro
 	}
 }
 
+bool Game::isDecaying(Item* item)
+{
+	if (!item) {
+		return false;
+	}
+
+	return reverseItemDecayMap.find(item) != reverseItemDecayMap.end();
+}
+
+void Game::startDecay(Item *item)
+{
+	if (!item || !item->canDecay()) {
+		return;
+	}
+
+	if (isDecaying(item)) {
+		return;
+	}
+
+	int64_t decayToTimestamp = OTSYS_TIME() + item->getDurationLeft();
+
+	if (item->getDecayType() == DECAY_TYPE_NORMAL) {
+		item->setDecayTimestamp(decayToTimestamp);
+	}
+
+	decayMap[decayToTimestamp][item] = item;
+	reverseItemDecayMap[item] = decayToTimestamp;
+	item->incrementReferenceCounter();
+}
+
+void Game::stopDecay(Item *item)
+{
+	if (!item) {
+		return;
+	}
+
+	auto it = reverseItemDecayMap.find(item);
+	if (it == reverseItemDecayMap.end()) {
+		return;
+	}
+
+	if (item->getDecayType() == DECAY_TYPE_NORMAL) {
+		item->setDuration(item->getDurationLeft());
+		item->removeAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
+	}
+
+	reverseItemDecayMap.erase(it);
+	decayMap[it->second].erase(item);
+	ReleaseItem(item);
+}
+
 void Game::setAccountStorageValue(const uint32_t accountId, const uint32_t key, const int32_t value)
 {
 	if (value == -1) {
@@ -5261,57 +5312,6 @@ bool Game::saveAccountStorageValues() const
 	return transaction.commit();
 }
 
-bool Game::isDecaying(Item* item)
-{
-	if (!item) {
-		return false;
-	}
-
-	return reverseItemDecayMap.find(item) != reverseItemDecayMap.end();
-}
-
-void Game::startDecay(Item* item)
-{
-	if (!item || !item->canDecay()) {
-		return;
-	}
-
-	if (isDecaying(item)) {
-		return;
-	}
-
-	int64_t decayToTimestamp = OTSYS_TIME() + item->getDuration();
-
-	if (item->getDecayType() == DECAY_TYPE_NORMAL) {
-		item->setDecayTimestamp(decayToTimestamp);
-	}
-
-	decayMap[decayToTimestamp][item] = item;
-	reverseItemDecayMap[item] = decayToTimestamp;
-	item->incrementReferenceCounter();
-}
-
-void Game::stopDecay(Item* item)
-{
-	if (!item) {
-		return;
-	}
-
-	auto it = reverseItemDecayMap.find(item);
-	if (it == reverseItemDecayMap.end()) {
-		return;
-	}
-
-	if (item->getDecayType() == DECAY_TYPE_NORMAL) {
-		item->setDuration(item->getDuration());
-		item->removeAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
-	}
-
-	reverseItemDecayMap.erase(it);
-	decayMap[it->second].erase(item);
-	ReleaseItem(item);
-}
-
 void Game::internalDecayItem(Item* item)
 {
 	const int32_t decayTo = item->getDecayTo();
@@ -5335,7 +5335,9 @@ void Game::internalDecayItem(Item* item)
 void Game::checkDecay()
 {
 	g_scheduler.addEvent(createSchedulerTask(EVENT_DECAYINTERVAL, [this]() { checkDecay(); }));
+
 	int64_t time = OTSYS_TIME();
+
 	std::list<Item*> itemsToDecay;
 
 	auto it = decayMap.begin(), end = decayMap.end();
@@ -5353,7 +5355,7 @@ void Game::checkDecay()
 
 	for (auto item : itemsToDecay) {
 		stopDecay(item);
-		if (item->canCompleteDecay()) {
+		if (item->canDecay()) {
 			internalDecayItem(item);
 		}
 	}

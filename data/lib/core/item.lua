@@ -10,6 +10,9 @@ function Item:getClassification()
 	return self:getType():getClassification()
 end
 
+-- polymorphism for "look" method, not a compat
+Item.getDuration = Item.getDurationLeft
+
 function Item:isContainer()
 	return false
 end

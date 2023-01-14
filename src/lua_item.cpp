@@ -402,7 +402,7 @@ int LuaScriptInterface::luaItemGetAttribute(lua_State* L)
 	}
 
 	if (attribute == ITEM_ATTRIBUTE_DURATION || attribute == ITEM_ATTRIBUTE_DECAY_TIMESTAMP) {
-		reportErrorFunc(L, "Use \"item:getDuration()\"");
+		reportErrorFunc(L, "Use \"item:getDurationLeft()\"");
 		pushBoolean(L, false);
 		return 1;
 	}
@@ -445,7 +445,7 @@ int LuaScriptInterface::luaItemSetAttribute(lua_State* L)
 		}
 
 		if (attribute == ITEM_ATTRIBUTE_DURATION || attribute == ITEM_ATTRIBUTE_DECAY_TIMESTAMP) {
-			reportErrorFunc(L, "Use \"item:setDuration(value)\"");
+			reportErrorFunc(L, "Use \"item:setDurationLeft(value)\"");
 			pushBoolean(L, false);
 			return 1;
 		}
@@ -744,21 +744,21 @@ int LuaScriptInterface::luaItemStopDecay(lua_State* L)
 	return 1;
 }
 
-int LuaScriptInterface::luaItemGetDuration(lua_State* L)
+int LuaScriptInterface::luaItemGetDurationLeft(lua_State* L)
 {
-	// item:getDuration()
+	// item:getDurationLeft()
 	Item* item = getUserdata<Item>(L, 1);
 	if (item) {
-		lua_pushnumber(L, item->getDuration());
+		lua_pushnumber(L, item->getDurationLeft());
 	} else {
 		lua_pushnil(L);
 	}
 	return 1;
 }
 
-int LuaScriptInterface::luaItemSetDuration(lua_State* L)
+int LuaScriptInterface::luaItemSetDurationLeft(lua_State* L)
 {
-	// item:setDuration()
+	// item:setDurationLeft()
 	Item* item = getUserdata<Item>(L, 1);
 	if (item) {
 		bool isDecaying = g_game.isDecaying(item);
@@ -766,7 +766,7 @@ int LuaScriptInterface::luaItemSetDuration(lua_State* L)
 			g_game.stopDecay(item);
 		}
 
-		item->setDuration(getNumber<int32_t>(L, 2));
+		item->setDurationLeft(getNumber<int32_t>(L, 2));
 
 		if (isDecaying) {
 			g_game.startDecay(item);

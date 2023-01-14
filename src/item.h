@@ -62,7 +62,7 @@ enum AttrTypes_t {
 	ATTR_HOUSEDOORID = 14,
 	ATTR_COUNT = 15,
 	ATTR_DURATION = 16,
-	ATTR_DECAYING_STATE = 17, // decay attr, deprecated
+	ATTR_DECAYING_STATE = 17, // decay active/paused (deprecated)
 	ATTR_WRITTENDATE = 18, // scroll/book
 	ATTR_WRITTENBY = 19, // scroll/book
 	ATTR_SLEEPERGUID = 20, // bed
@@ -93,7 +93,7 @@ enum AttrTypes_t {
 	ATTR_IMBUEMENTS = 45, // applied imbuements
 	ATTR_HIRELINGDATA = 46, // hireling lamp data
 	ATTR_REWARDBAG = 47, // reward bag metadata
-	ATTR_DECAY_TIMESTAMP = 48, // new decay system
+	ATTR_DECAY_TIMESTAMP = 48, // new decay mode
 };
 
 enum Attr_ReadValue {
@@ -539,7 +539,7 @@ class ItemAttributes
 		const static uint32_t intAttributeTypes = ITEM_ATTRIBUTE_ACTIONID | ITEM_ATTRIBUTE_UNIQUEID | ITEM_ATTRIBUTE_DATE
 			| ITEM_ATTRIBUTE_WEIGHT | ITEM_ATTRIBUTE_ATTACK | ITEM_ATTRIBUTE_DEFENSE | ITEM_ATTRIBUTE_EXTRADEFENSE
 			| ITEM_ATTRIBUTE_ARMOR | ITEM_ATTRIBUTE_HITCHANCE | ITEM_ATTRIBUTE_SHOOTRANGE | ITEM_ATTRIBUTE_OWNER
-			| ITEM_ATTRIBUTE_DURATION | ITEM_ATTRIBUTE_DECAYSTATE | ITEM_ATTRIBUTE_CORPSEOWNER | ITEM_ATTRIBUTE_CHARGES
+			| ITEM_ATTRIBUTE_DURATION | ITEM_ATTRIBUTE_CORPSEOWNER | ITEM_ATTRIBUTE_CHARGES
 			| ITEM_ATTRIBUTE_FLUIDTYPE | ITEM_ATTRIBUTE_DOORID | ITEM_ATTRIBUTE_DECAYTO | ITEM_ATTRIBUTE_WRAPID | ITEM_ATTRIBUTE_STOREITEM
 			| ITEM_ATTRIBUTE_ATTACK_SPEED | ITEM_ATTRIBUTE_OPENCONTAINER | ITEM_ATTRIBUTE_TIER | ITEM_ATTRIBUTE_DECAY_TIMESTAMP;
 		const static uint32_t stringAttributeTypes = ITEM_ATTRIBUTE_DESCRIPTION | ITEM_ATTRIBUTE_TEXT | ITEM_ATTRIBUTE_WRITER
@@ -660,6 +660,16 @@ class Item : virtual public Thing
 		}
 		void setStrAttr(itemAttrTypes type, const std::string& value) {
 			getAttributes()->setStrAttr(type, value);
+		}
+
+		int64_t getInt64Attr(itemAttrTypes type) const {
+			if (!attributes) {
+				return 0;
+			}
+			return attributes->getIntAttr(type);
+		}
+		void setInt64Attr(itemAttrTypes type, int64_t value) {
+			getAttributes()->setIntAttr(type, value);
 		}
 
 		int64_t getIntAttr(itemAttrTypes type) const {
@@ -822,49 +832,59 @@ class Item : virtual public Thing
 			return getIntAttr(ITEM_ATTRIBUTE_CORPSEOWNER);
 		}
 
-		ItemDecayType_t getDecayType()
-		{
+		ItemDecayType_t getDecayType() {
 			return items[id].decayType;
 		}
 
+		void setDuration(int32_t time) {
+			setIntAttr(ITEM_ATTRIBUTE_DURATION, time);
+		}
 		uint32_t getDuration() const {
+			if (!attributes) {
+				return 0;
+			}
+			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
+		}
+
+		uint32_t getDurationLeft() const {
 			if (!attributes) {
 				return 0;
 			}
 
 			if (hasAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP)) {
-				if (getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) > OTSYS_TIME()) {
-					return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) - OTSYS_TIME();
+				if (getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) > OTSYS_TIME()) {
+					return getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) - OTSYS_TIME();
 				} else {
 					return 0;
 				}
-			} else if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
-				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			} else {
-				return items[id].decayTime;
+				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			}
 		}
 
-		void setDuration(int32_t duration) {
+		void setDurationLeft(int32_t duration) {
 			if (items[id].decayType == DECAY_TYPE_NORMAL) {
 				setIntAttr(ITEM_ATTRIBUTE_DURATION, duration);
 			} else {
-				setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, OTSYS_TIME() + duration);
+				setInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, OTSYS_TIME() + duration);
 			}
 		}
-		/*
-		ItemDecayState_t getDecaying() const {
-			if (!attributes) {
-				return DECAYING_FALSE;
-			}
-			return static_cast<ItemDecayState_t>(getIntAttr(ITEM_ATTRIBUTE_DECAYSTATE));
-		}
-		*/
+
 		int32_t getDecayTime() const {
 			if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
 				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			}
 			return items[id].decayTime;
+		}
+
+		void setDecayTimestamp(int64_t timestamp) {
+			setInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
+		}
+		int64_t getDecayTimestamp() const {
+			if (!attributes) {
+				return 0;
+			}
+			return getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
 		}
 
 		void setDecayTo(int32_t decayTo) {
@@ -875,16 +895,6 @@ class Item : virtual public Thing
 				return getIntAttr(ITEM_ATTRIBUTE_DECAYTO);
 			}
 			return items[id].decayTo;
-		}
-
-		void setDecayTimestamp(int64_t timestamp) {
-			setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
-		}
-		int64_t getDecayTimestamp() const {
-			if (!attributes) {
-				return 0;
-			}
-			return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
 		}
 
 		static std::string getNameDescription(const ItemType& it, const Item* item = nullptr, int32_t subType = -1, bool addArticle = true);
@@ -1140,7 +1150,6 @@ class Item : virtual public Thing
 			return items[id].decayTime * 1000;
 		}
 		bool canDecay() const;
-		bool canCompleteDecay() const;
 
 		virtual bool canRemove() const {
 			return true;

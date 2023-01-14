@@ -741,6 +741,7 @@ void Container::startDecaying()
 void Container::stopDecaying()
 {
 	Item::stopDecaying();
+
 	for (Item* item : itemlist) {
 		item->stopDecaying();
 	}

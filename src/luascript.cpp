@@ -1775,7 +1775,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(ITEM_ATTRIBUTE_SHOOTRANGE)
 	registerEnum(ITEM_ATTRIBUTE_OWNER)
 	registerEnum(ITEM_ATTRIBUTE_DURATION)
-	registerEnum(ITEM_ATTRIBUTE_DECAYSTATE)
+	//registerEnum(ITEM_ATTRIBUTE_DECAYSTATE)
 	registerEnum(ITEM_ATTRIBUTE_CORPSEOWNER)
 	registerEnum(ITEM_ATTRIBUTE_CHARGES)
 	registerEnum(ITEM_ATTRIBUTE_FLUIDTYPE)
@@ -2852,8 +2852,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "transform", LuaScriptInterface::luaItemTransform);
 	registerMethod("Item", "decay", LuaScriptInterface::luaItemDecay);
 	registerMethod("Item", "stopDecay", LuaScriptInterface::luaItemStopDecay);
-	registerMethod("Item", "getDuration", LuaScriptInterface::luaItemGetDuration);
-	registerMethod("Item", "setDuration", LuaScriptInterface::luaItemSetDuration);
+	registerMethod("Item", "getDurationLeft", LuaScriptInterface::luaItemGetDurationLeft);
+	registerMethod("Item", "setDurationLeft", LuaScriptInterface::luaItemSetDurationLeft);
 
 	registerMethod("Item", "getSpecialDescription", LuaScriptInterface::luaItemGetSpecialDescription);
 
