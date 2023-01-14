@@ -83,7 +83,7 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -400},
-	{name ="combat", interval = 2000, chance = 25, minDamage = -240, maxDamage = -300, range = 6, type = COMBAT_ICEDAMAGE, shootEffects = CONST_ANI_SNOWBALL, effect = CONST_ME_ICEATTACK, target = true},
+	{name ="combat", interval = 2000, chance = 100, minDamage = -240, maxDamage = -300, range = 6, type = COMBAT_ICEDAMAGE, shootEffect = CONST_ANI_SNOWBALL, effect = CONST_ME_ICEATTACK, target = true},
 	{name ="combat", interval = 2000, chance = 22, minDamage = -230, maxDamage = -300, range = 6, radius = 3, type = COMBAT_ICEDAMAGE, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true}
 }
 
