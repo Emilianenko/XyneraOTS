@@ -103,7 +103,9 @@ void NetworkMessage::addItem(uint16_t id, uint8_t count)
 	} else if (it.showClientDuration) {
 		uint32_t duration = it.decayTime;
 		if (duration == 0) {
-			int32_t equipId = it.transformEquipTo;
+			// magic light wand (special case)
+			// to do: remove hardcode if more items like this one get added in the future
+			int32_t equipId = it.id != 2162 ? it.transformEquipTo : 2163;
 			if (equipId != 0) {
 				duration = Item::items[equipId].decayTime;
 			}
@@ -143,12 +145,17 @@ void NetworkMessage::addItem(const Item* item)
 		add<uint32_t>(charges > 0 ? charges : it.charges);
 		addByte(charges == it.charges); // has default charges
 	} else if (it.showClientDuration) {
-		uint32_t duration = item->getDuration() / 1000;
+		uint32_t duration = item->getDurationLeft() / 1000;
 		bool isUnused = false;
 		if (duration == 0) {
 			int32_t equipId = it.transformEquipTo;
 			if (equipId != 0) {
 				duration = Item::items[equipId].decayTime;
+				isUnused = true;
+			} else if (it.id == 2162) {
+				// magic light wand (special case)
+				// to do: remove hardcode if more items like this one get added in the future
+				duration = Item::items[2163].decayTime;
 				isUnused = true;
 			}
 		}
