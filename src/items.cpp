@@ -288,8 +288,9 @@ const std::unordered_map<std::string, ItemDecayType_t > DecayTypesMap = {
 
 Items::Items()
 {
-	items.reserve(45000);
-	nameToItems.reserve(45000);
+	// reserve 65535 itemTypes for vectors
+	items.reserve(0xFFFF);
+	nameToItems.reserve(0xFFFF);
 }
 
 void Items::clear()
