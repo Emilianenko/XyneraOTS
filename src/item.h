@@ -1150,6 +1150,7 @@ class Item : virtual public Thing
 			return items[id].decayTime * 1000;
 		}
 		bool canDecay() const;
+		bool canCompleteDecay() const;
 
 		virtual bool canRemove() const {
 			return true;
