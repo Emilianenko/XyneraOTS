@@ -5355,7 +5355,7 @@ void Game::checkDecay()
 
 	for (auto item : itemsToDecay) {
 		stopDecay(item);
-		if (item->canDecay()) {
+		if (item->canCompleteDecay()) {
 			internalDecayItem(item);
 		}
 	}
