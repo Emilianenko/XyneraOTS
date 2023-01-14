@@ -37255,7 +37255,7 @@
 		<attribute key="decayTo" value="32780"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-	<item id="32779" article="a" name="dead winter reaguard">
+	<item id="32779" article="a" name="dead winter rearguard">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="10"/>
@@ -37280,20 +37280,20 @@
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
 	</item>
-	<item id="32783" article="a" name="dead winter reaguard">
+	<item id="32783" article="a" name="dead winter rearguard">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="fluidsource" value="blood"/>
 		<attribute key="duration" value="300"/>
 		<attribute key="decayTo" value="32784"/>
 		<attribute key="containersize" value="20"/>
 	</item>
-	<item id="32784" article="a" name="dead winter reaguard">
+	<item id="32784" article="a" name="dead winter rearguard">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="300"/>
 		<attribute key="decayTo" value="32785"/>
 		<attribute key="containersize" value="10"/>
 	</item>
-	<item id="32785" article="a" name="dead winter reaguard">
+	<item id="32785" article="a" name="dead winter rearguard">
 		<attribute key="corpseType" value="blood"/>
 		<attribute key="duration" value="60"/>
 		<attribute key="decayTo" value="0"/>
