@@ -1390,21 +1390,30 @@ void Player::onFollowCreatureDisappear(bool isLogout)
 void Player::onChangeZone(ZoneType_t zone)
 {
 	if (zone == ZONE_PROTECTION) {
+		// stop attacking
 		if (attackedCreature && !hasFlag(PlayerFlag_IgnoreProtectionZone)) {
 			setAttackedCreature(nullptr);
 			onAttackedCreatureDisappear(false);
 		}
 
+		// dismount
 		if (!group->access && isMounted()) {
 			dismount();
 			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
 			wasMounted = true;
 		}
+
+		// pause imbuements
+		consumeImbuements(true, hasCondition(CONDITION_INFIGHT));
 	} else {
+		// remount
 		if (wasMounted) {
 			toggleMount(true);
 			wasMounted = false;
 		}
+
+		// resume imbuements
+		consumeImbuements(true, false);
 	}
 
 	g_game.updateCreatureWalkthrough(this);
@@ -3951,7 +3960,7 @@ void Player::onAddCondition(ConditionType_t type)
 
 	if (type == CONDITION_OUTFIT && isMounted()) {
 		dismount();
-	} else if (type == CONDITION_INFIGHT) {
+	} else if (type == CONDITION_INFIGHT && getZone() != ZONE_PROTECTION) {
 		// infight started - update timers, consume outofcombat durations
 		consumeImbuements(true, false);
 	}

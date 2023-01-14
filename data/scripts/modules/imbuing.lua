@@ -290,7 +290,7 @@ function Item:getImbuementDuration(imbuData)
 	if parent and Player(parent) then
 		-- get duration of equipped item
 		local passive = ImbuementType(imbuData.imbuId):outOfCombat()
-		if passive or parent:hasCondition(CONDITION_INFIGHT) then
+		if passive or parent:hasCondition(CONDITION_INFIGHT) and parent:getZone() ~= ZONE_PROTECTION then
 			-- player in combat or imbuement is passive
 			-- calculate time passed since last update
 			local timeDiff = math.floor((os.mtime() - imbuData.lastUpdated) / 1000)
