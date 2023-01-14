@@ -54,24 +54,30 @@ function onSay(player, words, param)
 	local pagesCount = math.ceil(playersOnline / maxPlayersPerMessage)
 	local pageId = 1
 	local cid = player:getId()
-	local legend = "\n\n[Online"
-	if legendAfk then
-		legend = string.format("%s, {%d|Training}", legend, MESSAGE_COLOR_PURPLE)
-	end
+	local legend = ""
 	
-	if legendTutor then
-		legend = string.format("%s, {%d|Tutor}", legend, MESSAGE_COLOR_YELLOW)	
-	end
-	
-	if legendAdmin then
-		legend = string.format("%s, {%d|Staff}", legend, MESSAGE_COLOR_BLUE)	
+	-- show legend only when at least one uncommon online type is online
+	if legendAfk or legendTutor or legendAdmin then
+		legend = "\n\n[Online"
+		if legendAfk then
+			legend = string.format("%s, {%d|Training}", legend, MESSAGE_COLOR_PURPLE)
+		end
+		
+		if legendTutor then
+			legend = string.format("%s, {%d|Tutor}", legend, MESSAGE_COLOR_YELLOW)	
+		end
+		
+		if legendAdmin then
+			legend = string.format("%s, {%d|Staff}", legend, MESSAGE_COLOR_BLUE)	
+		end
+		
+		legend = legend .. "]"
 	end
 	
 	local onlineCountStr = playersOnline
 	if playersAfk > 0 then
 		onlineCountStr = string.format("%d (%d active {%d|%+d afk})", playersOnline, playersOnline - playersAfk, MESSAGE_COLOR_PURPLE, playersAfk)
 	end
-	legend = legend .. "]"
 	
 	for i = 1, playersOnline, maxPlayersPerMessage do
 		local j = math.min(i + maxPlayersPerMessage - 1, playersOnline)
