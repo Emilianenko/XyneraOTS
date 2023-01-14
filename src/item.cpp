@@ -593,7 +593,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 				return ATTR_READ_ERROR;
 			}
 
-			setInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, decayTimestamp);
+			setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, decayTimestamp);
 			break;
 		}
 
@@ -897,7 +897,7 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 
 	if (items[id].decayType == DECAY_TYPE_TIMESTAMP && hasAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP)) {
 		propWriteStream.write<uint8_t>(ATTR_DECAY_TIMESTAMP);
-		propWriteStream.write<int64_t>(getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP));
+		propWriteStream.write<int64_t>(getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP));
 	}
 
 	if (hasAttribute(ITEM_ATTRIBUTE_DURATION)) {

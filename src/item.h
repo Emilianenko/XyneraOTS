@@ -662,16 +662,6 @@ class Item : virtual public Thing
 			getAttributes()->setStrAttr(type, value);
 		}
 
-		int64_t getInt64Attr(itemAttrTypes type) const {
-			if (!attributes) {
-				return 0;
-			}
-			return attributes->getIntAttr(type);
-		}
-		void setInt64Attr(itemAttrTypes type, int64_t value) {
-			getAttributes()->setIntAttr(type, value);
-		}
-
 		int64_t getIntAttr(itemAttrTypes type) const {
 			if (!attributes) {
 				return 0;
@@ -852,8 +842,8 @@ class Item : virtual public Thing
 			}
 
 			if (hasAttribute(ITEM_ATTRIBUTE_DECAY_TIMESTAMP)) {
-				if (getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) > OTSYS_TIME()) {
-					return getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) - OTSYS_TIME();
+				if (getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) > OTSYS_TIME()) {
+					return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP) - OTSYS_TIME();
 				} else {
 					return 0;
 				}
@@ -866,7 +856,7 @@ class Item : virtual public Thing
 			if (items[id].decayType == DECAY_TYPE_NORMAL) {
 				setIntAttr(ITEM_ATTRIBUTE_DURATION, duration);
 			} else {
-				setInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, OTSYS_TIME() + duration);
+				setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, OTSYS_TIME() + duration);
 			}
 		}
 
@@ -878,13 +868,13 @@ class Item : virtual public Thing
 		}
 
 		void setDecayTimestamp(int64_t timestamp) {
-			setInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
+			setIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP, timestamp);
 		}
 		int64_t getDecayTimestamp() const {
 			if (!attributes) {
 				return 0;
 			}
-			return getInt64Attr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
+			return getIntAttr(ITEM_ATTRIBUTE_DECAY_TIMESTAMP);
 		}
 
 		void setDecayTo(int32_t decayTo) {
