@@ -4509,7 +4509,7 @@ void ProtocolGame::AddPlayerSkills(NetworkMessage& msg)
 	// crit, leech
 	for (uint8_t i = SPECIALSKILL_LEECH_FIRST; i <= SPECIALSKILL_LEECH_LAST; ++i) {
 		int32_t skillAmount = std::max<int32_t>(0, std::min<int32_t>(std::numeric_limits<uint16_t>::max(), player->varSpecialSkills[i]));
-		if (i != SPECIALSKILL_CRITICALHITAMOUNT && i != SPECIALSKILL_LIFELEECHAMOUNT && i != SPECIALSKILL_MANALEECHAMOUNT) {
+		if (i != SPECIALSKILL_LIFELEECHAMOUNT && i != SPECIALSKILL_MANALEECHAMOUNT) {
 			skillAmount = std::min<int32_t>(skillAmount, 100);
 		} else {
 			skillAmount *= 100;
