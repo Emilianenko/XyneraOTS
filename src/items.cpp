@@ -341,6 +341,9 @@ bool Items::reload()
 					g_moveEvents->onPlayerEquip(player, item, slot, false);
 				}
 			}
+
+			// send updated imbu panel
+			player->sendImbuementsPanel();
 		}
 	}
 
@@ -1925,6 +1928,15 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 	if ((it.transformToFree != 0 || it.transformToOnUse[PLAYERSEX_FEMALE] != 0 || it.transformToOnUse[PLAYERSEX_MALE] != 0) && it.type != ITEM_TYPE_BED) {
 		console::reportWarning(location, fmt::format("Item {:d} is not set as a bed type!", it.id));
 	}
+}
+
+bool Items::setImbuingSlots(size_t id, uint8_t slotCount) {
+	if (id > 99 && id < items.size()) {
+		items[id].imbuingSlots = slotCount;
+		return true;
+	}
+
+	return false;
 }
 
 ItemType& Items::getItemType(size_t id)

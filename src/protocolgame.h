@@ -115,6 +115,7 @@ class ProtocolGame final : public Protocol
 
 		// Imbuing
 		void parseImbuingApply(NetworkMessage& msg);
+		void parseImbuementPanel(NetworkMessage& msg);
 
 		// Items
 		void parseEquipObject(NetworkMessage& msg);
@@ -285,6 +286,7 @@ class ProtocolGame final : public Protocol
 		void sendSpellGroupCooldown(SpellGroup_t groupId, uint32_t time);
 		void sendUseItemCooldown(uint32_t time);
 		void sendSupplyUsed(const uint16_t clientId);
+		void sendImbuementsPanel(const std::map<slots_t, Item*> itemsToSend);
 
 		//tiles
 		void sendMapDescription(const Position& pos);

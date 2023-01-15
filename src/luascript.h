@@ -801,6 +801,9 @@ class LuaScriptInterface
 		static int luaItemGetImbuement(lua_State* L);
 		static int luaItemRemoveImbuement(lua_State* L);
 
+		static int luaItemSetImbuingSlots(lua_State* L);
+		static int luaItemGetImbuingSlots(lua_State* L);
+
 		// Container
 		static int luaContainerCreate(lua_State* L);
 
@@ -1394,6 +1397,8 @@ class LuaScriptInterface
 		static int luaItemTypeGetClassification(lua_State* L);
 		static int luaItemTypeHasShowCount(lua_State* L);
 		static int luaItemTypeGetAbilities(lua_State* L);
+		static int luaItemTypeSetImbuingSlots(lua_State* L);
+		static int luaItemTypeGetImbuingSlots(lua_State* L);
 		static int luaItemTypeHasShowAttributes(lua_State* L);
 		static int luaItemTypeHasShowCharges(lua_State* L);
 		static int luaItemTypeHasShowDuration(lua_State* L);

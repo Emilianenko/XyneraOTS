@@ -1099,7 +1099,9 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//case 0x2D: break; // team finder (member)
 		// 0x2E-0x31 (46-49) - empty
 		case 0x32: parseExtendedOpcode(msg); break; // otclient extended opcode
-		// 0x33-0x63 (51-99) - empty
+		// 0x33-0x5F (51-95) - empty
+		case 0x60: parseImbuementPanel(msg); break;
+		// 0x61-0x63 (97-99) - empty
 		case 0x64: parseAutoWalk(msg); break;
 		case 0x65: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_NORTH); }); break;
 		case 0x66: addGameTask([playerID = player->getID()]() { g_game.playerMove(playerID, DIRECTION_EAST); }); break;
@@ -1244,7 +1246,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		//0xFF - empty
 
 		default:
-			// std::cout << "[DEBUG]: Player " << player->getName() << " has sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
+			//std::cout << "[DEBUG]: Player " << player->getName() << " has sent an unknown packet header: 0x" << std::hex << static_cast<uint16_t>(recvbyte) << std::dec << "!" << std::endl;
 			
 #ifdef LUA_EXTENDED_PROTOCOL
 			// redirecting all unknown headers to lua
@@ -1255,7 +1257,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 
 	if (msg.isOverrun()) {
 #ifdef DEV_MODE
-		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Message overran for player {:s}!", (player && !player->isRemoved()) ? player->getName() : "(invalid object)"));
+		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Failed to parse {:#x} (client packet too short), disconnected. Sender: {:s} ({:s})", recvbyte, (player && !player->isRemoved()) ? player->getName() : "(invalid object)", convertIPToString(getIP()).c_str()));
 #endif
 
 		disconnect();
@@ -2300,6 +2302,12 @@ void ProtocolGame::parseImbuingApply(NetworkMessage& msg)
 	msg.skipBytes(3); // imbuId is u32, but we use one byte only
 	bool luckProtection = msg.getByte() != 0;
 	addGameTask(([=, playerID = player->getID()]() { g_game.playerImbuingApply(playerID, slotId, imbuId, luckProtection); }));
+}
+
+void ProtocolGame::parseImbuementPanel(NetworkMessage& msg)
+{
+	bool enabled = msg.getByte() != 0x00;
+	addGameTask(([=, playerID = player->getID()]() { g_game.playerToggleImbuPanel(playerID, enabled); }));
 }
 
 // Send methods
@@ -4232,6 +4240,46 @@ void ProtocolGame::sendSupplyUsed(const uint16_t clientId)
 	NetworkMessage msg;
 	msg.addByte(0xCE);
 	msg.add<uint16_t>(clientId);
+
+	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::sendImbuementsPanel(const std::map<slots_t, Item*> itemsToSend)
+{
+	if (!player || player->isRemoved()) {
+		return;
+	}
+
+	NetworkMessage msg;
+	msg.addByte(0x5D);
+	msg.addByte(itemsToSend.size());
+	for (const auto& it : itemsToSend) {
+		msg.addByte(it.first);
+		msg.addItem(it.second);
+
+		ItemImbuInfo_t imbuInfo = it.second->getStaticImbuements(player->hasCondition(CONDITION_INFIGHT) && player->getZone() != ZONE_PROTECTION);
+
+		msg.addByte(imbuInfo.slotCount);
+		for (uint8_t slotId = 0; slotId < imbuInfo.slotCount; ++slotId) {
+			bool found = false;
+			for (const auto& imbuData : imbuInfo.imbuements) {
+				if (!found && slotId == imbuData.slotId) {
+					// occupied slot
+					msg.addByte(0x01);
+					msg.addString(imbuData.name);
+					msg.add<uint16_t>(imbuData.iconId);
+					msg.add<int32_t>(imbuData.duration);
+					msg.addByte(imbuData.isDecaying ? 0x01 : 0x00);
+					found = true;
+				}
+			}
+
+			if (!found) {
+				// empty slot
+				msg.addByte(0x00);
+			}
+		}
+	}
 
 	writeToOutputBuffer(msg);
 }

@@ -410,6 +410,7 @@ class ItemType
 		int32_t runeMagLevel = 0;
 		int32_t runeLevel = 0;
 		uint64_t worth = 0;
+		uint8_t imbuingSlots = 0;
 
 		ItemDecayType_t decayType = DECAY_TYPE_NORMAL;
 		CombatType_t combatType = COMBAT_NONE;
@@ -509,6 +510,8 @@ class Items
 
 		bool loadFromXml();
 		void parseItemNode(const pugi::xml_node& itemNode, uint16_t id);
+
+		bool setImbuingSlots(size_t id, uint8_t count);
 
 		size_t size() const {
 			return items.size();

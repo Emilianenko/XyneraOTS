@@ -765,8 +765,7 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 		return;
 	}
 
-	if ((!movingCreature->isPushable() && !player->hasFlag(PlayerFlag_CanPushAllCreatures)) ||
-	        (movingCreature->isInGhostMode() && !player->canSeeGhostMode(movingCreature))) {
+	if (!player->canPushCreature(movingCreature)) {
 		player->sendCancelMessage(RETURNVALUE_NOTMOVEABLE);
 		return;
 	}
@@ -4474,6 +4473,11 @@ bool Game::combatBlockHit(CombatDamage& damage, Creature* attacker, Creature* ta
 
 				// apply damage conversion
 				if (damage.origin != ORIGIN_CONVERTED) {
+					if (!item->hasAttributes()) {
+						// skip that long block below if the item was never customized
+						continue;
+					}
+
 					const auto& imbuements = item->getImbuements();
 					if (imbuements.size() > 0) {
 						for (const auto& imbuement : imbuements) {
@@ -6385,6 +6389,12 @@ void Game::playerBuyInStore(uint32_t playerId, uint16_t offerId, uint8_t action,
 		return;
 	}
 
+	// prevent request spam
+	if (!player->canDoHeavyUIAction()) {
+		return;
+	}
+	player->setNextHeavyUIAction();
+
 	g_events->eventPlayerOnStoreBuy(player, offerId, action, name, type, location);
 }
 
@@ -6424,11 +6434,10 @@ void Game::playerFuseItems(uint32_t playerId, uint16_t fromSpriteId, uint8_t fro
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	// validate items
 	const ItemType& fromItemType = Item::items.getItemIdByClientId(fromSpriteId);
@@ -6448,11 +6457,10 @@ void Game::playerTransferTier(uint32_t playerId, uint16_t fromSpriteId, uint8_t 
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	// validate items
 	const ItemType& fromItemType = Item::items.getItemIdByClientId(fromSpriteId);
@@ -6472,11 +6480,10 @@ void Game::playerConvertForgeResources(uint32_t playerId, ForgeConversionTypes_t
 	}
 
 	// prevent request spam
-	if (player->canDoLightUIAction()) {
-		player->setNextLightUIAction();
-	} else {
+	if (!player->canDoLightUIAction()) {
 		return;
 	}
+	player->setNextLightUIAction();
 
 	g_events->eventPlayerOnForgeConversion(player, actionType);
 }
@@ -6489,11 +6496,10 @@ void Game::playerBrowseForgeHistory(uint32_t playerId, uint8_t page)
 	}
 
 	// prevent request spam
-	if (player->canDoLightUIAction()) {
-		player->setNextLightUIAction();
-	} else {
+	if (!player->canDoLightUIAction()) {
 		return;
 	}
+	player->setNextLightUIAction();
 
 	g_events->eventPlayerOnForgeHistoryBrowse(player, page);
 }
@@ -6515,11 +6521,10 @@ void Game::playerViewPlayerTab(uint32_t playerId, uint32_t targetPlayerId, Playe
 	}
 
 	// prevent request spam
-	if (player->canDoLightUIAction()) {
-		player->setNextLightUIAction();
-	} else {
+	if (!player->canDoLightUIAction()) {
 		return;
 	}
+	player->setNextLightUIAction();
 
 	g_events->eventPlayerOnRequestPlayerTab(player, targetPlayer, infoType, currentPage, entriesPerPage);
 }
@@ -6532,11 +6537,10 @@ void Game::playerInitBestiary(uint32_t playerId)
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	g_events->eventPlayerOnBestiaryInit(player);
 }
@@ -6549,12 +6553,10 @@ void Game::playerBrowseBestiary(uint32_t playerId, const std::string& category, 
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
-
+	player->setNextHeavyUIAction();
 	g_events->eventPlayerOnBestiaryBrowse(player, category, raceList);
 }
 
@@ -6566,11 +6568,10 @@ void Game::playerRequestRaceInfo(uint32_t playerId, uint16_t raceId)
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	g_events->eventPlayerOnBestiaryRaceView(player, raceId);
 }
@@ -6583,11 +6584,10 @@ void Game::playerImbuingApply(uint32_t playerId, uint8_t slotId, uint8_t imbuId,
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	g_events->eventPlayerOnImbuementApply(player, slotId, imbuId, luckProtection);
 }
@@ -6600,11 +6600,10 @@ void Game::playerImbuingClear(uint32_t playerId, uint8_t slotId)
 	}
 
 	// prevent request spam
-	if (player->canDoHeavyUIAction()) {
-		player->setNextHeavyUIAction();
-	} else {
+	if (!player->canDoHeavyUIAction()) {
 		return;
 	}
+	player->setNextHeavyUIAction();
 
 	g_events->eventPlayerOnImbuementClear(player, slotId);
 }
@@ -6617,6 +6616,29 @@ void Game::playerImbuingExit(uint32_t playerId)
 	}
 
 	g_events->eventPlayerOnImbuementExit(player);
+}
+
+void Game::playerToggleImbuPanel(uint32_t playerId, bool enabled)
+{
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	if (!enabled) {
+		// nothing to send, just toggle and return
+		player->toggleImbuPanel(false);
+		return;
+	}
+
+	// prevent request spam
+	if (!player->canDoLightUIAction()) {
+		return;
+	}
+	player->setNextLightUIAction();
+
+	player->toggleImbuPanel(true);
+	player->sendImbuementsPanel();
 }
 
 #ifdef LUA_EXTENDED_PROTOCOL

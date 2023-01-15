@@ -447,6 +447,7 @@ class Game
 		void playerImbuingApply(uint32_t playerId, uint8_t slotId, uint8_t imbuId, bool luckProtection);
 		void playerImbuingClear(uint32_t playerId, uint8_t slotId);
 		void playerImbuingExit(uint32_t playerId);
+		void playerToggleImbuPanel(uint32_t playerId, bool enabled);
 
 #ifdef LUA_EXTENDED_PROTOCOL
 		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);

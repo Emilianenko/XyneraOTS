@@ -2179,14 +2179,30 @@ void Monster::getPathSearchParams(const Creature* creature, FindPathParams& fpp)
 	fpp.maxTargetDist = mType->info.targetDistance;
 
 	if (isSummon()) {
-		if (getMaster() == creature) {
-			fpp.maxTargetDist = 2;
-			fpp.fullPathSearch = true;
-			fpp.summonFollowMode = true;
-		} else if (mType->info.targetDistance <= 1) {
-			fpp.fullPathSearch = true;
-		} else {
-			fpp.fullPathSearch = !canUseAttack(getPosition(), creature);
+		if (Creature* realMaster = getMaster()) {
+			if (realMaster == creature) {
+				// SUMMON FOLLOW LOGIC
+				fpp.maxTargetDist = 2;
+				fpp.fullPathSearch = true;
+				fpp.summonFollowMode = true;
+				Position realMasterPos = realMaster->getPosition();
+				int32_t realDistance = Position::getDistanceX(position, realMasterPos) + Position::getDistanceX(position, realMasterPos);
+				if (realDistance < 2) {
+					// summon should move one step away
+					fpp.minTargetDist = 2;
+					fpp.fullPathSearch = false;
+					fpp.keepDistance = true;
+					fpp.summonFollowMode = false;
+				} else if (realDistance > 2 && realDistance < 4) {
+					// summon should move closer, but not diagonally
+					fpp.minTargetDist = 2;
+					fpp.allowDiagonal = false;
+				}
+			} else if (mType->info.targetDistance <= 1) {
+				fpp.fullPathSearch = true;
+			} else {
+				fpp.fullPathSearch = !canUseAttack(getPosition(), creature);
+			}
 		}
 	} else if (isFleeing()) {
 		//Distance should be higher than the client view range (Map::maxClientViewportX/Map::maxClientViewportY)

@@ -1685,7 +1685,12 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 		return false;
 	}
 
-	int32_t testDist = !fpp.summonFollowMode ? std::max<int32_t>(Position::getDistanceX(targetPos, testPos), Position::getDistanceY(targetPos, testPos)) : Position::getDistanceX(targetPos, testPos) + Position::getDistanceY(targetPos, testPos);
+	if (fpp.summonFollowMode) {
+		int32_t testDist = Position::getDistanceX(targetPos, testPos) + Position::getDistanceY(targetPos, testPos);
+		return testDist == 2;
+	}
+
+	int32_t testDist = std::max<int32_t>(Position::getDistanceX(targetPos, testPos), Position::getDistanceY(targetPos, testPos));
 	if (fpp.maxTargetDist == 1) {
 		if (testDist < fpp.minTargetDist || testDist > fpp.maxTargetDist) {
 			return false;

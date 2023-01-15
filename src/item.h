@@ -94,6 +94,7 @@ enum AttrTypes_t {
 	ATTR_HIRELINGDATA = 46, // hireling lamp data
 	ATTR_REWARDBAG = 47, // reward bag metadata
 	ATTR_DECAY_TIMESTAMP = 48, // new decay mode
+	ATTR_IMBUINGSLOTS = 49, // custom amount of imbuing slots
 };
 
 enum Attr_ReadValue {
@@ -435,6 +436,7 @@ class ItemAttributes
 		std::vector<Attribute> attributes;
 		uint32_t attributeBits = 0;
 		int32_t lootContainerId = 0;
+		int16_t imbuingSlots = -1; // if -1 then inherit from ItemType
 
 		std::map<CombatType_t, Reflect> reflect;
 		std::map<CombatType_t, uint16_t> boostPercent;
@@ -922,10 +924,30 @@ class Item : virtual public Thing
 		}
 
 		// Imbuements
-		std::map<uint8_t, Imbuement>& getImbuements() {
+		const std::map<uint8_t, Imbuement>& getImbuements() {
 			return getAttributes()->getImbuements();
 		}
 		void refreshImbuements(Player* player, bool consumePassive = false, bool consumeInfight = false);
+		ItemImbuInfo_t getStaticImbuements(bool inCombat);
+
+		uint8_t getImbuingSlots() const {
+			if (!attributes || attributes->imbuingSlots < 0) {
+				return items[id].imbuingSlots;
+			}
+
+			return static_cast<uint8_t>(std::max<int16_t>(0, attributes->imbuingSlots));
+		}
+		void setImbuingSlots(int16_t slotCount) {
+			if (!attributes) {
+				attributes.reset(new ItemAttributes());
+			}
+
+			if (slotCount < 0) {
+				slotCount = -1;
+			}
+
+			attributes->imbuingSlots = slotCount;
+		}
 
 		//serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream& propStream);
@@ -1165,6 +1187,10 @@ class Item : virtual public Thing
 		}
 
 		bool hasMarketAttributes() const;
+
+		bool hasAttributes() const {
+			return attributes ? true : false;
+		}
 
 		std::unique_ptr<ItemAttributes>& getAttributes() {
 			if (!attributes) {

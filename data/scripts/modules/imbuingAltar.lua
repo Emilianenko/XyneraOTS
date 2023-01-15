@@ -486,10 +486,10 @@ function Player:sendImbuingUI(item, altar, relativePos)
 	end
 	
 	-- check if item has imbuing slots
-	local socketCount = item:getSocketCount()
+	local socketCount = item:getImbuingSlots()
 	local rawImbuements = item:getImbuements()
 	
-	socketCount = math.max(item:getSocketCount(), #rawImbuements)
+	socketCount = math.max(item:getImbuingSlots(), #rawImbuements)
 	if socketCount == 0 then
 		if item:getId() == 22678 then
 			local altarPos = altar:getPosition()

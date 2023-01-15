@@ -638,6 +638,31 @@ int LuaScriptInterface::luaItemTypeGetAbilities(lua_State* L)
 	return 1;
 }
 
+int LuaScriptInterface::luaItemTypeGetImbuingSlots(lua_State* L)
+{
+	// itemType:getImbuingSlots()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		lua_pushnumber(L, itemType->imbuingSlots);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeSetImbuingSlots(lua_State* L)
+{
+	// itemType:setImbuingSlots(slotCount)
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType) {
+		pushBoolean(L, Item::items.setImbuingSlots(itemType->id, getNumber<uint8_t>(L, 2, 0)));
+		return 1;
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
 int LuaScriptInterface::luaItemTypeHasShowAttributes(lua_State* L)
 {
 	// itemType:hasShowAttributes()

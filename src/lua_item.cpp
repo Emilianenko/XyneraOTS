@@ -432,7 +432,8 @@ int LuaScriptInterface::luaItemSetAttribute(lua_State* L)
 	} else if (isString(L, 2)) {
 		attribute = stringToItemAttribute(getString(L, 2));
 	} else {
-		attribute = ITEM_ATTRIBUTE_NONE;
+		lua_pushnil(L);
+		return 1;
 	}
 
 	bool success = true;
@@ -956,6 +957,7 @@ int LuaScriptInterface::luaItemSetImbuement(lua_State* L)
 	// item is equipped, load imbuements
 	if (player) {
 		player->toggleImbuements(item, true);
+		player->sendImbuementsPanel();
 	}
 
 	return 1;
@@ -1009,7 +1011,40 @@ int LuaScriptInterface::luaItemRemoveImbuement(lua_State* L)
 		player->toggleImbuements(item, true, true);
 		player->sendStats();
 		player->sendSkills();
+		player->sendImbuementsPanel();
 	}
 
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSetImbuingSlots(lua_State* L)
+{
+	// item:setImbuingSlots(slotCount)
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	item->setImbuingSlots(getNumber<int16_t>(L, 2, -1));
+	Player* player = dynamic_cast<Player*>(item->getParent());
+	if (player) {
+		player->sendImbuementsPanel();
+	}
+
+	lua_pushboolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetImbuingSlots(lua_State* L)
+{
+	// item:getImbuingSlots()
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnumber(L, item->getImbuingSlots());
 	return 1;
 }

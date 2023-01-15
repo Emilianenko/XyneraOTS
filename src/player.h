@@ -93,7 +93,7 @@ static constexpr int32_t PLAYER_MIN_SPEED = 10;
 static constexpr int32_t NOTIFY_DEPOT_BOX_RANGE = 1;
 
 // standard exhaust for client requests
-static constexpr int32_t UI_ACTION_INTERVAL_LIGHT = 200;
+static constexpr int32_t UI_ACTION_INTERVAL_LIGHT = 500;
 static constexpr int32_t UI_ACTION_INTERVAL_HEAVY = 2000;
 
 class Player final : public Creature, public Cylinder
@@ -1024,6 +1024,19 @@ class Player final : public Creature, public Cylinder
 			}
 		}
 		void sendModalWindow(const ModalWindow& modalWindow);
+		void sendImbuementsPanel() {
+			if (client && imbuPanelOn) {
+				std::map<slots_t, Item*> itemsToSend;
+				for (uint8_t slot = CONST_SLOT_FIRST; slot < CONST_SLOT_LAST; ++slot) {
+					Item* slotItem = inventory[static_cast<slots_t>(slot)];
+					if (slotItem && slotItem->getImbuingSlots() > 0) {
+						itemsToSend[static_cast<slots_t>(slot)] = slotItem;
+					}
+				}
+
+				client->sendImbuementsPanel(itemsToSend);
+			}
+		}
 
 		// container
 		void sendAddContainerItem(const Container* container, const Item* item);
@@ -1350,6 +1363,11 @@ class Player final : public Creature, public Cylinder
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) override;
 
+		// logic behind pushing other creatures
+		bool canPushCreature(Creature* target) {
+			return hasFlag(PlayerFlag_CanPushAllCreatures) || target->isPushable() || target->getMaster() && this == target->getMaster() || canSeeGhostMode(target);
+		}
+
 		// standard exhaust for "use" actions
 		void setNextAction(int64_t time) {
 			if (time > nextAction) {
@@ -1372,7 +1390,7 @@ class Player final : public Creature, public Cylinder
 		// ui click exhaust
 		void setNextLightUIAction() {
 			if (UI_ACTION_INTERVAL_LIGHT > nextLightUIAction) {
-				nextLightUIAction = UI_ACTION_INTERVAL_LIGHT;
+				nextLightUIAction = OTSYS_TIME() + UI_ACTION_INTERVAL_LIGHT;
 			}
 		}
 		bool canDoLightUIAction() const {
@@ -1382,7 +1400,7 @@ class Player final : public Creature, public Cylinder
 		// ui click exhaust for heavy operations
 		void setNextHeavyUIAction() {
 			if (UI_ACTION_INTERVAL_HEAVY > nextHeavyUIAction) {
-				nextHeavyUIAction = UI_ACTION_INTERVAL_HEAVY;
+				nextHeavyUIAction = OTSYS_TIME() + UI_ACTION_INTERVAL_HEAVY;
 			}
 		}
 		bool canDoHeavyUIAction() const {
@@ -1408,6 +1426,7 @@ class Player final : public Creature, public Cylinder
 
 		void toggleImbuement(uint8_t imbuId, bool isEquip);
 		void toggleImbuements(Item* item, bool isEquip, bool silent = false);
+		void toggleImbuPanel(bool enabled);
 
 		void linkDepot() {
 			inDepot = true;
@@ -1599,6 +1618,7 @@ class Player final : public Creature, public Cylinder
 		bool addAttackSkillPoint = false;
 		bool randomizeMount = false;
 		bool ignoreFriction = false;
+		bool imbuPanelOn = false;
 		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 
 		static uint32_t playerAutoID;

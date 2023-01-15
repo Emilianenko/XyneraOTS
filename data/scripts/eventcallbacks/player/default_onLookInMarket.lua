@@ -334,7 +334,7 @@ ec.onLookInMarket = function(self, itemType, tier)
 	
 	-- Imbuement Slots
 	if ImbuingSystem then
-		response:addString(itemType:getSocketCount())
+		response:addString(itemType:getImbuingSlots())
 	else
 		response:addU16(0)
 	end

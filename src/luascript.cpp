@@ -2877,6 +2877,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "getImbuement", LuaScriptInterface::luaItemGetImbuement);
 	registerMethod("Item", "removeImbuement", LuaScriptInterface::luaItemRemoveImbuement);
 
+	registerMethod("Item", "getImbuingSlots", LuaScriptInterface::luaItemGetImbuingSlots);
+	registerMethod("Item", "setImbuingSlots", LuaScriptInterface::luaItemSetImbuingSlots);
+
 	// Container
 	registerClass("Container", "Item", LuaScriptInterface::luaContainerCreate);
 	registerMetaMethod("Container", "__eq", LuaScriptInterface::luaUserdataCompare);
@@ -3487,6 +3490,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getClassification", LuaScriptInterface::luaItemTypeGetClassification);
 
 	registerMethod("ItemType", "getAbilities", LuaScriptInterface::luaItemTypeGetAbilities);
+
+	registerMethod("ItemType", "getImbuingSlots", LuaScriptInterface::luaItemTypeGetImbuingSlots);
+	registerMethod("ItemType", "setImbuingSlots", LuaScriptInterface::luaItemTypeSetImbuingSlots);
 
 	registerMethod("ItemType", "hasShowAttributes", LuaScriptInterface::luaItemTypeHasShowAttributes);
 	registerMethod("ItemType", "hasShowCount", LuaScriptInterface::luaItemTypeHasShowCount);

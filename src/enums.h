@@ -564,6 +564,19 @@ struct Outfit_t {
 	uint8_t lookMountFeet = 0;
 };
 
+struct StaticImbuement_t {
+	const std::string name;
+	uint8_t slotId = 0;
+	uint16_t iconId = 0;
+	int32_t duration = 0;
+	bool isDecaying = false;
+};
+
+struct ItemImbuInfo_t {
+	uint8_t slotCount = 0;
+	std::vector<StaticImbuement_t> imbuements;
+};
+
 struct LightInfo {
 	uint8_t level = 0;
 	uint8_t color = 215;

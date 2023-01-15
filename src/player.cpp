@@ -1309,6 +1309,9 @@ void Player::onCreatureAppear(Creature* creature, bool isLogin)
 			}
 		}
 
+		// this is already called from onChangeZone
+		// sendImbuementsPanel();
+
 		for (Condition* condition : storedConditionList) {
 			addCondition(condition);
 		}
@@ -1405,6 +1408,7 @@ void Player::onChangeZone(ZoneType_t zone)
 
 		// pause imbuements
 		consumeImbuements(true, hasCondition(CONDITION_INFIGHT));
+		sendImbuementsPanel();
 	} else {
 		// remount
 		if (wasMounted) {
@@ -1414,6 +1418,7 @@ void Player::onChangeZone(ZoneType_t zone)
 
 		// resume imbuements
 		consumeImbuements(true, false);
+		sendImbuementsPanel();
 	}
 
 	g_game.updateCreatureWalkthrough(this);
@@ -1771,7 +1776,8 @@ void Player::onThink(uint32_t interval)
 
 	// refresh imbuements
 	if (timeNow % 60 == 0) {
-		consumeImbuements(true, (getZone() != ZONE_PROTECTION) && hasCondition(CONDITION_INFIGHT));
+		consumeImbuements(true, getZone() != ZONE_PROTECTION && hasCondition(CONDITION_INFIGHT));
+		sendImbuementsPanel();
 	}
 
 	// fix desynced equipment timers after alt tabbing
@@ -3575,6 +3581,7 @@ void Player::postAddNotification(Thing* thing, const Cylinder* oldParent, int32_
 			item->refreshImbuements(this);
 			toggleImbuements(item, true);
 		}
+		sendImbuementsPanel();
 	}
 
 	bool requireListUpdate = false;
@@ -3635,9 +3642,11 @@ void Player::postRemoveNotification(Thing* thing, const Cylinder* newParent, int
 
 		// deequip - consume duration if applicable
 		if (Item* item = thing->getItem()) {
-			item->refreshImbuements(this, true, hasCondition(CONDITION_INFIGHT));
+			item->refreshImbuements(this, true, hasCondition(CONDITION_INFIGHT) && getZone() != ZONE_PROTECTION);
 			toggleImbuements(item, false);
 		}
+
+		sendImbuementsPanel();
 	}
 
 	bool requireListUpdate = false;
@@ -3963,6 +3972,7 @@ void Player::onAddCondition(ConditionType_t type)
 	} else if (type == CONDITION_INFIGHT && getZone() != ZONE_PROTECTION) {
 		// infight started - update timers, consume outofcombat durations
 		consumeImbuements(true, false);
+		sendImbuementsPanel();
 	}
 
 	sendIcons();
@@ -4023,6 +4033,7 @@ void Player::onEndCondition(ConditionType_t type)
 
 		// combat ended, update all imbu durations
 		consumeImbuements(true, getZone() != ZONE_PROTECTION);
+		sendImbuementsPanel();
 	}
 
 	sendIcons();
@@ -5707,8 +5718,8 @@ void Player::toggleImbuement(uint8_t imbuId, bool isEquip)
 
 void Player::toggleImbuements(Item* item, bool isEquip, bool silent)
 {
-	// invalid item
-	if (!item) {
+	// invalid or never customized item
+	if (!item || !item->hasAttributes()) {
 		return;
 	}
 
@@ -5727,4 +5738,9 @@ void Player::toggleImbuements(Item* item, bool isEquip, bool silent)
 		sendStats();
 		sendSkills();
 	}
+}
+
+void Player::toggleImbuPanel(bool enabled)
+{
+	imbuPanelOn = enabled;
 }

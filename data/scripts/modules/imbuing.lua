@@ -183,12 +183,11 @@ GameImbuingTypes = {
 CUSTOM_ATTRIBUTE_SOCKETCOUNT = 30000
 
 -- generate socket info on startup/reload
-SocketMap = {}
 if Equippables then
 	for _, category in pairs(Equippables) do
 		for itemId, itemData in pairs(category) do
 			if itemData.sockets then
-				SocketMap[itemId] = itemData.sockets
+				ItemType(itemId):setImbuingSlots(itemData.sockets)
 			end
 		end
 	end
@@ -251,29 +250,6 @@ do
 	end
 end
 
--- get default imbuing slots count
-function ItemType:getSocketCount()
-	return SocketMap[self:getId()] or 0
-end
-
--- returns imbuing slots count for selected item
-function Item:getSocketCount()
-	local count = self:getCustomAttribute(CUSTOM_ATTRIBUTE_SOCKETCOUNT)
-	return count or self:getType():getSocketCount()
-end
-
--- sets custom amount of slots to an item
--- if you set slots to 2, but slot 4 is imbued
--- slot 3 will be imbuable until slot 4 expires
-function Item:setSocketCount(count)
-	return self:setCustomAttribute(CUSTOM_ATTRIBUTE_SOCKETCOUNT, count)
-end
-
--- resets slots count to default
-function Item:resetSocketCount()
-	return self:removeCustomAttribute(CUSTOM_ATTRIBUTE_SOCKETCOUNT)
-end
-
 -- returns imbuement name pushed for description
 local function internalGetImbuementName(imbuId)
 	local name = imbuId ~= 0 and ImbuementType(imbuId):name() or "Empty Slot"
@@ -304,14 +280,17 @@ end
 
 -- [ItemType] verbal description of imbuing slots
 function ItemType:getImbuementsDescription(socketCount)
-	local sockets = socketCount or SocketMap[self:getId()] or 0
-	if sockets == 0 then
+	if not socketCount then
+		socketCount = self:getImbuingSlots()
+	end
+
+	if socketCount == 0 then
 		-- nothing to send
 		return ""
 	end
 
 	local slots = {}
-	for i = 1, sockets do
+	for i = 1, socketCount do
 		slots[#slots + 1] = "Empty Slot"
 	end
 	
@@ -320,13 +299,18 @@ end
 
 -- [Item] verbal description of imbuing slots
 function Item:getImbuementsDescription()
+	local socketCount = self:getImbuingSlots()
+
 	local rawImbuements = self:getImbuements()
 	if not rawImbuements or #rawImbuements == 0 then
 		-- all slots are empty, get info from ItemType
-		return self:getType():getImbuementsDescription(self:getSocketCount())
+		return self:getType():getImbuementsDescription(socketCount)
 	end
 	
-	local socketCount = math.max(self:getSocketCount(), #rawImbuements)
+	for _, imbuData in pairs(rawImbuements) do
+		socketCount = math.max(socketCount, imbuData.slotId)
+	end
+
 	if socketCount == 0 then
 		-- nothing to send
 		return ""
@@ -361,7 +345,7 @@ end
 
 -- adds imbuements icons to item inspection UI
 function NetworkMessage:addImbuements(item, isVirtual)
-	local count = item:getSocketCount()
+	local count = item:getImbuingSlots()
 
 	if isVirtual then	
 		self:addByte(count)
@@ -402,7 +386,7 @@ function getInspectImbuements(item, isVirtual)
 	if not isVirtual then
 		rawImbuements = item:getImbuements()
 		if rawImbuements and #rawImbuements ~= 0 then
-			socketCount = math.max(item:getSocketCount(), #rawImbuements)
+			socketCount = math.max(item:getImbuingSlots(), #rawImbuements)
 			if socketCount > 0 then
 				sendEmpty = false
 			end
@@ -411,7 +395,7 @@ function getInspectImbuements(item, isVirtual)
 
 	-- handle virtual/not imbued items
 	if sendEmpty then
-		socketCount = item:getSocketCount()
+		socketCount = item:getImbuingSlots()
 		if socketCount > 0 then
 			for socketId = 1, socketCount do
 				response[#response + 1] = {"Imbuement Slot " .. socketId, "empty"}

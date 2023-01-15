@@ -2854,6 +2854,8 @@ int LuaScriptInterface::luaPlayerImbuementsReload(lua_State* L)
 		player->sendSkills();
 	}
 
+	player->sendImbuementsPanel();
+
 	pushBoolean(L, true);
 	return 1;
 }
