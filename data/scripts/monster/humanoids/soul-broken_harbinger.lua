@@ -86,7 +86,7 @@ monster.attacks = {
 	{name ="Crazed Winter Vanguard Chain", interval = 2000, chance = 20},
 	{name ="combat", interval = 2000, chance = 17, minDamage = -50, maxDamage = -350, range = 6, type = COMBAT_ICEDAMAGE, shootEffect = CONST_ANI_SNOWBALL, effect = CONST_ME_ICEATTACK, target = true},
 	{name ="combat", interval = 2000, chance = 19, minDamage = -100, maxDamage = -300, radius = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICETORNADO},
-	{name ="combat", interval = 2000, chance = 25, minDamage = -100, maxDamage = -300, range = 6, radius = 3, type = COMBAT_ICEDAMAGE, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true},
+	{name ="combat", interval = 2000, chance = 24, minDamage = -100, maxDamage = -300, range = 6, radius = 3, type = COMBAT_ICEDAMAGE, shootEffect = CONST_ANI_SMALLICE, effect = CONST_ME_ICEATTACK, target = true},
 	{name ="combat", interval = 2000, chance = 13, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEAREA},
 	{name ="combat", interval = 2000, chance = 15, minDamage = -120, maxDamage = -200, length = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_GIANTICE, direction = true},
 }
