@@ -59,6 +59,9 @@ void Protocol::onSendMessage(const OutputMessage_ptr& msg)
 void Protocol::onRecvMessage(NetworkMessage& msg)
 {
 	if (encryptionEnabled && !XTEA_decrypt(msg, key)) {
+#ifdef DEBUG_DISCONNECT
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] XTEA decryption failed (code 42)");
+#endif
 		return;
 	}
 

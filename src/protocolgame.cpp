@@ -1074,6 +1074,12 @@ void ProtocolGame::writeToOutputBuffer(const NetworkMessage& msg)
 void ProtocolGame::parsePacket(NetworkMessage& msg)
 {
 	if (!acceptPackets || g_game.getGameState() == GAME_STATE_SHUTDOWN || msg.getLength() == 0) {
+#ifdef DEBUG_DISCONNECT
+		if (!acceptPackets) {
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] packet skipped (code 43)");
+		}
+#endif
+
 		return;
 	}
 
