@@ -86,9 +86,9 @@ monster.elements = {
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450},
 	{name ="Crazed Summer Vanguard Chain", interval = 2000, chance = 20},
-	{name ="combat", interval = 2000, chance = 18, minDamage = -230, maxDamage = -280, length = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREAREA, direction = true},
-	{name ="combat", interval = 2000, chance = 24, minDamage = -200, maxDamage = -300, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONHIT},
-	{name ="combat", interval = 2000, chance = 19, minDamage = -200, maxDamage = -280, radius = 4, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA}
+	{name ="combat", interval = 2000, chance = 16, minDamage = -230, maxDamage = -280, length = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREAREA, direction = true},
+	{name ="combat", interval = 2000, chance = 23, minDamage = -200, maxDamage = -300, radius = 3, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONHIT},
+	{name ="combat", interval = 2000, chance = 18, minDamage = -200, maxDamage = -280, radius = 4, type = COMBAT_FIREDAMAGE, effect = CONST_ME_EXPLOSIONAREA}
 
 }
 

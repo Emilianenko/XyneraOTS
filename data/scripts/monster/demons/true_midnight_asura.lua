@@ -89,7 +89,7 @@ monster.defenses = {
 	defense = 75,
 	armor = 75,
 	{name ="combat", interval = 2000, chance = 20, type = COMBAT_HEALING, minDamage = 190, maxDamage = 360, effect = CONST_ME_HITAREA},
-	{name ="invisible", interval = 2000, chance = 11, duration = 8000, effect = CONST_ME_MAGIC_BLUE}
+	{name ="invisible", interval = 2000, chance = 10, duration = 8000, effect = CONST_ME_MAGIC_BLUE}
 }
 
 monster.loot = {
