@@ -132,14 +132,14 @@ class Player final : public Creature, public Cylinder
 			return CREATURETYPE_PLAYER;
 		}
 
-		uint8_t getCurrentMount() const;
-		void setCurrentMount(uint8_t mountId);
+		uint16_t getCurrentMount() const;
+		void setCurrentMount(uint16_t mountId);
 		bool isMounted() const {
 			return defaultOutfit.lookMount != 0;
 		}
 		bool toggleMount(bool mount);
-		bool tameMount(uint8_t mountId);
-		bool untameMount(uint8_t mountId);
+		bool tameMount(uint16_t mountId);
+		bool untameMount(uint16_t mountId);
 		bool hasMount(const Mount* mount) const;
 		void dismount();
 

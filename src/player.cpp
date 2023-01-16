@@ -4988,7 +4988,7 @@ GuildEmblems_t Player::getGuildEmblem(const Player* player) const
 	return GUILDEMBLEM_NEUTRAL;
 }
 
-uint8_t Player::getCurrentMount() const
+uint16_t Player::getCurrentMount() const
 {
 	int32_t value;
 	if (getStorageValue(PSTRG_MOUNTS_CURRENTMOUNT, value)) {
@@ -4997,7 +4997,7 @@ uint8_t Player::getCurrentMount() const
 	return 0;
 }
 
-void Player::setCurrentMount(uint8_t mountId)
+void Player::setCurrentMount(uint16_t mountId)
 {
 	addStorageValue(PSTRG_MOUNTS_CURRENTMOUNT, mountId);
 }
@@ -5024,7 +5024,7 @@ bool Player::toggleMount(bool mount)
 			return false;
 		}
 
-		uint8_t currentMountId = getCurrentMount();
+		uint16_t currentMountId = getCurrentMount();
 		if (currentMountId == 0) {
 			sendOutfitWindow();
 			return false;
@@ -5097,13 +5097,13 @@ bool Player::toggleMount(bool mount)
 	return true;
 }
 
-bool Player::tameMount(uint8_t mountId)
+bool Player::tameMount(uint16_t mountId)
 {
 	if (!g_game.mounts.getMountByID(mountId)) {
 		return false;
 	}
 
-	const uint8_t tmpMountId = mountId - 1;
+	const uint16_t tmpMountId = mountId - 1;
 	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
 
 	int32_t value;
@@ -5117,13 +5117,13 @@ bool Player::tameMount(uint8_t mountId)
 	return true;
 }
 
-bool Player::untameMount(uint8_t mountId)
+bool Player::untameMount(uint16_t mountId)
 {
 	if (!g_game.mounts.getMountByID(mountId)) {
 		return false;
 	}
 
-	const uint8_t tmpMountId = mountId - 1;
+	const uint16_t tmpMountId = mountId - 1;
 	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
 
 	int32_t value;
@@ -5156,7 +5156,7 @@ bool Player::hasMount(const Mount* mount) const
 		return false;
 	}
 
-	const uint8_t tmpMountId = mount->id - 1;
+	const uint16_t tmpMountId = mount->id - 1;
 
 	int32_t value;
 	if (!getStorageValue(PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31), value)) {

@@ -35,8 +35,8 @@ bool Mounts::loadFromXml()
 		}
 
 		uint16_t nodeId = pugi::cast<uint16_t>(mountNode.attribute("id").value());
-		if (nodeId == 0 || nodeId > std::numeric_limits<uint8_t>::max()) {
-			warnings.push_back(fmt::format("Mount id \"{:d}\" is not within 1 and 255 range!", nodeId));
+		if (nodeId == 0 ) { //} || nodeId > std::numeric_limits<uint8_t>::max()) {
+			warnings.push_back(fmt::format("Mount id \"{:d}\" is not within 1 and 65535 range!", nodeId));
 			continue;
 		}
 
@@ -52,7 +52,7 @@ bool Mounts::loadFromXml()
 		}
 
 		mounts.emplace_back(
-			static_cast<uint8_t>(nodeId),
+			nodeId,
 			pugi::cast<uint16_t>(lookTypeAttribute.value()),
 			mountNode.attribute("name").as_string(),
 			pugi::cast<int32_t>(mountNode.attribute("speed").value()),
@@ -74,7 +74,7 @@ bool Mounts::loadFromXml()
 	return true;
 }
 
-Mount* Mounts::getMountByID(uint8_t id)
+Mount* Mounts::getMountByID(uint16_t id)
 {
 	auto it = std::find_if(mounts.begin(), mounts.end(), [id](const Mount& mount) {
 		return mount.id == id;
