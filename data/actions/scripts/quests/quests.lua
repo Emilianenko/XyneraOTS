@@ -244,8 +244,10 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 		local id = item:getId()
 		if id == 38629 then
 			item:transform(38630)
+			return true
 		elseif id == 38630 then
 			item:transform(38629)
+			return true
 		end
 	
 		return false
