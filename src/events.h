@@ -6,7 +6,6 @@
 
 #include "const.h"
 #include "creature.h"
-#include "networkmessage.h"
 #include "luascript.h"
 
 class ItemType;
@@ -87,7 +86,6 @@ class Events
 
 		// Player - network
 		int32_t playerOnConnect = -1;
-		int32_t playerOnExtendedProtocol = -1;
 
 		// Monster
 		int32_t monsterOnDropLoot = -1;
@@ -165,10 +163,6 @@ class Events
 		void eventPlayerOnStoreHistoryBrowse(Player* player, uint32_t pageId, bool isInit);
 
 		void eventPlayerOnConnect(Player* player, bool isLogin);
-
-#ifdef LUA_EXTENDED_PROTOCOL
-		void eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message);
-#endif
 
 		// Monster
 		void eventMonsterOnDropLoot(Monster* monster, Container* corpse);

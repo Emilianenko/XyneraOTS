@@ -15,10 +15,6 @@ static constexpr auto CLIENT_VERSION_STR = "13.10";
 static constexpr auto AUTHENTICATOR_DIGITS = 6U;
 static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 
-// enable parsing packets to Lua (player event onExtendedProtocol)
-// experimental feature - may cause connection issues
-//#define LUA_EXTENDED_PROTOCOL
-
 // enable logging execution times
 #define STATS_ENABLED
 

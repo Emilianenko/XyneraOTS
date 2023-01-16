@@ -449,9 +449,6 @@ class Game
 		void playerImbuingExit(uint32_t playerId);
 		void playerToggleImbuPanel(uint32_t playerId, bool enabled);
 
-#ifdef LUA_EXTENDED_PROTOCOL
-		void parseExtendedProtocol(uint32_t playerId, uint8_t recvbyte, NetworkMessage* message);
-#endif
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 

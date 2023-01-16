@@ -98,5 +98,4 @@
 	
 	<!-- Player - network -->
 	<event class="Player" method="onConnect" enabled="1" />
-	<event class="Player" method="onExtendedProtocol" enabled="1" />
 </events>

@@ -7,7 +7,6 @@
 #include "item.h"
 #include "monster.h"
 #include "player.h"
-#include "pugicast.h"
 #include "tools.h"
 
 Events::Events() :
@@ -177,8 +176,7 @@ bool Events::load()
 			// network methods
 			} else if (methodName == "onConnect") {
 				info.playerOnConnect = event;
-			} else if (methodName == "onExtendedProtocol") {
-				info.playerOnExtendedProtocol = event;
+
 			} else {
 				console::reportWarning(location, "Unknown player method \"" + methodName + "\"!");
 			}
@@ -2149,37 +2147,6 @@ void Events::eventPlayerOnConnect(Player* player, bool isLogin)
 	lua_pushboolean(L, isLogin);
 	scriptInterface.callVoidFunction(2);
 }
-
-#ifdef LUA_EXTENDED_PROTOCOL
-void Events::eventPlayerOnExtendedProtocol(Player* player, uint8_t recvbyte, std::unique_ptr<NetworkMessage> message)
-{
-	// Player:onExtendedProtocol(recvbyte, msg)
-	if (info.playerOnExtendedProtocol == -1) {
-		return;
-	}
-
-	if (!scriptInterface.reserveScriptEnv()) {
-		reportOverflow();
-		return;
-	}
-
-	ScriptEnvironment* env = scriptInterface.getScriptEnv();
-	env->setScriptId(info.playerOnExtendedProtocol, &scriptInterface);
-
-	lua_State* L = scriptInterface.getLuaState();
-	scriptInterface.pushFunction(info.playerOnExtendedProtocol);
-
-	LuaScriptInterface::pushUserdata<Player>(L, player);
-	LuaScriptInterface::setMetatable(L, -1, "Player");
-
-	lua_pushnumber(L, recvbyte);
-
-	LuaScriptInterface::pushUserdata<NetworkMessage>(L, message.release());
-	LuaScriptInterface::setMetatable(L, -1, "NetworkMessage");
-
-	scriptInterface.callVoidFunction(3);
-}
-#endif
 
 void Events::eventMonsterOnDropLoot(Monster* monster, Container* corpse)
 {
