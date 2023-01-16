@@ -167,7 +167,9 @@ void Connection::parseHeader(const boost::system::error_code& error)
 		} else {
 			if (!receivedName) {
 				receivedName = true;
-
+#ifdef DEBUG_DISCONNECT
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Reading world name (code 38)");
+#endif
 				accept();
 				return;
 			}
@@ -176,6 +178,12 @@ void Connection::parseHeader(const boost::system::error_code& error)
 			if (msgBuffer[0] == 0x0A) {
 				receivedLastChar = true;
 			}
+
+#ifdef DEBUG_DISCONNECT
+			if (!receivedLastChar) {
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Parsing world name (code 39)");
+			}
+#endif
 
 			accept();
 			return;

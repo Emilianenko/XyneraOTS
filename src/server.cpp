@@ -97,8 +97,14 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 		if (remote_ip != 0 && g_bans.acceptConnection(remote_ip)) {
 			Service_ptr service = services.front();
 			if (service->is_single_socket()) {
+#ifdef DEBUG_DISCONNECT
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Login mode: Server sends first (code 40)");
+#endif
 				connection->accept(service->make_protocol(connection));
 			} else {
+#ifdef DEBUG_DISCONNECT
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Login mode: Server is waiting (code 41)");
+#endif
 				connection->accept();
 			}
 		} else {
