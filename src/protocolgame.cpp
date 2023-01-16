@@ -189,7 +189,7 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			output->addByte(retryTime);
 			send(output);
 #ifdef DEBUG_DISCONNECT
-			std::cout << "[DEBUG] Disconnected (code 14)" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 14)");
 #endif
 			disconnect();
 			return;
@@ -245,7 +245,7 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 
 		if (foundPlayer->client) {
 #ifdef DEBUG_DISCONNECT
-			std::cout << "[DEBUG] Disconnected (code 12)" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 12)");
 #endif
 			foundPlayer->disconnect();
 			foundPlayer->isConnecting = true;
@@ -407,7 +407,7 @@ void ProtocolGame::fastRelog(const std::string& otherPlayerName)
 
 		// disconnect other client
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 13)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 13)");
 #endif
 		otherPlayer->disconnect();
 	}
@@ -611,7 +611,7 @@ void ProtocolGame::logout(bool displayEffect, bool forced, const std::string& me
 		disconnectClient(message);
 	} else {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 15)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 15)");
 #endif
 		disconnect();
 	}
@@ -625,7 +625,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	// Server is shutting down
 	if (g_game.getGameState() == GAME_STATE_SHUTDOWN) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 16)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 16)");
 #endif
 		disconnect();
 		return;
@@ -649,7 +649,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	// Disconnect if RSA decrypt fails
 	if (!Protocol::RSA_decrypt(msg)) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 17)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 17)");
 #endif
 		disconnect();
 		return;
@@ -735,7 +735,7 @@ void ProtocolGame::onRecvFirstMessage(NetworkMessage& msg)
 	uint8_t randNumber = msg.getByte();
 	if (challengeTimestamp != timeStamp || challengeRandom != randNumber) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 18)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 18)");
 #endif
 		disconnect();
 		return;
@@ -805,7 +805,7 @@ void ProtocolGame::disconnectClient(const std::string& message) const
 	output->addString(message);
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 11)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 11)");
 #endif
 	disconnect();
 }
@@ -1071,7 +1071,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		if (OTSYS_TIME() > lastDeathTime) {
 			sendSessionEnd(SESSION_END_LOGOUT);
 #ifdef DEBUG_DISCONNECT
-			std::cout << "[DEBUG] Disconnected (code 19)" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 19)");
 #endif
 			disconnect();
 			return;
@@ -1087,7 +1087,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 				// "cancel" (logout)
 				sendSessionEnd(SESSION_END_LOGOUT);
 #ifdef DEBUG_DISCONNECT
-				std::cout << "[DEBUG] Disconnected (code 20)" << std::endl;
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 20)");
 #endif
 				disconnect();
 				break;
@@ -1290,7 +1290,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("Failed to parse {:#x} (client packet too short), disconnected. Sender: {:s} ({:s})", recvbyte, (player && !player->isRemoved()) ? player->getName() : "(invalid object)", convertIPToString(getIP()).c_str()));
 #endif
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 21)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 21)");
 #endif
 		disconnect();
 	}

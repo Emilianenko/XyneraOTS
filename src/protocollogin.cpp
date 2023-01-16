@@ -23,7 +23,7 @@ void ProtocolLogin::disconnectClient(const std::string& message, uint16_t versio
 	output->addString(message);
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 22)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 22)");
 #endif
 	disconnect();
 }
@@ -45,7 +45,7 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 			output->addByte(0);
 			send(output);
 #ifdef DEBUG_DISCONNECT
-			std::cout << "[DEBUG] Disconnected (code 23)" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 23)");
 #endif
 			disconnect();
 			return;
@@ -112,7 +112,7 @@ void ProtocolLogin::getCharacterList(const std::string& accountName, const std::
 
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 24)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 24)");
 #endif
 	disconnect();
 }
@@ -122,7 +122,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 {
 	if (g_game.getGameState() == GAME_STATE_SHUTDOWN) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 25)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 25)");
 #endif
 		disconnect();
 		return;
@@ -157,7 +157,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 		console::print(CONSOLEMESSAGE_TYPE_WARNING, fmt::format("(legacy login) Failed to decrypt RSA for ip {:d}!", getIP()));
 #endif
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 26)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 26)");
 #endif
 		disconnect();
 		return;

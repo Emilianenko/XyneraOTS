@@ -34,7 +34,7 @@ void ProtocolStatus::onRecvFirstMessage(NetworkMessage& msg)
 			std::map<uint32_t, int64_t>::const_iterator it = ipConnectMap.find(ip);
 			if (it != ipConnectMap.end() && (OTSYS_TIME() < (it->second + g_config.getNumber(ConfigManager::STATUSQUERY_TIMEOUT)))) {
 #ifdef DEBUG_DISCONNECT
-				std::cout << "[DEBUG] Disconnected (code 30)" << std::endl;
+				console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 30)");
 #endif
 				disconnect();
 				return;
@@ -72,7 +72,7 @@ void ProtocolStatus::onRecvFirstMessage(NetworkMessage& msg)
 			break;
 	}
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 31)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 31)");
 #endif
 	disconnect();
 }
@@ -144,7 +144,7 @@ void ProtocolStatus::sendStatusString()
 	output->addBytes(data.c_str(), data.size());
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 32)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 32)");
 #endif
 	disconnect();
 }
@@ -219,7 +219,7 @@ void ProtocolStatus::sendInfo(uint16_t requestedInfo, const std::string& charact
 	}
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 33)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 33)");
 #endif
 	disconnect();
 }

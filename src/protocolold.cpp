@@ -17,7 +17,7 @@ void ProtocolOld::disconnectClient(const std::string& message)
 	output->addString(message);
 	send(output);
 #ifdef DEBUG_DISCONNECT
-	std::cout << "[DEBUG] Disconnected (code 27)" << std::endl;
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 27)");
 #endif
 	disconnect();
 }
@@ -26,7 +26,7 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 {
 	if (g_game.getGameState() == GAME_STATE_SHUTDOWN) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 28)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 28)");
 #endif
 		disconnect();
 		return;
@@ -43,7 +43,7 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 
 	if (!Protocol::RSA_decrypt(msg)) {
 #ifdef DEBUG_DISCONNECT
-		std::cout << "[DEBUG] Disconnected (code 29)" << std::endl;
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 29)");
 #endif
 		disconnect();
 		return;

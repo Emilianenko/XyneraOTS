@@ -103,7 +103,7 @@ void ServicePort::onAccept(Connection_ptr connection, const boost::system::error
 			}
 		} else {
 #ifdef DEBUG_DISCONNECT
-			std::cout << "[DEBUG] Disconnected (code 10)" << std::endl;
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 10)");
 #endif
 			connection->close(Connection::FORCE_CLOSE);
 		}
