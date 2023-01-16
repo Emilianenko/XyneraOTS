@@ -135,6 +135,12 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 
 	if (isLogin) {
 		player = new Player(getThis());
+#ifdef DEBUG_DISCONNECT
+		if (!player->client) {
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Failed to connect the client (code 37)");
+		}
+#endif
+
 		player->setName(name);
 
 		player->incrementReferenceCounter();
