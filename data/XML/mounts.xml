@@ -203,69 +203,69 @@
 	<mount id="201" clientid="1536" name="Giant Beaver" speed="20" premium="yes" />
 	<mount id="202" clientid="1577" name="Ripptor" speed="20" premium="yes" />
 	
-	<!-- experimental -->
-	<mount id="1001" clientid="2" name="testmount 01" speed="20" premium="no" />
-	<mount id="1002" clientid="14" name="testmount 02" speed="20" premium="no" />
-	<mount id="1003" clientid="26" name="testmount 03" speed="20" premium="no" />
-	<mount id="1004" clientid="27" name="testmount 04" speed="20" premium="no" />
-	<mount id="1005" clientid="34" name="testmount 05" speed="20" premium="no" />
-	<mount id="1006" clientid="35" name="testmount 06" speed="20" premium="no" />
-	<mount id="1007" clientid="38" name="testmount 07" speed="20" premium="no" />
-	<mount id="1008" clientid="39" name="testmount 08" speed="20" premium="no" />
-	<mount id="1009" clientid="41" name="testmount 09" speed="20" premium="no" />
-	<mount id="1010" clientid="42" name="testmount 10" speed="20" premium="no" />
-	<mount id="1011" clientid="55" name="testmount 11" speed="20" premium="no" />
-	<mount id="1012" clientid="60" name="testmount 12" speed="20" premium="no" />
-	<mount id="1013" clientid="67" name="testmount 13" speed="20" premium="no" />
-	<mount id="1014" clientid="79" name="testmount 14" speed="20" premium="no" />
-	<mount id="1015" clientid="83" name="testmount 15" speed="20" premium="no" />
-	<mount id="1016" clientid="92" name="testmount 16" speed="20" premium="no" />
-	<mount id="1017" clientid="94" name="testmount 17" speed="20" premium="no" />
-	<mount id="1018" clientid="101" name="testmount 18" speed="20" premium="no" />
-	<mount id="1019" clientid="110" name="testmount 19" speed="20" premium="no" />
-	<mount id="1020" clientid="116" name="testmount 20" speed="20" premium="no" />
-	<mount id="1021" clientid="119" name="testmount 21" speed="20" premium="no" />
-	<mount id="1022" clientid="120" name="testmount 22" speed="20" premium="no" />
-	<mount id="1023" clientid="124" name="testmount 23" speed="20" premium="no" />
-	<mount id="1024" clientid="125" name="testmount 24" speed="20" premium="no" />
-	<mount id="1025" clientid="192" name="testmount 25" speed="20" premium="no" />
-	<mount id="1026" clientid="197" name="testmount 26" speed="20" premium="no" />
-	<mount id="1027" clientid="198" name="testmount 27" speed="20" premium="no" />
-	<mount id="1028" clientid="199" name="testmount 28" speed="20" premium="no" />
-	<mount id="1029" clientid="200" name="testmount 29" speed="20" premium="no" />
-	<mount id="1030" clientid="220" name="testmount 30" speed="20" premium="no" />
-	<mount id="1031" clientid="222" name="testmount 31" speed="20" premium="no" />
-	<mount id="1032" clientid="229" name="testmount 32" speed="20" premium="no" />
-	<mount id="1033" clientid="230" name="testmount 33" speed="20" premium="no" />
-	<mount id="1034" clientid="231" name="testmount 34" speed="20" premium="no" />
-	<mount id="1035" clientid="236" name="testmount 35" speed="20" premium="no" />
-	<mount id="1036" clientid="240" name="testmount 36" speed="20" premium="no" />
-	<mount id="1037" clientid="244" name="testmount 37" speed="20" premium="no" />
-	<mount id="1038" clientid="245" name="testmount 38" speed="20" premium="no" />
-	<mount id="1039" clientid="248" name="testmount 39" speed="20" premium="no" />
-	<mount id="1040" clientid="256" name="testmount 40" speed="20" premium="no" />
-	<mount id="1041" clientid="261" name="testmount 41" speed="20" premium="no" />
-	<mount id="1042" clientid="263" name="testmount 42" speed="20" premium="no" />
-	<mount id="1043" clientid="271" name="testmount 43" speed="20" premium="no" />
-	<mount id="1044" clientid="272" name="testmount 44" speed="20" premium="no" />
-	<mount id="1045" clientid="283" name="testmount 45" speed="20" premium="no" />
-	<mount id="1046" clientid="284" name="testmount 46" speed="20" premium="no" />
-	<mount id="1047" clientid="285" name="testmount 47" speed="20" premium="no" />
-	<mount id="1048" clientid="292" name="testmount 48" speed="20" premium="no" />
-	<mount id="1049" clientid="295" name="testmount 49" speed="20" premium="no" />
-	<mount id="1050" clientid="303" name="testmount 50" speed="20" premium="no" />
-	<mount id="1051" clientid="305" name="testmount 51" speed="20" premium="no" />
-	<mount id="1052" clientid="317" name="testmount 52" speed="20" premium="no" />
-	<mount id="1053" clientid="322" name="testmount 53" speed="20" premium="no" />
-	<mount id="1054" clientid="348" name="testmount 54" speed="20" premium="no" />
+	<!-- custom mounts -->
+	<mount id="1001" clientid="2" name="Orc Leader" speed="20" premium="no" />
+	<!-- <mount id="1002" clientid="14" name="Sheep" speed="20" premium="no" /> --> 
+	<mount id="1003" clientid="26" name="Rotworm" speed="20" premium="no" />
+	<!-- <mount id="1004" clientid="27" name="Wolf" speed="20" premium="no" /> -->
+	<!-- <mount id="1005" clientid="34" name="Dragon" speed="20" premium="no" /> -->
+	<!-- <mount id="1006" clientid="35" name="Demon" speed="20" premium="no" /> -->
+	<!-- <mount id="1007" clientid="38" name="Giant Spider" speed="20" premium="no" /> -->
+	<!-- <mount id="1008" clientid="39" name="Dragon Lord" speed="20" premium="no" /> -->
+	<!-- <mount id="1009" clientid="41" name="Lion" speed="20" premium="no" /> -->
+	<mount id="1010" clientid="42" name="Polar Bear" speed="20" premium="no" />
+	<!-- <mount id="1011" clientid="55" name="Behemoth" speed="20" premium="no" /> -->
+	<!-- <mount id="1012" clientid="60" name="Pig" speed="20" premium="no" /> -->
+	<!-- <mount id="1013" clientid="67" name="Stone Golem" speed="20" premium="no" /> -->
+	<!-- <mount id="1014" clientid="79" name="Ancient Scarab" speed="20" premium="no" /> -->
+	<mount id="1015" clientid="83" name="Scarab" speed="20" premium="no" />
+	<!-- <mount id="1016" clientid="92" name="Chest" speed="20" premium="no" /> -->
+	<mount id="1017" clientid="94" name="Hyaena" speed="20" premium="no" />
+	<mount id="1018" clientid="101" name="Bonebeast" speed="20" premium="no" />
+	<!-- <mount id="1019" clientid="110" name="Yeti" speed="20" premium="no" /> -->
+	<mount id="1020" clientid="116" name="Kongra" speed="20" premium="no" />
+	<!-- <mount id="1021" clientid="119" name="Crocodile" speed="20" premium="no" /> -->
+	<mount id="1022" clientid="120" name="Carniphila" speed="20" premium="no" />
+	<!-- <mount id="1023" clientid="124" name="Centipede" speed="20" premium="no" /> -->
+	<mount id="1024" clientid="125" name="Tiger" speed="20" premium="no" />
+	<mount id="1025" clientid="192" name="Carrion Worm" speed="20" premium="no" />
+	<!-- <mount id="1026" clientid="197" name="Tortoise" speed="20" premium="no" /> -->
+	<!-- <mount id="1027" clientid="198" name="Thornback Tortoise" speed="20" premium="no" /> -->
+	<!-- <mount id="1028" clientid="199" name="Mammoth" speed="20" premium="no" /> -->
+	<mount id="1029" clientid="200" name="Blood Crab" speed="20" premium="no" />
+	<mount id="1030" clientid="220" name="Serpent Spawn" speed="20" premium="no" />
+	<mount id="1031" clientid="222" name="Toad" speed="20" premium="no" />
+	<mount id="1032" clientid="229" name="Ferumbras" speed="20" premium="no" />
+	<!-- <mount id="1033" clientid="230" name="Hand of Cursed Fate" speed="20" premium="no" /> -->
+	<!-- <mount id="1034" clientid="231" name="Undead Dragon" speed="20" premium="no" /> -->
+	<mount id="1035" clientid="236" name="Destroyer" speed="20" premium="no" />
+	<mount id="1036" clientid="240" name="Hellhound" speed="20" premium="no" />
+	<!-- <mount id="1037" clientid="244" name="Juggernaut" speed="20" premium="no" /> -->
+	<mount id="1038" clientid="245" name="Nightmare" speed="20" premium="no" />
+	<!-- <mount id="1039" clientid="248" name="Frost Dragon" speed="20" premium="no" /> -->
+	<!-- <mount id="1040" clientid="256" name="Braindeath" speed="20" premium="no" /> -->
+	<!-- <mount id="1041" clientid="261" name="testmount 41" speed="20" premium="no" /> -->
+	<mount id="1042" clientid="263" name="Crystal Spider" speed="20" premium="no" />
+	<mount id="1043" clientid="271" name="Dragon Hatchling" speed="20" premium="no" />
+	<mount id="1044" clientid="272" name="Dragon Lord Hatchling" speed="20" premium="no" />
+	<mount id="1045" clientid="283" name="Frost Dragon Hatchling" speed="20" premium="no" />
+	<mount id="1046" clientid="284" name="Cockroach" speed="20" premium="no" />
+	<!-- <mount id="1047" clientid="285" name="testmount 47" speed="20" premium="no" /> -->
+	<!-- <mount id="1048" clientid="292" name="testmount 48" speed="20" premium="no" /> -->
+	<!-- <mount id="1049" clientid="295" name="testmount 49" speed="20" premium="no" /> -->
+	<mount id="1050" clientid="303" name="Big Toad" speed="20" premium="no" />
+	<mount id="1051" clientid="305" name="Mutated Rat" speed="20" premium="no" />
+	<mount id="1052" clientid="317" name="Serpent Spawn" speed="20" premium="no" />
+	<!-- <mount id="1053" clientid="322" name="Hellspawn" speed="20" premium="no" /> -->
+	<mount id="1054" clientid="348" name="Lancer Beetle" speed="20" premium="no" />
 	<mount id="1055" clientid="352" name="testmount 55" speed="20" premium="no" />
-	<mount id="1056" clientid="358" name="testmount 56" speed="20" premium="no" />
-	<mount id="1057" clientid="361" name="testmount 57" speed="20" premium="no" />
-	<mount id="1058" clientid="396" name="testmount 58" speed="20" premium="no" />
-	<mount id="1059" clientid="414" name="testmount 59" speed="20" premium="no" />
-	<mount id="1060" clientid="417" name="testmount 60" speed="20" premium="no" />
-	<mount id="1061" clientid="420" name="testmount 61" speed="20" premium="no" />
-	<mount id="1062" clientid="453" name="testmount 62" speed="20" premium="no" />
+	<!-- <mount id="1056" clientid="358" name="Killer Caiman" speed="20" premium="no" /> -->
+	<!-- <mount id="1057" clientid="361" name="testmount 57" speed="20" premium="no" /> -->
+	<!-- <mount id="1058" clientid="396" name="testmount 58" speed="20" premium="no" /> -->
+	<mount id="1059" clientid="414" name="Firethorn Wolf" speed="20" premium="no" />
+	<!-- <mount id="1060" clientid="417" name="testmount 60" speed="20" premium="no" /> -->
+	<!-- <mount id="1061" clientid="420" name="testmount 61" speed="20" premium="no" /> -->
+	<mount id="1062" clientid="453" name="Shark" speed="20" premium="no" />
 	<mount id="1063" clientid="459" name="testmount 63" speed="20" premium="no" />
 	<mount id="1064" clientid="487" name="testmount 64" speed="20" premium="no" />
 	<mount id="1065" clientid="509" name="testmount 65" speed="20" premium="no" />
@@ -359,4 +359,6 @@
 	<mount id="1153" clientid="1565" name="testmount 153" speed="20" premium="no" />
 	<mount id="1154" clientid="1566" name="testmount 154" speed="20" premium="no" />
 	<mount id="1155" clientid="1567" name="testmount 155" speed="20" premium="no" />
+	<mount id="1156" clientid="77" name="Quara Pincher" speed="20" premium="no" />
+	<mount id="1156" clientid="3" name="War Wolf" speed="20" premium="no" />
 </mounts>
