@@ -44,15 +44,11 @@ for _, key in pairs(PlayerStorageKeys) do
 	reservedStorageKeys[#reservedStorageKeys + 1] = key
 end
 
--- multiple uids, one storage
-PlayerStorageKeys.earlyWeaponReward = 1002
-
 local specialQuests = {
 	-- chests with these uids will give anninhilator storage
 	--[PlayerStorageKeys.annihilatorReward] = {1200, 1201, 1202, 1203},
 	
-	-- level 30 weapon (single choice)
-	[PlayerStorageKeys.earlyWeaponReward] = {1002, 1003, 1004, 1005, 1006, 1007}
+	[1002] = {1002, 1003, 1004, 1005, 1006, 1007}
 	
 	-- other quest example
 	-- [yourStorageHere] = {yourUID1, yourUID2},

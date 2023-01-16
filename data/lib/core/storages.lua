@@ -16,7 +16,7 @@ Reserved account storage ranges:
 ]]--
 PlayerStorageKeys = {
 	-- 100-65535 - questsystem - quest doors and chests
-	annihilatorReward = 70015,
+	-- annihilatorReward = 70015,
 	goldenOutfit = 70016,
 	-- empty 70017
 	promotion = 70018,
