@@ -13,6 +13,10 @@
 	<!-- Quests -->
 	<action itemid="1740" script="quests/quests.lua" />
 	<action fromid="1747" toid="1749" script="quests/quests.lua" />
+	
+	<!-- Podium toggle/quest reward -->
+	<action fromid="38629" toid="38630" script="quests/quests.lua" />
+	<action id="43738" script="quests/quests.lua" />
 
 	<!-- Tools -->
 	<action itemid="2120" script="tools/rope.lua" />

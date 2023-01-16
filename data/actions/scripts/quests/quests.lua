@@ -240,6 +240,14 @@ end
 function onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	-- ignore unscripted chests
 	if item.uid > 65535 then
+		-- podium toggle light
+		local id = item:getId()
+		if id == 38629 then
+			item:transform(38330)
+		elseif id == 38330 then
+			item:transform(38629)
+		end
+	
 		return false
 	end
 	
