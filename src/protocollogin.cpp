@@ -122,7 +122,7 @@ void ProtocolLogin::onRecvFirstMessage(NetworkMessage& msg)
 {
 	if (g_game.getGameState() == GAME_STATE_SHUTDOWN) {
 #ifdef DEBUG_DISCONNECT
-		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 25)");
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Disconnected (code 34)");
 #endif
 		disconnect();
 		return;

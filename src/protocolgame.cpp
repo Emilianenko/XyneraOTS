@@ -235,6 +235,10 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 			addGameTask(([=, playerID = player->getID(), partyID = lastPartyId]() { g_game.restorePlayerParty(playerID, partyID); }));
 		}
 
+#ifdef DEBUG_DISCONNECT
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Connecting (code 36)");
+#endif
+
 		addGameTask(([=, playerID = player->getID()]() { g_game.playerConnect(playerID, isLogin); }));
 	} else {
 		if (eventConnect != 0 || !g_config.getBoolean(ConfigManager::REPLACE_KICK_ON_LOGIN)) {
@@ -263,6 +267,10 @@ void ProtocolGame::login(const std::string& name, uint32_t accountId, OperatingS
 
 		//send blessings
 		sendBlessings();
+
+#ifdef DEBUG_DISCONNECT
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] Reconnected (code 35)");
+#endif
 
 		addGameTask(([=, playerID = foundPlayer->getID()]() { g_game.playerConnect(playerID, isLogin); }));
 	}
