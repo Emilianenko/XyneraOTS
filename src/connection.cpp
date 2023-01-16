@@ -53,6 +53,9 @@ void Connection::close(bool force)
 
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
 	connectionState = CONNECTION_STATE_DISCONNECTED;
+#ifdef DEBUG_DISCONNECT
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] connection state: Disconnected");
+#endif
 
 	if (protocol) {
 		g_dispatcher.addTask(createTask([protocol = protocol]() { protocol->release(); }));
@@ -99,6 +102,9 @@ void Connection::accept(Protocol_ptr protocol)
 	this->protocol = protocol;
 	g_dispatcher.addTask(createTask(([=]() { protocol->onConnect(); })));
 	connectionState = CONNECTION_STATE_GAMEWORLD_AUTH;
+#ifdef DEBUG_DISCONNECT
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] connection state: gameworld auth");
+#endif
 	accept();
 }
 
@@ -106,6 +112,9 @@ void Connection::accept()
 {
 	if (connectionState == CONNECTION_STATE_PENDING) {
 		connectionState = CONNECTION_STATE_REQUEST_CHARLIST;
+#ifdef DEBUG_DISCONNECT
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] connection state: Charlist");
+#endif
 	}
 
 	std::lock_guard<std::recursive_mutex> lockClass(connectionLock);
@@ -175,6 +184,9 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 	if (receivedLastChar && connectionState == CONNECTION_STATE_GAMEWORLD_AUTH) {
 		connectionState = CONNECTION_STATE_GAME;
+#ifdef DEBUG_DISCONNECT
+		console::print(CONSOLEMESSAGE_TYPE_INFO, "[DEBUG] connection state: Game");
+#endif
 	}
 
 	if (timePassed > 2) {
