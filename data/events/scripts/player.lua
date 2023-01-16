@@ -137,6 +137,11 @@ function Player:onTradeCompleted(target, item, targetItem, isSuccess)
 end
 
 function Player:onPodiumRequest(item)
+	if item.uid < 0xFFFF then
+		-- questsystem podium
+		return
+	end
+	
 	local podium = Podium(item.uid)
 	if not podium then
 		self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)
