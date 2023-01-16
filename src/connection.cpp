@@ -60,6 +60,9 @@ void Connection::close(bool force)
 
 	if (messageQueue.empty() || force) {
 		closeSocket();
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected (code 24)" << std::endl;
+#endif
 	} else {
 		//will be closed by the destructor or onWriteOperation
 	}
@@ -74,6 +77,9 @@ void Connection::closeSocket()
 			boost::system::error_code error;
 			socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both, error);
 			socket.close(error);
+#ifdef DEBUG_DISCONNECT
+			std::cout << "[DEBUG] Disconnected (code 25)" << std::endl;
+#endif
 		} catch (boost::system::system_error& e) {
 			console::reportError("Connection::closeSocket", fmt::format("Network error: {:s}", e.what()));
 		}
@@ -82,6 +88,9 @@ void Connection::closeSocket()
 
 Connection::~Connection()
 {
+#ifdef DEBUG_DISCONNECT
+	std::cout << "[DEBUG] Disconnected (code 26)" << std::endl;
+#endif
 	closeSocket();
 }
 
@@ -122,8 +131,14 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 	if (error) {
 		close(FORCE_CLOSE);
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected (code 1)" << std::endl;
+#endif
 		return;
 	} else if (connectionState == CONNECTION_STATE_DISCONNECTED) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Packet skipped (code 2)" << std::endl;
+#endif
 		return;
 	}
 
@@ -169,6 +184,9 @@ void Connection::parseHeader(const boost::system::error_code& error)
 
 	uint16_t size = msg.getLengthHeader();
 	if (size == 0 || size >= NETWORKMESSAGE_MAXSIZE - 16) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected (code 3)" << std::endl;
+#endif
 		close(FORCE_CLOSE);
 		return;
 	}
@@ -193,9 +211,15 @@ void Connection::parsePacket(const boost::system::error_code& error)
 	readTimer.cancel();
 
 	if (error) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected (code 4)" << std::endl;
+#endif
 		close(FORCE_CLOSE);
 		return;
 	} else if (connectionState == CONNECTION_STATE_DISCONNECTED) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Packet skipped (code 5)" << std::endl;
+#endif
 		return;
 	}
 
@@ -215,6 +239,9 @@ void Connection::parsePacket(const boost::system::error_code& error)
 			// Game protocol has already been created at this point
 			protocol = service_port->make_protocol(msg, shared_from_this());
 			if (!protocol) {
+#ifdef DEBUG_DISCONNECT
+				std::cout << "[DEBUG] Disconnected (code 6)" << std::endl;
+#endif
 				close(FORCE_CLOSE);
 				return;
 			}
@@ -293,6 +320,9 @@ void Connection::onWriteOperation(const boost::system::error_code& error)
 
 	if (error) {
 		messageQueue.clear();
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected (code 7)" << std::endl;
+#endif
 		close(FORCE_CLOSE);
 		return;
 	}
@@ -300,6 +330,9 @@ void Connection::onWriteOperation(const boost::system::error_code& error)
 	if (!messageQueue.empty()) {
 		internalSend(messageQueue.front());
 	} else if (connectionState == CONNECTION_STATE_DISCONNECTED) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Socket closed (code 8)" << std::endl;
+#endif
 		closeSocket();
 	}
 }
@@ -312,6 +345,9 @@ void Connection::handleTimeout(ConnectionWeak_ptr connectionWeak, const boost::s
 	}
 
 	if (auto connection = connectionWeak.lock()) {
+#ifdef DEBUG_DISCONNECT
+		std::cout << "[DEBUG] Disconnected by timeout (code 9)" << std::endl;
+#endif
 		connection->close(FORCE_CLOSE);
 	}
 }
