@@ -31,7 +31,7 @@
 		<skill id="6" multiplier="1.1" />
 	</vocation>
 	<vocation id="3" clientid="2" name="Paladin" description="a paladin" gaincap="20" gainhp="10" gainmana="15" gainhpticks="4" gainhpamount="5" gainmanaticks="4" gainmanaamount="5" manamultiplier="1.4" attackspeed="2000" basespeed="220" soulmax="100" gainsoulticks="120" fromvoc="3" noPongKickTime="50">
-		<formula meleeDamage="1.0" distDamage="1.2" defense="1.0" armor="1.0" />
+		<formula meleeDamage="1.0" distDamage="1.0" defense="1.0" armor="1.0" />
 		<skill id="0" multiplier="1.2" />
 		<skill id="1" multiplier="1.2" />
 		<skill id="2" multiplier="1.2" />
@@ -41,7 +41,7 @@
 		<skill id="6" multiplier="1.1" />
 	</vocation>
 	<vocation id="4" clientid="1" name="Knight" description="a knight" gaincap="25" gainhp="15" gainmana="5" gainhpticks="3" gainhpamount="5" gainmanaticks="6" gainmanaamount="5" manamultiplier="3.0" attackspeed="2000" basespeed="220" soulmax="100" gainsoulticks="120" fromvoc="4">
-		<formula meleeDamage="1.2" distDamage="1.0" defense="1.0" armor="1.0" />
+		<formula meleeDamage="1.0" distDamage="1.0" defense="1.0" armor="1.0" />
 		<skill id="0" multiplier="1.1" />
 		<skill id="1" multiplier="1.1" />
 		<skill id="2" multiplier="1.1" />
@@ -71,7 +71,7 @@
 		<skill id="6" multiplier="1.1" />
 	</vocation>
 	<vocation id="7" clientid="12" name="Royal Paladin" description="a royal paladin" gaincap="20" gainhp="10" gainmana="15" gainhpticks="3" gainhpamount="10" gainmanaticks="3" gainmanaamount="10" manamultiplier="1.4" attackspeed="2000" basespeed="220" soulmax="200" gainsoulticks="15" fromvoc="3" noPongKickTime="50">
-		<formula meleeDamage="1.0" distDamage="1.2" defense="1.0" armor="1.0" />
+		<formula meleeDamage="1.0" distDamage="1.0" defense="1.0" armor="1.0" />
 		<skill id="0" multiplier="1.2" />
 		<skill id="1" multiplier="1.2" />
 		<skill id="2" multiplier="1.2" />
@@ -81,7 +81,7 @@
 		<skill id="6" multiplier="1.1" />
 	</vocation>
 	<vocation id="8" clientid="11" name="Elite Knight" description="an elite knight" gaincap="25" gainhp="15" gainmana="5" gainhpticks="2" gainhpamount="10" gainmanaticks="4" gainmanaamount="10" manamultiplier="3.0" attackspeed="2000" basespeed="220" soulmax="200" gainsoulticks="15" fromvoc="4">
-		<formula meleeDamage="1.2" distDamage="1.0" defense="1.0" armor="1.0" />
+		<formula meleeDamage="1.0" distDamage="1.0" defense="1.0" armor="1.0" />
 		<skill id="0" multiplier="1.1" />
 		<skill id="1" multiplier="1.1" />
 		<skill id="2" multiplier="1.1" />
