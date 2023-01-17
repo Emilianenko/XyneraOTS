@@ -3066,6 +3066,7 @@
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="spear" />
 		<attribute key="maxHitChance" value="76" />
+		<attribute key="breakChance" value="0"/>
 		<attribute key="range" value="3" />
 	</item>
 	<item id="2390" article="a" name="magic longsword">
