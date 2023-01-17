@@ -9,9 +9,9 @@ local soundMechanismMove = 2689
 local soundLeverMove = 2800
 local soundLeverBlocked = 2065
 local soundsToPlay = {
-	-- soundId, pitch
-	[soundLeverMove] = 2,
-	[soundMechanismMove] = 2
+	-- soundId, origin
+	[soundLeverMove] = 1,
+	[soundMechanismMove] = 1
 }
 
 local gateDuration = 180 * 1000
@@ -20,7 +20,7 @@ local function resetQuest(uid)
 	local sp = Position(stonePos)
 	Game.createItem(1304, 1, sp)
 	sp:sendMagicEffect(CONST_ME_POFF)
-	sp:playSound(soundStoneMove, 0)
+	sp:playSound(soundStoneMove, 1)
 	local item = Item(uid)
 	if item then
 		item:transform(lever_off)
@@ -39,7 +39,7 @@ function earlyWeaponQuestLever.onUse(player, item)
 		local stone = Tile(Position(stonePos)):getItemById(stoneId)
 		if stone then
 			local sp = Position(stonePos)
-			sp:playSound(soundStoneMove, 2, 40, 30)
+			sp:playSound(soundStoneMove, 1, 40, 30)
 			sp:sendMagicEffect(CONST_ME_POFF)
 			
 			local ppos = player:getPosition()
@@ -49,7 +49,7 @@ function earlyWeaponQuestLever.onUse(player, item)
 		end
 	else
 		player:say("The lever won't budge.", TALKTYPE_MONSTER_SAY, false, player)
-		player:playSound(soundLeverBlocked, 0, itPos)
+		player:playSound(soundLeverBlocked, 1, itPos)
 	end
 	
 	return true

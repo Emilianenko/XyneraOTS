@@ -541,7 +541,7 @@ t.onSay = function(player, words, param)
 	msg:addByte(0x83) -- sendMagicEffect header
 	msg:addPosition(ppos)
 	msg:addByte(6) -- type sound
-	msg:addByte(math.random(0, 2)) -- pitch
+	msg:addByte(1) -- origin (global / own / other player / monster)
 	msg:addU16(effect) -- effect
 	msg:addByte(0) -- end loop
 	

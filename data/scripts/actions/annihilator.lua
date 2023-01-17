@@ -6,42 +6,49 @@ end
 
 Annihilators = {
 	-- lever uid
-	[7000] = {
+	[1013] = {
 		storage = PlayerStorageKeys.annihilatorReward,
 		enterPos = {
 			-- use strict indexes to avoid potential shuffling of player positions
-			[1] = Position(191, 118, 9),
-			[2] = Position(192, 118, 9),
-			[3] = Position(193, 118, 9),
-			[4] = Position(194, 118, 9),
+			[1] = Position(1118, 919, 9),
+			[2] = Position(1119, 919, 9),
+			[3] = Position(1120, 919, 9),
+			[4] = Position(1121, 919, 9),
 		},
 		fightPos = {
-			[1] = Position(191, 118, 10),
-			[2] = Position(192, 118, 10),
-			[3] = Position(193, 118, 10),
-			[4] = Position(194, 118, 10),
+			[1] = Position(1122, 918, 10),
+			[2] = Position(1123, 918, 10),
+			[3] = Position(1124, 918, 10),
+			[4] = Position(1125, 918, 10),
 		},
 		monsters = {
-			{"Demon", Position(191, 116, 10)},
-			{"Demon", Position(193, 116, 10)},
-			{"Demon", Position(192, 120, 10)},
-			{"Demon", Position(194, 120, 10)},
-			{"Demon", Position(189, 118, 10)},
-			{"Demon", Position(195, 118, 10)},
-			{"Demon", Position(196, 118, 10)},		
+			{"Demon", Position(1122, 916, 10)},
+			{"Demon", Position(1124, 916, 10)},
+			{"Demon", Position(1123, 920, 10)},
+			{"Demon", Position(1125, 920, 10)},
+			{"Demon", Position(1126, 918, 10)},
+			{"Demon", Position(1127, 918, 10)},
 		},
 		
 		-- teleport players out if time is over
 		timeLimit = 10 * 60,
-		timeoutPos = Position(204, 117, 10)
+		timeoutPos = Position(1130, 918, 10)
 	},
 }
+
+local soundLeverMove = 2800
+local soundLeverBlocked = 2065
+local soundTeleport = 1180
+local soundTeleport2 = 1083
+local soundTimeout = 2772
 
 function clearAnnihilatorPos(uid, pos)
 	local tile = Tile(pos)
 	if not tile then
 		return
 	end
+	
+	Annihilators[uid].timeoutPos:playSound(soundTimeout, 1)
 	
 	for _, creature in pairs(tile:getCreatures()) do
 		if creature:isPlayer() then
@@ -139,14 +146,17 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 			if not creature then
 				player:say("You need four players to proceed.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
 				toPosition:sendMagicEffect(CONST_ME_POFF)
+				player:playSound(soundLeverBlocked, 1)
 				return true
 			elseif not creature:isPlayer() then
 				player:say("Only players can participate.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
 				toPosition:sendMagicEffect(CONST_ME_POFF)
+				player:playSound(soundLeverBlocked, 1)
 				return true
 			elseif creature:getStorageValue(storage) == 1 then
 				player:say(creature:getName() .. " has already completed this challenge.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
 				toPosition:sendMagicEffect(CONST_ME_POFF)
+				player:playSound(soundLeverBlocked, 1)
 				return true
 			else
 				players[i] = creature
@@ -157,6 +167,7 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 		if os.time < AnnihilatorCache[item.uid][2] and isAnnihilatorBlocked(item.uid) then
 			player:say("The annihilator room is currently in use. Please try again later.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
 			toPosition:sendMagicEffect(CONST_ME_POFF)
+			player:playSound(soundLeverBlocked, 1)
 			return true
 		end
 		
@@ -168,12 +179,15 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 	AnnihilatorCache[item.uid] = {now + 2, now + anni.timeLimit}
 
 	toPosition:sendMagicEffect(CONST_ME_ENERGYAREA)
+	toPosition:playSound(soundLeverMove, 1)
+	toPosition:playSound(soundTeleport, 1)
 	for i = 1, #anni.enterPos do
 		anni.enterPos[i]:sendMagicEffect(CONST_ME_POFF)
 		players[i]:teleportTo(anni.fightPos[i])
 		anni.fightPos[i]:sendMagicEffect(CONST_ME_ENERGYAREA)
 	end
-
+	anni.fightPos[1]:playSound(soundTeleport2, 1)
+	
 	for i = 1, #anni.monsters do
 		Game.createMonster(anni.monsters[i][1], anni.monsters[i][2])
 	end

@@ -19177,7 +19177,7 @@
 	<item id="12094" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12095" article="a" name="gate of expertise">
+	<item id="12095" article="a" name="closed door">
 		<attribute key="leveldoor" value="1000" />
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
@@ -19185,7 +19185,7 @@
 	<item id="12096" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12097" article="a" name="closed door">
+	<item id="12097" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
@@ -19204,7 +19204,7 @@
 	<item id="12101" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12102" article="a" name="gate of expertise">
+	<item id="12102" article="a" name="closed door">
 		<attribute key="leveldoor" value="1000" />
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
@@ -19212,7 +19212,7 @@
 	<item id="12103" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12104" article="a" name="closed door">
+	<item id="12104" article="a" name="gate of expertise">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
