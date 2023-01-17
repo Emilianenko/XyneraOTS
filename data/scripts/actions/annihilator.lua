@@ -10,29 +10,29 @@ Annihilators = {
 		storage = PlayerStorageKeys.annihilatorReward,
 		enterPos = {
 			-- use strict indexes to avoid potential shuffling of player positions
-			[1] = Position(1118, 919, 9),
-			[2] = Position(1119, 919, 9),
-			[3] = Position(1120, 919, 9),
-			[4] = Position(1121, 919, 9),
+			[1] = {x = 1118, y = 919, z = 9},
+			[2] = {x = 1119, y = 919, z = 9},
+			[3] = {x = 1120, y = 919, z = 9},
+			[4] = {x = 1121, y = 919, z = 9},
 		},
 		fightPos = {
-			[1] = Position(1122, 918, 10),
-			[2] = Position(1123, 918, 10),
-			[3] = Position(1124, 918, 10),
-			[4] = Position(1125, 918, 10),
+			[1] = {x = 1122, y = 918, z = 10},
+			[2] = {x = 1123, y = 918, z = 10},
+			[3] = {x = 1124, y = 918, z = 10},
+			[4] = {x = 1125, y = 918, z = 10},
 		},
 		monsters = {
-			{"Demon", Position(1122, 916, 10)},
-			{"Demon", Position(1124, 916, 10)},
-			{"Demon", Position(1123, 920, 10)},
-			{"Demon", Position(1125, 920, 10)},
-			{"Demon", Position(1126, 918, 10)},
-			{"Demon", Position(1127, 918, 10)},
+			{"Demon", {x = 1122, y = 916, z = 10}},
+			{"Demon", {x = 1124, y = 916, z = 10}},
+			{"Demon", {x = 1123, y = 920, z = 10}},
+			{"Demon", {x = 1125, y = 920, z = 10}},
+			{"Demon", {x = 1126, y = 918, z = 10}},
+			{"Demon", {x = 1127, y = 918, z = 10}},
 		},
 		
 		-- teleport players out if time is over
 		timeLimit = 10 * 60,
-		timeoutPos = Position(1130, 918, 10)
+		timeoutPos = {x = 1130, y = 918, z = 10}
 	},
 }
 
@@ -137,42 +137,42 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 			return true
 		end
 		AnnihilatorCache[item.uid][1] = os.time() + 2
-		
-		-- check player requirements
-		for i = 1, #anni.enterPos do
-			local tile = Tile(anni.enterPos[i])
-			local creatures = tile:getCreatures()
-			local creature = creatures and creatures[1]
-			if not creature then
-				player:say("You need four players to proceed.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
-				toPosition:sendMagicEffect(CONST_ME_POFF)
-				player:playSound(soundLeverBlocked, 1)
-				return true
-			elseif not creature:isPlayer() then
-				player:say("Only players can participate.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
-				toPosition:sendMagicEffect(CONST_ME_POFF)
-				player:playSound(soundLeverBlocked, 1)
-				return true
-			elseif creature:getStorageValue(storage) == 1 then
-				player:say(creature:getName() .. " has already completed this challenge.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
-				toPosition:sendMagicEffect(CONST_ME_POFF)
-				player:playSound(soundLeverBlocked, 1)
-				return true
-			else
-				players[i] = creature
-			end
-		end
-		
-		-- active anni going on
-		if os.time < AnnihilatorCache[item.uid][2] and isAnnihilatorBlocked(item.uid) then
-			player:say("The annihilator room is currently in use. Please try again later.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
+	end
+	
+	-- check player requirements
+	for i = 1, #anni.enterPos do
+		local tile = Tile(anni.enterPos[i])
+		local creatures = tile:getCreatures()
+		local creature = creatures and creatures[1]
+		if not creature then
+			player:say("You need four players to proceed.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
 			toPosition:sendMagicEffect(CONST_ME_POFF)
 			player:playSound(soundLeverBlocked, 1)
 			return true
+		elseif not creature:isPlayer() then
+			player:say("Only players can participate.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
+			toPosition:sendMagicEffect(CONST_ME_POFF)
+			player:playSound(soundLeverBlocked, 1)
+			return true
+		elseif creature:getStorageValue(storage) == 1 then
+			player:say(creature:getName() .. " has already completed this challenge.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
+			toPosition:sendMagicEffect(CONST_ME_POFF)
+			player:playSound(soundLeverBlocked, 1)
+			return true
+		else
+			players[i] = creature
 		end
-		
-		clearAnnihilator(item.uid)
 	end
+	
+	-- active anni going on
+	if os.time < AnnihilatorCache[item.uid][2] and isAnnihilatorBlocked(item.uid) then
+		player:say("The annihilator room is currently in use. Please try again later.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
+		toPosition:sendMagicEffect(CONST_ME_POFF)
+		player:playSound(soundLeverBlocked, 1)
+		return true
+	end
+	
+	clearAnnihilator(item.uid)
 
 	-- start quest
 	local now = os.time()
@@ -182,11 +182,11 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 	toPosition:playSound(soundLeverMove, 1)
 	toPosition:playSound(soundTeleport, 1)
 	for i = 1, #anni.enterPos do
-		anni.enterPos[i]:sendMagicEffect(CONST_ME_POFF)
+		Position(anni.enterPos[i]):sendMagicEffect(CONST_ME_POFF)
 		players[i]:teleportTo(anni.fightPos[i])
-		anni.fightPos[i]:sendMagicEffect(CONST_ME_ENERGYAREA)
+		Position(anni.fightPos[i]):sendMagicEffect(CONST_ME_ENERGYAREA)
 	end
-	anni.fightPos[1]:playSound(soundTeleport2, 1)
+	Position(anni.fightPos[1]):playSound(soundTeleport2, 1)
 	
 	for i = 1, #anni.monsters do
 		Game.createMonster(anni.monsters[i][1], anni.monsters[i][2])
