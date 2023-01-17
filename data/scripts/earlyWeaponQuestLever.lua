@@ -25,27 +25,30 @@ local function resetQuest(uid)
 	if item then
 		item:transform(lever_off)
 		item:getPosition():playSoundMulti(soundsToPlay)
+		item:getPosition():sendMagicEffect(CONST_ME_BLOCKHIT)
 	end
 end
 
 local earlyWeaponQuestLever = Action()
 function earlyWeaponQuestLever.onUse(player, item)
+	local itPos = item:getPosition()
 	if item.itemid == lever_off then
 		item:transform(lever_on)
-		item:getPosition():playSoundMulti(soundsToPlay)
-		
+		itPos:playSoundMulti(soundsToPlay)
+		itPos:sendMagicEffect(CONST_ME_BLOCKHIT)
 		local stone = Tile(Position(stonePos)):getItemById(stoneId)
 		if stone then
 			local sp = Position(stonePos)
 			sp:playSound(soundStoneMove, 2, 40, 30)
 			sp:sendMagicEffect(CONST_ME_POFF)
-			player:say("*RUMBLE*", TALKTYPE_MONSTER_SAY, false, nil, sp)
+			local ppos = player:getPosition()
+			player:say("*RUMBLE*", TALKTYPE_MONSTER_SAY, false, nil, Position(ppos.x - 8, ppos.y - 6, ppos.z))
 			stone:remove()
 			addEvent(resetQuest, gateDuration, item.uid)
 		end
 	else
 		player:say("The lever won't budge.", TALKTYPE_MONSTER_SAY, false, player)
-		item:getPosition():playSound(soundLeverBlocked, 0)
+		itPos:playSound(soundLeverBlocked, 0)
 	end
 	
 	return true
