@@ -41,6 +41,7 @@ function earlyWeaponQuestLever.onUse(player, item)
 			local sp = Position(stonePos)
 			sp:playSound(soundStoneMove, 2, 40, 30)
 			sp:sendMagicEffect(CONST_ME_POFF)
+			
 			local ppos = player:getPosition()
 			player:say("*RUMBLE*", TALKTYPE_MONSTER_SAY, false, nil, Position(ppos.x - 8, ppos.y - 6, ppos.z))
 			stone:remove()
@@ -48,7 +49,7 @@ function earlyWeaponQuestLever.onUse(player, item)
 		end
 	else
 		player:say("The lever won't budge.", TALKTYPE_MONSTER_SAY, false, player)
-		itPos:playSound(soundLeverBlocked, 0)
+		player:playSound(soundLeverBlocked, 0, itPos)
 	end
 	
 	return true
