@@ -165,11 +165,13 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 	end
 	
 	-- active anni going on
-	if os.time < AnnihilatorCache[item.uid][2] and isAnnihilatorBlocked(item.uid) then
-		player:say("The annihilator room is currently in use. Please try again later.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
-		toPosition:sendMagicEffect(CONST_ME_POFF)
-		player:playSound(soundLeverBlocked, 1)
-		return true
+	if AnnihilatorCache[item.uid] then
+		if os.time < AnnihilatorCache[item.uid][2] and isAnnihilatorBlocked(item.uid) then
+			player:say("The annihilator room is currently in use. Please try again later.", TALKTYPE_MONSTER_SAY, false, nil, toPosition)
+			toPosition:sendMagicEffect(CONST_ME_POFF)
+			player:playSound(soundLeverBlocked, 1)
+			return true
+		end
 	end
 	
 	clearAnnihilator(item.uid)
@@ -182,6 +184,15 @@ function annihilator.onUse(player, item, fromPosition, target, toPosition, isHot
 	toPosition:playSound(soundLeverMove, 1)
 	toPosition:playSound(soundTeleport, 1)
 	for i = 1, #anni.enterPos do
+		-- remove player summons
+		local summs = players[i]:getSummons()
+		if summs then
+			for _, summon in pairs(summs) do
+				summon:remove()
+			end
+		end
+	
+		-- teleport to annihilator
 		Position(anni.enterPos[i]):sendMagicEffect(CONST_ME_POFF)
 		players[i]:teleportTo(anni.fightPos[i])
 		Position(anni.fightPos[i]):sendMagicEffect(CONST_ME_ENERGYAREA)
@@ -206,3 +217,22 @@ end
 if anniCount > 0 then
 	annihilator:register()
 end
+
+local mountFixer = MoveEvent()
+mountFixer:type("stepin")
+
+function mountFixer.onStepIn(player, item, position, fromPosition)
+	if player and player:isPlayer() then
+		if player:getStorageValue(PlayerStorageKeys.annihilatorReward) == 1 and player:getStorageValue(1012) == -1 then
+			player:sendColorMessage("Dragon lord hatchling mount was added to your character.", MESSAGE_COLOR_PURPLE)
+			player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+			player:addMount(Game.getMountIdByLookType(272))
+			player:setStorageValue(1012, 1)
+		end
+	end
+	
+	return true
+end
+
+mountFixer:aid(5001)
+mountFixer:register()

@@ -1,3 +1,23 @@
+local noSummonAreas = {
+	-- anni
+	[1] = {{1122, 915, 10}, {1140, 920, 10}},
+	
+}
+
+function Position:canPlaceSummon(player)
+	if player:getGroup():getAccess() then
+		return true
+	end
+
+	for _, area in pairs(noSummonAreas) do
+		if self:isInRange(Position(area[1][1], area[1][2], area[1][3]), Position(area[2][1], area[2][2], area[2][3])) then
+			return false
+		end
+	end
+	
+	return true
+end
+
 Position.directionOffset = {
 	[DIRECTION_NORTH] = {x = 0, y = -1},
 	[DIRECTION_EAST] = {x = 1, y = 0},

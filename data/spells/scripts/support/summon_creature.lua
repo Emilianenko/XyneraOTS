@@ -4,6 +4,12 @@ function onCastSpell(creature, variant)
 		return false
 	end
 
+	if not creature:getPosition():canPlaceSummon(creature) then
+		creature:sendCancelMessage("You cannot summon anything here.")
+		creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+		return false
+	end
+	
 	local monsterName = variant:getString()
 	local monsterType = MonsterType(monsterName)
 

@@ -146,6 +146,12 @@ for summonSpell = 1, #summonSpells do
 	spell:vocation(unpack(vocMap))
 	
 	function spell.onCastSpell(player, variant)
+		if not player:getPosition():canPlaceSummon(player) then
+			player:sendCancelMessage("You cannot summon anything here.")
+			player:getPosition():sendMagicEffect(CONST_ME_POFF)
+			return false
+		end
+	
 		return summonFamiliar(player, spellConfig.pet)
 	end
 	spell:register()
