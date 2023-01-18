@@ -438,7 +438,7 @@ do
 		end
 
 		-- add cooldown
-		player:setStorageValue(PlayerStorageKeys.storeLastUseCooldown, os.time() + 3)
+		player:setStorageValue(PlayerStorageKeys.storeLastUseCooldown, os.time() + 2)
 		
 		-- get price tag info
 		local packInfo
