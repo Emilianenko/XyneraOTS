@@ -233,5 +233,5 @@ function testChest.onUse(player, item, fromPosition, target, toPosition, isHotke
 	return true
 end
 
-testChest:id(28549)
+testChest:id(28459)
 testChest:register()
