@@ -5,7 +5,7 @@ function talk.onSay(player, words, param)
 	--	return true
 	--end
 
-	if param ~= "" then
+	if param ~= "" and player:isAdmin() then
 		local split = param:split(",")
 		local npos = Position(split[1], split[2], split[3])
 		if not Tile(npos) then
