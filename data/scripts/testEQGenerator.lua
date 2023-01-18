@@ -52,7 +52,9 @@ function testChest.onUse(player, item, fromPosition, target, toPosition, isHotke
 	local bp = player:addItem(35276, 1)
 	bp:setImbuement(0, IMBUEMENT_BOOST_CAPACITY_3, IMBUING_DEFAULT_DURATION)
 	bp:addItem(10515, 1)
-	bp:addItem(20620, 3)
+	bp:addItem(20620, 1)
+	bp:addItem(20620, 1)
+	bp:addItem(20620, 1)
 	bp:addItem(2160, 100)
 	bp:addItem(2795, 100)
 	
