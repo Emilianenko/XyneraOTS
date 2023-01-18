@@ -35,7 +35,7 @@ local function resetLabel(cid)
 end
 
 function talk.onSay(player, words, param)
-	if not player:isAdmin() then
+	if player:getAccountType() < ACCOUNT_TYPE_TUTOR then
 		return true
 	end
 

@@ -48,6 +48,13 @@ ec.onLookInBattleList = function(self, creature, distance)
 			description = string.format("%s\nGUID: %s", description, creature:getGuid())
 			description = string.format("%s\nIP: %s", description, Game.convertIpToString(creature:getIp()))
 		end
+	elseif self:getAccountType() >= ACCOUNT_TYPE_TUTOR then
+		local position = creature:getPosition()
+		description = string.format(
+			"%s\nPosition: %d, %d, %d",
+			description, position.x, position.y, position.z
+		)
+		description = string.format("%s\ncid: %s", description, creature:getId())
 	end
 	return description
 end

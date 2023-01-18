@@ -1,9 +1,9 @@
 local talk = TalkAction("/pos", "!pos")
 
 function talk.onSay(player, words, param)
-	if not player:isAdmin() then
-		return true
-	end
+	--if not player:isAdmin() then
+	--	return true
+	--end
 
 	if param ~= "" then
 		local split = param:split(",")

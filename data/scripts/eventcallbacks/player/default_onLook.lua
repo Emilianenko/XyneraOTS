@@ -119,6 +119,20 @@ ec.onLook = function(self, thing, position, distance, description)
 				description = string.format("%s\nIP: %s", description, Game.convertIpToString(thing:getIp()))
 			end
 		end
+	elseif self:getAccountType() >= ACCOUNT_TYPE_TUTOR then
+		local position = thing:getPosition()
+		description = string.format(
+			"%s\nPosition: %d, %d, %d",
+			description, position.x, position.y, position.z
+		)
+
+		if thing:isTeleport() then
+			position = thing:getDestination()
+			description = string.format(
+			"%s\nDestination: %d, %d, %d",
+			description, position.x, position.y, position.z
+		)
+		end
 	end
 	return description
 end
