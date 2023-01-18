@@ -491,7 +491,7 @@ function Player:getOfferStatus(offer, fastCheck)
 				end
 				
 				-- temple tp - infight check
-				if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+				if self:hasCondition(CONDITION_INFIGHT) and (not self:getTile() or self:getTile():getZone() ~= ZONE_PROTECTION) then
 					if fastCheck then
 						return STORE_REASON_INFIGHT
 					end
@@ -554,7 +554,7 @@ function Player:getOfferStatus(offer, fastCheck)
 					end
 				elseif potion then
 					-- infight check
-					if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+					if self:hasCondition(CONDITION_INFIGHT) and (not self:getTile() or self:getTile():getZone() ~= ZONE_PROTECTION) then
 						if fastCheck then
 							return STORE_REASON_INFIGHT
 						end
@@ -586,7 +586,7 @@ function Player:getOfferStatus(offer, fastCheck)
 					local rune = Spell(offer.itemId)
 					if rune then
 						-- infight check
-						if self:hasCondition(CONDITION_INFIGHT) and not self:getTile():getZone() == ZONE_PROTECTION then					
+						if self:hasCondition(CONDITION_INFIGHT) and (not self:getTile() or self:getTile():getZone() ~= ZONE_PROTECTION) then
 							if fastCheck then
 								return STORE_REASON_INFIGHT
 							end
