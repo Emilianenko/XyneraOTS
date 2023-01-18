@@ -14,7 +14,7 @@ local config = {
 
 	-- Others
 	exitPosition = Position(1121, 959, 7),
-	exitPremiumAccountTime = 60 -- 60 minutes
+	exitPremiumAccountTime = 24 * 60 -- 24 hours
 }
 
 local function getTrainerPos()
