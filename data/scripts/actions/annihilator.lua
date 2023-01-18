@@ -108,7 +108,7 @@ function checkAnnihilator(uid)
 		return
 	end
 
-	if not isAnnihilatorBlocked(item.uid) or os.time > AnnihilatorCache[uid][2] then
+	if not isAnnihilatorBlocked(uid) or os.time > AnnihilatorCache[uid][2] then
 		clearAnnihilator(uid)
 		return
 	end
