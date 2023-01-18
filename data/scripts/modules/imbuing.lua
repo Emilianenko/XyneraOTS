@@ -179,9 +179,6 @@ GameImbuingTypes = {
 	[IMBUEMENT_DEFLECT_PARALYZE_3] = { type = IMBUING_TYPE_DEFLECT_PARALYZE, primary = 50, secondary = 0 },
 }
 
--- custom socket count for item
-CUSTOM_ATTRIBUTE_SOCKETCOUNT = 30000
-
 -- generate socket info on startup/reload
 if Equippables then
 	for _, category in pairs(Equippables) do

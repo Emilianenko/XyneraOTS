@@ -28,6 +28,48 @@ local function isMLImbuable(item, altarId, tier)
 	local itemId = item:getId()
 	return tier == 1 and table.contains(tier1ML, itemId) or tier == 2 and table.contains(tier2ML, itemId)
 end
+
+-- callback for wand crit imbuements
+local wandCrits = {
+	-- wands of destruction
+	[30113] = 3,
+	[30114] = 3,
+
+	-- falcon wands
+	[31372] = 3,
+	[31373] = 3,
+
+	-- cobra wands
+	[33055] = 3,
+	[33056] = 3,
+	
+	-- eldritch wands
+	[39324] = 3,
+	[39325] = 3,
+	[39330] = 3,
+	[39331] = 3,
+	
+	-- soul wands
+	[36746] = 3,
+	[36747] = 3,
+	
+	-- lion wand (rod cant have crit)
+	[36808] = 3,
+	
+	-- jungle wands
+	[38177] = 2,
+	[38178] = 2,
+
+	-- naga wands
+	[44193] = 3,
+	[44194] = 3,
+}
+
+local function isCritImbuable(item, altarId, tier)
+	local critTier = wandCrits[item:getId()] or 0
+	return tier <= critTier
+end
+
 ---- END METADATA
 
 -- config
@@ -79,7 +121,7 @@ ImbuingAltar = {
 				-- items - support for specific item ids (eg. wands with crit)
 				-- callback - calls function(player, item, imbuement, tier), if function returns true, item is imbuable
 		categories = {"weapons", "weapons_distance"},
-		items = {30113, 30114, 31372, 31373, 33056, 36746, 36747, 36808}
+		callback = isCritImbuable
 	},
 	[2] = {
 		name = "Element Damage (Death)",
