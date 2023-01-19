@@ -208,7 +208,7 @@ class Player final : public Creature, public Cylinder
 		Item* getTrainingDummy() {
 			return trainingDummy;
 		}
-		bool isAfk() {
+		bool isAfk() const {
 			return afk;
 		}
 		void setAfk(bool newStatus);

@@ -2659,13 +2659,20 @@ void Player::fastRelog(const std::string& otherCharName)
 }
 
 void Player::setAfk(bool newStatus) {
-	if (afk != newStatus) {
-		// set vip status as afk
-		for (const auto& it : g_game.getPlayers()) {
-			it.second->notifyStatusChange(this, newStatus ? VIPSTATUS_TRAINING : VIPSTATUS_ONLINE, false);
-		}
+	// set afk status
+	if (afk == newStatus) {
+		this->afk = newStatus;
+		return;
 	}
 	this->afk = newStatus;
+
+	// update vip list
+	for (const auto& it : g_game.getPlayers()) {
+		it.second->notifyStatusChange(this, newStatus ? VIPSTATUS_TRAINING : VIPSTATUS_ONLINE, false);
+	}
+
+	// update in client
+	refreshInClient();
 }
 
 void Player::storeChannelIDs(bool isFastRelog)

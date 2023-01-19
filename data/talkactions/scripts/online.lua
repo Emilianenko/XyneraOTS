@@ -24,11 +24,16 @@ function onSay(player, words, param)
 	
 	for _, targetPlayer in ipairs(players) do
 		if player:canSeeCreature(targetPlayer) then
-			local entry = string.format("%s [%d]", targetPlayer:getName(), targetPlayer:getLevel())
-			local accType = targetPlayer:getAccountType()
 			local hasAccess = targetPlayer:getGroup():getAccess()
+			local entry = string.format("%s [%d]", targetPlayer:getName(), hasAccess and highlightAdmin and "-" or targetPlayer:getLevel())
+			local accType = targetPlayer:getAccountType()
 			local color = MESSAGE_COLOR_WHITE
-			if targetPlayer:isAdmin() then
+			
+			if targetPlayer:isAfk() then
+				color = MESSAGE_COLOR_PURPLE
+				playersAfk = playersAfk + 1
+				legendAfk = true
+			elseif targetPlayer:isAdmin() then
 				if (hasAccess and highlightAdmin) or (not hasAccess and highlightAdminPlayer) then
 					color = MESSAGE_COLOR_BLUE
 					legendAdmin = true
@@ -36,10 +41,6 @@ function onSay(player, words, param)
 			elseif highlightTutor and accType >= ACCOUNT_TYPE_TUTOR and accType <= ACCOUNT_TYPE_SENIORTUTOR then
 				color = MESSAGE_COLOR_YELLOW
 				legendTutor = true
-			elseif targetPlayer:isAfk() then
-				color = MESSAGE_COLOR_PURPLE
-				playersAfk = playersAfk + 1
-				legendAfk = true
 			end
 			
 			if color ~= MESSAGE_COLOR_WHITE then

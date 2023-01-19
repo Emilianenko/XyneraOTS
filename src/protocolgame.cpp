@@ -4413,7 +4413,13 @@ void ProtocolGame::AddCreature(NetworkMessage& msg, const Creature* creature, bo
 		}
 
 		const std::string& displayName = creature->getDisplayName();
-		msg.addString(!displayName.empty() ? displayName : (creature->isHealthHidden() ? "" : creature->getName()));
+		const std::string nameToShow = !displayName.empty() ? displayName : (creature->isHealthHidden() ? "" : creature->getName());
+
+		if (!otherPlayer || !otherPlayer->isAfk()) {
+			msg.addString(nameToShow);
+		} else {
+			msg.addString(fmt::format("<h4><font color=\"#ff68ff\"/>[&nbsp;&nbsp;AFK&nbsp;&nbsp;]</font></h4>{:s}", nameToShow));
+		}
 	}
 
 	if (creature->isHealthHidden()) {
