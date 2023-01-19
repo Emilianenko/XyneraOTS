@@ -108,14 +108,14 @@ local function animate_2(npcId, frameId)
 	end
 	
 	if not frameId then
-		addEvent(animate_2, 275, npcId, 3)
-		addEvent(animate_2, 450, npcId, 4)
-		addEvent(animate_2, 625, npcId, 5)
-		addEvent(animate_2, 800, npcId, 6)
-		addEvent(animate_2, 1075, npcId, 5)
-		addEvent(animate_2, 1250, npcId, 4)
-		addEvent(animate_2, 1425, npcId, 3)
-		addEvent(animate_2, 1600, npcId)
+		addEvent(animate_2, 475, npcId, 3)
+		addEvent(animate_2, 650, npcId, 4)
+		addEvent(animate_2, 825, npcId, 5)
+		addEvent(animate_2, 1000, npcId, 6)
+		addEvent(animate_2, 1475, npcId, 5)
+		addEvent(animate_2, 1650, npcId, 4)
+		addEvent(animate_2, 1825, npcId, 3)
+		addEvent(animate_2, 2000, npcId)
 	end
 end
 
