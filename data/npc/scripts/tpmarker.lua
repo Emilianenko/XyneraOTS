@@ -87,6 +87,38 @@ local function animate(npcId, frameId)
 	end
 end
 
+local function animate_2(npcId, frameId)
+	local npc = Creature(npcId)
+	if not npc then
+		return
+	end
+	
+	local npcName = npc:getName()
+	if frameId and frameId == -1 then
+		npc:setDisplayName(" ")
+	else
+		local marker = markers[npcName]
+		if marker then
+			npc:setDisplayName(string.format('<font color="%s"><h2>%s</h2></font>%s', marker.color, npcName, string.rep("<br />", frameId or 2)))
+			
+			if marker.effect and not frameId then
+				Position(TP_MARKERS_HOME[npcId]):sendMagicEffect(marker.effect)
+			end
+		end
+	end
+	
+	if not frameId then
+		addEvent(animate_2, 275, npcId, 3)
+		addEvent(animate_2, 450, npcId, 4)
+		addEvent(animate_2, 625, npcId, 5)
+		addEvent(animate_2, 800, npcId, 6)
+		addEvent(animate_2, 1075, npcId, 5)
+		addEvent(animate_2, 1250, npcId, 4)
+		addEvent(animate_2, 1425, npcId, 3)
+		addEvent(animate_2, 1600, npcId)
+	end
+end
+
 local function onInit(npcId)
 	local self = Creature(npcId)
 	if not self then
@@ -132,7 +164,7 @@ local function onInit(npcId)
 		-- force a second npc to hide look
 		Game.createNpc("TpFilter", selfPos, false, true)
 		
-		animate(npcId)
+		animate_2(npcId)
 	end
 
 	--self:setDisplayName(string.format('<h1><font color="%s">%s</font></h1>%s', tpInfo.color, selfName, string.rep("<br />", 2)))
