@@ -40,6 +40,12 @@ local markers = {
 		--destination = Position(0, 0, 0),
 		effect = 178,
 		color = "#f7df05",
+	},
+	["Vip"] = {
+		itemId = 1387,
+		-- destination = Position(1115, 958, 9),
+		effect = 178,
+		color = "#f7df05",
 	}
 }
 
