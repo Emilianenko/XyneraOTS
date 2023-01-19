@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<npc name="Bosses" script="tpmarker.lua" walkinterval="0" speechbubble="0">
+<npc name="Vip" script="tpmarker.lua" walkinterval="0" speechbubble="0">
  	<look type="128"/>
 </npc>
