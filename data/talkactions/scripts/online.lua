@@ -25,7 +25,7 @@ function onSay(player, words, param)
 	for _, targetPlayer in ipairs(players) do
 		if player:canSeeCreature(targetPlayer) then
 			local hasAccess = targetPlayer:getGroup():getAccess()
-			local entry = string.format("%s [%d]", targetPlayer:getName(), hasAccess and highlightAdmin and "-" or targetPlayer:getLevel())
+			local entry = string.format("%s [%s]", targetPlayer:getName(), hasAccess and highlightAdmin and "-" or targetPlayer:getLevel())
 			local accType = targetPlayer:getAccountType()
 			local color = MESSAGE_COLOR_WHITE
 			
