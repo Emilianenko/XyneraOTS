@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
-<npc name="Cassino" script="tpmarker.lua" walkinterval="0" speechbubble="0">
+<npc name="Casino" script="tpmarker.lua" walkinterval="0" speechbubble="0">
  	<look type="128"/>
 </npc>
