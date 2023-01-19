@@ -99,7 +99,7 @@ local function animate_2(npcId, frameId)
 	else
 		local marker = markers[npcName]
 		if marker then
-			npc:setDisplayName(string.format('<font color="%s"><h2>%s</h2></font>%s', marker.color, npcName, string.rep("<br />", frameId or 1)))
+			npc:setDisplayName(string.format('<font color="%s"><h2>%s</h2></font>%s', marker.color, npcName, string.rep("<br />", frameId or 0)))
 			
 			if marker.effect and not frameId then
 				Position(TP_MARKERS_HOME[npcId]):sendMagicEffect(marker.effect)
@@ -108,16 +108,18 @@ local function animate_2(npcId, frameId)
 	end
 	
 	if not frameId then
-		addEvent(animate_2, 475, npcId, 2)
-		addEvent(animate_2, 650, npcId, 3)
-		addEvent(animate_2, 825, npcId, 4)
-		addEvent(animate_2, 1000, npcId, 5)
-		addEvent(animate_2, 1175, npcId, 6)
-		addEvent(animate_2, 1475, npcId, 5)
-		addEvent(animate_2, 1650, npcId, 4)
-		addEvent(animate_2, 1825, npcId, 3)
-		addEvent(animate_2, 2000, npcId, 2)
-		addEvent(animate_2, 2175, npcId)
+		addEvent(animate_2, 500, npcId, 1)
+		addEvent(animate_2, 675, npcId, 2)
+		addEvent(animate_2, 850, npcId, 3)
+		addEvent(animate_2, 1025, npcId, 4)
+		addEvent(animate_2, 1200, npcId, 5)
+		addEvent(animate_2, 1375, npcId, 6)
+		addEvent(animate_2, 1875, npcId, 5)
+		addEvent(animate_2, 2050, npcId, 4)
+		addEvent(animate_2, 2225, npcId, 3)
+		addEvent(animate_2, 2400, npcId, 2)
+		addEvent(animate_2, 2575, npcId, 1)
+		addEvent(animate_2, 2750, npcId)
 	end
 end
 
