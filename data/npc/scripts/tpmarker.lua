@@ -29,9 +29,9 @@ local markers = {
 		effect = 178,
 		color = "#f7df05",
 	},
-	["Cassino"] = {
+	["Casino"] = {
 		itemId = 1387,
-		-- destination = Position(968, 1059, 7),
+		destination = Position(1115, 958, 9),
 		effect = 178,
 		color = "#f7df05",
 	},
