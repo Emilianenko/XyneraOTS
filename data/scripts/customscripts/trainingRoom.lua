@@ -8,8 +8,8 @@ local config = {
 	firstTrainerPos = Position(1793, 1826, 6),
 	distanceX = 29,
 	distanceY = 20,
-	rows = 9,
-	columns = 14,
+	rows = 29,
+	columns = 19,
 	exitTeleportPos = Position(0, 1, 0), -- relative position from firstTrainerPos
 
 	-- Others
