@@ -4,8 +4,8 @@ combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 
 function onGetFormulaValues(player, level, magicLevel)
-	local min = (level / 5) + (magicLevel * 40.3) + 32
-	local max = (level / 5) + (magicLevel * 70.4) + 48
+	local min = (level / 0.45) + (magicLevel * 17.5) + 13
+	local max = (level / 0.45) + (magicLevel * 22.7) + 18
 	return -min, -max
 end
 

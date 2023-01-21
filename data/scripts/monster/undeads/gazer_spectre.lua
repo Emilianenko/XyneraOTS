@@ -85,7 +85,7 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -350},
-	{name ="combat", interval = 2000, chance = 30, minDamage = -200, maxDamage = -350, radius = 3, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true},
+	{name ="combat", interval = 2000, chance = 25, minDamage = -200, maxDamage = -350, radius = 3, range = 6, type = COMBAT_FIREDAMAGE, effect = CONST_ME_FIREATTACK, shootEffect = CONST_ANI_FIRE, target = true},
 	{name ="combat", interval = 2000, chance = 20, minDamage = -300, maxDamage = -400, range = 6, type = COMBAT_LIFEDRAIN, effect = CONST_ME_MAGIC_RED, shootEffect = CONST_ANI_ENERGY, target = true},
 	{name ="Gazer Chain", interval = 2000, chance = 20},
 }
@@ -93,7 +93,7 @@ monster.attacks = {
 monster.defenses = {
 	defense = 68,
 	armor = 68,
-	{name ="combat", interval = 2000, chance = 20, minDamage = 100, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, type = COMBAT_HEALING},
+	{name ="combat", interval = 2000, chance = 15, minDamage = 100, maxDamage = 200, effect = CONST_ME_MAGIC_BLUE, type = COMBAT_HEALING},
 }
 
 monster.loot = {

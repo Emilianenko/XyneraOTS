@@ -83,10 +83,10 @@ monster.elements = {
 
 monster.attacks = {
 	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -450},
-	{name ="Crazed Winter Vanguard Chain", interval = 2000, chance = 20},
+	{name ="Crazed Winter Vanguard Chain", interval = 2000, chance = 18},
 	{name ="combat", interval = 2000, chance = 16, minDamage = -150, maxDamage = -250, length = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_GIANTICE, direction = true},
 	{name ="combat", interval = 2000, chance = 23, minDamage = -200, maxDamage = -300, radius = 3, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICETORNADO},
-	{name ="combat", interval = 2000, chance = 18, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEAREA},
+	{name ="combat", interval = 2000, chance = 17, minDamage = -200, maxDamage = -300, radius = 4, type = COMBAT_ICEDAMAGE, effect = CONST_ME_ICEAREA},
 }
 
 monster.defenses = {
