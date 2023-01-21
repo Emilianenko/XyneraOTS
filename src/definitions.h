@@ -22,7 +22,7 @@ static constexpr auto AUTHENTICATOR_PERIOD = 30U;
 #define DEV_MODE
 
 // enable printing disconnect reasons
-#define DEBUG_DISCONNECT
+// #define DEBUG_DISCONNECT
 
 #ifndef __FUNCTION__
 #define __FUNCTION__ __func__
